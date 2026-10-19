@@ -17,12 +17,3080 @@ every version here.
 
 ---
 
+## 2.32.0 — 2026-10-13 — Porządki w plecakach botów, wojna gildii na wszystkich kanałach, handel Smoczą Alchemią
+
+### Poprawki
+- **Wzgórze Wukonga nie zawiesza się na ostatnim kamieniu.** Gdy na etapie Kamieni Wzgórza lub Jaj Feniksa przez 4 minuty nie padnie żaden cel (bo któryś się nie pojawił albo stoi poza zasięgiem), etap zamyka się sam i loch idzie dalej.
+- **Wyjście z lochów znowu pod strażnika.** Od 2.31.0 po wyjściu z lochu (np. Biblioteki) postać trafiała do miasta. Teraz wraca tam, skąd weszła, a nowy sposób powrotu działa tylko na arenie wojny gildii.
+
+### Wojna gildii
+- **Boty z innych kanałów stają do walki.** Gdy gildia ma wojnę, jej członkowie przebywający na CH2–CH4 przechodzą na CH1 i dołączają do składu (do 20 na stronę). Nie dotyczy botów w lochach, w drużynie gracza ani Towarzysza.
+- **Widz na arenie nie walczy.** Kto ogląda wojnę, nie może zadawać obrażeń jej uczestnikom ani ich otrzymywać – także umiejętnościami obszarowymi. Na arenie biją się wyłącznie dwie walczące gildie.
+
+### Gildia i drużyna (Autor: Krystian)
+- Bot wezwany rozkazem **„Expimy razem”** wchodzi do twojej drużyny, więc doświadczenie dzieli się jak w zwykłej grupie; po zakończeniu wezwania wychodzi.
+- Wezwani pomocnicy i towarzysze polowania atakują przeciwników już w pobliżu ciebie, a jeśli ich klasa to umie – także z konia.
+- Bot przyjmujący twoje zaproszenie najpierw opuszcza drużynę złożoną z samych botów.
+
+### Exp w drużynie z botami
+- **Każdy bot bije swojego potwora.** Na zwykłym expowisku boty z twojej drużyny nie rzucają się już wszystkie na potwora, którego atakujesz – każdy bierze własny cel w pobliżu ciebie, najchętniej taki, którego nikt z drużyny jeszcze nie bije, i nie oddala się od ciebie. Przy Metinach i bossach dalej walczą razem na twój cel, a gdy masz mniej niż 40% życia, zajmują się potworami, które cię atakują. Tak samo zachowują się boty wezwane rozkazem „Expimy razem”.
+
+### Boty i rynek
+- **Nie drożej niż w sklepie NPC.** Przedmioty, które da się kupić u NPC, boty wyceniają, kupują i ogłaszają zawsze taniej niż sklep. Przykład: Kwiat Żywiołu boty biorą od Mistrza za 100 000, a z rynku tylko wtedy, gdy ktoś sprzedaje go taniej.
+- **Lżejsze plecaki botów.** Zbędny sprzęt +0…+4 nie czeka już godzinami na miejsce w sklepie – nadmiar trafia do kupca przy najbliższej wizycie w mieście. Zapas na rzemiosło liczy się na całą rodzinę przedmiotu (od +0 do +4), a przy pełnym plecaku bot nie bierze się za ulepszanie „na próbę”.
+- **Boty podnoszą swój łup w lochach.** Bot w lochu z graczem zbiera teraz przedmioty, które przypadły jemu (wcześniej zostawały na ziemi). Broń i zbroja z bonusami nigdy nie są dla bota „za tanie”, a gdy plecak jest naprawdę pełny, bot niszczy najtańszą zbędną rzecz, żeby zabrać wartościowy przedmiot.
+- **Więcej sprzętu +5…+9 na straganach.** Niepotrzebne botowi rzeczy z wyższym ulepszeniem wypierają ze sklepu najtańsze, długo niesprzedane oferty.
+
+### Lochy
+- **Wzgórze Wukonga trudniejsze:** WuKong, Obrońca Chmur, Płomienny Feniks i półboss Czarodziej Stylu Małp zadają o 50% większe obrażenia.
+
+### Smocza Alchemia
+- Kamieniami smoka klasy **Antyczny, Legendarny i Mityczny** można handlować z innymi graczami, wystawiać je w sklepie offline i w Domu Aukcyjnym. Niższe klasy – bez zmian. Wymaga nowego klienta.
+
+### Auto Łowy
+- Podczas Auto Łowów twoja postać **przechodzi przez innych graczy i boty**, więc nie zatrzymuje się w tłumie przy Metinach. Potwory, NPC i bramy nadal blokują drogę, a zwykłe chodzenie działa jak dotąd. Wymaga nowego klienta.
+
+### Edytor bazy danych
+- Nowe wiersze w „Respawn bossów i metinów” mają domyślnie obszar 10/10. Wiersz z obszarem 0/0 to jeden punkt na mapie – jeśli wypada na przeszkodzie, potwór się tam nie pojawi, więc panel teraz ostrzega, a grupy z takim obszarem nie zapisze.
+
+## Klient 2.0.63 — 2026-10-13 — Smocza Alchemia w handlu, Auto Łowy w tłumie
+- Handel kamieniami smoka od klasy Antyczny (okno handlu, sklep offline, Dom Aukcyjny).
+- Auto Łowy: przechodzenie przez innych graczy i boty.
+
+## 2.31.0 — 2026-10-12 — Dom Aukcyjny, pojedynki botów na nowo, wyjście z wojny gildii
+
+### Dom Aukcyjny (Autor: Vekirion)
+- **Nowy Dom Aukcyjny zastępuje Dom Towarowy.** U tego samego NPC (opcja „Dom Aukcyjny”) otwiera się nowe okno z przeglądem ofert wszystkich sklepów offline, kategoriami, stronami, zakupem kilku ofert naraz i blokadą na jeden wybrany przedmiot.
+- Kategorie **Smocza Alchemia** i **Polimorfia**; Marmury Polimorfii pokazują nazwę potwora.
+- Filtry: cena od–do, poziom postaci, liczba sztuk, poziom ulepszenia, klasa i płeć.
+- Nagłówek „Cena” sortuje kolejno: po cenie oferty rosnąco i malejąco, a potem **po cenie za sztukę** – wygodne przy ulepszaczach i innych rzeczach sprzedawanych w stosach.
+- **Minigry „zagraj kilka razy”:** Okey, Yut Nori, Złap Króla i Koło Fortuny można rozegrać od 1 do 50 razy pod rząd (wiersz „Liczba gier”).
+- W Okey karty nie zostają już zablokowane po zdobyciu punktów.
+
+### Pojedynki
+- **Nowa SI pojedynków (Autor: P48).** Bot przed walką szykuje się: przestaje polować, odsyła konia, regeneruje się, nakłada buffy i alchemię, a dopiero potem potwierdza gotowość. W walce gra taktyką swojej specjalizacji, trzyma właściwy dystans, lepiej goni i obsługuje odrzut. W zwykłym pojedynku nie pije czerwonych mikstur, a przegrana kończy się śmiercią postaci.
+- Poprawki umiejętności w pojedynku: Szarża, umiejętności kontaktowe, Wycie; Trzystronne Cięcie i Wirujący Sztylet trafiają cel maksymalnie 3 razy.
+- **Boty pojedynkują się między sobą tą samą SI** – obie strony przygotowują się i walczą swoimi profilami, a każda zapisuje swój wynik.
+
+### Wojna gildii (Autor: Krystian)
+- Po rozstrzygnięciu wojny wszyscy wracają tam, skąd weszli na arenę (albo do miasta), a arena zamyka się 10 s po wyjściu zamiast 5.
+- Przycisk „Wyjdź z wojny” działa także po zakończonej walce.
+- Teleport pod TAB i zakładki teleportu są zablokowane na arenach tylko w trakcie trwającej wojny.
+
+### Postać
+- **Kombinacja zostaje włączona (Autor: Mur4s)** po ponownym zalogowaniu, teleporcie i zmianie kanału.
+- Ikonki Talizmanu Ziemi i Talizmanu Błyskawicy były zamienione – teraz każdy ma swoją.
+
+### Panele i serwer
+- Panel Seban: dymek przedmiotu, który ucinał się u góry panelu, wyświetla się pod przedmiotem.
+- Logi serwera są przechowywane maksymalnie 48 godzin – starsze usuwają się same co godzinę (`M2_LOG_KEEP_HOURS` w .env).
+- Rdzeń gry nie wyłącza się już, gdy przy przejściu bota na mapę zabraknie pamięci na jego mapę drogową – bot po prostu tam nie idzie.
+
+## Klient 2.0.62 — 2026-10-12 — Dom Aukcyjny
+- Okno Domu Aukcyjnego z nowymi kategoriami, filtrami i sortowaniem po cenie za sztukę.
+- „Liczba gier” w minigrach i poprawka blokady kart w Okey.
+- Poprawione ikonki Talizmanu Ziemi i Błyskawicy.
+
+## 2.30.0 — 2026-10-11 — Żywszy świat botów, nowy Dom Towarowy, rozbudowana Wiki dropu
+
+### Czym zajmują się boty
+- **Plan dnia bota.** Boty mają ustaloną hierarchię spraw. Najpierw dbają o życie, potem o drużynę na rajdzie, potem o umówione spotkania i o miejsce w plecaku. Dopiero wtedy idą łowić, kopać, zbierać zioła czy siedzieć w mieście.
+- **Pajęcze lochy żyją.** Postacie od 48 do 75 poziomu po zalogowaniu i po każdej wizycie w mieście wybierają na nowo, gdzie polować, a mniej więcej co trzecie losowanie wskazuje któryś z Lochów Pająków. Wchodzą tam tylko z odpowiednio ulepszoną bronią i zbroją oraz z zapasem mikstur. W głębszym lochu chętniej szukają towarzyszy do drużyny.
+- **Peleryny w samotnym expie.** Na kilku mapach boty zbierają większe grupy potworów Peleryną Męstwa także wtedy, gdy grają same. Zaczynają ostrożnie, od małych grup. Każda wygrana walka pozwala im ściągnąć więcej, a śmierć cofa je do mniejszych.
+- **Szaman na trudny teren.** Bot, któremu na wymagającej mapie idzie źle (ginie, ucieka, wypija za dużo mikstur albo ma wyraźnie słabszy sprzęt od rówieśników), dobiera sobie do pary szamana z gildii, który akurat nie ma zajęcia, i dalej polują we dwójkę. Mocne boty dalej grają same.
+- **Biolog częściej.** Boty dużo chętniej podejmują się zadań Biologa i brakujące okazy kupują na straganach, zamiast tylko czekać na drop.
+- **Cel na dziś.** Część botów po wejściu do gry wyznacza sobie cel na tę sesję: Metiny, poziom, yang, bossa, ulepszenie albo liczbę potworów, w trzech stopniach trudności. Cel widać nad głową bota na niebiesko, a jego wynik poprawia albo psuje botowi humor. Postęp zapamiętuje się – po wyjściu z gry czy przejściu na inny kanał bot wraca do tego samego zadania.
+- **Specjalizacja niezależna od płci.** Ninja i szamani dobierają ścieżkę umiejętności losowo, a nie według płci postaci. W panelu klasycznym płeć tych klas wyświetla się poprawnie.
+
+### Bossowie i wspólne polowania
+- Nowe cele zbiórek botów: **Olbrzymi Duch Drzewa** w Czerwonym Lesie oraz małpy z lochów – **Lord Małp**, **Chodząca Małpa** i **Skalista Małpa**.
+- Na **Królową Pająków** schodzą także boty, które w tej chwili nie przebywają w lochu.
+- Bot, który pierwszy natknie się na bossa, **ogłasza to całemu królestwu**, a jego rodacy w pobliżu przychodzą pomóc.
+
+### Handel między botami i z graczami
+- **Umawianie się na wymianę.** Na czacie handlowym boty dogadują się między sobą: jeden szuka materiału, drugi ma nadwyżkę. Ustalają cenę, kanał i miejsce (przy kowalu), spotykają się i przekazują towar w oknie handlu.
+- **Kupno od bota przez czat.** Gdy napiszesz do bota, że chcesz coś z jego ogłoszenia, poda cenę i miejsce, przyjdzie i sprzeda ci przedmiot w oknie handlu, także zdjęty z jego sklepu.
+- **Wymiana towar za towar.** Boty wymieniają się zbędnym ekwipunkiem, wyceniając obie strony tak samo. Różnicę wyrównują yangami, ale z umiarem. Przedmiotów z dobrymi bonusami w takie wymiany nie oddają.
+- **Nowe typy kupców:** boty polujące na wyjątkowo tanie oferty, które potem odsprzedają po normalnej cenie, drobne zakupy pod wpływem chwili, okazjonalne ulepszanie tanich przedmiotów „na próbę” oraz ogłoszenia skupu pisane potocznym językiem.
+
+### Ceny na rynku
+- **Cor Draconis** wyceniany według wartości smoczych kamieni, które z niego wypadają. Drogocenny, mityczny czy legendarny kosztuje teraz odpowiednio więcej niż zwyczajny.
+- **Towary, których prawie nie ma** (mniej niż 10 sztuk na wszystkich straganach), boty sprzedają i kupują drożej, a ich cena spada wolniej.
+- **Ulepszacze** kosztują tyle, na ile pozwala ich ilość na rynku, a ceny zmieniają się łagodnie. Każdy sprzedawca ma lekko inną cenę, więc nie stoją wszyscy na jednej kwocie.
+- **Słabe bronie na 30 poziom (+0…+3)** tanieją, gdy świat się starzeje i gdy na straganach jest ich za dużo. Nie dotyczy to egzemplarzy z wysokimi średnimi obrażeniami (powyżej 40%), które zawsze trzymają cenę.
+- **Marchewki i Czerwony Żeń-szeń:** gdy w królestwie leży ich na straganach już 300 sztuk, boty zamieniają nadwyżkę u Handlarki na Czerwone Mikstury.
+- **Kupony SM:** boty, którym nie są potrzebne w ItemShopie, wystawiają je na sprzedaż.
+- **Rynek materiałów (opcja testowa, domyślnie wyłączona):** gdy czegoś brakuje, boty chętniej wyciągają to z magazynu, a najtańsze, długo niesprzedane surowce stopniowo wycofują z handlu.
+
+### Kowal i ekwipunek botów
+- **Bez palenia noszonego sprzętu.** Bot ryzykuje ulepszenie założonego ekwipunku tylko wtedy, gdy ma w plecaku zapasową sztukę albo Zwój Błogosławieństwa. Ostatnią sztukę na dane miejsce zawsze ulepsza wyłącznie ze zwojem. Młode boty bez zapasu ulepszają najwyżej do +4.
+- **Cztery bonusy pod ochroną.** Przedmioty z czterema bonusami idą do kowala tylko ze zwojem.
+- **Zwój z rozsądkiem.** Boty nie zużywają Zwoju Błogosławieństwa na przedmiot tańszy od samego zwoju, a na sprzęcie do 18 poziomu tylko wtedy, gdy ulepszenie wyraźnie się opłaca.
+- **Tarcze i hełmy na miarę poziomu.** Boty zmieniają przestarzałe tarcze i hełmy na odpowiednie dla swojego poziomu, ulepszają je i pozbywają się nadmiaru. Tarcze bonują pod odporność na omdlenie i pod rasę potworów z mapy, na której polują.
+- **Mądrzejsze bonowanie.** Kamienie dodania i zmiany trafiają najpierw na noszony ekwipunek, a na przedmioty do sprzedaży idzie tylko nadwyżka. Dobre bonusy, w tym przydatne w PvP, nie są przelosowywane. Bronie na 30 poziom mają losowane średnie obrażenia aż do uzyskania przyzwoitej wartości – także te ulepszone na +7, +8 czy +9 – a bonusowanie zaczyna się od +6. Część botów przygotowuje też zbonowane przedmioty na sprzedaż.
+- **Wybór broni i biżuterii.** Ninja walczący sztyletami na 30 poziomie celuje w Kozik. Ebonitowe Kolczyki są priorytetem tylko dla części wojowników i ninja, a sury wybierają swoje kolczyki.
+- **Łucznik przy Metinie** nie żongluje już łukiem i sztyletem – sięga po sztylet raz na kamień i trzyma go do końca walki.
+- **Kowale w Wieży Demonów.** Uczestnicy rajdu mają przy sobie coś do ulepszenia u każdego z kowali w Wieży; swoją kolejkę ma tam też Towarzysz. Tamtejszym kowalom oddawane są wyłącznie przedmioty od +4 wzwyż.
+
+### Towarzysz
+- **Ochrona przed innymi postaciami.** Gdy ktokolwiek zaatakuje ciebie albo Towarzysza, bez względu na królestwo, Towarzysz staje do walki. Gdy sam zaatakujesz inną postać, dołącza do ciebie. W pojedynek i wojnę gildii się nie wtrąca.
+- **Najpierw strzelcy.** Nowa opcja w oknie Towarzysza: w pierwszej kolejności rozprawia się z łucznikami i magami, którzy strzelają lub rzucają czary w ciebie, w Towarzysza albo w kogoś z twojej drużyny. Można ją wyłączyć przyciskiem „Dystans”.
+- **Wędkowanie do skutku.** Towarzysz wysłany „Na ryby” z Kartą Wędkarską zostaje nad wodą, dopóki karta działa – nie porzuca już łowienia po kilku minutach na rzecz expienia na innej mapie.
+- **Zakupy na zlecenie.** Towarzysz posłany po mikstury dochodzi do sprzedawcy i kupuje, zamiast wracać z niczym, gdy droga przy ladzie się zatnie.
+- **Świątynia Zodiaku:** na pasku celu jest przycisk „Wskrzeszenie”, którym przywrócisz leżącego Towarzysza lub członka drużyny za Pryzmaty (część serwerowa weszła już w 2.29.1).
+
+### Klient
+- **Dom Towarowy po liftingu**, w dotychczasowym wyglądzie okna:
+  - nowe zakładki: Polimorfia oraz Smocza Alchemia;
+  - podpowiedzi Corów ułożone od najsłabszych do najlepszych;
+  - Marmury Polimorfii z nazwą potwora;
+  - druga karta filtrów: poziom, liczba sztuk, poziom ulepszenia, klasa i płeć.
+- **Wiki dropu (klawisz „/”) z dużo większą ilością informacji:**
+  - przy przedmiocie widać, kto go wyrzuca, z jakiej receptury lub skrzyni pochodzi, u kogo go kupisz, do czego służy jako składnik albo ulepszacz, a przy skrzyniach również ich zawartość;
+  - przy potworze widać jego żywioł i mapy, na których występuje;
+  - wszystko liczy się samo z danych serwera.
+- **Zatruty przeciwnik** ma zielony pasek życia.
+- **Auto Łowy** pilnują, by buff (np. Czarowana Zbroja) ruszył dopiero wtedy, gdy umiejętność naprawdę jest gotowa – wcześniej bywało, że czar odpalony w ostatniej chwili odnowienia przepadał.
+
+### Panele
+- **Przegląd rynku (wersja testowa)** w panelu zaawansowanym, w zakładce Gospodarka:
+  - wszystkie stragany ze wszystkich królestw w jednym miejscu, z kategoriami i filtrami;
+  - wyróżnione okazje cenowe i historia ceny z ostatnich 7 dni;
+  - szybki teleport do wybranego straganu;
+  - „zwykłą” cenę, z którą porównywane są oferty, wylicza sam serwer gry – tak samo, jak robią to boty – więc okazje są rzeczywiste.
+- **Respawn rozdzielony na Metiny, bossów i zwykłe potwory** – każda grupa ma własny czas i liczbę, w obu panelach. Dotychczasowe ustawienia przeniosą się same.
+- **Ręczne zdjęcie blokady doświadczenia** z bota na jego karcie w panelu zaawansowanym (i przywrócenie jej).
+- **Nowe ustawienie trudności:** jak często broń i zbroja wypadające z potworów mają bonusy (od 10% do 1000% zwykłej szansy). Działa w obu panelach od razu.
+
+### Poprawki
+- Szukanie w Domu Towarowym samymi filtrami mogło wyłączyć rdzeń gry. Wyniki są teraz ograniczane już w trakcie przeszukiwania.
+
+## Klient 2.0.61 — 2026-10-11 — Dom Towarowy, Wiki dropu, Towarzysz
+
+- Nowe funkcje Domu Towarowego i rozbudowana Wiki dropu.
+- Przycisk „Dystans” w oknie Towarzysza i przycisk „Wskrzeszenie” na pasku celu w Świątyni Zodiaku.
+- Zielony pasek życia zatrutego przeciwnika.
+- Auto Łowy: buffy nie przepadają przy rzucaniu ich tuż po odnowieniu.
+
+## 2.29.1 — 2026-10-10 — Poprawka Towarzysza w Świątyni Zodiaku
+
+Tylko aktualizacja serwera – klient zostaje 2.0.60.
+
+- **Towarzysz w Świątyni Zodiaku:**
+  - Gdy padnie na piętrze, na którym jesteś, wstaje na swoich Pryzmatach Ożywienia – możesz mu je dać w oknie Towarzysza, także gdy leży.
+  - Gdy ma ich za mało, pisze do ciebie, ilu potrzebuje, i otwiera ci okno wskrzeszenia (jeśli masz Pryzmaty). Szept „wstań” przypomina o tym ponownie.
+  - Gdy wyjdziesz ze świątyni, Towarzysz od razu wstaje i idzie za tobą – nie stoi już w miejscu z napisem „odpoczywa”.
+  - Po wyjściu ze świątyni Towarzysz i boty z drużyny nie zabierają ze sobą stanu ze świątyni (flagi śmierci), a zamknięcie piętra nie wyrzuca już Towarzysza z gry. Poprawiony też możliwy błąd serwera po zamknięciu świątyni.
+- Bot, który po śmierci nie mógł wstać, wstaje sam po 30 sekundach, a odpoczynek Towarzysza po śmierci trwa najwyżej półtorej minuty.
+
+## 2.29.0 — 2026-10-10 — Świątynia Zodiaku
+
+> ⚠️ **Ważne, jeśli edytujesz pliki bazy danych** (Edytor bazy danych w panelu zaawansowanym – własne nazwy, bonusy, opisy przedmiotów albo umiejętności): ta aktualizacja zmienia dane przedmiotów w kliencie. Po aktualizacji serwera i klienta do 2.0.60 **musisz pobrać nową paczkę ZIP z panelu i rozpakować ją do klienta**, inaczej nowe przedmioty (np. bronie i zbroje Zodiaku) mogą nie działać, a opisy nie będą się zgadzać.
+>
+> **Jak to zrobić:**
+> 1. Najpierw zaktualizuj serwer do 2.29.0 i klienta do 2.0.60.
+> 2. Zamknij grę (klient nie może być uruchomiony).
+> 3. Otwórz panel zaawansowany i wejdź w **Edytor bazy danych → Zastosuj**.
+> 4. Kliknij **„Pobierz aktualne pliki klienta (zip)”** i zapisz plik na dysku.
+> 5. Otwórz pobrany ZIP – w środku jest folder `pack` z plikami `dbdata`.
+> 6. Wypakuj całą zawartość ZIP-a do **głównego folderu gry** (tam, gdzie jest `metin2client.exe`) i zgódź się na **zastąpienie plików**. Pliki muszą trafić do folderu `pack` gry – nie twórz nowego podfolderu.
+> 7. Uruchom grę ponownie. Jeśli pliki są nadal nieaktualne, gra pokaże o tym komunikat po zalogowaniu.
+>
+> Jeśli uruchamiasz grę przez **MT2009-Patcher.exe**, nie musisz nic robić ręcznie – patcher sam pobierze aktualne pliki z panelu serwera przed startem gry.
+
+**Świątynia Zodiaku** (Autor: Digi Rasta) – nowy dungeon drużynowy.
+
+- **Wejście:** Teleporter → „Świątynia Zodiaku”. Na mapie jest 12 portali znaków. Każdego dnia otwarte są dwa: pon. Szczur + Bawół, wt. Tygrys + Królik, śr. Smok + Wąż, czw. Koń + Koza, pt. Małpa + Kogut, sob. Pies + Świnia, a w niedzielę wszystkie.
+- **Kule Animy:** wejście kosztuje 12 kul. Na start każdy ma 36, potem odnawia się 1 na godzinę (najwyżej 36). Działają też Pergamin Sfer i Znak Strażnika.
+- **Piętra:** każde ma swoją misję i limit czasu (minutnik i tablica misji na ekranie). Czasem można przeskoczyć kilka pięter naraz.
+- **Śmierć:** wskrzeszenie Pryzmatami Ożywienia (1, 2, 4, 8, potem po 10). Na piętrach 6, 12, 19 i 24 jedna śmierć wyrzuca całą drużynę po 10 sekundach.
+- **Trudność:** premia do obrażeń potworów w świątyni jest o połowę mniejsza niż w oryginalnej paczce.
+- **Żywioły znaków:** Szczur i Pies – Mrok, Bawół i Małpa – Ziemia, Tygrys i Świnia – Ogień, Królik i Kogut – Wiatr, Smok i Koza – Błyskawica, Wąż i Koń – Lód. Talizman danego żywiołu zwiększa obrażenia. Bossowie dają Talizman +0 swojego żywiołu (5%), Metiny świątyni 2%.
+- **Złota Skrzynia Zodiaku:** daje ją Generał, ostatni boss 34. piętra, każdemu na piętrze (botom też). W środku: broń Zodiaku ok. 6%, zbroja Zodiaku ok. 8%, szarfa ok. 10%, reszta to mikstury, Wino i Cor.
+- **Mnich Milbon:** przeciągnij na niego 10 Insygniów jednego rodzaju i wybierz Czerwone Pudło, Niebieskie Pudło (za Insygnia Zodiaku) albo Kwiat Żywiołu. Jest też Kupiec Zodiaku.
+- **Broń Zodiaku** (Ostrze, Miecz, Sztylet, Łuk, Glewia, Dzwon, Wachlarz, 105 poz.): losowe średnie obrażenia i obrażenia umiejętności, jak inne bronie, oraz szybkość ataku.
+- **Zbroje Zodiaku:** odporność na obrażenia (średnie), odporność na magię i Max PŻ.
+- **Ulepszanie u Kowala:** broń za Czerwone Pudła, zbroje za Niebieskie (1, 2, 4, 8 … 200 pudeł). Do tego na +1…+5 Stabilne Sznury (broń) albo Ciężkie Pasy (zbroje), na +6 Dwutlenek Tytanu, na +7 Agat, na +8 i +9 Kamień Księżycowy.
+- **Skąd materiały:**
+  - Stabilne Sznury i Ciężkie Pasy: zwykłe potwory Świątyni Ochao i Zaczarowanego Lasu (0,5%; Mag Ochao 1% Sznury) oraz skrzynie Razadora i Nemere.
+  - Dwutlenek Tytanu i Agat: bossowie 103–107 poz. (3% / 2%) i Skrzynia Dżungli.
+  - Kamień Księżycowy: Beran-Setaou (5%) i Skrzynia Mroku (ok. 5%).
+- **Boty:** boty z twojej drużyny wchodzą z tobą, walczą i wskrzeszają się Pryzmatami. Nie ruszają posągów ani armaty.
+- Wymaga nowego klienta 2.0.60.
+
+**Stały bonus PD przedmiotów specjalnych** (Autor: Digi Rasta) – Pierścień Siły Woli, Amulet Wiecznej Miłości i Pierścień Śmiercionośnej Mocy dają stałe +30% PD, a Medal Bohatera, Pierścień Półksiężyca, Lizak Potęgi i Pierścień Radości stałe +50% (wcześniej była to tylko szansa). Dwa założone naraz się sumują, a po zdjęciu bonus znika.
+
+**Opisy umiejętności** (Autor: Digi Rasta) – pod opisem każdej umiejętności klasy jest linia „Wzmacnia: …”, która mówi, od których statystyk zależy umiejętność. Wymaga nowego klienta.
+
+**Kanały CH3/CH4 ustawiają się same** – MT2009-Patcher pyta serwer, ile kanałów jest włączonych, i sam wpisuje to do `coop.cfg`. Nie trzeba już niczego zmieniać ręcznie. Działa też w launcherze serwera i przy zaproszeniu COOP.
+
+**Poprawki:**
+- Zakładanie i zdejmowanie kołczanu nie zapisuje już błędów w logach serwera.
+
+## Klient 2.0.60 — 2026-10-10 — Świątynia Zodiaku
+
+- **Świątynia Zodiaku:** mapa, potwory i bossowie znaków z efektami umiejętności, broń i zbroje Zodiaku, minutnik, tablica misji, licznik Kul Animy, okno nagród i wskrzeszania (nowy exe, paczki `zodiak_maps`, `zodiak_mobs`, `zodiak_mobs2`).
+- Linia „Wzmacnia: …” w opisach umiejętności.
+- **Nowy MT2009-Patcher** – sam ustawia liczbę kanałów (CH3/CH4) w `coop.cfg`.
+- Zmieniła się paczka `dbdata`. Pliki z edytora pobierze patcher, albo pobierz zip z panelu (gra o tym przypomni).
+
+## 2.28.0 — 2026-10-09 — Ruiny Atlantydy, nowa biżuteria i klejnoty, pety u botów, CH3/CH4, mapa teleportacji
+
+Wymaga klienta **2.0.59** (pobierze go launcher albo patcher). Zmieniła się paczka danych przedmiotów – jeśli korzystasz z Edytora bazy danych, **patcher pobierze nowe dane sam** (albo pobierz zip z panelu; gra przypomni).
+
+### 🌊 Nowy dungeon: Ruiny Atlantydy (od 75 poz.)
+- Wejście u **Maga Atlantydy** w Dolinie Orków, obok wejścia do Groty Wygnańców – **solo albo z drużyną**.
+- **Bilet do Atlantydy**: u Maga za 6 000 000 Yang albo z Generałów (25%) i Dowódców (10%) w Grocie Wygnańców i od Silnej Lodowej Wiedźmy (15%). 5 wejść dziennie, 45 minut na przejście.
+- **Piętro 1:** fala potworów, potem Głębinowa Muszla daje Klucz Atlantydy – trzeba go oddać właściwej z 4 Kolumn z Muszli (za właściwą pojawia się Strażnik Atlantydy, za złą nowa Muszla).
+- **Piętro 2:** trzy Elity Atlantydy (tylko jedna prawdziwa – zabicie iluzji daje punkt karny), fala potworów, 4 Serca Atlantydy i **Morkhot** – 300 s na pokonanie (mniej przy punktach karnych); gdy czas minie, Morkhot się chowa i trzeba zniszczyć Pradawne Serce Atlantydy.
+- Na koniec 2–4 **Skrzynie Atlantydy** dzielone między graczy, potem 20 s do wyjścia.
+- Cały dungeon ma żywioł **Błyskawica** – bossowie i kamienie dają Talizman Błyskawicy +0.
+- **Skrzynia Atlantydy:** broń 70 poz., materiały do ulepszeń 70–90, perły, przedmioty do peta, sakwa Yang, a także **nowa biżuteria +0 (5%)**, 5× Kamień Duchowy (8%), 10× Zaczarowanie Przedmiotu i 4× Wzmocnienie Przedmiotu – handlowe (po 8%), losowy Talizman +0 (4%); Tarcza Tytanów rzadko (ok. 5% skrzyń).
+- Boty chodzą tam same od 80 poz. (w piątkę, z szamanem), a boty z drużyny wchodzą razem z graczem.
+
+### 💍 Nowa biżuteria, rudy i klejnoty
+- **Rubinowa, Szmaragdowa, Szafirowa i Granatowa** (bransoleta, naszyjnik, kolczyki) – wszystkie od **80 poz.**, bonusy jak w Gameforge (kolczyki Szmaragdowe i Szafirowe: regeneracja PE/PŻ 4–28%). Ikony wszystkich kompletów wyświetlają się poprawnie.
+- Ulepszanie u Kowala: od +4 materiały jak w GF (Nieznane Lekarstwo+, Pamiątka po Demonie, Klejnot Demona, Futro Yeti+, Płonąca Grzywa, od +7 perły).
+- Skąd: Skrzynia Mroku, Generałowie (10%) i Dowódcy (2%) w Grocie Wygnańców, Skrzynia Atlantydy (5%). **Granatowe Kolczyki** – najrzadsze. Materiały do ulepszeń wypadają m.in. ze Skrzyni Razadora i Skrzyni Nemere.
+- **Rudy Rubinu, Szmaragdu, Szafiru i Granatu** – złoża w Czerwonym Lesie i Grocie Wygnańców; przetapianie u alchemików budynków gildii (100 rudy + 3 Magiczne Pyły + 60 000 Yang, 60%).
+- **Klejnoty w biżuterii:** Diament otwiera gniazdo (do 3), klejnot wchodzi z szansą 90/80/70% i wzmacnia bonusy biżuterii o 10/20/40% na 24/12/6 h noszenia. Klejnoty się stackują.
+- Boty kopią, przetapiają, wkładają klejnoty i noszą lepszą biżuterię.
+
+### 🐣 Pety domowe u botów
+- Połowa botów od 30 poz. wykluwa peta z imieniem, przywołuje go na expienie, karmi Przekąskami, daje Smakołyki i eliksiry, uczy umiejętności z ksiąg i ewoluuje.
+- **Małpka i Pajączek** to najsłabsze pety – boty wybierają inne, a ich jajka sprzedają u kupca. Inne jajka, księgi i eliksiry wystawiają na sklepach (z limitem ofert).
+- Towarzysz wykluje i rozwija peta z jajka, które mu dasz.
+
+### 🧝 Towarzysz
+- **Emocje z Towarzyszem** (domyślnie włączone): pocałunek i policzek bez proszenia o zgodę; Towarzysz odpowiada emocją, czasem szeptem, dołącza do tańca i oklasków. Wyłączanie: szept „emocje off/on” albo przycisk w oknie.
+- Nowy Towarzysz zawsze zaczyna z **poziomem właściciela**; gdy nie ma wolnego bota z niskim poziomem, gra tworzy nowego od 1 poz.
+
+### 🔀 Kanały CH3 i CH4
+- Działają jak CH2: każdy na własnych rdzeniach, boty przelogowują się na CH1, gdy chcą coś załatwić na straganach.
+- Domyślnie **wyłączone** – włączasz w panelu (Zarządzanie albo Ustawienia serwera (.env)); CH3 tylko razem z CH2, CH4 tylko razem z CH3.
+- Każdy dodatkowy kanał to ok. **2,5–3 GB RAM** – CH1–CH4 potrzebują ok. 16 GB lub więcej. Z nowym klientem kanały są na liście logowania i pod Alt+3 / Alt+4.
+
+### 🗺️ Mapa teleportacji (Autor: Mur4s)
+- Klawisz **TAB** otwiera mapę świata z 18 punktami (miasta, Dolina Orków, Pustynia, Sohan, Świątynia, Wieża Demonów, Las Duchów, Czerwony Las, Kraina Gigantów, Piekło, Loch Pająków, Dolina Cyklopów, Pustkowie Faraona) – teleport za darmo.
+- Nie działa przy otwartym handlu/sklepie/magazynie, w pojedynku, na arenie wojen gildii i mapach specjalnych.
+- Domyślnie **wyłączona** – włącznik w panelu (działa od razu); wyłączona – TAB działa jak dotąd.
+
+### ⚒️ Kowal pod Enterem (Autor: Vekirion)
+- Enter zatwierdza okno ulepszania u Kowala / zwojem (i ostrzeżenie po nim) oraz okno wkładania kamienia; przytrzymany Enter liczy się raz.
+
+### 🛒 Rynek i boty
+- **Nie ma już stałych cen na rynku** – Odłamki Energii, talizmany (+0 i kolejne plusy), jajka petów, Zaczarowanie i Wzmocnienie do handlu mają tylko cenę bazową i podlegają inflacji i kursowi Yang jak wszystko inne.
+- **Zaczarowanie (71284) i Wzmocnienie (71285) do handlu:** boty używają ich na swój ekwipunek (od 40 poz., po zwykłych 71084/71085), a nadmiar wystawiają.
+- **Ceny brakujących przedmiotów:** Tarcza Tytanów i 36 innych rodzin przedmiotów od 50 poz. dostały ceny – nie zdarzy się już Tarcza Tytanów za 622 Yang.
+- **Broń i zbroja bez bonusów od 30 poz.** przez pierwsze 30 minut na straganie są tylko dla graczy (boty wykupywały je w kilka minut).
+- **Tani ekwipunek bez bonusów poniżej 30 poz.:** najwyżej 20 sztuk jednego przedmiotu na wszystkich straganach (koniec ze stronami Bojowych Tarcz +6).
+- **Owoce rang:** trzy boty na cztery jedzą owoc pasujący do swojej rangi i kupują go ze sklepów; resztę wystawiają (bot z pełną rangą 20 000 wystawia Jabłka i skupuje Gruszki).
+- **Peleryny Męstwa:** boty używają ich normalnie przy expieniu (najpierw przypisanych do postaci), nadmiar ponad 200 wyrzucają.
+- Boty w drużynie z graczem, który stoi AFK, stoją obok niego zamiast chodzić w kółko.
+
+### Poprawki
+- **Pustkowie Faraona:** potwory (także Bastet i Anubis) nie biją już „z daleka”, zanim dobiegną na ekranie.
+- **Leże Smoka:** Beran-Setaou daje Kamień Duszy +5 (5%) i Błogosławieństwo Przedmiotu – zmianę bonusów 6/7 (2%).
+
+## Klient 2.0.59 — 2026-10-09 — Atlantyda, biżuteria, mapa teleportacji
+
+- **Ruiny Atlantydy:** mapa, potwory, efekty i przedmioty (nowe paczki `at_maps`, `at_mobs`).
+- **Biżuteria i klejnoty:** ikony i dane, modele złóż rud (paczka `gf_ore`).
+- **Mapa teleportacji** pod TAB, **Kowal pod Enterem**, przycisk „Emocje” w oknie Towarzysza, kanały CH3/CH4 na liście logowania i Alt+3 / Alt+4.
+- Zmieniła się paczka `dbdata` – pliki z edytora pobierze patcher albo pobierz zip z panelu (gra przypomni).
+
+## 2.27.0 — 2026-10-08 — Boty przechodzą dungeony, dropki dla postaci, pasy i talizmany u botów
+
+Wymaga klienta **2.0.58** (pobierze go launcher albo patcher).
+
+### 🏰 Boty przechodzą dungeony do końca
+- **Najpierw cel etapu** – kamień, metin albo boss etapu przed strażnikami (w Wukongu boty potrafiły 12 minut bić strażników przy ostatnim Kamieniu Wzgórza).
+- **Zastępstwa na zbiórce** – gdy szaman albo członek drużyny odpadnie przed wejściem, dochodzi inny bot z tego samego królestwa i poziomu.
+- **Nemere, Smok i Dżungla** – boty wchodzą tam same (Nemere w piątkę, Smok w czwórkę, Ruiny Skorpiona od 72 poz. w szóstkę z szamanem); dungeon, w którym od 40 minut nikogo nie było, dostaje pierwszeństwo.
+- **Leczenie z dala od bossa** – przy Razadorze, Wukongu, Królu Skorpionów i bossie Dżungli bot odchodzi przy 50% PŻ, leczy się poza zasięgiem obszarówki i wraca przy 92%.
+- **Etap nie stoi w miejscu** – cel etapu, który zniknął bez zabicia (Feniks, metin, filar, boss), pojawia się ponownie po 45 s (najwyżej 3 razy); zgubiony licznik etapu jest wywoływany jeszcze raz.
+- **Więcej czasu** – boty mają o 50% więcej czasu w dungeonach z limitem (Biblioteka, dungeony Arezzo).
+- **Bez pętli śmierci** – przejście kończy się po 110 śmierciach; wipe liczy się do poddania tylko wtedy, gdy od poprzedniego nic nie ruszyło.
+- **Gildie na wojnie** – bot z gildii na wojnie nie bierze celów etapu (silnik nie liczy jego zabójstw) i nie jest wołany do dungeonów ani na mapy Arezzo.
+- Pierwsza noc na serwerze testowym: boty wygrały **129 ze 140** wejść (wcześniej m.in. Razador 58%, Ruiny Skorpiona 28%; Nemere, Smoka i Dżungli nie robiły wcale).
+
+### 🗺️ Boty na mapach Arezzo
+- Boty same chodzą na **Dolinę Cyklopów** (44–50 poz.), **Pustkowie Faraona** (57–65) i do **Zaczarowanego Lasu** (95+, przez Świątynię Ochao i Portal En-Tai) – po kilka naraz, z limitem osób na mapie.
+- Las to wyprawa: zapas 600 czerwonych mikstur (czarujący 400 niebieskich), pobyt 2–3 godziny. PvP między królestwami zostaje.
+- Na mapach Arezzo boty piją przy 85% PŻ i wycofują się przy 50%, nie szarżują na metiny ponad swój poziom, a bot, który ginie raz za razem, wstaje przy Teleporterze.
+
+### 🌾 Dropki połączone z postaciami głównymi
+- Każdy dropek pracuje dla innej postaci-bota ze swojego królestwa: dropki medali, materiałów, broni 30 poz., ornamentów i nowe dropki na mapach od M1 przez orki, pustynię, Sohan i Hwang po Wieżę Demonów i Czerwony Las.
+- Część zarobku (domyślnie 30%) dropek wydaje na siebie, resztę co kilkanaście minut przekazuje swojej postaci. Każdy przelew jest zapisany.
+- Docelowo dropka ma do 50% botów; nowe przybywają stopniowo, a kolejne mapy dopisuje się do tabeli.
+- **Panel zaawansowany → Gracze i boty → „Dropki botów”**: lista powiązań (np. DROPEKMEDALI → FUBU) z zarobkiem i przelewami, ustawienia (włącznik, cel %, część dla dropka, tempo, minimalny przelew) i ostatnie przelewy. Na karcie postaci: „🌾 Dropek: …” albo „🌾 Dropek postaci: …”.
+
+### ⚡ Odłamki Energii od botów
+- Boty przerabiają u Alchemika na Odłamki Energii wyłącznie złom, który inaczej sprzedałyby handlarce (przedmioty od 35 poz.; nigdy talizmanów ani rzeczy, które noszą albo wystawiają).
+- Wystawiają je w paczkach po 10 sztuk, po **30 000** za sztukę – na cały serwer naraz najwyżej **1000 odłamków**.
+- Kupują je boty, które wytwarzają pasy (Odłamki Energii są w każdej recepturze).
+
+### 💎 Ornamenty i talizmany
+- **Zaprzysiężony Łucznik** na początku M2 ma dodatkowe 2% na **Ornament**.
+- **Dropki ornamentów** (2 na królestwo, ok. 20 poz.) czyszczą obozy Zaprzysiężonych na początku M2 i wystawiają ornamenty w sklepach.
+- **Ceny talizmanów u botów**: Talizman +0 – **700 000**, każdy kolejny plus o **650 000** więcej (+1 – 1 350 000, +10 – 7 200 000), niezależnie od żywiołu.
+- **Boty ulepszają talizmany** u Kowala i noszą ten, który na danej mapie daje najwięcej obrażeń (wg wzoru Siły Żywiołu), a jednocześnie rozwijają talizman żywiołu przeważającego na mapie, aż ten zacznie dawać więcej.
+
+### 🎽 Pasy u botów
+- Boty od 50 poz. zbierają materiały, wytwarzają pasy u Mistrza (oficjalne receptury i szanse), ulepszają je u Kowala, trzymają mikstury w pasie i z niego piją.
+
+### 🍎 Owoce rang u botów
+- Trzy boty na cztery jedzą owoc pasujący do swojej rangi i **kupują go ze sklepów** (do 10 na zapas); co czwarty handluje i wystawia wszystkie owoce.
+- Owoce spoza swojego zakresu każdy bot wystawia – bot z pełną rangą 20 000 wystawia Jabłka i skupuje Gruszki.
+- Ceny: Jabłko 250 000, każdy kolejny owoc o 50% droższy (Gruszka 375 000, Winogrono 562 500, Arbuz 843 800, Ananas 1 265 600).
+
+### 🧝 Towarzysz
+- **Jeden plan na wolnej ręce** – w „Wolnej ręce” i „Grze beze mnie” towarzysz wybiera łowisko na swój poziom i ekwipunek i zostaje tam **45–90 minut** (wcześniej skakał co kilka minut między łowieniem, grotą, lasem i pustynią). Do miasta tylko po mikstury, broń lub zbroję, z pełną torbą po 15 minutach; plan pisze ci szeptem.
+- **Eliksiry czasu alchemii** – przedłuża każdy kończący się smoczy kamień aktywnej talii, a nie tylko jeden; używa też eliksirów, które sam znalazł.
+- **Pierścień Lucy, Symbol i Rękawica Króla Przepowiedni, Płaszcz Uciekiniera** – sprzedaje u kupca zamiast zbierać w ekwipunku.
+
+### Inne
+- **Auto Łowy na desce, chmurze i drakkarze** – postać łowi jak pieszo: rzuca umiejętności z wierzchowca zamiast w kółko zsiadać i wsiadać (kręcenie się, blokowanie w ścianie). Bojowiec działa tylko na koniu. Wymaga nowego klienta.
+- **Żywioły 48 kolejnych bossów** (m.in. pająki, WuKong, Wodzowie Orków, Arges, Polifem, Płomienny Feniks, Czerwony Smok, Król Skorpionów, Bastet, Anubis) – każdy może upuścić Talizman +0 swojego żywiołu (5%). Znak żywiołu przy celu – z nowym klientem.
+- **Karty Potworów** – naprawione puste okno misji („Brak aktywnej misji albo limit został przekroczony”), gdy w zapisie postaci został etap 0.
+- Boty nie pytają już „pchać dalej?” o broń +9.
+
+## Klient 2.0.58 — 2026-10-08 — Żywioły bossów, poświata łuku, Auto Łowy
+
+- Nowy **exe**: poświata nakładek na łuk jest na ręce z łukiem (była na drugiej).
+- Znak żywiołu 48 kolejnych bossów przy celu (paczka `gamedata`).
+- Auto Łowy na desce, chmurze i drakkarze (paczka `root`).
+- Paczka `dbdata` bez zmian – nie trzeba pobierać ponownie zipa z edytora.
+
+## 2.26.2 — 2026-10-07 — Ustawienia serwera (.env) działają same
+
+Działa z klientem **2.0.57** (bez nowego klienta).
+
+- **Aktualizator uruchamia się sam** – strona **Ustawienia serwera (.env)** w panelu zaawansowanym (`:7790/advanced/server-env`) działa bez ręcznej konfiguracji: na VPS-ie aktualizator włącza się po aktualizacji i instalacji, na Windowsie przy GRAJ w launcherze. Sam nie instaluje aktualizacji – tylko zapisuje ustawienia (wyłączenie: `M2_UPDATE_AUTOSTART=0`).
+- **Moduły od razu** – Moduł Arezzo, Seon-Hae, alchemia i szarfy przełączają się na żywo, także bez aktualizatora (jak w panelu podstawowym).
+- Gdy aktualizator nie działa, strona pokazuje **instrukcję krok po kroku** dla VPS i dla Windowsa.
+
+## 2.26.1 — 2026-10-07 — Poprawka aktualizacji 2.26.0
+
+Działa z klientem **2.0.57** (bez nowego klienta).
+
+- **Naprawiona aktualizacja do 2.26.0** – w paczce serwera brakowało dwóch plików z dropem materiałów do pasów, przez co budowanie gry kończyło się błędem `COPY … not found`. Jeśli aktualizacja do 2.26.0 się nie udała, po prostu zaktualizuj do 2.26.1.
+
+## 2.26.0 — 2026-10-07 — Pasy, żywioły i talizmany, kostiumy Arezzo, limity Yang
+
+Wymaga klienta **2.0.57** (pobierze go launcher albo patcher). Zmieniła się paczka danych przedmiotów – jeśli korzystasz z Edytora bazy danych, **patcher pobierze nowe dane sam** (albo pobierz zip z panelu; gra przypomni).
+
+### 🙏 Autorzy dodatkowych systemów
+- **Digi Rasta** (nowy-system v0.26–0.28): **system pasów**, **limity Yang**, **żywioły i talizmany**, **żeńskie tytuły rang**, **model 3D w Kartach Potworów**, pomysł **ukrywania efektów i sklepów** (napisane od nowa).
+- **Pliki serwera Arezzo**: **zestawy kostiumów**, **owoce i rangi Punktów Rangi**, mapy i dungeony Arezzo.
+- **Gameforge**: oryginalne ikony talizmanów, pasów, Delikatnego Sukna i znaków żywiołów.
+
+### 🎽 System pasów (autor: Digi Rasta)
+- **Mistrz** stoi obok Kowala w M1 i M3 każdego królestwa – „Wytwarzanie pasów”: 9 oficjalnych receptur (Lniany, Skórzany, Przepychu, Mądrości, Króla, Mroku, Runiczny, Niedźwiedzi, Dusz).
+- **Odłamki Energii** u Alchemika – przeciągnij na niego broń, zbroję albo biżuterię od 35 poziomu.
+- **Skąd materiały:** kamienie pasów (Kryształ Duszy, Rubin, Granat, Szmaragd, Szafir) w skrzyniach bossów od Nemere wzwyż; Złota Przędza, Złoty Hak, Ogniwa Łańcucha, Element Ozdoby wypadają 3× częściej; Kamienie Płomienia i Lodowego Płomienia z Razadora, Nemere i ich skrzyń.
+- **Miejsce na pas** w ekwipunku, pod zbroją. Boty znają ceny materiałów i pasów.
+
+### 🔥 Żywioły i talizmany (autor: Digi Rasta)
+- **Talizman żywiołu** (+0…+200) w nowym polu ekwipunku: do +80% obrażeń przeciw potworom swojego żywiołu, własne 5 bonusów. Ulepsza Kowal (Kwiaty Żywiołu u Mistrza, Ornament, drugi talizman +0).
+- Żywioł mają **wszyscy bossowie**, potwory **Groty Wygnańców 1–2** (błyskawica), **Świątyni Ochao i Zaczarowanego Lasu** (wiatr) oraz dungeony **Nemere** (lód), **Leże Smoka** (błyskawica) i **Starożytna Dżungla** (wiatr). Znak żywiołu przy zaznaczonym celu.
+- Talizmany +0 wypadają z bossów swojego żywiołu (5%), Ognia ze Skrzyni Razadora, Lodu ze Skrzyni Nemere.
+
+### 💰 Limity Yang (autor: Digi Rasta)
+- Do **100 mld Yang** przy sobie, **10 mld** w jednym handlu, **50 mld** za pozycję na straganie / w sklepie offline. Boty zostają przy 2 mld, stosy przy 200.
+
+### 👗 Arezzo
+- **22 zestawy kostiumów** – kostium, fryzura, 6 nakładek na broń, 17 nakładek na szarfy (przeciągnij na szarfę), poświaty, bonus zestawu (+800 PŻ, +15 ataku). W ItemShopie (100 SM) – **tylko przy włączonym module Arezzo**.
+- **Punkty Rangi** – jedna skala: do 20 000 zwykła ranga, dalej owoce (Jabłko +200 do 20 000; Gruszka, Winogrono, Arbuz, Ananas do 200 000). Nowe rangi w kolorze nad głową (Waleczny … Legenda) ze stałymi bonusami. `/ranga`.
+- Mapy Arezzo: brak zabijania w punkcie przybycia na Dolinie Cyklopów, boty się nie blokują, wchodzą do Zaczarowanego Lasu; Pozwolenie na Zaczarowanie wypada tam 4× rzadziej.
+
+### 🧥 Ekwipunek i wygląd
+- **Delikatne Sukno** – z metinów i bossów zamiast szarfy +0; u Uriela 10 sukien + 80 000 Yang = szarfa (80%).
+- **Osobne ukrywanie** własnego kostiumu, fryzury i nakładki na broń; **„Ukryj kostiumy innych”** – widzisz prawdziwy ekwipunek innych graczy i botów (tylko u siebie).
+- **Ukrywanie efektów i sklepów** w opcjach, **żeńskie tytuły rang** (Waleczna, Władczyni…), **model 3D** w Kartach Potworów, **ikony ksiąg umiejętności** – każda księga pokazuje znak swojej umiejętności.
+
+### 🧑‍🤝‍🧑 Towarzysz i boty
+- Towarzysz: **„Drop: tylko dla mnie”** (przycisk albo szept „nie zbieraj dropu”).
+- **Rekrutacja do gildii** z wołania – zawsze odpisuje od 1 do 10 botów.
+- Boty nie krążą już między mapą a wioską przez pełny plecak (robią miejsce u kupca).
+
+### 🛠️ Panel
+- **Ustawienia serwera (.env)** w panelu zaawansowanym – wszystkie ustawienia w jednym miejscu, opisane, z kopią i automatycznym przywróceniem przy błędzie (na Linuksie wymaga aktualizatora: `docker compose --profile update up -d updater`).
+- **Dane bazy dla klienta przez patcher** – patcher sam pobiera zmienione dane przedmiotów z Twojego serwera; zip w panelu zostaje jako ręczna możliwość.
+- Kolekcjonera nie da się schować do samego Kolekcjonera.
+- Edytor ItemShopu: zapis dużych zakładek (np. Pety – 199 pozycji) nie kończy się już błędem 413.
+
+## Klient 2.0.57 — 2026-10-07 — Pasy, talizmany, kostiumy Arezzo
+
+- Nowy **exe**: system pasów, pole talizmanu i znak żywiołu celu, limity Yang w handlu i sklepach, model 3D w Kartach Potworów, ukrywanie efektów i sklepów, żeńskie tytuły i rangi Punktów Rangi nad głową, poświaty kostiumów Arezzo (autorzy: Digi Rasta – pasy, talizmany, limity, model kart, tytuły).
+- **22 zestawy kostiumów Arezzo** (15 nowych paczek), owoce rang, Delikatne Sukno, talizmany, ikony ksiąg umiejętności, ikony Gameforge.
+- Nowy **MT2009-Patcher** – sam pobiera dane bazy z Twojego serwera, gdy zmienisz je w Edytorze bazy danych.
+- Zmieniła się paczka `dbdata` – pliki z edytora pobierze patcher albo pobierz zip z panelu (gra przypomni).
+
+## 2.25.0 — 2026-10-06 — Kody bonusowe, edytor questów i wytwarzania, bonus switcher
+
+Wymaga klienta **2.0.56** (pobierze go launcher albo patcher).
+
+### 🎁 Kody bonusowe
+- Nowe **kody bonusowe** – wpisz kod w ItemShopie w zakładce **„Wykorzystaj voucher”** albo na czacie: `/kod <kod>`. Każdy kod działa **raz na konto**; przedmiot, który nie zmieści się w ekwipunku, trafia do Magazynu ItemShop.
+- 🎉 **Kod na start: `MT2009-PLUS-CJTP`** – co daje, sprawdź sam!
+- 👉 **Obserwuj nasz Discord: https://discord.com/invite/vGE3T9gpm** – takich kodów będzie pojawiało się więcej!
+- Właściciel serwera może wyłączyć kody w panelu Seban (Zarządzanie → Gra i serwer → „Kody bonusowe (vouchery)”).
+
+### 🛠️ Edytor bazy danych (panel Seban)
+- **Questy** – włącznik każdego questa oraz podmiana nagród bez ruszania questa: inny przedmiot i ilość, yang i doświadczenie (mnożnik lub kwota), inny bonus stały, a do tego dodatkowe nagrody. **Biolog** ma osobną stronę z każdą misją (np. Zęby Orka → dowolny bonus + yang + przedmioty).
+- **Wytwarzanie przedmiotów** – przepisy okna „Wytwarzanie” u Kowala, Heuk-Younga, Baek-Go, Stajennego i innych NPC: wynik, składniki, koszt, szansa, wymagany poziom; dodawanie, kopiowanie i przypisywanie przepisów do NPC.
+- **Wytwarzanie (Seon-Pyeong)** – przepisy okna kostki Seon-Pyeonga.
+- **ItemShop** – przedmioty w istniejących zakładkach (dodawanie, usuwanie, ceny, ilości, waluta, promocje, oferty błyskawiczne).
+- **Alchemia**, **rodzaje efektów umiejętności**, zachowanie zmian przy **resecie świata** i strona **„Przywróć zmiany z historii”**.
+
+### ✨ Nowości w grze
+- **Zmiana bonusów (bonus switcher)** (autor: **Vekirion**) – okno do automatycznej zmiany bonusów do 5 przedmiotów naraz, aż trafi wybrane bonusy; każda zmiana zużywa jedno Zaczarowanie.
+- **Bonusy na pasku celu** (autor: **Vekirion**) – pod paskiem HP potwora widać, które Twoje bonusy na niego działają.
+- **Poprawka mgły** (autor: **Vekirion**) – przyciski mgły naprawdę ustawiają zasięg widzenia, bez skracania przy spadkach FPS.
+- **Kolekcjoner w ItemShopie** (1000 SM) – otwiera okno Kolekcjonera z dowolnego miejsca, nie zużywa się.
+- **Kupony SM łączą się w stosy** (do 200).
+
+### ⚔️ Dungeony i drop
+- **Drop w dungeonach bez kary za poziom** – potwory w dungeonach dają przedmioty, mikstury i yang z pełną szansą bez względu na różnicę poziomów.
+- **Masowa sprzedaż przedmiotów 70+** działa (wcześniej blokowała całą sprzedaż).
+
+### 🤖 Boty
+- Boty **rozwijają konia** – płacą Stajennemu 50% opłaty i odkładają na nią yang.
+- **Porządki w plecakach** – boty otwierają pudełka z Dzieci Kwiatów i Szkatułki Blasku, sprzedają śmieci z łowienia, a nadmiar ulepszaczy wystawiają lub przerabiają na materiały rzemieślnicze.
+- **Krycie się** – boty nie widzą i nie atakują schowanego Ninja.
+- **„!SM”** – gdy GM ogłosi `/b !SM`, boty zalewają wołaj „SM” przez 30–40 s; na inne ogłoszenia GM-a czasem odpowiadają.
+
+### 🧑‍🤝‍🧑 Towarzysz
+- **„Sprzedaj złom”** (przycisk, `/towarzysz sprzedaj` albo szept) – sprzedaje całą broń i zbroję od +0 do +7; zostawia +8/+9, rzeczy założone i zablokowane.
+- Zakupy i sprzedaż także z **Groty Wygnańców** i **Lochu Pająków**.
+- **„Nie walcz”** – nie atakuje niczego, nawet gdy jest bity.
+- Widzi **Fasolki Zen** przy treningu Wielkiego Mistrza.
+- Nie bierze udziału w **rankingach tygodniowych**.
+
+### 🏹 Inne
+- **Auto Łowy: najpierw walka, potem zbieranie** dropu.
+- **Rankingi** – pomijane są całe konta, które **teraz** mają postać GM; dawni GM-owie wracają do tabel.
+
+## Klient 2.0.56 — 2026-10-06 — Bonus switcher, kody, Kolekcjoner
+
+- Okno **Zmiany bonusów** i **bonusy na pasku celu** (autor: Vekirion), poprawka mgły.
+- Przycisk **„Sprzedaj złom”** w oknie Towarzysza.
+- **Auto Łowy**: najpierw walka, potem zbieranie.
+- **Masowa sprzedaż** przedmiotów 70+.
+- **Kolekcjoner** (nazwa, ikona, opis) i **Kupony SM w stosach**.
+- Zmieniła się paczka `dbdata` – jeśli korzystasz z Edytora bazy danych, pobierz ponownie pliki klienta z panelu (gra przypomni).
+
+## 2.24.0 — 2026-10-06 — Rekrutacja do gildii, dungeony bez czekania, ItemShop w edytorze
+
+Działa z klientem **2.0.55** (bez nowego klienta).
+
+### 🧪 Funkcje eksperymentalne
+- **Rekrutacja botów do gildii** – napisz na czacie np. „szukam ludzi do gildii”; zgłoszą się boty bez gildii albo ze słabą gildią, a po „tak” czekają 5 minut przy NPC w M1 na zaproszenie.
+
+### ✨ Zmiany i poprawki
+- **Dungeony bez czasu oczekiwania dla graczy** (boty dalej odpoczywają między wyprawami); „Nowa wyprawa” dostępna dla każdego.
+- **Do trzech razy sztuka** – bot pokonany 3 razy przez tego samego gracza na spocie odpuszcza i idzie gdzie indziej; pomocnicy tak samo.
+- Dzieci Kwiaty: komunikat o nasionach bez „po aktualizacji klienta”.
+- **Szkatułki z Biblioteki, Wukonga, Skorpiona i Dżungli dzielone między graczy** – jedna pula na wyprawę (tyle, ile wcześniej dostawał jeden gracz), rozdawana po kolei; boty nie biorą; po bossie 10 s odliczania i wyjście z lochu (wszystkie dungeony).
+- **Fasolki Zen** – boty i Towarzysz liczą fasolki do rangi przy nauce z kamieni duchowych (schodzą na chwilę poniżej zera i od razu jedzą fasolki); fasolka w cenniku botów = 1/3 Kamienia Duchowego.
+- **Mapy Arezzo**: bossowie map (Arges, Polifem, Bastet, Anubis) nie dropią już szkatułek dungeonów – szkatułki tylko z dungeonów.
+- **Edytor bazy danych – umiejętności**: rodzaj efektu 1/2/3 (np. wartość ataku) do wyboru z listy, z opisem działania i ostrzeżeniami; opisy w kliencie (skilldesc) zgodne ze zmianą.
+- **Reset świata zachowuje zmiany z Edytora bazy danych** (przełącznik, domyślnie włączony); nowa strona „Przywróć zmiany z historii” po resecie/backupie; panel sam odtwarza brakującą tabelę historii; kopia przed resetem zachowuje polskie znaki.
+- **Towarzysz sprzedaje złom** na zakupach (także przedmioty od właściciela); nowy rozkaz „/towarzysz sprzedaj” / szept „sprzedaj złom” – tylko sprzedaż złomu, z raportem.
+- **Edytor bazy danych – ItemShop**: przedmioty w istniejących zakładkach (dodawanie, usuwanie, cena, ilość, waluta SM/SZ, poziom, promocje, oferty błyskawiczne), przycisk „Odśwież sklep w grze”; pozycje sklepu z aktualizacji dodawane tylko raz, więc usunięte nie wracają.
+- **Towarzysz i alchemia**: włącza alchemię, gdy walczy on albo jego właściciel, sam zakłada podarowane kamienie i przedłuża je eliksirami czasu, które ma (także od właściciela).
+- **Komenda GM /resetdungi <nick> [dungeon|wszystkie]** (/dungeon_reset) – zeruje dzienny limit dungeonów postaci (online, na innym kanale i offline); także karta „Limit dungeonów” na stronie postaci w panelu.
+- **Buffy szamanów**: Towarzysz buffuje od razu po przywołaniu; szept „buff” odświeża wszystkie buffy; boty sprawdzają główny efekt buffa i odnawiają go przed końcem (poprawne przy zmienionych czasach trwania).
+
+## 2.23.1 — 2026-10-05 — Poprawka świeżej instalacji, wyrzucanie z CH1, boty i alchemia w edytorze
+
+Wymaga klienta **2.0.55** (pobierze go launcher albo patcher).
+
+### 🐛 Poprawki
+- **Świeża instalacja 2.23.0 nie startowała** („there is no item 30774”) – skrzynie dungeonów powstawały przed skrzyniami Razadora i Nemere, z których są kopiowane. Teraz kolejność jest poprawna, a serwer, który już ma ten problem, naprawi się sam przy pierwszym starcie po aktualizacji.
+- **Przygotowanie bazy** wypisuje każdy krok, który się nie udał, i zapisuje „zrobione” dopiero po udanym przebiegu – niedokończona baza nie zostanie już pominięta przy kolejnym starcie.
+- **Gra nie wyłącza się przez brakujący przedmiot w dropie** – taka linia jest pomijana z ostrzeżeniem w logu.
+- **Wyrzucanie z kanału 1** („UNKNOWN HEADER”, ciągłe rozłączanie po zalogowaniu) – naprawiony błąd pamięci w silniku przy dużej porcji danych od gracza.
+- **Boty nie zbierają już cudzych broni** i nie ulepszają ich do +4 – trzymają tylko sprzęt, który mogą założyć i który jest lepszy od noszonego. To, co już nazbierały, wystawiają na straganie, a jeśli nikt nie kupi w ciągu 6 godzin – sprzedają u handlarki.
+
+### 🛠️ Edytor bazy danych
+- **Alchemia (Smocze Kamienie)** – nowa część edytora: bonusy stałe i losowe każdego kamienia, wartości stopni, wagi, ulepszanie (opłaty i szanse) oraz przyciski „Pomnóż bonusy” i „Pomnóż wagi”. Działa z historią, „Zastosuj” i eksportem/importem konfiguracji.
+
+### 🧑‍🤝‍🧑 Towarzysz
+- **Wyciszanie wiadomości** – w oknie Towarzysza (Opcje → „Szepty”): wszystkie / ważne (domyślnie) / żadne. Rzadsze przypomnienia o cennych rzeczach i pełnym ekwipunku, zbiorcze „zbiłem N metinów” co 10 minut.
+
+### 💰 Gospodarka
+- **Słabe bonusy na broniach i kolczykach** są w cenniku botów o 35% tańsze niż na pozostałych przedmiotach.
+
+## Klient 2.0.55 — 2026-10-05 — Wyciszanie Towarzysza
+
+- Przełącznik „Szepty” w oknie Towarzysza (wszystkie / ważne / żadne).
+- Pliki z Edytora bazy danych (`pack/dbdata`) bez zmian – nie trzeba ich pobierać ponownie.
+
+## 2.23.0 — 2026-10-05 — Karty Potworów, tańsze dungeony z lepszym dropem, boty lepiej ubrane
+
+Wymaga klienta **2.0.54** (pobierze go launcher albo patcher).
+
+### 🃏 Karty Potworów (autor systemu: **Digi Rasta**)
+- Nowy system **Karty Potworów** (przycisk w menu Esc): misje kart dla potworów, szansa 5% na kartę, kolekcja wspólna dla całego konta, gwiazdki i zestawy z bonusami.
+- Funkcje gwiazdek: lista dropu, przemiana, teleport do potworów, przywołanie, wymiana 10 kart na nagrodę.
+- **Karta Nowego Początku** i **Karta Układu** w ItemShopie (kategoria Zwoje) po 49 SM. Rekrutacja potworów jest wyłączona.
+- Boty w tym nie uczestniczą. Można wyłączyć całość ustawieniem `M2_MONSTER_CARDS=0`.
+
+### ⚔️ Dungeony – ceny, bossowie i drop
+- **Wejścia o połowę tańsze:** Biblioteka 1kk, Wzgórze Wukonga 2.5kk, Razador 3.5kk, Ruiny Skorpiona 5kk, Nemere / Leże Smoka / Starożytna Dżungla 7.5kk. Teleport z panelu dungeonów kosztuje najwyżej tyle, co wejście.
+- **Płaci tylko ten, kto wchodzi, i tylko za siebie** – boty z grupy (Towarzysz, boty z wyszukiwarki) wchodzą za darmo.
+- **Główni bossowie dropią yang** – mniej więcej połowę ceny wejścia.
+- **Lepszy drop w skrzyniach** – od Biblioteki i Wukonga przez Razadora i Skorpiona po Nemere i Dżunglę: sakiewki yang, ulepszacze swojego poziomu i coś cennego (kamienie dusz do +4, księgi, zwoje). Wukong daje 2–4 skrzynie. Bossowie map i dungeonów Arezzo, Generałowie z Groty, bossy lemurów i Azrael dropią lepiej.
+- **Balans bossów:** Płomienny Feniks da się zrobić w pojedynkę, słabsze ciosy Czerwonego Skorpiona, Króla Skorpionów, Królowej Dżungli, Razadora i Nemere. Generałowie z Groty i Silna Lodowa Wiedźma poprawione.
+- **Żaden boss nie odpycha gracza i nie da się go odepchnąć.**
+- **Wieża Demonów:** gracz na 75 poziomie normalnie dostaje ulepszacze i Pamiątki po Demonie; demony z wyższych pięter (brutalne) mają własny drop.
+- **Katakumby Diabła bez labiryntu teleportów** – Metin Zemsty przenosi grupę od razu na piętro Tartara.
+- **Ranking dungeonów** liczy tylko tych, którzy zadali bossowi obrażenia.
+
+### 🤖 Boty
+- **Boty kupują i ulepszają lepszą broń i zbroję** – również z plusami od graczy i botów, ze straganów i od NPC. Nie zostawiają w ręce wędki ani kilofa.
+- **Wyprawy botów na dungeony** lepiej zorganizowane: Razador od 70 lvl, Nemere od 85 lvl, grupy 5–6 botów z Szamanką, bez pętli umierania.
+- **Boty w rankingach mini gier** (Złap Króla, Rumi, Yut Nori) i dostają nagrody za swoje miejsce jak gracze.
+- **Wszystkie boty grają w Dzieci Kwiaty** – nasiona, pędy, skrzynki, które potem otwierają.
+- **Blokada szeptów działa też na boty** – bot nie napisze do Ciebie, jeśli masz ją włączoną (chyba że sam do niego pisałeś w ostatnich 10 minutach). Powiadomienia Towarzysza działają dalej.
+- **Najwyżej 2 skargi na godzinę o spot** od wszystkich botów razem; boty mają kilka ostrzejszych tekstów.
+
+### 🧑‍🤝‍🧑 Towarzysz
+- **Nie sprzedaje cennych rzeczy** – sprzedaje tylko zwykły złom; kamienie dusz, materiały, księgi, zwoje, skrzynie i klucze zostają. Nic nie odkłada do swojego magazynu (a to, co tam miał, wyjmuje). Pisze Ci, co cennego ma w ekwipunku.
+- Chodzi za Tobą na mapy Arezzo, powiadomienia wysyła szeptem, bije metiny z wierzchowca.
+- Szamanka na koniu zsiada, żeby dać buffy sobie i Tobie, i jedzie dalej.
+
+### 🛠️ Edytor bazy danych (panel Seban)
+- **Eksport / import całej konfiguracji edytora** jako tekst – przeniesiesz swoje zmiany na inny serwer.
+- **Wyłączniki dropu:** Kupony SM, szarfy i Cor Draconis – osobno z bossów i z metinów. Wyłączają tylko drop wbudowany w grę; drop dodany ręcznie w edytorze nadal działa.
+- **Potwory:** jednym kliknięciem zwykłe potwory dystansowe → wręcz.
+- **Przedmioty:** więcej niż 3 bonusy na przedmiocie („Dodatkowe bonusy”).
+- **Przypomnienie o plikach klienta:** po każdym restarcie serwera edytor pokazuje okienko z przyciskiem „Pobierz pliki klienta (zip)”, a po nowej wersji klienta – ostrzeżenie, że stary zip nie zawiera nowych przedmiotów. Gra sama przypomni graczowi przy wejściu, gdy jego pliki klienta nie pasują do zmian z edytora.
+
+> **Po tej aktualizacji klienta:** jeśli korzystasz ze zmian z Edytora bazy danych, pobierz ponownie zip (Edytor bazy danych → Zastosuj → „Pobierz aktualne pliki klienta (zip)”) i rozpakuj go do folderu gry.
+
+### 🏹 Inne
+- **Powtarzalne misje Battle Pass** (autor: **Vekirion**) – w panelu Seban misję można oznaczyć jako „Powtarzalna”: po osiągnięciu ilości daje nagrody i liczy od nowa, ile razy gracz zechce w sezonie; nie blokuje nagrody końcowej, a misje, które jej wymagają, odblokowuje po pierwszym ukończeniu. Boty też z tego korzystają.
+- **Bonusy 6/7 niezależne od 1–5** – np. szansa na cios krytyczny w 6/7 nie blokuje już tego samego bonusu w 1–5.
+
+## Klient 2.0.54 — 2026-10-05 — Karty Potworów, Opcje Gry w zakładkach, więcej bonusów
+
+- Okno **Kart Potworów** i ikony kart.
+- **Opcje Gry** w zakładkach: gra, system, opcje dodatkowe i skróty klawiszowe pod jednym przyciskiem w menu Esc.
+- **Dom Towarowy:** lista bonusów do wyszukiwania przewija się i ma wszystkie bonusy.
+- **Pasek boczny** tak wysoki jak ekwipunek; bez przycisku szybkiego startu Auto Łowów (Shift+K działa dalej).
+- **Okno zwierzaka:** opisy umiejętności po najechaniu.
+- Opisy przedmiotów pokazują dodatkowe bonusy (ponad 3) z Edytora bazy danych.
+- Przypomnienie o pobraniu plików klienta z Edytora bazy danych, gdy nie pasują do serwera.
+
+## 2.22.0 — 2026-10-04 — Boty w dungeonach, rozmowy z botami, Edytor bazy danych
+
+Wymaga klienta **2.0.52** (pobierze go launcher albo patcher).
+
+### 🧪 Funkcje eksperymentalne
+
+> **Szepty z botami i wyszukiwarka botów na dungeony to opcje eksperymentalne.** Jeśli coś nie działa albo bot odpisuje bez sensu – wyślijcie screenshot rozmowy na kanale **#bugi-i-błędy** w temacie **CHAT I WIADOMOŚCI**. Każdy screen pomaga nam poprawić rozmowy.
+
+**Mądrzejsze rozmowy z botami (szept, wołaj, handlowy @)**
+- Boty odpowiadają na szepty z sensem: o expie, spotach, eventach, dropie, poradach i sprzęcie.
+- Bronią swojego spota („Spadaj”, „To mój spot”…), a jak ustąpią – mówią to.
+- Na czacie handlowym @ wystawiają ogłoszenia K>/S> z podlinkowanymi przedmiotami; księgi z nazwą umiejętności (np. „S> KU Aura Miecza”).
+- Pamiętają, co same napisały na wołaj i @ – rozumieją odpowiedź na swoje ogłoszenie („jest aktualne?”, „kupię ten naszyjnik”).
+- Bot, który ma przedmiot na straganie, mówi dokładnie gdzie stoi i za ile (np. „stoi w M1 Joan przy kowalu za 2.7kk”).
+- Handel przez szept: bot się targuje, mówi, czemu bierze mniej sztuk, umawia się w konkretnym miejscu („jestem w M1 Yongan, będę czekać przy kowalu”, z kanałem, gdy jesteś na innym) i w wymianie przyjmuje dokładnie umówiony przedmiot i ilość. Księgi rozróżnia po umiejętności.
+- Na Twój szept odpowiada tylko bot, do którego piszesz – inne się nie wtrącają.
+- Bot w dungeonie albo w grupie z innym graczem nie handluje, tylko mówi, że jest zajęty.
+- „!BP” na czacie dużo rzadziej.
+
+**Wyszukiwarka botów na dungeony**
+- Napisz na czacie np. „chcę iść na bibliotekę kto chętny” albo „ktoś na smoka?” – odpisze Ci 1–3 botów Twojego królestwa w widełkach poziomu dungeonu (od jego poziomu do +15), np. „Cześć, mogę iść z tobą, mam 47 lvl, sura wp, mogę przyjść?”.
+- Odpowiedz „tak” – bot teleportuje się pod wejście i czeka 5 minut. Zaproś go do grupy, a wejdzie z Tobą do środka.
+
+### ⚔️ Boty w dungeonach
+- **Boty same chodzą na dungeony** według swojego poziomu: zwołują drużynę na czacie królestwa („zbieram ekipę na razadora, kto chętny?”), zbierają się pod wejściem, wchodzą i przechodzą dungeon – z tymi samymi czasami odnowienia co gracze. Biblioteka Wiedzy, Wzgórze Wukonga, Ruiny Skorpiona, Starożytna Dżungla (gdy moduł Arezzo jest włączony), Razador, Nemere i Leże Smoka. Wieża Demonów i Katakumby zostają przy swoich rajdach botów. Można to wyłączyć w panelu Seban („Dungeony botów”).
+- **Boty z Twojej grupy wchodzą z Tobą do każdego dungeonu** – dodane normalnie do grupy, z wyszukiwarki i Towarzysz. W środku walczą obok Ciebie, przechodzą za Tobą między salami, nie zabierają Twojego dropu, same używają pieczęci i kluczy, które im wypadną, i wychodzą razem z Tobą.
+
+### 🛠️ Edytor bazy danych (panel Seban)
+Nowy dział **„Edytor bazy danych”** – zmiany gry w przeglądarce, z historią i cofaniem:
+- **Przedmioty** (nazwy, poziomy, bonusy, obrażenia) i **umiejętności** (czas działania, odnowienie, obrażenia).
+- **Drop z potworów** (całe grupy naraz) i **szkatułki**.
+- **Potwory i bossowie**, **respawn bossów i metinów** (uwzględnia ustawienie respawnu z panelu) i **spawny potworów na mapach** z podglądem mapy.
+- **Sklepy NPC**, **ulepszanie u kowala**, **bonusy do zmiany i 6/7**, **tabela doświadczenia**, **łowienie ryb**.
+- „Zastosuj” wczytuje zmiany restartem gry. Pliki klienta (nazwy, bonusy, opisy) pobierasz w panelu jako zip – rozpakuj w folderze gry albo wyślij znajomemu, który gra na tym serwerze. Jest też przycisk „oryginalne pliki”.
+
+### 💰 Gospodarka
+- **Księgi umiejętności:** żadna tańsza niż 100k; kolejne księgi każdej ścieżki tanieją w kolejności, w jakiej boty je czytają (najważniejsze ceny zostają, Odbicie 180k). Ceny ksiąg idą za inflacją – na starcie serwera taniej, im więcej yang w świecie, tym drożej.
+- **Skarbiec gildii** (wpłaty i zrzutki botów) można wydać tylko na gildię – kupno ziemi i budynki. Wypłata do ekwipunku jest wyłączona; za ziemię i budynki najpierw płaci skarbiec, resztę lider.
+- **Wymiana ksiąg u Seon-Hae:** prawy klik wkłada księgę do okna, całe stosy, wiele wymian naraz.
+
+### 🎉 Eventy (panel)
+- **Event szkatułek:** dowolna szkatułka (vnum) wypada z potworów z wybraną szansą – od razu albo o zaplanowanej godzinie.
+- **„Generuj tydzień”** układa tygodniowy harmonogram eventów.
+
+### 👗 Kostiumy i przedmioty
+- **Zestawy kostiumów** jak na wiki Metin2 (Bonus Zestawu) – 50 zestawów, także wersje „+” (np. Pancerz Horroru+ z Rogami Horroru+): +800 HP i +15 ataku, z podpowiedzią bonusu zestawu.
+- **Pierścienie, lizak i amulety z ItemShopu** dają wreszcie swoje bonusy (wartości jak na wiki) i mają je w opisie.
+- **Pieczęcie wierzchowców** bez „UNKNOWN_TYPE[109]”.
+- **Wierzchowiec z kostiumu** daje statystyki konia (ST/DX/HT/IQ i obrona wg poziomu konia).
+- **Okno kostiumów:** sloty wierzchowca i szarfy na swoich miejscach.
+
+### 🧑‍🤝‍🧑 Towarzysz
+- Nowe panele **Kostiumy** i **Alchemia** w opcjach Towarzysza.
+- Towarzysz na wierzchowcu buffuje i walczy normalnie.
+
+### 🏹 Inne
+- **Auto Łowy:** szybki start/stop bez okna – **Shift+K** albo przycisk na pasku bocznym.
+- **Wojna królestw wyłączona**; zwykłe wojny gildii działają dalej, także z gildiami z innych królestw.
+- **Wykonawca Bitew** pokazuje wojny gildii botów i pozwala je oglądać.
+- **Emerytura botów** zawsze się kończy.
+- **Lepsze logi błędów połączenia** – przy nagłym rozłączeniu serwer zapisuje szczegóły, co pomoże szybciej znaleźć przyczynę.
+
+## Klient 2.0.52 — 2026-10-04 — Zestawy kostiumów, Auto Łowy Shift+K, paczka dbdata
+
+- Zestawy kostiumów z wiki z podpowiedzią bonusu zestawu; okno kostiumów z poprawionymi slotami wierzchowca i szarfy.
+- Auto Łowy: szybki start/stop Shift+K i przycisk na pasku bocznym.
+- Wymiana ksiąg u Seon-Hae: prawy klik, stosy, wiele naraz.
+- Towarzysz: panele Kostiumy i Alchemia.
+- Opisy bonusów pierścieni i amuletów z ItemShopu; pieczęcie wierzchowców bez „UNKNOWN_TYPE[109]”.
+- Okno gildii bez przycisku „Wypłać”.
+- Nowa paczka `pack/dbdata` na pliki z Edytora bazy danych (patcher jej nie nadpisuje).
+- MT2009-Patcher 1.1: nie nadpisuje plików z Edytora bazy danych.
+
+## 2.21.1 — 2026-10-04 — Czaszka tylko nad bossami, poprawka panelu
+
+Bez zmian w kliencie (zostaje **2.0.51**).
+
+- **Czaszka tylko nad bossami i mini-bossami** — mocne zwykłe potwory (np. Czarne Orki) już jej nie mają.
+- Panel zaawansowany: przycisk **OK** w okienku po nadaniu VIP-a / Premium znów je zamyka (wcześniej sypał błędami „Coś poszło nie tak (405)”).
+- Nowe README projektu.
+
+## 2.21.0 — 2026-10-04 — Wojny gildii na arenie, 27 Legend, Drop wiki, czaszka nad bossem
+
+Wymaga klienta **2.0.51** (pobierze go launcher albo patcher).
+
+### Wojny gildii na arenie wojen
+- **Wojny botów toczą się na arenie wojen (mapa 110)**, nie na mapie gildyjnej. Każda wojna ma własną kopię areny, więc kilka wojen może trwać naraz.
+- Boty idą z obozu przez mosty na środek, walczą przy bramach na środkowej wyspie, odradzają się w obozie i po wojnie wracają do miasta.
+- **Wojny między królestwami:** gildie botów walczą też z gildiami innych królestw. Gracze mogą wypowiedzieć wojnę gildii botów z dowolnego królestwa.
+- **Wojna co godzinę**, do 20 uczestników na stronę, zwycięża pierwsza gildia z 200 zabójstwami.
+- **Nagroda:** 20 Szkatułek Blasku Księżyca dla zwycięskiej gildii, rozdzielonych według zabójstw jej członków — raz dziennie na gildię. Kolejna wygrana tego samego dnia daje doświadczenie gildii.
+- Pary gildii dobierane są także po średnim poziomie botów.
+- Gracze wchodzą na arenę przyciskiem „Wejdź na wojnę” na tablicy wojny (kanał 1).
+
+### 27 Legend
+- Na świecie jest zawsze 27 Chodzących Legend, każda pod stałym nickiem (od najbardziej legendarnej): FuBu, Wallander4ever, SirMamutPOL, Zwierz, IsAmU, GoToSleep, Kasanga, Loth, SQRCZYBYKU, KAPRAL, BumBum, NinjaxesPL, Xuminnek, ShiveR, Scoobany, Schenk, Kosikredki, Tream, Sabal, Gimper, BuenaCosta, Uzurpator, DIIIM2, TNT, Asfen, LifeIsDeath, ZAXEP.
+- Te nicki są zarezerwowane dla Legend — zwykłe boty ich nie dostają. Legendy nie tracą miejsca i nie idą na emeryturę.
+- Ranking Legend w panelach w tej kolejności.
+
+### Nowości
+- **Drop wiki** (przycisk w pasku bocznym, klawisz `/`): wpisz przedmiot, a zobaczysz, które potwory go dropią, ile i z jaką szansą; wpisz potwora, a zobaczysz, co z niego wypada. Dane prosto z tabel dropu serwera, z portretami potworów.
+- **Czaszka nad bossem i mini-bossem** — łatwiej znaleźć go wśród potworów.
+- **Kostium „Zbroja Króla Wojowników+”** (wojownik, postać męska) i **nakładka „Święty Miecz Bogów+”** w ItemShopie (100 SM, 30 dni).
+
+### Auto Łowy
+Autor zmian w Auto Łowach: blaki.
+- **Kolejność celów:** do wyboru 6 kolejności (np. Boss > Metin > Moby) albo zawsze najbliższy.
+- **Tryb „Najbliższy” lub „Fokus”** — Fokus trzyma cel, a gdy mimo ataku jego HP nie spada przez 3 s, zmienia go.
+- **Utknięcie na koniu:** postać sama zsiada i wsiada z powrotem; po 15 s bez skutku Auto Łowy zatrzymują się i mówią dlaczego.
+- **Nowe okno:** K otwiera całe okno walki, ustawienia podnoszenia i celów są w osobnym oknie „Dodatkowe ustawienia”.
+- **Cel za ścianą:** serwer od razu wyznacza do niego trasę.
+- **Tryb „Bojowiec”** — łowy z konia bojowego: postać bije z konia, używa jego umiejętności, po buffy zsiada na chwilę.
+- Umiejętności także podczas jazdy, ucieczka od ściany, pomijanie celu, który blokuje drogę, atak potworów stojących na drodze, powrót do punktu startu po przebytej drodze.
+- **Droga od serwera:** gdy postać nie może dojść do celu prosto, serwer wyznacza jej trasę omijającą przeszkody.
+- Mikstury i buffy nie są używane ponownie, dopóki działają.
+
+### Dom Towarowy
+- Średnia cena w opisie oferty, filtr „Min. liczba bonusów”, ceny skrótami (np. 1.5kk).
+- Enter potwierdza zakup, Tab i Ctrl+A w wyszukiwarce, prawy klik zaznacza ofertę do „Kup wszystko”, lista zostaje na tej samej stronie po zakupie.
+
+### Poprawki i wygoda
+- **Opcje dodatkowe:** wyłącznik dźwięków zabójstw (domyślnie wyłączone) i podświetlania tanich ofert.
+- **Tanie oferty w sklepikach offline** podświetlone na zielono (poniżej 500 Yang za sztukę albo poniżej ceny NPC); u handlarzy NPC bez podświetlenia.
+- Ukryte drzewa, budynki, chmury i woda zostają ukryte po zmianie kanału.
+- Opis umiejętności peta po najechaniu myszką.
+- Ranking tygodniowy: czytelniejsze okno, wyśrodkowana korona w pasku bocznym, bez postaci admina i GM.
+- Wymiana ksiąg u Seon-Hae pokazuje właściwą cenę 250 000 Yang.
+- Usuń misje: osobne pytanie przed usunięciem misji Biologa.
+- Battle Pass botów: bot powyżej 45 poziomu zalicza misję metinową dowolnym metinem i nie wraca już do M1.
+- Emerytura botów: gdy w środkowym przedziale poziomów żaden bot się nie nadaje, przedział się rozszerza (wcześniej partia stała w miejscu).
+
+### Panele
+- **Eventy do 7 dni** w obu panelach (wcześniej najwyżej 6 godzin).
+- Harmonogram eventów w panelu seban: do 64 eventów (wcześniej 16).
+- Pulpit panelu seban nie zawiesza się już na wolnym rankingu („Ładowanie…” w kafelkach).
+- Rankingi bez postaci z kont GM.
+
+### Aktualizacja i start serwera
+- **Szybszy start serwera:** migracja bazy sprawdza tylko tabele, które tego wymagają, i pomija powtarzanie, gdy nic się nie zmieniło (start do kilkunastu razy szybszy).
+- Szybsza kompilacja silnika przy aktualizacji.
+- Launcher nie kopiuje plików, które już są takie same, i dłużej czeka na plik zajęty przez inny program (błąd „Proces nie może uzyskać dostępu do pliku”).
+- VPS: ostrzeżenie, że budowa przy aktualizacji może potrwać do 15 minut i nie wolno jej przerywać.
+
+---
+
+## Klient 2.0.51 — 2026-10-04
+
+- Drop wiki z portretami potworów, czaszka nad bossami, kostium „Zbroja Króla Wojowników+” i nakładka „Święty Miecz Bogów+”.
+- Auto Łowy (autor: blaki): kolejność celów, tryb Najbliższy/Fokus, ratowanie po utknięciu na koniu, nowe okno z osobnymi ustawieniami; tryb „Bojowiec”, omijanie przeszkód.
+- Dom Towarowy: średnia cena, filtr bonusów, skróty klawiszowe, „Kup wszystko” prawym klikiem.
+- Opcje dodatkowe: wyłącznik dźwięków zabójstw i podświetlania tanich ofert; ukrywanie elementów tła działa po zmianie kanału.
+- Opis umiejętności peta, poprawione okno rankingu tygodniowego, cena wymiany ksiąg 250 000, pytanie przy misji Biologa.
+
+## 2.20.1 — 2026-10-03 — Poprawa UX Panelu zaawansowanego
+
+Poprawa UX Panelu zaawansowanego. Klient bez zmian (2.0.50).
+
+## 2.20.0 — 2026-10-03 — Ranking tygodniowy z tytułami, Magazyn kolekcjonera, skróty klawiszowe, stakowanie, Towarzysz na zakupach
+
+Wymaga klienta **2.0.50** (launcher pobierze go sam albo zaktualizuje go patcher).
+
+### Ranking tygodniowy i tytuły (na podstawie systemu z plików Arezzo)
+- Nowe okno „Ranking tygodniowy” (korona w pasku bocznym ekwipunku): 8 kategorii, top 50 bieżącego sezonu z oznaczeniem **[Bot] / [Gracz]**, Twoje miejsce, posiadacze tytułów i licznik do końca sezonu.
+- Sezon trwa 7 dni (kończy się w poniedziałek o 0:00). Top 3 każdej kategorii dostaje tytuł nad nickiem i bonus na cały następny sezon (1. / 2. / 3. miejsce):
+
+  | Kategoria | Tytuł | Bonus |
+  |---|---|---|
+  | Zabite potwory | Łowca | silny przeciwko potworom 15 / 8 / 4% |
+  | Metiny | Niszczyciel | silny przeciwko potworom 15 / 8 / 4% |
+  | Bossy | Pogromca Bossów | silny przeciwko bossom 15 / 8 / 4% |
+  | Zabici gracze | Zabójca | silny przeciwko ludziom 15 / 8 / 4% |
+  | Lochy | Podróżnik | silny przeciwko potworom 15 / 8 / 4% |
+  | Udane ulepszenia | Kowal | max PŻ +2500 / +2000 / +1500 |
+  | Alchemia | Alchemik | +75 wartości ataku |
+  | Poziom | Mistrz Poziomów | silny przeciwko potworom i ludziom 15 / 8 / 4% |
+
+- Boty i gracze liczą się tak samo. Panele: strona „Ranking tygodniowy” (włączanie, długość sezonu, „zakończ sezon teraz”).
+
+### Magazyn kolekcjonera
+- Przycisk „Kolekcjoner” w oknie magazynu: jeden magazyn na konto, 500 miejsc na start, rozbudowa za Yang do 10 000.
+- Wkładanie i wyjmowanie **natychmiast**: PPM, przeciąganie, Ctrl = wszystkie stosy danego przedmiotu, Shift = wybrana ilość. Kategorie, wyszukiwarka, pasek zajętości.
+
+### Skróty klawiszowe i wygoda (Autor: Vekirion)
+- **Menu „Skróty klawiszowe”** (ESC): każda akcja może mieć dwa klawisze, także z Ctrl/Shift/Alt; „Domyślne” przywraca ustawienia. Sprint zostaje domyślnie na Shift.
+- **Szybkie otwieranie paczek:** Ctrl + PPM na stosie skrzynek otwiera do 50, potem kolejne stosy (pełna torba – reszta zostaje zamknięta).
+- **Alchemia „Wszystkie”:** ulepsza wszystkie pełne zestawy na stronie.
+- Enter przy edycji ceny w sklepie nie otwiera już czatu w tle.
+- Ctrl+J zsiada z wierzchowca, samo J otwiera kosz.
+
+### Systemy od Digi Rasty (Autor: Digi Rasta)
+- **Stakowanie:** Kamienie Duchowe, szkatułki i skrzynie w stosach po 200; Odłamek bez limitu 24 h. Ulepszanie u Kowala i osadzanie biorą jedną sztukę ze stosu.
+- **Opcje dodatkowe** (ESC): ukrywanie efektów, aur, sklepów graczy, drzew, budynków, chmur i wody; zapis czatu do pliku.
+- **Porównanie pod Alt**, płynny licznik Yang, tanie rzeczy w sklepie NPC podświetlone, dźwięki podnoszenia.
+- **Powód nieudanego ulepszenia**, blokada z komunikatora obejmuje handel, grupę, gildię, emocje i pojedynki.
+- **„Otwórz” / „Otwórz 10”** w podglądzie skrzynki.
+- **Awans:** gratulacje na czacie, co 10 poziomów ogłoszenie dla wszystkich.
+- **`@nick tekst`** w czacie = szept.
+- **Pasek zabójstw** i dźwięki serii (tylko zabójstwa z udziałem gracza).
+- **Po śmierci umiejętności od razu gotowe**, okno śmierci z odliczaniem.
+- **Wymiana ksiąg u Seon-Hae:** 10 ksiąg + 250 000 Yang = losowa księga „Instr.” Twojej klasy i drogi.
+- Poprawki: magazyn nie gubi pól przy powiększeniu, `/reload c` od razu odświeża okno kostki, ogłoszenia bez kodów kolorów, poprawki wywrotek rdzenia przy wierzchowcach.
+
+### Nowości
+- **Usuń misje** (pasek boczny lub `/usunmisje`): wybierasz misje, które znikają bez nagród (Towarzysz i Cor Draconis nie są ruszane). Kolejne misje pojawiają się z poziomem.
+- **Zapisane pozycje teleportu:** 6 miejsc na postać, teleport co 15 minut, każdy zużywa czysty Zwój Powrotu.
+- **Wierzchowiec jak koń:** Ctrl+G zsiadasz, rzucasz aurę i od razu wsiadasz.
+- **Kołczan** w ItemShopie (Wyposażenie, 100 SM, 14 dni, od 35 poziomu): ninja strzela bez zużywania strzał.
+- **Filtr podnoszenia:** opcja „Bonus” (tylko przedmioty z co najmniej N bonusami); ustawienia osobno dla każdej postaci.
+- **Auto ceny w sklepach:** przycisk „Ceny” przy wystawianiu, 6 trybów, „Zmień ceny wszystkich”.
+- **Wojna gildii:** przycisk „Wejdź na wojnę” na tablicy wojny.
+- **Mapy pod M** w Grotach Wygnańców; Groty Pająków pokazują tylko przejścia.
+- **Fasolka Smocza (zielona)** wypada z metinów od 70 poziomu (2,5%).
+
+### Towarzysz
+- **Zakupy:** Polecenia → „Kup…” – mikstury, strzały, peleryny; płacisz Ty, reszta Yang wraca.
+- **Obrona:** atakuje boty i graczy z wrogiego królestwa, którzy biją Ciebie lub jego.
+- **Polimorfia:** przemienia się razem z Tobą Marmurem Polimorfii.
+- Boty można dodawać do **znajomych**.
+- Teleport i zmiana kanału przy otwartym oknie Towarzysza nie wyrzucają już do logowania.
+
+### Koń, ItemShop, drop
+- Szkolenie konia bez paszy: tylko medale, Materiały Rzemieślnicze i Yang.
+- ItemShop „Wyposażenie”: Kołczan, Medal Konny (100 SM).
+- Kamień Przebudzenia nie wypada już z Razadora i Nemere.
+- Wzgórze Wukonga: odepchnięcie nie wyrzuca już poza platformę, Obrońcy Chmur wracają na miejsca.
+- Okno wytwarzania (Seon-Pyeong i inni) działa dla zwykłych graczy – wcześniej „Ta komenda nie istnieje”.
+
+### Boty i gospodarka
+- **Medale i Materiały Rzemieślnicze na rynku:** boty poniżej 25 lvl trzymają tylko na konia 1 lvl, 25–35 na konia 11 lvl, powyżej 35 zapas na jeden poziom konia – reszta idzie na lady.
+- **Tarcze, hełmy i buty** wystawiane w pierwszej kolejności.
+- **Szarfy:** boty łączą pary albo wystawiają nadwyżkę zamiast trzymać setki w torbie.
+- **Alchemia botów:** nie zdejmują dobrych kamieni (zdjęcie niszczy kamień), doładowują je Eliksirem Czasu, włączają alchemię tylko do walki.
+- **Battle Pass:** boty robią miejsce na nagrody zamiast gubić je na ziemi.
+- **Zielarze** czytają receptury i warzą soki u Baek-Go.
+- **Dropki broni 30 lvl** stoją na wyspie, nie w mieście.
+- **Lady botów** przedłużane od razu po wygaśnięciu.
+- **Emerytury botów** działają na każdym układzie świata; przycisk „Zatrzymaj partię”.
+- **Raty Yang poniżej 100%** nie obniżają już cen na rynku.
+- Podatek od sprzedaży między graczami (suwak 0–50%, domyślnie 0%).
+
+### Panele i launcher
+- **„Przelicz ceny w sklepach botów teraz”** (panel admina → Raty; seban → Mnożniki serwera); samo po zmianie raty Yang lub aktualizacji.
+- Launcher: ostrzeżenie i automatyczna poprawka `.wslconfig`, gdy Docker ma za mało RAM do aktualizacji.
+- Launcher rozpoznaje klienta zaktualizowanego patcherem.
+- Patcher: aktualności same pokazują najnowsze wydania.
+
+---
+
+## Klient 2.0.50 — 2026-10-03
+
+- Ranking tygodniowy, Magazyn kolekcjonera, Usuń misje, Zapisane pozycje teleportu.
+- Skróty klawiszowe, szybkie otwieranie paczek, „Wszystkie” w Alchemii (Autor: Vekirion).
+- Opcje dodatkowe, porównanie pod Alt, licznik Yang, pasek zabójstw, okno śmierci, wymiana ksiąg, stakowanie (Autor: Digi Rasta).
+- Towarzysz: zakupy; Kołczan; auto ceny; filtr podnoszenia z bonusem.
+- Mapy Grot Wygnańców i Pająków; przycisk „Wejdź na wojnę”.
+- Teleport przy otwartych oknach (Towarzysz, Auto Łowy, Dom Towarowy…) nie wyrzuca do logowania.
+
+## 2.19.0 — 2026-10-03 — Rytuał Przebudzenia, koń do 30, System Legend, boty w minigrach, podatek od sprzedaży
+
+Wymaga klienta **2.0.43** (launcher pobierze go sam albo zaktualizuje go patcher).
+
+### Nowy system (Autor: Digi Rasta)
+- **Rytuał Przebudzenia u Kowala:** broń 75. poziomu +9 + Kamień Przebudzenia + 200 000 000 Yang (szansa 100%) zmienia się w broń przebudzoną +0. Bonusy i kamienie przechodzą na nową broń. Pary: Zatruty Miecz → Śmiercionośne Ostrze, Lwi Miecz → Księżycowy Miecz, Skrzydła Demona → Nóż Strumienia, Stalowy Łuk Kruka → Upiorna Kusza, Miecz Żalu → Zabójca Żółtego Smoka, Bambusowy Dzwon → Hibiskusowy Dzwon, Wachlarz 8 Trigramów → Wachlarz Leżącego Smoka.
+- **Bronie przebudzone +0…+9:** poziom 90–105, Silny przeciwko potworom +2…+15%, Silny przeciwko ludziom −15…−50% (to broń do PvE). Zawsze 3 gniazda. Nieudane ulepszenie nigdy jej nie niszczy ani nie obniża (także ze zwojami). Tylko u zwykłego Kowala.
+
+  | Krok | Materiały | Yang | Szansa |
+  |---|---|---|---|
+  | +0→+1 | 2× Zdobycz Dzikusa | 5 mln | 90% |
+  | +1→+2 | 2× Shuriken + 1× Serce Wojownika | 8 mln | 85% |
+  | +2→+3 | 3× Biała Perła | 12 mln | 80% |
+  | +3→+4 | 3× Niebieska Perła | 16 mln | 75% |
+  | +4→+5 | 3× Krwawa Perła | 22 mln | 70% |
+  | +5→+6 | po 3× Biała, Niebieska i Krwawa Perła | 30 mln | 60% |
+  | +6→+7 | 1× Smocza Łuska + 1× Smoczy Szpon | 50 mln | 50% |
+  | +7→+8 | 8× Smocza Łuska + 8× Smoczy Szpon | 100 mln | 40% |
+  | +8→+9 | 15× Smocza Łuska + 15× Smoczy Szpon | 200 mln | 30% |
+
+- **Kamień Przebudzenia** wypada z bossów 75+ (3–4%), Beran-Setaou w Leżu Smoka (10%), bossów 103–107 (5–7%), Królowej Dżungli w Starożytnej Dżungli (12%) oraz Razadora i Nemere (15%).
+- **Kamienie Duchowe do +9:** nowe stopnie +5…+9. Ulepszanie od +4 u Kowala: Magiczny Pył, Olejek Niebios (1/1/2/2/3 sztuki) i Yang. Pęknięty kamień w gnieździe nie blokuje już innego rodzaju kamienia.
+- **Olejek Niebios** to teraz zwykły materiał (stos 200, handlowalny). Wypada z Silnej Lodowej Wiedźmy (3%), Beran-Setaou (3%) i Królowej Dżungli (10%).
+- **Koń do 30. poziomu:** trening u Stajennego za medale, paszę, Materiały Rzemieślnicze i Yang. Na 30. poziomie próba Czarnego Rumaka (50× Łucznik Setaou w 30 minut, od 75. poziomu postaci). Od 21. poziomu koń daje bonus przeciwko Potworom, Bossom i Metinom, do 5/5/5% na 30. poziomie. Juki: wymagania kolejnych rzędów rozłożone do 30. poziomu konia. Pieczęcie Czarnego Konia zniknęły z ItemShopu WWW.
+- **Pogromca Niebieskiego Smoka +0…+9** do wyrobienia u Seon-Pyeonga: Partyzana +9 + Broszura Szermierki + po 2 Perły każdego koloru + 2 mln Yang. Statystyki jak pozostałych broni 80. poziomu.
+- **Broszura Szermierki** wypada z Żelaznego Pudełka (~1%).
+- **Klient:** okienko ponownego rzutu w Yut Nori nie wpada już w pętlę. Duże liczby w podglądzie skrzynki są skracane (10k, 1.5M). Wachlarz Leżącego Smoka +0 i Zwój Teleportu mają poprawne ikony.
+- Boty przechodzą Rytuał (od 90. poziomu), trenują konia do 30, kupują i osadzają kamienie +5…+9, a Olejek i Kamień Przebudzenia wystawiają na rynek. Boty od 75. poziomu ulepszają kamienie +4…+8 u Kowala, gdy mają pył, olejek i Yang.
+
+### System Legend
+- Część botów to Legendy: Wyróżniający się (~4%), Specjalni (~2%), Chodzące Legendy (2 na królestwo) i Czempion Królestwa – Legenda, której gildia prowadzi w rankingu królestwa.
+- Legendy są silniejsze, mądrzej walczą z graczami, zakładają i rozwijają silne gildie, toczą wojny i zdobywają reputację. Nad nickiem mają kolorowy tytuł swojej rangi.
+- Ranking Legend w obu panelach i przełącznik systemu.
+
+### Boty
+- **Boty w minigrach:** Łapanie Króla, Rumi i Yut Nori. Z kart zbieranych z potworów składają talie, płacą za grę i otwierają skrzynki (brązowa 60%, srebrna 30%, złota 10%). Część skrzynek trafia na stragany.
+- **Ceny zależą od ilości Yang na świecie:** nowy świat zaczyna od 40% cennika, przy 10 mld Yang ceny są równe cennikowi, potem rosną ×1,10 za każde 2,5 mld do 30 mld i ×1,05 za każde 2,5 mld powyżej.
+- **Koniec stania w stosach w mieście:** boty przy sklepach i Kowalu stają obok siebie, przechodzą bramę Joan na wolne miejsce, a Kowal, który odmawia ulepszenia, nie ściąga już bota co kilkanaście sekund.
+- **Zielarze:** zbieranie ziół to aktywność jak wędkarstwo i górnictwo – sesja 12–25 minut, potem zwykła gra. Uwarzone mikstury trafiają na stragany po cenach z cennika.
+- **Pełne wyposażenie na straganach:** boty ulepszają zapasowe hełmy, tarcze i buty do +4 i wystawiają wszystkie.
+- Boty otwierają Cor Draconis tylko wtedy, gdy w Alchemii jest miejsce na kamień.
+- **Biolog** do 90. poziomu (zadania na 60 i 70).
+- **Dropki broni 30. poziomu na Dolinie Orków** stoją na wyspie zamiast w mieście: nie wracają w kółko do miasta po złom i mikstury (bez Yang polują z tym, co mają), przy ladzie czekają 3 minuty zamiast 20 i wystawiają każdą broń 30. poziomu, także na swoją klasę.
+- **Gildia „Pomocy!”:** boty z gildii pomagają w Twojej walce – najpierw Twój cel, potem potwory przy Tobie.
+
+### Towarzysz
+- **Teleport i zmiana kanału przy otwartym oknie Towarzysza nie wyrzucają już do logowania.** Okno odpytywało serwer także w trakcie przełączania rdzeni. Teraz Towarzysz i pozostałe okna, które same pytają serwer (Auto Łowy, celowanie, Dom Towarowy, kalendarz eventów, filtr podnoszenia, minigry, magazyn), nic nie wysyłają między teleportem a wczytaniem mapy.
+- Szybkie przekładanie przedmiotów do i od Towarzysza prawym przyciskiem myszy.
+- W trybie „Przywołaj” podnosi przedmioty jak spuszczony ze smyczy, a gdy masz pełną torbę, zbiera Twój drop.
+- Przemienia się razem z Tobą Marmurem Polimorfii ze swojego ekwipunku i odmienia razem z Tobą.
+
+### Ekwipunek i interfejs
+- **Blokada przy sortowaniu:** Alt + LPM na przedmiocie zostawia go na miejscu przy „Ułóż i scal” i „Tylko scal stosy”. Zablokowany slot ma małą gwiazdkę.
+- **Mapa (M):** obie Groty Wygnańców mają mapę, a mapy obu Grot Pająków pokazują tylko przejścia, którymi da się chodzić.
+- **Auto Łowy:** zamknięty w tłumie łowca szuka najbliższego wolnego potwora. Ikonka czasu Auto Łowów kupionych w IS pokazuje pozostały czas.
+
+### Skrzynki eventowe
+- **Rumi:** złota pula – Zaczarowanie Przedmiotu ×5 (było ×10), Wzmocnienie ×3 (było ×5); srebrna pula – Zaczarowanie ×3 (było ×5), Wzmocnienie ×1 (było ×3).
+- **Yut Nori – Złoty Pakiet:** Wzmocnienie ×3 i Zaczarowanie ×5 (było po 1); zamiast Cor Draconis (mityczne) i kolczyków – 100 000 doświadczenia i 500 000 Yang. **Srebrny Pakiet:** Cor Draconis (zwyczajne) ×3 (było 1).
+
+### Lochy Arezzo
+- Po pokonaniu ostatniego bossa odliczanie 5…0 i koniec lochu. Do ukończonego przejścia nie da się wrócić.
+
+### Ekonomia i panele
+- **Podatek od sprzedaży (suwak 0–50%, domyślnie 0%):** część ceny przedmiotu sprzedanego innemu graczowi lub botowi (stragany, lady offline, Dom Towarowy, oferty, licytacje) znika z gry – ogranicza ilość Yang w obiegu. Sprzedaż NPC bez podatku. Lady offline pobierają ponadto własny podatek (domyślnie 5%).
+- **Panel seban, mapa na żywo:** Świątynia Ochao i 7 map Arezzo. Boty w lochach są teraz widoczne na mapie.
+
+### Launcher i serwer
+- Przy małej ilości wolnej pamięci aktualizacja najpierw zapisuje i zatrzymuje świat.
+- **Pakiet diagnostyczny na Linux/VPS:** `sh linux-port/tools/support-bundle.sh` zbiera logi wszystkich rdzeni do jednego pliku (bez haseł i bazy danych).
+
+---
+
+## Klient 2.0.43 — 2026-10-03
+
+- Rytuał Przebudzenia, bronie przebudzone, Kamienie Duchowe do +9, Olejek Niebios, koń do 30 i juki, Pogromca Niebieskiego Smoka (Autor: Digi Rasta).
+- Poprawki od Digi Rasty: okienko ponownego rzutu w Yut Nori, liczby w podglądzie skrzynki, ikony Wachlarza Leżącego Smoka +0 i Zwoju Teleportu.
+- Blokada przedmiotu przy sortowaniu (Alt + LPM, gwiazdka).
+- Mapa (M) w Grotach Wygnańców, mapy Grot Pająków tylko z przejściami.
+- Tytuły Legend nad nickiem botów.
+- Towarzysz: przekładanie prawym przyciskiem myszy.
+- Teleport i zmiana kanału przy otwartym oknie Towarzysza (i innych oknach) nie wyrzucają do logowania.
+- Auto Łowy: łowca wychodzi z tłumu, ikonka czasu Auto Łowów z IS.
+- „Silny przeciwko potworom” w spisie bonusów postaci.
+
+## 2.18.1 — 2026-10-02 — COOP dla wszystkich, Biblioteka Wiedzy, Towarzysz, poprawki botów i minigier
+
+**COOP dla wszystkich:** granie u znajomego (COOP) nie wymaga już hasła w launcherze. Jeśli chcesz, możesz wesprzeć rozwój paczki singleplayer na https://buycoffee.to/mt2009plus.
+
+Wymaga klienta **2.0.39** (launcher pobierze go sam albo zaktualizuje go patcher).
+
+### Biblioteka Wiedzy
+- Potwory w lochu zadają o 20% większe obrażenia.
+- Metiny w lochu mają o 45% mniej życia (Metiny na mapach bez zmian).
+- Baronówna Pająków ma życie i regenerację Wodza Orków, a jej życie rośnie z liczbą graczy w lochu: 2 osoby +50%, 3 osoby +100%, 4 i więcej +200%. Regeneracja zostaje taka sama w punktach, niezależnie od liczby graczy.
+- Ustawienie liczby potworów w respie (×2–×4 dla Metinów i bossów oraz zwykłych potworów) nie działa już w lochach - lochy mają respy takie, jak zostały zaprojektowane.
+
+### Minigry
+- **Łapanie Króla, Rumi (Okey) i Yutnori pobierają opłatę za grę** (30 000 yang za talię w Łapaniu Króla, 30 000 yang za grę w Rumi i Yutnori). Wcześniej opłata nie była pobierana.
+
+### Łucznik
+- **Strzały żywiołów zadają obrażenia z dystansu.** Ognista, Trująca, Lodowa i Przeklęta Strzała nie miały ustawionego zasięgu, więc każdy strzał spoza bezpośredniej bliskości zadawał 0 obrażeń. Teraz trafiają z pełną siłą na każdą odległość.
+
+### Towarzysz
+- **Blokada ekwipunku:** w oknie Towarzysza (Opcje) jest przełącznik „Zablokuj ekwipunek”. Po włączeniu Towarzysz nie ulepsza, nie przerabia, nie zdejmuje, nie sprzedaje i nie wyrzuca tego, co ma na sobie i co dostał od Ciebie. Ty nadal możesz przekładać jego rzeczy.
+- **Kamienie Duchowe:** Towarzysz z Kamieniem Duchowym w ekwipunku trenuje swoje umiejętności na G (te, które mu wybrałeś, najpierw główną) według zasad gracza: ranga i czas oczekiwania jak w queście. Gdy nie może, pisze Ci dlaczego (brak kamienia, czas oczekiwania, za niska ranga, przemiana), a po każdym czytaniu podaje wynik.
+- Boty czytają Kamienie Duchowe przy takiej samej randze jak gracze i płacą tyle samo rangi (wcześniej wymagały dziesięć razy mniej).
+
+### Boty
+- **Koniec odbijania się od Doliny Orków:** boty z pełną torbą płaciły za Teleporter, lądowały w Dolinie Orków i po kilku sekundach wracały do M1 - w kółko. Teraz pełna torba odsyła je do miasta dopiero po normalnym pobycie na mapie, a teleport na mapę, na której bot już stoi, jest zablokowany.
+- **Peleryna Męstwa:** silne boty używają Peleryny Męstwa, gdy dadzą radę przyciągniętym potworom - jedna na spot, a następna dopiero po pokonaniu tłumu. Peleryny kupują od innych sprzedających.
+
+### Alchemia
+- Okno komunikatów pokazuje tylko ostatni komunikat, zamiast dopisywać kolejne linie bez końca.
+- Uszlachetnianie, które i tak by się nie udało (puste miejsce, mieszane kamienie, zła liczba kamieni, najwyższy stopień, brak yang), okno odrzuca od razu, z informacją dlaczego.
+
+### Auto Łowy
+- Nowy przełącznik **„Autopodnoszenie: Włączone / Wyłączone”** na górze sekcji „Podnoszenie”. Wyłączone - Auto Łowy nie zbierają przedmiotów z ziemi. Wybór zapisuje się od razu dla każdej postaci.
+
+### Drop yang
+- Przy każdym ustawieniu dropu yang (panele WWW, launcher) jest ostrzeżenie: **CENY I BOTY SĄ ZOPTYMALIZOWANE POD DROP 100%, ustawiając więcej, psujesz sobie rozgrywkę, a na serwerze będzie wielka inflacja, a ceny będą przesadzone.**
+
+### Aktualizacje
+- **Zapasowy serwer aktualizacji.** Gdy GitHub jest niedostępny, launcher, aktualizator na Linuxie i aktualizator klienta pobierają manifest i paczki z naszego serwera (`http://141.94.100.53/aktualizacje/`). Każda paczka jest sprawdzana sumą SHA-256 z manifestu, tak jak dotąd.
+
+---
+
+## Klient 2.0.39 — 2026-10-02
+
+- **Auto Łowy:** przełącznik „Autopodnoszenie: Włączone / Wyłączone”.
+- **Towarzysz:** przełącznik „Zablokuj ekwipunek” w Opcjach.
+- **Alchemia:** okno pokazuje tylko ostatni komunikat i od razu odrzuca uszlachetnianie, które by się nie udało.
+- Aktualizator klienta korzysta z zapasowego serwera aktualizacji, gdy GitHub jest niedostępny.
+
+---
+
+## 2.18.0 — 2026-10-02 — Żywy rynek, nowa ścieżka rozwoju botów, wojny gildii na zabójstwa
+
+Wymaga klienta **2.0.38** (launcher pobierze go sam albo zaktualizuje go patcher).
+
+### Gospodarka botów
+- **Ceny zależne od rynku.** Ulepszacze, księgi umiejętności, Zwój Zapomnienia, Kamień Duchowy i Zwój Błogosławieństwa drożeją, gdy na straganach całego świata (botów i graczy) ich brakuje, i tanieją, gdy jest ich dużo. Cena zmienia się płynnie, z opóźnieniem, w granicach 70–160% ceny bazowej. Boty przeliczają ceny na swoich ladach co pół godziny.
+- **Przecena zależna od podaży.** Rzadkiego towaru boty nie przeceniają, a każdy towar ma cenę minimalną.
+- **Ludzkie ceny.** Boty zaokrąglają ceny jak gracze (1 490 000 zamiast 1 487 312).
+- **Broń z wysokimi średnimi obrażeniami** jest wyceniana jak ulepszona (ŚR 30 jak +6, ŚR 40 jak +7), a najlepsze egzemplarze danej broni na serwerze są wyraźnie droższe.
+- **Bonusy liczą się bardziej niż „+”.** Biżuteria, buty, zbroje i tarcze z dobrymi bonusami są wyceniane jak +5, +7 albo +8 (np. bransoleta +0 z 1500 PŻ kosztuje tyle co czysta +7). Takie przedmioty boty wystawiają, zamiast chować w magazynie.
+- **Inteligencja:** broń szamana i tarcze z INT są droższe.
+- **Bonusy na EQ dużo warte, gdy nie ma Szkatułek Blasku Księżyca.** Jeśli przez ostatnie 14 dni nie było eventu Blasku Księżyca, każdy bonus podnosi cenę przedmiotu (nawet słaby): bransoleta, naszyjnik, kolczyki, buty i tarcza +1,5 mln za bonus do 42 lvl, +2,5 mln powyżej; zbroja, broń i hełm +0,5 mln do 42 lvl, +1,2 mln powyżej (broń 30 i 75 lvl — dopiero 3., 4. i 5. bonus). Kwoty rosną razem z inflacją i stawką dropu yang. Takich przedmiotów boty nie sprzedają NPC ani nie chowają, tylko wystawiają. Gdy event Blasku Księżyca trwa albo był niedawno, obowiązują zwykłe zasady.
+- **Rynek się równoważy:** boty dokładają z magazynu towar, którego brakuje, i wstrzymują ten, którego jest za dużo.
+- **Nowy cennik botów.** Ceny sprzętu +9 według wyceny właściciela, +5…+8 wyliczone od nich, ceny przeniesione na wszystkie klasy. Wycenione nowe przedmioty z ostatnich aktualizacji (szkatułki władców, skrzynie eventów, skrzynie lochów, przedmioty petów, materiały Seon-Hae). Cor Draconis i Materiały Rzemieślnicze mają krzywą ceny zależną od podaży, wielkości stosu i poziomu bota.
+- **Skup nadwyżek.** Boty chętniej skupują z rynku Cor Draconis, Materiały Rzemieślnicze, szarfy i medale konia. Cory i materiały wystawiają po maksymalnie 20 sztuk w pozycji.
+- **Hełmy 21/41 lvl oraz Tarcze Pięciokątne i Okrągłe** trafiają ze skrzyń botów na sklepy.
+- **Fryzury:** boty kupują tylko fryzury z zestawów kostiumów i nie zalewają rynku zwykłymi fryzurami z ItemShopu.
+- **Siano:** boty go nie wystawiają, każdy zostawia sobie 5 sztuk dla konia, a resztę wymienia na mikstury albo sprzedaje Handlarce.
+- **Targowanie się:** gdy sprzęt od +6 w Twoim sklepie offline jest dla bota za drogi, bot napisze z ofertą. Odpowiedz „ok”, podaj swoją cenę (np. „5kk”) albo obniż cenę — bot przyjdzie i kupi. „nie” kończy rozmowę. Wyłączysz to w panelu, na stronie AI.
+
+### Rozwój botów
+- **Umiejętności na M1 za darmo:** umiejętność bota, która doszła do 17, od razu wchodzi na M1. Boty nie kupują już Zwojów Zapomnienia do losowania M (to zjadało dziesiątki milionów yang i blokowało czytanie ksiąg).
+- **Nowe progi rozwoju (panel zaawansowany):** bramka 35 — broń 15 lvl na +7 albo 16–29 lvl na +6 albo 30 lvl na +4, zbroja +6, koń bojowy poz. 5, 10 metinów; bramka 45 — broń 25 lvl na +7 albo 30 lvl na +6, 2 umiejętności na M, koń poz. 12; bramka 55 — broń 30 lvl na +7. Prawo Awansu: broń +6 od 26 lvl i +7 od 35 lvl.
+- **Bot na bramce nie stoi w M1:** idzie bić metiny, zbierać medale i robić konia na mapie na swój poziom. Bot z celem poza M1 jest puszczany z M1 po 10 minutach.
+- **Górne limity map:** Loch Pająków 1 i Świątynia Hwang do 61 lvl, Loch Pająków 2 do 78, Las Duchów do 72, Dolina Cyklopów do 50, Pustkowie Faraona do 65, Ochao i Las do 120.
+- **Broń 30 lvl:** boty polują na nią tylko do 35 lvl, potem kupują ją na rynku. Nowi dropkowie broni 30 lvl (21 lvl, 2–3 na kanał i królestwo) pilnują Bestialnych potworów na pierwszych wyspach Doliny Orków. Best. Żołnierz i Best. Maniak dają teraz broń 30 lvl tak jak Bestialski Łucznik.
+- **Konie i juki:** boty kupują medale tam, gdzie są wystawione (w pierwszych wioskach), kończą wyprawę do Lochu Małp z medalem, po koniu bojowym zbierają po 3 medale, a właściciele juków trzymają materiały tylko na dwa najbliższe rzędy. Juki rozwija połowa botów (było 30%).
+- **M3:** boty powyżej 25 lvl już tam nie polują. Na mapę gildii przychodzą nadal na wojny, Tanakę, deszcz Metinów i wezwania graczy.
+- **Szarfy:** do unikatowej boty wkładają przedmiot minimum +7 albo z dwoma idealnymi bonusami, do zacnej +6 albo z jednym idealnym bonusem, do dostojnej zawsze broń +6.
+- **Szamani z Inteligencją:** noszą w plecaku zestaw z INT i przebierają się w niego, żeby rzucić mocniejsze buffy; w drużynie z graczem walczą w nim cały czas. Na zestaw mogą wydać do 40% złota.
+- **Broń 30 lvl od +7:** boty mieszają na niej średnie obrażenia aż do 30%.
+- **Nowi krzykacze:** w każdym królestwie jest jeden obowiązkowy dropek medali, który krzyczy na wołaj (na zasadach jak apka2009).
+
+### Towarzysz
+- Zwabia grupy zwykłym ciosem, a umiejętności używa na zebranych potworach.
+- Ma własną pulę postaci — komunikat „Nie ma teraz wolnej postaci tej klasy” nie powinien się już pojawiać, a nowy Towarzysz od razu nosi wybrany nick. Towarzysz pokazywany pod starym nickiem zaloguje się raz jeszcze, już pod właściwym.
+- Wydaje Smocze Monety w ItemShopie: przełącznik „Smocze Monety: wydaje / nie wydaje” na stronie Opcje (domyślnie wydaje) i stan jego konta. Kupony SM wymienia od razu, kupuje tylko to, czego sam używa, i pisze Ci, co kupił i za ile. „Raport” mówi, na co odkłada.
+- Gdy stoisz przy kowalu, oprócz ulepszania nakłada też bonusy na swój sprzęt.
+
+### Wojny gildii
+- Wygrywa gildia, która pierwsza zabije ustawioną liczbę wrogów (domyślnie 100, zmienisz w panelu); po czasie wojny — ta, która zabiła więcej. Dotyczy wojen z gildią botów.
+- Tablica wyniku pokazuje cel, ile zabójstw brakuje każdej stronie i kto prowadzi.
+
+### Łucznik
+- Pasywka trafia więcej celów: dodatkowe strzały lecą też w potwory, które biją kogoś z drużyny (także Towarzysza), i w potwory wezwane przez Metina, z którym walczysz. Liczba celów się nie zmienia.
+- **Kolejny cel po zabiciu** — nowa opcja w ustawieniach gry (Z łukiem / Zawsze / Wyłączony). Klient sam zaznacza najbliższego potwora, z którym już walczyłeś, albo takiego, który Cię atakuje.
+
+### Drop i świat
+- Zmiany z arkusza dropu właściciela: zawartość skrzyń lochów, nowe dropy bossów (Baronówna, WuKong, Król Skorpionów, Azrael, Królowa Dżungli, Beran-Setaou), Cor i szarfy według potwora, Metin Ciemności w Bibliotece Wiedzy, Zwój i Peleryna Męstwa ze wszystkich bossów.
+- Złota i Srebrna Szkatułka nie dają już unikatowych szarf — tylko skrzynie bossów.
+- Trzeci Loch Pająków jest wyłączony (wejście do niego zamykało grę); postać zapisana w nim wraca do miasta.
+- Drop yang najwyżej 1000%: wyższej stawki nie da się ustawić, a świat z wyższą stawką dostanie 1000% przy następnym starcie. Doświadczenie i drop przedmiotów bez zmian.
+
+### Launcher
+- Jeśli w folderze klienta jest **MT2009-Patcher.exe**, „GRAJ” i „Aktualizuj klienta” uruchamiają patcher (bez pobierania paczki z GitHuba). Bez patchera — aktualizacja jak dotąd.
+- Naprawa, kopia zapasowa i import bazy używają tej samej wersji MariaDB co serwer (wcześniej starszej, co mogło zepsuć bazę). Kopia zapasowa obejmuje też bazę `world` (przedmioty i potwory).
+- COOP: zaproszenie zawsze podaje oba kanały.
+
+---
+
+## Klient 2.0.38 — 2026-10-02
+
+- **Klient nie wyłącza się już losowo podczas walki** (nowy `metin2client.exe`). Szybciej odczytuje też pakiety w tłumie botów.
+- **Pasek zaznaczonej postaci** (handel, pojedynek, podgląd ekwipunku, zaproszenie do grupy) nie znika już po teleporcie i dłuższej grze.
+- **Magazyn:** przyciski „Ułóż i scal” oraz „Tylko scal stosy” — jak w ekwipunku.
+- **Opcja „Kolejny cel”** w ustawieniach gry (Z łukiem / Zawsze / Wyłączony).
+- **Tablica wyniku wojny gildii** z celem zabójstw.
+- **Okno Towarzysza:** przełącznik wydawania Smoczych Monet i stan jego konta.
+
+---
+
+## 2.17.1 — 2026-10-01 — Poprawka aktualizacji 2.17.0
+
+Paczka 2.17.0 nie miała pliku nagród eventu Dzieci Kwiaty
+(`special_item_group.flower.txt`), więc budowa serwera po aktualizacji
+kończyła się błędem „special_item_group.flower.txt: not found”. Ta wersja
+go zawiera. Jeśli aktualizacja do 2.17.0 się nie udała, kliknij w launcherze
+**SPRAWDŹ AKTUALIZACJE** - pobierze 2.17.1 i dokończy budowę. Zawiera
+wszystko z 2.17.0.
+
+---
+
+## 2.17.0 — 2026-10-01 — Minigry i menedżer eventów, Seon-Hae (6./7. bonus), Niebieski Smok, Katakumby, progresja botów, nowy dom towarowy
+
+Serwer 2.17.0 i klient 2.0.37: **zaktualizuj oba** w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**) albo klienta
+patcherem. Nowy klient ma nowy plik gry (exe) - bez niego minigry się nie
+otworzą. Zawiera wszystko z 2.16.0. Świat, postacie i ustawienia zostają.
+
+> Uwaga: boty w lochach **Ruiny Skorpiona** i **Starożytna Dżungla** (moduł
+> Arezzo) radzą sobie jeszcze średnio - zaczynają, ale rzadko kończą. Lochy
+> są już o 25% łatwiejsze; zachowanie botów w nich poprawi kolejna
+> aktualizacja. Gracze mogą je przechodzić normalnie.
+
+### Menedżer eventów w grze i minigry
+
+Nowe okno eventów (przycisk przy minimapie): lista trwających i
+zaplanowanych eventów, kalendarz, nagrody. Eventy ustawiasz w panelu WWW
+(klasycznym) → **Eventy** (harmonogram) - nowe rodzaje: `catchking`,
+`rumi`, `yutnori`, `flower`. Na czas eventu w M1 każdego królestwa staje
+stół minigry, a po evencie przez 7 dni można odebrać nagrody za ranking.
+Boty w minigrach nie biorą udziału.
+
+- **Łapanie Króla** (stół w M1): karty Królewskie z potworów, plansza 5×5,
+  złoty / srebrny / brązowy Łup Królewski, ranking i nagroda za top 10.
+- **Rumi (Okey)** (stół w M1): karty Okey z potworów, układanie trójek,
+  skrzynki za wynik, ranking.
+- **Yutnori** (stół w M1) z oknem 3D rzutu pałeczkami: pień brzozy i
+  plansza z potworów, gra z komputerem, pakiety nagród.
+- **Dzieci Kwiaty**: nasiona z potworów podczas eventu, wymiana na latorośle
+  i pudełka, kwiaty dające bonus na 12 h. Nagrody zmienisz w panelu
+  (**🌸 Dzieci Kwiaty**, działa w 5 sekund), zawartość pudełek w panelu
+  Sebana (Szkatułki).
+- Wylogowanie w trakcie gry nie zabiera nagrody - czeka do następnego
+  logowania.
+
+### Seon-Hae: 6. i 7. bonus (dobrowolne)
+
+Nowy system dodawania 6. i 7. bonusu u **Seon-Hae** (NPC w pierwszej wiosce
+każdego królestwa). **Domyślnie wyłączony** - włączasz w panelu klasycznym:
+kafelek **„💎 Seon-Hae: 6. i 7. bonus”** → **„Seon-Hae przyjmuje
+przedmioty”**.
+
+- Oddajesz przedmiot z 5 bonusami, **odłamki** (kolor według poziomu
+  przedmiotu, 1–10 sztuk) i **suplementy** (Mały/Średni/Duży/Silny, do 5) -
+  im więcej, tym większa szansa (np. 10 odłamków + 5 Silnych = 70%).
+  Seon-Hae trzyma przedmiot przez czas pracy (domyślnie 24 h, w panelu).
+- **Skąd materiały** (tylko gracze, tylko gdy Seon-Hae włączony; reguły w
+  panelu na stronie Seon-Hae):
+  - suplementy z bossów i Metinów (60%): Grota Wygnańców V1 i V2 – Średni,
+    Beran-Setaou – 2× Średni, Zaczarowany Las – Duży;
+  - odłamki ze zwykłych potworów Groty V2, Świątyni Ochao i Zaczarowanego
+    Lasu (0,5%, losowy kolor).
+- **Nowa tabela bonusów 6/7** (27 bonusów, wartości lv1–lv5) i **losowanie
+  poziomu bonusu**: lv1 35%, lv2 30%, lv3 20%, lv4 10%, lv5 5% - szanse
+  zmienisz w panelu na stronie Seon-Hae. Dotyczy też Zaczarowania 71051/71052.
+- **Naprawiony stary błąd**: tabela bonusów 6/7 z paczki numerowała bonusy
+  inaczej niż serwer, więc bonus z Zaczarowania 71051 trafiał w zły punkt
+  (np. „Siła” zmieniała bieżące PŻ). Bonusy dodane przed tą wersją
+  zostają, jakie były - przelosuj je Zaczarowaniem 71052.
+- Opis przedmiotu pokazuje 6. i 7. bonus na zbroi i biżuterii, w swoim
+  kolorze.
+
+### Niebieski Smok (loch na 90 poziom)
+
+Odnowiony loch Niebieskiego Smoka: wejście u NPC w Grocie Wygnańców V2,
+od 90 poziomu, 15 mln, 5 razy dziennie, 60 minut. Smok jest nietykalny,
+dopóki stoją jego kamienie. Teleport z okna **Wyprawy** (`/lochy`) - 10 mln,
+pod strażnika Groty. Nagrody: Smocza Łuska i Smoczy Szpon. Spróchniała
+Skrzynia już nie wypada ze smoka.
+
+### Katakumby Diabła działają
+
+Strażnik Katakumb wrócił do Świątyni Hwang (przy wejściu do Wieży Demonów),
+a nowy klient ma pełną mapę Katakumb (tekstury, potwory, wrota). Warunki:
+75 poziom, ukończone 9. piętro Wieży Demonów, 30 minut od ostatniego
+wyjścia. **Lider grupy zabiera ze sobą** członków grupy w pobliżu (do 50 m),
+którzy spełniają warunki. Teleport z okna Wyprawy prowadzi tuż obok
+strażnika.
+
+### Lochy
+
+- **Okno Wypraw teleportowało w złe miejsca** (np. Razador pod Wieżę
+  Demonów, Nemere pod Razadora), gdy moduł Arezzo był wyłączony - naprawione.
+- **Teleport z okna Wypraw pobiera koszt** - wcześniej był darmowy, choć
+  czat pisał „zapłacono”.
+- **Razador**: jeździec z bronią dwuręczną nie trafiał bossa przez kilka
+  sekund z rzędu - zasięg ciosu z konia i do dużych bossów jest większy.
+- **Biblioteka Wiedzy (30 lv)**: zamiast niewidocznych pajęczych jaj stoją
+  Metiny Ciemności (5 i 4 do zniszczenia).
+- **Ruiny Skorpiona i Starożytna Dżungla** (moduł Arezzo): potwory, bossy i
+  Metiny 25% słabsze, rzadsze fale. **Wzgórze Wukonga**: Feniks i WuKong nie
+  pojawiają się już na głowie drużyny.
+- **Naprawione padanie serwera** w lochach z falami: umiejętność obszarowa
+  bijąca potwory usuwane właśnie przez quest (koniec fali) wywracała rdzeń.
+- **Łapanie Króla**: lista nagród przy stole wywracała rdzeń (za długa lista
+  dla skryptu questu) - naprawione w silniku dla wszystkich takich list.
+
+### Dom towarowy i wyszukiwarka
+
+- **Kupno części stosu**: wpisujesz, ile sztuk chcesz - płacisz tylko za
+  nie, reszta zostaje w sklepie.
+- Wyszukiwanie z polskimi wielkimi literami, „+” / „+3” dla ulepszaczy,
+  zbroje i hełmy według klasy, **filtr do 5 bonusów** z minimalną
+  wartością, sortowanie po ilości i cenie naraz, mniejszy pasek.
+
+### Boty
+
+- **Progresja botów do ustawienia** w panelu Sebana → Gracze i boty →
+  **„Progresja botów”**:
+  - poziomy przejść na kolejne mapy (dotąd stałe w kodzie);
+  - **lista kontrolna przed awansem** - np. przed 35 poziomem broń +7,
+    zbroja +6, koń bojowy, 50 Metinów; przed 45: 2000 PŻ z przedmiotów,
+    2 umiejętności na M4, zęby orka; przed 55: lepszy sprzęt i 3
+    umiejętności. Bot bez wymagań stoi na blokadzie expa i nad nimi
+    pracuje (po 3 h przechodzi dalej, żeby świat nie stanął);
+  - **łagodniejszy start nowego świata** - wyjście z M1, M3 i M2 kosztuje
+    boty dużo mniej, krócej czekają na awans;
+  - **limit łowiących**: najwyżej 10% botów w przedziale poziomów nad wodą.
+  - podgląd: kto stoi na którym progu i czego mu brakuje.
+- **Rajdy na bossy**: Baronówna Pająków - rajd do 16 botów (z trzech
+  królestw) od 60 poziomu; do rajdów dołączają boty od 50% życia, wędkarze
+  i górnicy; posiłki do 3 rund po 4 boty; boss poniżej 30% jest dobijany.
+- **Nie przepłacają u graczy**: w sklepie gracza bot płaci najwyżej
+  1,5–2× ceny rynkowej (bliżej 2×, im bardziej potrzebuje przedmiotu).
+  Sklepy botów bez zmian.
+- **Szybsze zbieranie łupu**: najpierw walka, potem łup; kilka przedmiotów
+  naraz; po ucieczce wracają po swój łup.
+- Zaczarowany Las jako wyprawa: boty idą z zapasem 600 mikstur i siedzą w
+  Lesie ok. 2 h; Metiny bite zwykłym atakiem (umiejętności przy grupie
+  potworów); bot trzymany przez potwora wycofuje się i pije mikstury;
+  droppery robią zakupy po obsłudze straganu; nie walczą z kilofem ani
+  wędką w ręce; po spaleniu przedmiotu u kowala szybciej kupują zamiennik;
+  czytają księgi bez 20 000 doświadczenia; boty płacą za wymianę u
+  rafinera (dotąd było za darmo).
+- **Towarzysz**: zmiana kanału i teleport przy otwartym oknie Towarzysza nie
+  wyrzucają już do logowania; ranga przy nicku; w trybie „wolna ręka” gra
+  na swoim rdzeniu i nie utyka w M1; po 20 minutach bez dojścia na mapę
+  wybiera inną.
+- Panel: „blokada expa na N” pokazuje blokadę, która naprawdę obowiązuje.
+
+### Świat i rozgrywka
+
+- **Metiny**: szarfa +0 wypada z Metinów z szansą 15% (z bossów dalej 80%),
+  Cor Draconis z Metinów 20% (było 50%).
+- **Wytrzymałość potworów**: karta w panelu i pole w launcherze (POZIOM
+  TRUDNOŚCI) - np. 80% życia potworów, bossów i Metinów; `.env`
+  `M2_MONSTER_HP` (10-300). Działa od razu.
+- **Zestaw startowy nowego świata** (launcher, „Nowy świat - ustawienia na
+  start”): jak dotąd / średni (+5) / łatwy (cały zestaw +9); `.env`
+  `M2_STARTER_KIT`.
+- **Kamienie Duchowe według poziomu trudności**: łatwy bez czekania, średni
+  7 h, trudny 12 h.
+- **Alchemik**: oryginalne teksty; w panelu (Alchemia i szarfy) szansa na
+  odłamek i liczba Cor dziennie z odłamków (domyślnie 10% i 5).
+- **Auto Łowy**: minibossy (Lykos, Scrofa, Bera, Tigris, Chuong, Bestialny
+  Łucznik, Specjalista) są celem przy „Bossy”, po bossie, przed Metinem.
+- **Łucznik gracza**: dodatkowe strzały lecą razem ze strzałem, nie przy
+  następnym; odrzucona strzała zapisuje powód w logu serwera.
+- **Limit komend**: zapytania wysyłane przez sam klient nie zjadają limitu -
+  klikanie statystyk, okno Towarzysza i „lochy” już nie przepadają.
+
+### Klient 2.0.37
+
+- Nowy exe (minigry, okno 3D Yutnori) i okna wszystkich minigier.
+- **Koniec zacięć przy zaczarowaniu przedmiotu** i każdej zmianie w
+  ekwipunku (opis przedmiotu budował się ok. 90 razy przy każdym
+  odświeżeniu).
+- Mapa Katakumb, nazwa na minimapie.
+
+### Launcher i serwer
+
+- „Coś nie działa? Masz pomysł?” - przycisk **ZGŁOŚ BŁĄD / POMYSŁ** zawsze
+  na dole paska launchera.
+- Logi serwera trzymane **7 dni** (było 3) - aktualizacja zmienia 3 na 7
+  raz, inna wartość zostaje.
+- Launcher ponawia kopiowanie plików zablokowanych przez antywirusa.
+
+---
+
+## 2.16.0 — 2026-09-30 — Moduł Arezzo (nowe mapy i lochy), opłaty za lochy, łucznicy, boty i Towarzysz
+
+Serwer 2.16.0 i klient 2.0.30: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**) albo klienta
+patcherem. Zawiera wszystko z 2.15.0.
+
+### Moduł Arezzo - nowe mapy i lochy (domyślnie WYŁĄCZONY)
+
+Nowe miejsca to osobny, dobrowolny moduł. Po aktualizacji jest
+**wyłączony** - świat wygląda tak jak dotąd. Klient 2.0.30 ma już wszystkie
+pliki, więc włączenie modułu nie wymaga żadnej zmiany u graczy.
+
+**Jak włączyć** (wystarczy jeden sposób):
+
+1. **Panel WWW (klasyczny):** na stronie głównej kafelek
+   **„🗺️ Moduł Arezzo”** → zaznacz **„Moduł Arezzo włączony”** → **Zapisz**.
+   Działa od razu, bez restartu serwera.
+2. **Launcher:** przycisk **POZIOM TRUDNOŚCI** → zaznacz
+   **„Moduł Arezzo - nowe mapy i lochy”** → **Zastosuj** (serwer się
+   zrestartuje).
+3. **Plik `.env`** serwera: `M2_AREZZO=1` (0 = wyłączony), potem restart.
+
+Wyłączenie działa tak samo. Ustawienie z panelu zostaje po restarcie, dopóki
+ktoś nie zmieni `M2_AREZZO` w `.env`. Gdy moduł jest wyłączony, nie ma stron w
+Teleporterze, strażników wejść do lochów ani lochów Arezzo w oknie „Wyprawy”
+(X), a gracz stojący na mapie Arezzo wraca w kilka sekund do miasta.
+
+**Nowe mapy:**
+
+- **Dolina Cyklopów** (poziom 43–55) - Teleporter i Pierścień Teleportacji,
+  cyklopy, Arges i Polifem.
+- **Pustkowie Faraona** (poziom 55) - Teleporter, potwory z piramidy, Bastet,
+  Anubis i Metiny pustyni.
+- **Zaczarowany Las** (95+) - przez portal po Strażniku En-Tai w Świątyni
+  Ochao (wybór: Zaczarowany Las albo Dolina Orków), silniejsze lemury.
+
+**Nowe lochy:**
+
+| Loch | Poziom | Wejście |
+|---|---|---|
+| Biblioteka Wiedzy | 30+ | Strażnik Biblioteki w M2 każdego królestwa, obok Teleportera |
+| Wzgórze Wukonga | 45+ | Strażnik Wzgórza w Świątyni Hwang |
+| Ruiny Skorpiona | 65+ | Strażnik Ruin na Ognistej Ziemi, obok strażnika Razadora |
+| Starożytna Dżungla | 95+ | Strażnik Dżungli w Zaczarowanym Lesie |
+
+Każdy loch ma etapy z pieczęciami, falami, kamieniami i bossem, 1-5 skrzyń
+na gracza po wygranej, limit czasu i „Wróć do lochu” po wyjściu lub
+rozłączeniu. Tylko dla graczy - boty z drużyny zostają przed wejściem.
+
+### Opłaty i limity lochów
+
+- **Wejście kosztuje** (każdy gracz płaci za siebie przy wejściu do nowej
+  wyprawy; „Wróć do lochu” jest darmowe): Biblioteka Wiedzy 2 mln, Wzgórze
+  Wukonga 5 mln, Czyściec Ognia (Razador) 10 mln, Ruiny Skorpiona 10 mln,
+  Góra Sohan (Nemere) 15 mln, Starożytna Dżungla 15 mln Yang. Wieża Demonów i
+  Katakumby bez zmian.
+- **Najwyżej 5 wypraw dziennie** do każdego z tych sześciu lochów (licznik
+  zeruje się o północy). Wieża Demonów i Katakumby mają swoje limity jak
+  dotąd.
+- **Teleport z okna „Wyprawy” (X) kosztuje:** Biblioteka 1 mln, Wieża
+  Demonów 5 mln, Wukong 7 mln, Razador 10 mln, Katakumby 10 mln, Ruiny 12 mln,
+  Nemere 12 mln, Starożytna Dżungla 12 mln Yang. Teleport do Dżungli prowadzi
+  pod Świątynię Ochao - dalej trzeba samemu znaleźć portal do Lasu.
+- Z okna „Wyprawy” zniknęły lochy małp, Loch Pająków (Baronówna) i Świątynia
+  Ochao.
+
+### Łucznicy
+
+- **Łucznik trafia kilka celów naraz** - gracze i boty. Zwykły strzał trafia
+  do 3 celów, z umiejętnością Combo do 4 lub 5: cel główny i potwory, które
+  już atakują łucznika (do 10 m od celu). Dodatkowe strzały lecą razem z
+  główną - wcześniej rysowały się strzał później i wyglądały jak trafienia
+  bez obrażeń.
+- **Strzał nie przepada**, gdy serwer jest chwilowo zajęty botami, a Ognista
+  i Trująca Strzała nie pudłują w potwory trafione wcześniej dodatkową
+  strzałą.
+- Boty-łucznicy trafiają dodatkowe cele jak gracz; dodatkowe strzały nie
+  zużywają strzał.
+
+### Boty
+
+- **Godziny gry na dobę:** pod przełącznikiem „Boty grają jak żywi ludzie”
+  (panel WWW, strona AI) suwak 0-24. Sesje po 4 godziny, przerwy dopełniają
+  dobę; 0 = jak dotąd (sesje 3-6 h, przerwy 3-9 h), 24 = bez przerw.
+- **Suwaki „Górnictwo” i „Zielarstwo”** na stronie AI: ile botów kopie rudę
+  i jak długo odpoczywa od żył, ile botów pracuje przy stole Baek-Go i jak
+  często.
+- **Nowa osobowość: Zielarz** - bot przy stole zielarskim Baek-Go, z
+  tytułem nad głową (klient 2.0.30).
+- **Przetopy na ladach** (Diament, Ebonit i pozostałe) po cenie z cennika;
+  bot zostawia sobie tylko tyle, ile przyjmą gniazda jego biżuterii.
+- **Medal Konny i księgi w walce:** bot podbiega po medal albo księgę do
+  15 m, jeśli ma dość zdrowia i miejsca, i wraca do walki. Z pełnymi stosami
+  medali nie biega już po medal, którego nie podniesie.
+- **Rękawica Króla Przepowiedni** tylko przy ujemnej randze. Bot z ujemną
+  rangą bez Fasolki Zen nie stoi w mieście, tylko poluje i odrabia rangę.
+
+### Towarzysz
+
+- **„Nic” znaczy nic** - puszczony wolno („Wolna ręka”) albo tuż po
+  przywołaniu nie podnosi już przedmiotów właściciela.
+- **Zmiana fryzury:** połóż Wybielacz albo farbę do włosów w torbie
+  Towarzysza i kliknij prawym przyciskiem - fryzura trafia do torby i można
+  założyć inną.
+- Towarzysz nie jest już łysy po pierwszym przywołaniu.
+
+### Poziom trudności: szanse wymiany u NPC
+
+Wymiana kamieni duszy na Magiczny Pył, ksiąg na Pergamin i ulepszaczy na
+Materiały Rzemieślnicze:
+
+| Poziom | Pył | Pergamin | Materiały |
+|---|---|---|---|
+| łatwy | 100% | 100% | 55% (jak dotąd) |
+| średni | 90% | 45% | 55% |
+| trudny | 55% | 40% | 55% |
+| własny | `M2_EXCHANGE_DUST_CHANCE` | `M2_EXCHANGE_PARCHMENT_CHANCE` | `M2_EXCHANGE_MATERIAL_CHANCE` |
+
+Przy poziomie własnym liczby są w `.env` (0 = jak w paczce). Okno wymiany
+pokazuje szansę, która naprawdę obowiązuje, zmiana poziomu w panelu WWW
+działa od razu, a boty wymieniają kamienie duszy z tą samą szansą. Launcher
+(okno POZIOM TRUDNOŚCI) i panel WWW podają te liczby.
+
+### Poprawki
+
+- Lochy Wukonga i Dżungli nie stają już na etapie „7/6” bez bossa - etapy
+  idą po kolei (wcześniej loch przeskakiwał etapy 2 i 4).
+- Okno „Czy chcesz się teleportować” w panelu X: przyciski działają, a okno
+  zamyka się samo po 10 sekundach.
+- Ruiny Skorpiona o 50% trudniejsze (życie i obrażenia).
+- Klient 2.0.30: brakujące tekstury drzew w Zaczarowanym Lesie, mapy
+  Wukonga, trawy w Dżungli oraz efektów ataków bossów.
+
+### Launcher i panele
+
+- Włączanie i wyłączanie hostowania nie kończy się błędem, gdy Docker nie
+  zdążył zwolnić portu - launcher ponawia start gry do trzech razy co 5
+  sekund.
+- Panel zaawansowany: bez sekcji „Funkcje wymagające integracji” i bez
+  szarych, niedostępnych opcji.
+
+---
+
+## Klient 2.0.37 — 2026-10-01 — Minigry, okno 3D Yutnori, Seon-Hae, Katakumby, koniec zacięć przy zaczarowaniu
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**) albo patcherem.
+Potrzebny do serwera 2.17.0. Zawiera wszystko z 2.0.30.
+
+- **Nowy plik gry (exe)**: minigry Łapanie Króla, Rumi, Yutnori (z oknem 3D
+  rzutu) i Dzieci Kwiaty, menedżer eventów w grze.
+- Okno eventów przy minimapie, okna wszystkich minigier i okno **Seon-Hae**
+  (6. i 7. bonus); opis przedmiotu pokazuje 6. i 7. bonus.
+- **Mapa Katakumb Diabła** z teksturami, potworami i wrotami.
+- Nowy **dom towarowy**: kupno części stosu, filtr do 5 bonusów, zbroje według
+  klasy, sortowanie po ilości i cenie, ranga Towarzysza przy nicku.
+- **Koniec zacięć przy zaczarowaniu przedmiotu** i każdej zmianie w ekwipunku.
+- Mapa i model Niebieskiego Smoka.
+
+---
+
+## Klient 2.0.30 — 2026-09-30 — Moduł Arezzo, tekstury, okno „Wyprawy”
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**) albo patcherem.
+Zawiera wszystko z 2.0.29.
+
+- Pliki nowych map i lochów modułu Arezzo (mapy, potwory, efekty, tekstury).
+- Okno **„Wyprawy”** (klawisz **X** albo przycisk na pasku bocznym): lista
+  lochów, odnowienia, drop z bossa, teleport pod wejście i rankingi.
+- Tytuł „Zielarz” nad głową botów-zielarzy.
+
+---
+
+## 2.15.0 — 2026-09-30 — Boty w Świątyni Ochao, decyzje botów w panelu, patcher klienta, poprawki po 2.14.0
+
+Serwer 2.15.0 i klient 2.0.29: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.14.0.
+
+### Boty w Świątyni Ochao
+
+- Boty od **95 poziomu** chodzą do Świątyni Ochao jak gracze: przez
+  Strażnika Świątyni w Dolinie Orków, polują w całym labiryncie, a wracają,
+  przechodząc labirynt do Teleportera w środkowej sali albo przez Portal po
+  Strażniku En-Tai.
+- Znają mapę: 22 miejsca do expienia, trasy przez labirynt policzone z góry,
+  wybór miejsca według prawdziwej drogi, a nie linii prostej.
+- Nie teleportują się ze środka labiryntu – najpierw wychodzą pieszo.
+- **Rajdy na Ochroniarza Ochao i Władcę Ochao** jak na innych bossów
+  (Strażnik En-Tai bez rajdów).
+- Test nocny: 8 rund po ~150 botów, bez crasha i bez utykania w labiryncie.
+
+### Decyzje botów w panelu
+
+- Nowa strona **„Decyzje”** w panelu klasycznym: dlaczego bot wystawił
+  przedmiot, jak krok po kroku powstała cena, dlaczego zmienił ekwipunek;
+  oznaczone nietypowe decyzje i anomalie, filtry i przycisk
+  **„Kopiuj dla AI”**.
+- Karta bota ma zakładkę „Decyzje”, a lada bota na mapie – podpowiedź „?”.
+- Wpisy czyszczą się same (domyślnie po 7 dniach; ustawienie w panelu,
+  0 = nie zapisuj).
+
+### Boty – handel, ekwipunek, świat
+
+- Księgi umiejętności z nadwyżki yang (od 10 mln), księgi polimorfii
+  i Przewodnik Górnictwa, bez przełączania broni przy wsiadaniu na konia,
+  wymiana przestarzałej zbroi, hełmu i tarczy od 50 poziomu (hełm do +6).
+- ItemShop według potrzeb (kamienie zmiany, Pierścień Teleportacji,
+  wykrywacz Metinów...) zamiast samych fryzur; hazardziści częściej;
+  wymiana nadmiaru ulepszaczy; porządniejsze lady.
+- Wieża Demonów bez stania przy Żniwiarzu, wyjazd z M1 bez utykania,
+  Teleporter płatny w każdym królestwie, Pierścień Teleportacji do domu,
+  Pyongmoo bez utykania przy wąwozie.
+- Pierścień Anty-Exp obejmuje Towarzysza; ustawienie „Nic” przy Metinach
+  jest przestrzegane.
+- Bronie na 75 poziom ze Żniwiarza i Azraela zamiast Pajęczej Baronowej;
+  receptury Baek-Go bez 21 godzin czekania.
+- Sklepy offline: blokada przedmiotu rozlicza tylko swój zakup, jedna
+  sprzedaż to jeden wpis, poprawiony błąd pamięci po wystawieniu.
+- W każdym królestwie w M1 stoi przy Handlarce jeden... szczególny bot.
+  Jeśli przeszkadza – przełącznik „Krzykacze w M1” w panelu.
+
+### Poprawki po 2.14.0
+
+- **Lodowy Golem Mag** (Nemere) nie odrzuca już przez pół mapy i można go
+  zabić.
+- **Nowe pety:** działa ewolucja (przycisk „Ewoluuj”), pety dostają exp,
+  a z potworów wypadają jajka i przedmioty dla petów.
+- Przedmioty dla petów tylko w ItemShopie i z Metinów – nie ma ich już
+  w sklepie ogólnym.
+- **„Wróć do lochu”** u Razadora i Nemere działa przez cały czas wyprawy.
+- Błogosławieństwo Goblina chroni przed trucizną.
+- Sortowanie ekwipunku łączy Cor Draconis.
+- Drugi kanał na własnych portach: zakres portów liczy się od
+  `M2_GAME_PORT_BASE` (koniec „13000” po aktualizacji).
+
+### Rejestracja dla serwera wspierających
+
+- Nowe ustawienie `M2_REGISTER_ACCESS_CODE`: gdy jest ustawione, strona
+  `/register` wymaga hasła (wielokrotnego użytku) i wygląda jak
+  metin2sp.pl. Puste = rejestracja jak dotąd.
+
+### Launcher i panele
+
+- Przycisk **„Zgłoś”** (opis i logi w jednej paczce), zapora COOP dla
+  portów wszystkich kanałów, ponowna instalacja na VPS uzupełnia brakujące
+  ustawienia w `.env`.
+- Gildie nie pokazują więcej botów online niż członków; poprawka położenia
+  „Wyloguj” w panelu zaawansowanym.
+- Usunięta nieaktualna opcja „Włącz Skrzynie Blasku Księżyca w dropie”
+  (szkatułki działają według eventu z harmonogramu).
+
+---
+
+## Klient 2.0.29 — 2026-09-30 — Patcher, okno „Ceny”, zwijany pasek boczny
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**) albo nowym
+patcherem. Zawiera wszystko z 2.0.28.
+
+- **MT2009 Patcher** (`MT2009-Patcher.exe`): okno z newsami, statusem
+  serwera i przyciskiem GRAJ; sprawdza pliki klienta i pobiera tylko to,
+  co się zmieniło; opcja **„Dodaj własny serwer VPS”** (domyślne porty,
+  wpisujesz tylko nazwę i IP).
+- Okno **„Ceny”** przy wystawianiu przedmiotu (sugestia botów, mediana,
+  zakres rynku, ostatnia sprzedaż).
+- **Zwijany pasek boczny** ekwipunku; dolny pasek bez przycisków, które są
+  już w pasku bocznym (Battle Pass, kalendarz, Towarzysz, Auto Łowy).
+- Okno nowych petów: przycisk „Ewoluuj”, nazwa i podpowiedzi; poprawione
+  okno Goblina i jego ranking; teksty Battle Passa i obowiązków gildii.
+- Nowy regulamin w grze z linkami do projektu; bez błędu `top1.mse`
+  w syserr.
+
+---
+
+## 2.14.0 — 2026-09-29 — Battle Pass, kalendarz eventów, nowe pety, Koło Fortuny, lochy Razadora i Nemere, Świątynia Ochao, Poszukiwanie skarbów
+
+Serwer 2.14.0 i klient 2.0.28: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.13.0. Paczka klienta jest duża (ok. 160 MB) – pobiera się z wydania na
+GitHubie.
+
+### Battle Pass (miesięczny sezon)
+
+- Nowe okno Battle Passa i przycisk na pasku. Misje: potwory, Metiny,
+  bossowie, ryby, ulepszanie (liczy się każda próba), okrzyki.
+- Każda misja daje do trzech nagród (domyślnie 5× Cor Draconis i Kupon SM
+  (50)), a cały sezon – nagrodę końcową. Misje mogą być łańcuchami
+  i dotyczyć celów jednego poziomu.
+- **Metin i boss liczą się wszystkim, którzy go bili, i drużynie zabójcy
+  w promieniu 50 m** – nie tylko ostatniemu ciosowi.
+- Boty też robią misje. W panelu zaawansowanym nowa strona **Battle Pass**
+  (misje, nagrody, nagroda końcowa, gracze).
+
+### Kalendarz eventów (F11) i nowe eventy
+
+- **F11** – kalendarz tydzień po tygodniu, przycisk na pasku i ikonka
+  z odliczaniem.
+- Nowe eventy: **Podwójny loot z bossów**, **Podwójny loot z Metinów**
+  i **Poszukiwanie skarbów**.
+- **Metiny wielkanocne**: najwyżej 3 na mapę (więcej proporcjonalnie do
+  ustawienia respawnu Metinów i bossów), po wyłączeniu eventu nie pojawiają
+  się nowe.
+
+### Nowe pety (z jajek)
+
+- Obok petów z ItemShopu: 9 gatunków, poziomy 1–120, ewolucje Młody → Dziki
+  → Odważny → Heroiczny, trzy bonusy, 22 umiejętności z ksiąg, energia
+  życiowa, zmiana imienia i handel petem w Transporterze Peta. Okno pod **U**.
+- Druga ewolucja: 10× Kamień Duchowy, 10× Nieznane Lekarstwo i po 5× Białej,
+  Niebieskiej i Krwawej Perły.
+
+### Lochy: Razador i Nemere
+
+- **Czyściec Ognia** (Razador, od 55 poz., wejście u strażnika na Ognistej
+  Ziemi) i **Lodowa Kraina** (Nemere, od 75 poz., Góra Sohan) – solo albo
+  z drużyną graczy, 60 minut, odnowienie 60 minut. Strażnik przenosi prosto
+  do lochu – jeden ekran ładowania.
+- **Skrzynie bossów:** po śmierci bossa każdy gracz w lochu dostaje
+  **od 2 do 5** skrzyń (losowane osobno dla każdego). **Skrzynia Razadora**:
+  broń na 65 poz. albo zbroja na 61 poz. (+0 do +4); **Skrzynia Nemere**:
+  broń na 70 poz. albo Tarcza Tytanów. Do tego zapychacze jak w oficjalnych
+  skrzyniach (bez broni na 75 poz. i Stalek) i przedmioty dla petów.
+- Sami bossowie dają tylko yang. Potwory i Metiny w lochach nie dają Corów,
+  szarf ani SM. Przedmioty zadań (klucze, kamienie, kryształy) wypadają
+  rzadziej. Szel bije dwa razy mocniej.
+- Skrzynia Mroku wypada już tylko z Azraela.
+- Oficjalne mapy, modele, tekstury i kolizje (mosty).
+
+### Świątynia Ochao, Poszukiwanie skarbów, Koło Fortuny
+
+- **Świątynia Ochao** – otwarta mapa od 95 poz. (wejście w Dolinie Orków przy
+  Koe-Pungu) z wędrującym Strażnikiem En-Tai.
+- **Poszukiwanie skarbów** – Bilety Skarbów, Wyspa Skarbów (od 70 poz.),
+  eskorta Goblina, Doblony, plansza nagród i ranking. Nagrody: Cory
+  Draconis, które dają kamienie, Sakiewka Pieniędzy 1–10 mln yang, Eliksir
+  Czasu (D), Peleryny Męstwa ×20.
+- **Koło Fortuny** – **F12**, obrót za Bilet Koła Fortuny (25 SM
+  w ItemShopie), jackpoty Kupon SM (50) i (250).
+
+### Gildie
+
+- **Obowiązki lidera gildii**: zrzutka yang od botów, misje na przedmioty
+  z bankiem gildii, wyprawa na Wieżę Demonów.
+- **Boty gildii** bronią swojego gracza i słuchają rozkazów (przycisk
+  „Boty” w oknie gildii, `/gildia_boty`).
+- **Wojny gildii**: wyzwanie da się przyjąć, rundy kończą się same,
+  w przerwie boty wracają do obozów.
+
+### Umiejętności
+
+- **Umiejętności czasowe trwają o 50% dłużej od G1** (Aura Miecza, Silne
+  Ciało, Czarowane Ostrze, Czarowana Zbroja, Błogosławieństwo, Szybkość,
+  Pomoc Smoka i inne); opis pokazuje nowy czas.
+- **Smoczy Skowyt** rzuca się na cel z zasięgu 1800, obszar 900 wokół celu.
+
+### Panele
+
+- **Drop z potworów** (Seban): podajesz ID potwora, Metina albo bossa
+  i edytujesz jego drop z szansami na żywo; zmiany przetrwają aktualizacje.
+- **Szkatułki** (edytor zawartości), **Koło Fortuny**, **Battle Pass**.
+- Suwaki botów **Battle Pass**, **szarfy** i **alchemia** w grupie
+  „Zachowanie botów”, 0–250% (100% = jak dotąd).
+- Suwaki zachowania botów (zakupy, kowal, księgi, biolog, misje łowieckie)
+  naprawdę sterują botami.
+
+### Mniejsze zmiany
+
+- **Zestawy kostiumów**: kostium i fryzura z jednego zestawu dają +800 PŻ
+  i +15 wartości ataku. Bonusy kostiumów z ItemShopu działają.
+- **Cor Draconis** wyższych stopni otwierają się w kamień smoka swojego
+  stopnia.
+- **Dom Towarowy**: kup wiele ofert naraz; ceny botów tanieją i drożeją
+  z popytem.
+- **Towarzysz**: nowe okno z zakładkami, filtr podnoszenia działa też na
+  niego i drużynę, fryzura, broń i szarfa wracają po zmianie zbroi.
+- **Alt+1 / Alt+2** od razu zmieniają kanał. Pozycje okien zapamiętane dla
+  każdej postaci. Pieczęć wierzchowca od razu go dosiada.
+- Sam klik nie robi z nikogo mordercy. Boty nie utykają w budynkach gildii,
+  trzymają Stalki na zapas i nie wystawiają wędek ani kilofów.
+
+---
+
+## Klient 2.0.28 — 2026-09-29 — Battle Pass, kalendarz, nowe pety, lochy, Goblin, Koło Fortuny
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.0.25. Paczka ma ok. 160 MB.
+
+- Okna Battle Passa, kalendarza (F11), Koła Fortuny (F12), nowych petów (U),
+  Poszukiwania skarbów i rankingu, obowiązków gildii i Towarzysza.
+- Oficjalne mapy, modele, tekstury i kolizje Świątyni Ochao, lochów
+  Razadora i Nemere oraz Wyspy Skarbów, potwory Goblina.
+- Pasek boczny ekwipunku, pozycje okien dla każdej postaci, Alt+1/Alt+2,
+  czas umiejętności ×1,5 w opisach, kup wiele w Domu Towarowym.
+
+---
+
+## 2.13.0 — 2026-09-28 — Ukrywanie kostiumów, nowy klient: napisy osobowości botów i Discord, instalator VPS jednym plikiem
+
+Serwer 2.13.0 i klient 2.0.25: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.12.0.
+
+### Ukryj / pokaż kostiumy
+
+- Pod slotami w oknie kostiumów jest nowy przycisk **„Ukryj kostiumy”**
+  (po kliknięciu **„Pokaż kostiumy”**).
+- Ukryte kostiumy **zostają założone i dają wszystkie bonusy**, ale postać
+  wygląda jak bez nich: widać **prawdziwą zbroję i broń**, a zamiast kostiumu
+  fryzury **domyślną fryzurę postaci**. Tak samo widzą Cię inni gracze
+  i boty. Szarfa zostaje bez zmian.
+- Ustawienie zapisuje się w kliencie i wraca po każdym wejściu do gry
+  i teleporcie.
+
+### Nowy klient (metin2client.exe)
+
+- **Napisy osobowości nad botami** – kolorowy wiersz między nickiem a gildią
+  („Pogromca Metinów”, „Rybak”, „Hazardzista”...).
+- **Discord** – status gry z logo MT2009 PLUS, mapą, postacią i przyciskiem
+  **„Dołącz do gry!”** prowadzącym na Discorda serwera.
+- **Auto Łowy** – zabity potwór jest od razu zostawiany, łucznik atakuje
+  z daleka, a przy ustawianiu zasięgu widać okrąg na ziemi.
+- **Umiejętności konne na montach kostiumowych** – Cięcie z Siodła i reszta
+  umiejętności konnych działają na wierzchowcach, które mogą walczyć.
+- Podpowiedzi mikstur szybkości ataku i ruchu pokazują bonus.
+
+### Szarfy i Cor Draconis u botów
+
+- Boty **chętniej kupują szarfy i Cory z lad**: na Cora wydadzą do pięciu
+  razy tyle, za ile same go wystawiają, a na szarfę do 40% wolnego yang.
+- **Wyższe szarfy**: szarfę buduje 80% botów od 30 poziomu (było 60%), cel
+  od 30 poziomu to 10%, szarfa unikatowa od 50 poziomu (było od 65),
+  łączenie unikatów 4+4 od 75 poziomu (było od 90).
+- **Alchemia**: korzysta z niej 75% botów (było 50%), otwierają do 10 Corów
+  naraz, także w trakcie polowania, i ulepszają kamienie już przy mniejszym
+  zapasie yang.
+
+### Instalator VPS jednym plikiem
+
+- Nowy plik **`instaluj-vps.sh`**: na świeżym VPS (Debian lub Ubuntu,
+  zalogowany jako root) pobiera pełną paczkę serwera z metin2sp.pl,
+  aktualizuje ją do najnowszej wersji z GitHuba (ze sprawdzeniem sumy
+  SHA-256), instaluje Dockera, przygotowuje `.env` z bezpiecznymi
+  ustawieniami i uruchamia serwer. Na końcu pokazuje adres, hasła kont i jak otworzyć panele.
+- Uruchomienie:
+  `wget -O instaluj-vps.sh https://metin2sp.pl/wiki/pobierz/instaluj-vps.sh`
+  i `sh instaluj-vps.sh`. Opcje: `--paczka` (inna pełna paczka),
+  `--folder`, `--address`, `--bots`, `--bez-aktualizacji`, `--force`,
+  `--tylko-pliki`. Szczegóły na wiki (Linux / VPS).
+
+### Mniejsze dodatki
+
+- **Towarzysz: „Dołącza”** – w polu „Grupa” okna Towarzysza (albo
+  `/towarzysz grupa 1` / `0`, domyślnie włączone): Towarzysz dołącza do
+  Twojej grupy także wtedy, gdy prowadzi ją ktoś inny, o ile zostanie w niej
+  miejsce jeszcze dla jednej osoby.
+- **ItemShop: strona „Ślub”** – Pierścionek Zaręczynowy, Smoking, Suknia
+  Ślubna, Bukiet, Pióro Ptaka Miłości oraz biżuteria Miłości i Harmonii, od
+  25 poziomu, za Smocze Monety.
+- **Sklep offline: „Auto cena”** – przycisk pod sugestią botów w oknie ceny
+  wpisuje ją jako cenę (domyślnie wyłączony, działa przy włączonym Domu
+  Towarowym).
+- **15 zapisanych kont** w oknie logowania: 5 stron po 3 konta, F1–F3 logują
+  konto z widocznej strony.
+- Wieża Demonów, 6. piętro: boty omijają potwora zaklinowanego w ścianie
+  i biją Elitarnego Króla Demonów, a zaklinowane potwory na końcu ściągają do
+  siebie.
+- Bot najpierw zbiera swój łup z Metina, a dopiero potem odpowiada graczowi,
+  który walczył z nim o kamień. Marmur na Żniwiarza biorą tylko boty walczące
+  wręcz. Bot u kowala nie próbuje co kilka sekund ulepszać przedmiotu, na
+  który nie ma materiałów.
+- Broszura Szermierki stackuje się do 200.
+- Pierwsza instalacja na VPS nie kończy się już błędem bazy
+  „$1: unbound variable”.
+- Launcher nie zapisuje hasła do panelu w pliku logu, a gdy brakuje któregoś
+  jego pliku, mówi, co zrobić, i podaje wykryty antywirus.
+
+---
+
+## Klient 2.0.25 — 2026-09-28 — Ukrywanie kostiumów, nowy metin2client.exe
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.0.24.
+
+- Przycisk „Ukryj kostiumy” / „Pokaż kostiumy” w oknie kostiumów.
+- Nowy `metin2client.exe`: napisy osobowości nad botami, status na
+  Discordzie z przyciskiem „Dołącz do gry!”, umiejętności konne na montach,
+  okrąg zasięgu Auto Łowów, podpowiedzi mikstur szybkości.
+- Okno Towarzysza: przełącznik „Dołącza” w polu „Grupa”.
+- 15 zapisanych kont w oknie logowania, strona „Ślub” w ItemShopie,
+  przycisk „Auto cena” przy wystawianiu w sklepie offline.
+
+---
+
+## 2.12.0 — 2026-09-28 — Dom Towarowy, Towarzysz lider grupy i na rybach, filtr podnoszenia, szybszy kosz
+
+Serwer 2.12.0 i klient 2.0.24: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.11.0.
+
+### Dom Towarowy – cały rynek w jednym oknie
+
+- U **Handlarki Różności** w pierwszej wiosce jest nowa rozmowa **„Dom
+  Towarowy”**: jedno okno ze **wszystkimi ofertami sklepów offline** – graczy
+  i botów.
+- Wyszukiwanie po nazwie (także po nazwie umiejętności w księgach),
+  kategorie po lewej, cena od–do i pięć sposobów sortowania.
+- **Kupujesz bez chodzenia po sklepach** – prosto z okna, stos w całości.
+- Przy wystawianiu przedmiotu we własnym sklepie offline pod ceną widać, za
+  ile wystawiłby go bot i ile boty ostatnio za niego płaciły.
+- Zwykły sklep Handlarki otwiera rozmowa „Kup przedmioty”. Dom Towarowy
+  włącza się i wyłącza w oknie poziomu trudności w launcherze (domyślnie
+  włączony).
+
+### Filtr podnoszenia (klawisz Z i pet)
+
+- Nowe okno **Filtr podnoszenia** – otwiera je **Ctrl+Z** albo komenda
+  `/filtr`. Te same rodzaje przedmiotów co w Auto Łowach (broń, zbroje,
+  hełmy, tarcze, bransolety, buty, naszyjniki, kolczyki, ozdoby, mikstury,
+  księgi, kamienie, inne): zaznaczasz, co ma być podnoszone, a reszta zostaje
+  na ziemi.
+- Filtr działa na **klawisz Z** (także przytrzymany), klawisz **`** i na
+  **peta, który zbiera drop**. Yang jest podnoszony zawsze.
+- Ustawienia zapisują się w kliencie i wracają po każdym wejściu do gry.
+
+### Towarzysz na rybach
+
+- Nowy przycisk **Na ryby** w oknie Towarzysza (albo `/towarzysz ryby`).
+  Daj Towarzyszowi **Kartę Wędkarską** (w oknie jego torby) – idzie nad wodę
+  i łowi, dopóki karta nie wygaśnie, a potem wraca do Ciebie. Drugiej karty
+  sam nie kupi.
+- Łowi na łowisku mapy, na której stoi, albo przenosi się nad wodę pierwszej
+  wioski swojego królestwa. **Przywołaj** kończy łowienie wcześniej.
+
+### Towarzysz jako lider grupy, bonus z Dowodzenia
+
+- W oknie Towarzysza (P) nowa sekcja **Grupa**. Przycisk **Lider: Ja /
+  Towarzysz** – gdy liderem jest Towarzysz, to on zakłada grupę i Cię do
+  niej zaprasza (także `/towarzysz lider 1`).
+- Towarzysz czyta **Księgi Dowodzenia** z torby (daj mu je w oknie jego
+  torby). Jego poziom Dowodzenia widać w oknie.
+- Przycisk **Bonus** wybiera, jaki bonus z Dowodzenia dostajesz jako członek
+  jego grupy: Obrońca (obrona, od 1 poziomu Dowodzenia), Atakujący (atak, od
+  10), Blokujący (czas trwania, od 10), Berserker (szybkość ataku, od 15),
+  Walczący w zwarciu (maks. PŻ, od M1) albo Mistrz umiejętności (od M1).
+  Siła bonusu rośnie z poziomem Dowodzenia, jak w oryginalnej grze.
+- Gdy w Twojej grupie są też inni gracze, Towarzysz nie przejmuje
+  dowodzenia – grupa zostaje taka, jaka jest.
+
+### Kosz działa od razu
+
+- Kosz najpierw pyta o potwierdzenie, a potem usuwa **po 18 stosów naraz**,
+  zamiast sprawdzać i usuwać każdy stos osobno z przerwami. Pełny kosz (36
+  stosów) znika w sekundę zamiast pół minuty.
+
+### Wyszukiwarka sklepów
+
+- **F5** znowu otwiera i zamyka wyszukiwarkę sklepów.
+- Nowa kategoria **MT2009 Plus**: **Cor Draconis**, **szarfy proste,
+  dostojne, zacne i unikatowe** (każdy wzór i nazwa danego stopnia) oraz
+  **alchemia antyczna, legendarna i mityczna** (każdy kamień i każdy stopień
+  danej klasy) – bez dzielenia na plusy i konkretne kamienie.
+
+### Porządkowanie ekwipunku
+
+- Przycisk porządkowania pyta, co zrobić: **Ułóż i scal** (jak dotąd) albo
+  **Tylko scal stosy** – łączy stosy tego samego przedmiotu i niczego więcej
+  nie przestawia.
+
+### Walka
+
+- **Auto Łowy** nie biją już zabitego potwora, dopóki nie zniknie jego model
+  – przechodzą do następnego celu, gdy tylko cel ma 0 PŻ.
+- **Umiejętności konne** (Cięcie z Siodła i pozostałe) działają na
+  **mountach** (wierzchowcach z kostiumu), na których można walczyć.
+
+### Mniejsze dodatki
+
+- Zamiast Hazardzisty czterech rzadkich Hazardzistów (na fioletowo), którzy
+  ulepszają i sprzedają sprzęt w sklepach offline.
+- Nowe ceny broni na 30 poziom, marmurów polimorfii i wędek; inflacja rośnie
+  jak procent składany; przedmiot z kilkoma maksymalnymi bonusami jest
+  droższy.
+- Boty nie kupują przedmiotów z pomyłką w cenie (o jedno zero za dużo),
+  a taka pomyłka znika ze sklepu najpóźniej po 4 godzinach.
+- Bot od 30 poziomu nie walczy bronią na 1–10 poziom; Zwoje
+  Błogosławieństwa idą na broń także w trakcie walki; kamienie bonusów,
+  także zielone, trafiają na cały ekwipunek.
+- **Peleryna Męstwa** przyciąga wszystkie potwory widoczne na ekranie
+  (najwyżej 80), bez bossów i potworów walczących z kimś innym.
+- Wojny gildii: runda trwa do ostatniego bota jednej strony, a długość
+  (15 albo 30 minut) i częstotliwość wojen botów ustawia się w panelu.
+- Okrzyki botów docierają do graczy na wszystkich mapach.
+- Przycisk „Logi VPS” działa też z serwerem postawionym ręcznie; bot
+  łowiący ryby odpowiada na atak gracza; drobne poprawki rynku i kowala.
+
+---
+
+## Klient 2.0.24 — 2026-09-28 — Dom Towarowy, filtr podnoszenia, okno Towarzysza
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.0.23.
+
+- Okno Domu Towarowego i podpowiedź ceny przy wystawianiu w sklepie offline.
+- Okno filtra podnoszenia (Ctrl+Z albo `/filtr`); z włączonym filtrem Z i `
+  podnoszą przez serwer.
+- F5 otwiera wyszukiwarkę sklepów; kategoria MT2009 Plus.
+- Kosz usuwa po 18 stosów naraz.
+- Wybór „Ułóż i scal” albo „Tylko scal stosy” przy porządkowaniu ekwipunku.
+- Auto Łowy nie biją zabitego potwora.
+- Okno Towarzysza: „Na ryby”, sekcja Grupa (lider, bonus z Dowodzenia).
+- Lista serwerów może mieć dwa serwery zewnętrzne (`coop.cfg` i `coop2.cfg`).
+
+---
+
+## 2.11.0 — 2026-09-27 — Przejmij bota, prezenty dla botów, lepsze szarfy botów
+
+Serwer 2.11.0 i klient 2.0.23: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.10.0.
+
+### Przejmij bota na kilka minut
+
+W panelu zaawansowanym, na stronie każdego bota (Gracze → bot), jest nowy
+przycisk **Przejmij bota na [X] minut** (od 1 do 1440).
+
+- Bot od razu wylogowuje się z gry, a panel pokazuje **login i hasło** do
+  jego konta. Po kilku sekundach logujesz się nimi w kliencie i grasz jego
+  postacią: z jego ekwipunkiem, poziomem i gildią.
+- Po upływie czasu konto zamyka się: login i hasło przestają działać, a jeśli
+  nadal grasz tą postacią, zostajesz wylogowany. Bot loguje się z powrotem
+  (w ciągu minuty) i wraca do swoich zajęć.
+- Przycisk **Zakończ teraz** oddaje postać botowi od razu.
+- Każde przejęcie ma nowe, losowe hasło. Towarzysza i postaci graczy nie da
+  się przejąć.
+
+### Boty przyjmują prezenty przez handel
+
+Otwórz handel z botem i włóż do okna przedmioty (albo yang):
+
+- bot **staje w miejscu**, przerywa to, co robił, i czeka, aż zatwierdzisz
+  handel – dopiero wtedy zatwierdza sam;
+- ocenia przedmioty **dokładnie tak, jak łup na ziemi**: przyjmuje handel,
+  jeśli choć jeden z nich podniósłby z ziemi (reszta może być złomem);
+- dziękuje szeptem („dzieki”);
+- gdy w oknie jest sam złom, zamyka handel i odpisuje na przykład „co to za
+  zlom”, „po cholere mi to” albo „Sprzedaj to sobie do handlarki”;
+- gdy nie ma miejsca w torbie, mówi o tym;
+- po dwóch minutach bez zatwierdzenia rezygnuje.
+
+Przedmiot, który dostanie, bot założy, jeśli jest lepszy od jego własnego.
+
+### Szarfy botów: tylko wartościowe przedmioty
+
+Boty wkładały do szarf byle co – na przykład zbroję na 26 poziom z jednym
+bonusem 6%. Teraz każdy przedmiot jest wyceniany tak, jak działa szarfa:
+bazowy atak broni albo obrona zbroi, stałe bonusy i wylosowane bonusy,
+wszystko razy absorpcja szarfy i ocenione pod klasę bota. Bot wchłania
+przedmiot tylko wtedy, gdy:
+
+- ma co najmniej **2 bonusy** albo **jeden mocny bonus**, albo jest
+  ulepszony **do +7** lub wyżej. Mocny bonus to na przykład co najmniej:
+  - 8 siły, zręczności, inteligencji lub witalności;
+  - 1000 PŻ;
+  - 5% szybkości ataku albo 10% szybkości zaklęć;
+  - 5% szansy na krytyk, przeszywające albo silny przeciwko ludziom;
+  - 10% silny przeciwko rasie potworów;
+  - 20% średnich obrażeń albo 10% obrażeń umiejętności;
+- wymaga poziomu najwyżej 10 niższego od bota (wyższy jest w porządku);
+- w szarfie dałby co najmniej **75% tego, co dałaby broń, którą bot
+  walczy** – to miara dobrego przedmiotu na jego poziomie;
+- jest wyraźnie lepszy (o 10%) od tego, co bot już ma w założonej szarfie.
+
+**Broń na 30 poziom bez ograniczeń.** Dobra broń na 30 poziom (2 bonusy albo
+jeden mocny) ulepszona **do +6** lub wyżej trafia do szarfy bota na każdym
+poziomie – także bota na 75 poziom. Nie musi spełniać progu 75% ani okna
+poziomu, musi tylko być lepsza od tego, co bot ma w szarfie. Szarfa z taką
+bronią nigdy nie jest „słaba”.
+
+**Święty Graal szarf.** Najlepsze, co można włożyć do szarfy, to broń na
+30 poziom z jak najwyższym plusem i jak najwyższym procentem właściwego
+bonusu:
+
+- dla wojownika, sury walczącego bronią i ninja – **Łuk z Rogu Jelenia**
+  z jak największymi średnimi obrażeniami;
+- dla szamana i sury czarnej magii – **Wachlarz Jesiennego Wiatru**
+  z jak największymi obrażeniami umiejętności.
+
+Bogaty bot (co najmniej 5 mln yang wolnych) kupuje taki łuk albo wachlarz
+na straganie, ulepsza go u kowala do **+6** (według tych samych zasad co
+każdą broń na 30 poziom – wysoki procent idzie pod zwój) i wkłada do
+szarfy przed każdym innym przedmiotem. Jeśli broń spłonie przy
+ulepszaniu, kupuje następną. Szarfa z Graalem nigdy nie jest „słaba”.
+
+Gdy w plecaku nie ma takiego przedmiotu, bot **kupuje go na straganie**
+(ze swojej puli na szarfy, najwyżej o połowę drożej niż cena rynkowa)
+i nie sprzedaje go przed wizytą u Uriela. Szarfa ze słabym przedmiotem nie
+jest już dla bota „gotowa”: bot buduje nową i zakłada tę, która daje więcej.
+
+### Nicki botów
+
+- 43 nowe nicki (m.in. snajperekxd, Almette, JaroszV2, Mikolaj, Wojtek)
+  są na **nowym świecie** rozdawane jako pierwsze – po równo w każdym
+  królestwie – więc te boty zawsze wchodzą do gry. Znaki, których nie ma
+  w nickach, zostały usunięte albo zamienione (np. „Dobra Ciecz” to
+  DobraCiecz, „Mikołaj” to Mikolaj). Istniejący świat zachowuje nicki.
+
+### Poprawki
+
+- **Towarzysz podnosi Twoje Cor Draconis.** Dotąd podchodził do Cora, który
+  wypadł dla Ciebie, i rezygnował, bo boty z założenia nie podnoszą Corów
+  z ziemi. Teraz bot może podnieść Cor, który należy do gracza z jego
+  drużyny – i od razu trafia on do tego gracza. Wszystkie inne Cory boty
+  dalej omijają.
+- **Lista przedmiotów w panelu GM w grze działa.** Trzy przedmioty (Magiczny
+  Kamień, Gwiazda Nocy, Śnieżny Kwiat) miały w nazwie ukryty znak końca
+  linii, który przerywał listę. Nazwy są czyszczone przy każdym starcie
+  serwera.
+- **Podpowiedź mikstur szybkości ataku i ruchu** (klient 2.0.22) nie
+  wyrzuca już błędu przy każdym najechaniu myszką i pokazuje bonus.
+- Pasek nad NPC nie zgłasza błędu, gdy NPC zniknie z widoku (klient 2.0.22).
+- **Pet zostaje po Twojej śmierci.** Dotąd znikał w chwili śmierci
+  postaci. Teraz czeka przy Tobie i po wskrzeszeniu dalej za Tobą idzie.
+
+### Mniejsze dodatki
+
+- Wieża Demonów: bot, który padnie, wraca niewidzialny do drużyny i leczy
+  się po drodze; boty wszystkich królestw wchodzą razem i nie ranią się
+  nawzajem; mistrz gildii może wejść bez wzywania swoich botów, a każdy
+  gracz może wejść **solo** do własnej Wieży.
+- Boty, które trafiły metina, idą po swoją część łupu (często książkę),
+  zanim zajmie ją ktoś inny.
+- Auto Łowy najpierw kończą walkę, potem zbierają cały drop (klient 2.0.23).
+- Towarzysz: przełącznik **„Gra beze mnie”** (gra dalej, gdy wyjdziesz, do
+  Twojego poziomu +30) i **„Skrzynki”** (może nie otwierać skrzyń);
+  przedmioty, których nie można oddać, przechodzą przez okno jego torby;
+  Towarzysz z mapy innego rdzenia pojawia się od razu przy Tobie.
+- **Seon-Pyeong** przy Grocie Wygnańców przekuwa broń +9 z 65 poziomu i
+  zbroję +9 z 66 poziomu na przedmiot z 80 poziomu (Broszura Szermierki,
+  perły i 2 mln yang).
+- Pasek celu pokazuje życie liczbą, także gracza w pojedynku (klient 2.0.23).
+- Pełny nick właściciela w oknie sklepu offline i w wyszukiwarce.
+- Boty zsiadają z konia i odwołują go w pojedynku i w walce z graczem.
+- Nad botem widać, gdy dropi kamień dla Biologa.
+- Okno ulepszania jest wyższe, więc szansa nie zasłania ulepszaczy
+  (klient 2.0.23).
+- Na dwóch kanałach startują wszystkie boty z suwaka.
+- Launcher mówi, który program zajmuje port serwera, a paczka logów zawiera
+  dzienniki z trzech ostatnich dni.
+
+---
+
+## Klient 2.0.23 — 2026-09-27 — Auto Łowy, pasek celu, okno Towarzysza
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.0.21.
+
+- Podpowiedź mikstur szybkości ataku i ruchu działa bez błędów.
+- Pasek nad NPC nie zgłasza błędu, gdy NPC zniknie z widoku.
+- Pasek celu pokazuje życie liczbą (na przykład 1520/3000).
+- Auto Łowy zbierają drop po walce, a łucznik strzela od razu.
+- W oknie Towarzysza (P) przełączniki „Lurowanie”, „Gra beze mnie” i
+  „Skrzynki”.
+- Pełny nick właściciela w oknie sklepu offline.
+- Okno ulepszania nie zasłania ulepszaczy napisem z szansą.
+- Lista serwerów może mieć dwa serwery zewnętrzne: obok `coop.cfg` klient
+  czyta też `coop2.cfg`.
+
+---
+
+## 2.10.0 — 2026-09-27 — Dołączanie do gildii botów, reset świata w panelu
+
+Serwer 2.10.0 i klient 2.0.21: zaktualizuj oba w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.9.0. Pierwsze uruchomienie po aktualizacji przebudowuje serwer.
+
+### Dołączanie do gildii botów
+
+Możesz teraz sam poprosić o miejsce w gildii botów. Napisz do bota z tej
+gildii szeptem, np. „dodasz mnie do gildii?”, „a teraz mnie przyjmiesz do
+gildii?” albo „mogę dołączyć do twojej gildii?” – słowa mogą być w dowolnej
+kolejności, ważne, żeby padło słowo „gildia”:
+
+- **Zwykły członek** odpisze **„Liderem jest …, to on dodaje”** i poda nick
+  mistrza gildii.
+- **Mistrz gildii** sprawdza, czy się nadajesz:
+  - Twój poziom musi być **wyższy niż średni poziom botów w gildii**. Jeśli
+    jest za niski, odpisze **„Nie, nie dodam cię, musisz mieć … lvl”**
+    i poda poziom, którego potrzebujesz.
+  - Jeśli wszystko się zgadza, odpisze **„Jasne, już cię dodaję”**
+    i wyśle Ci zwykłe zaproszenie do gildii – wystarczy je przyjąć.
+- Mistrz odmówi też, gdy jesteś już w gildii, jesteś z innego królestwa,
+  gildia toczy wojnę, nie ma w niej miejsca albo niedawno odszedłeś
+  z gildii.
+
+### Panel zaawansowany: reset świata
+
+Nowa strona **Zarządzanie → Reset świata** w panelu zaawansowanym. Oba resety
+wymagają **hasła do bazy danych** (`M2_DB_PASSWORD` z pliku
+`linux-port\docker\.env`) i wpisania słowa RESET. Serwer sam się zatrzymuje,
+zapisuje kopię bazy do folderu `backups\reset-swiata`, wykonuje reset
+i uruchamia się ponownie – w panelu widać, na jakim jest etapie.
+
+- **Reset świata botów** – wszystkie boty od razu zaczynają nową grę, tak
+  jak po emeryturze: 1 poziom w pierwszej wiosce swojego królestwa,
+  podstawowy ekwipunek, bez umiejętności, punktów i yang. Zachowują nick,
+  klasę i królestwo. Znikają wszystkie sklepy botów i ich towar, przedmioty
+  z magazynów botów, a gildie botów są rozwiązywane (ziemia wraca do puli).
+  **Postacie graczy i ich Towarzysze zostają bez zmian.**
+- **Reset całego świata** – baza wraca do stanu świeżej instalacji, jak
+  „Zacznij od zera” w launcherze: znikają wszystkie konta i postacie graczy,
+  boty są zasiewane od nowa. Zostają ustawienia serwera z pliku `.env`
+  i ustawienia panelu zaawansowanego.
+
+### Pozostałe zmiany
+
+- Boty przy metinach biją też potwory wokół (umiejętności obszarowe), każdy
+  bot rozwija konia, a broń z lepszymi bonusami zostawiają i ulepszają.
+- Przedmioty w szeptach botów są klikalne jak po Alt+klik; boty rozumieją
+  nazwy typu rib, fms, jelonek i ulepszacze z „+”.
+- Zuo i Pirat Tanaka mogą trwać na kilku mapach naraz, każdy do zatrzymania
+  osobno w panelach.
+- Z klientem 2.0.21: szansa na sukces w oknie kowala, przyciski „Daj”
+  i „Weź” yang u Towarzysza, nicki do 24 znaków w oknie szeptu i Auto Łowy,
+  które nie rezygnują z dalekiego celu ani przedmiotu.
+
+---
+
+## Klient 2.0.21 — 2026-09-27 — Szansa w oknie kowala, yang z Towarzyszem, pełne nicki w szepcie
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.0.20.
+
+- Okno ulepszania pokazuje szansę na sukces (z serwerem 2.10.0).
+- Przyciski „Daj” i „Weź” yang w oknie ekwipunku Towarzysza.
+- Okno szeptu przyjmuje nick do 24 znaków.
+- Poprawki Auto Łowów.
+
+---
+
+## 2.9.0 — 2026-09-27 — Gildie z ziemią i budynkami, zapraszanie botów do gildii, Skowyt na cel
+
+Serwer 2.9.0, klient bez zmian (2.0.20). Zawiera wszystko z 2.8.2.
+Pierwsze uruchomienie po aktualizacji przebudowuje serwer, więc potrwa
+dłużej niż zwykle.
+
+To największa aktualizacja gildii od początku projektu: gildie botów kupują
+ziemię, zbierają na nią pieniądze, stawiają budynki, zdobywają surowce
+i korzystają z własnych kowali. Boty możesz też zapraszać do swojej gildii.
+
+### Gildie botów: ziemia
+
+- Mistrz gildii botów kupuje działkę od **10 poziomu gildii**, po tej samej
+  cenie co gracz (**40–70 mln Yang** za działkę).
+- Najpierw szuka najtańszej wolnej działki w **wiosce (M1) swojego
+  królestwa**, bo tam członkowie przychodzą ulepszać przedmioty. Gdy w wiosce
+  nie ma wolnej działki, kupuje ją na **mapie gildii**.
+- Gildia ma najwyżej **jedną działkę**. Nieudany zakup (brak pieniędzy albo
+  wolnej działki) gildia ponawia po **3 godzinach**.
+
+### Zrzutka: jak gildia składa się na ziemię i budynki
+
+Na ziemię, budynki i surowce gildia składa się wspólnie, uczciwie i jawnie:
+
+1. **Mistrz płaci pierwszy**: około **90%** tego, co ma ponad swoją rezerwę
+   (500 000 Yang).
+2. **Resztę dokładają boty z gildii**, nigdy gracze. Każdy bot zachowuje
+   nietkniętą rezerwę: odłożone przez siebie złoto (np. na konia czy
+   ulepszenia) plus **max(1 mln, poziom² × 300) Yang**. Z tego, co ma ponad
+   rezerwę, daje **najwyżej 25%**.
+3. Kwota jest dzielona **proporcjonalnie do nadwyżek**: bogaty bot daje
+   więcej, biedny mało albo nic.
+4. Bot dokłada się do każdego etapu (ziemia, potem każdy budynek), dopóki ma
+   coś ponad rezerwę, i nigdy nie schodzi poniżej niej.
+5. **Wszystko albo nic**: gdy całej kwoty nie da się zebrać, nikt nic nie
+   traci, a gildia próbuje znowu za 3 godziny.
+
+Zrzutki nie mają dziennego limitu. Każda wpłata jest zapisana i widać ją
+w Seban Panelu.
+
+### Budynki
+
+Mistrz buduje na swojej działce w tej kolejności:
+
+| Kolejność | Budynek | Koszt |
+|---|---|---|
+| 1 | **Kwatera Główna** | 20 mln Yang + 20 Kamieni Węgielnych, 30 Pni, 25 Dykt |
+| 2 | **Kowal** | 40 mln Yang + 20 Kamieni Węgielnych, 30 Pni, 20 Dykt |
+| 3 | **Alchemik** | 20 mln Yang + 15 Kamieni Węgielnych, 20 Pni, 25 Dykt |
+
+- **Który kowal:** kowal broni, jeśli na mapie jeszcze go nie ma, potem
+  płatnerz, potem jubiler. Gdy na mapie są już wszyscy trzej, gildia wybiera
+  losowo.
+- **Który alchemik:** najpierw alchemik ebonitu, potem losowo jeden z tych,
+  których na mapie brakuje, a gdy są już wszyscy – całkiem losowo.
+- Budynki stawiane są tak jak przez gracza: za Yang i surowce z ekwipunku
+  mistrza.
+
+### Surowce na budowę
+
+**Kamień Węgielny**, **Pień** i **Dykta** są teraz cennym towarem:
+
+- Boty nie sprzedają ich już handlarce. Wystawiają je na straganach za około
+  **40 000 Yang za sztukę** (cena rośnie z inflacją i ze stawkami świata).
+- **Fundusz na surowce:** mistrz zbiera zrzutką pieniądze na brakujące
+  surowce z góry i trzyma je osobno, więc nie wyda ich na nic innego.
+- **Mistrzowie kupują surowce ze straganów** innych botów z tego funduszu,
+  jak każdy inny zakup.
+- **Zlecenia:** gdy surowca nie ma na straganach, mistrz wysyła do
+  **4 członków** o odpowiednim poziomie tam, gdzie ten surowiec wypada:
+
+| Surowiec | Gdzie | Od poziomu |
+|---|---|---|
+| Pień | Góra Sohan | 60 |
+| Kamień Węgielny | Doyyumhwaji | 68 |
+| Kamień Węgielny | Dolina Orków | 50 |
+| Dykta | Świątynia Hwang | 57 |
+
+- Każdy członek gildii oddaje mistrzowi surowce potrzebne do następnego
+  budynku.
+- **Drop surowców ×10:** zwykłe potwory dają Kamień Węgielny, Pień i Dyktę
+  **10 razy częściej** niż dotąd (bossowie bez zmian). Ty też możesz je
+  farmić.
+
+### Nowa osobowość: Dropek surowców
+
+- Mniej więcej **jeden na 40 botów** zostaje Dropkiem surowców. Farmi
+  jeden surowiec i wystawia go na straganie.
+- Trzy odmiany, każda z blokadą poziomu, żeby nie przerosła swojego terenu:
+
+| Odmiana | Gdzie farmi | Poziom zatrzymany na |
+|---|---|---|
+| Pień | Góra Sohan | 66 |
+| Kamień Węgielny | Doyyumhwaji | 72 |
+| Dykta | Świątynia Hwang | 61 |
+
+- W panelach osobowość ma nazwę „Dropek surowców”.
+
+### Kowal gildyjny
+
+- Na mapie z kowalem gildyjnym boty ulepszają przedmioty **od 30 poziomu**
+  u kowala właściwego rodzaju: broń u kowala broni, zbroję, hełm i tarczę
+  u płatnerza, biżuterię u jubilera. Resztę ulepszają jak dotąd.
+- Kowal gildyjny daje **+10% szansy** na ulepszenie, ale bierze więcej niż
+  zwykły kowal. Część opłaty trafia do skarbca gildii, która go postawiła.
+- **Z kowali gildii botów możesz korzystać także Ty.**
+- Alchemicy gildyjni już stoją, ale boty jeszcze z nich nie korzystają.
+
+### Zapraszanie botów do Twojej gildii
+
+Napisz do bota szeptem, np. „chodź do mojej gildii”, „dołączysz do gildii?”
+albo „zaproszę cię do gildii”. Bot odpowie:
+
+- **„Dobrze, dodawaj mnie”** – bot bez gildii albo członek zwykłej gildii
+  botów (nie elitarnej). Członek innej gildii od razu z niej odchodzi.
+  Potem przez **5 minut** czeka na Twoje zaproszenie i przyjmuje je.
+- **„Mam swoją gildię, jestem liderem”** – bot jest mistrzem gildii.
+- **„Sorry, moja gildia jest lepsza”** – bot jest w elitarnej gildii botów.
+- Pozostałe odpowiedzi mówią, czego brakuje: nie masz gildii, nie masz prawa
+  zapraszać, gildia jest pełna, bot jest z innego królestwa, jego gildia
+  toczy wojnę albo jest w gildii innego gracza.
+
+Boty bez gildii przyjmują zaproszenie od razu, także bez pisania. Bot
+w Twojej gildii oddaje jej doświadczenie na tych samych zasadach co
+w gildiach botów. Na razie nie wpłaca Ci Yang ani przedmiotów – to jedna
+z możliwych przyszłych opcji. Boty czekające na zaproszenie od gracza nie są
+w tym czasie werbowane do gildii botów.
+
+### Seban Panel: gildie
+
+- Lista gildii ma kolumnę **„Ziemia i budynki”**.
+- Strona gildii pokazuje działkę, postawione budynki, fundusz na surowce
+  i historię wszystkich **zrzutek**: kto, ile i na co dał.
+
+### Smoczy Skowyt na cel
+
+- Smoczy Skowyt szamana zadaje obrażenia wokół **zaznaczonego celu**, a nie
+  tylko wokół samego szamana. Dotąd efekt było widać przy celu na dystans,
+  ale obrażeń nie było.
+- Zasięg to **2500**. Gdy cel jest dalej, umiejętność się nie rzuca (bez
+  zużycia many i bez odnowienia) i pojawia się komunikat „Cel jest za
+  daleko.”.
+- Bez zaznaczonego celu Skowyt działa jak dotąd, wokół szamana.
+
+### Wierzchowce i pety na starszych instalacjach
+
+- **Wierzchowce i pety z kostiumów działają także na serwerach
+  zainstalowanych ze starszej paczki.** Baza takiego serwera miała pieczęcie
+  w starej postaci i bez potworów, w które się zamieniają. Przy części
+  wierzchowców wyskakiwało „już jesteś na koniu”, inne wskakiwały w slot
+  i nic się nie działo, a peta nie dało się przywołać. Aktualizacja raz
+  ustawia wszystkie przedmioty i potwory pakietu kostiumów tak jak w pełnej
+  paczce, a przy każdym starcie dopisuje potwory, których brakuje.
+
+### Launcher
+
+- **Paczka aktualizacji rozpakowana jako nowy serwer:** launcher mówi teraz
+  wprost, że to aktualizacja, a nie instalacja, i że do pierwszej instalacji
+  potrzebna jest pełna paczka z Discorda projektu. Dotąd kończył się
+  technicznym komunikatem o brakujących zrzutach bazy danych.
+- Opis wydań na GitHubie zaczyna się od informacji, że pliki `*-update-*.zip`
+  to paczki aktualizacji, które launcher pobiera sam.
+
+### Nowa strona metin2sp.pl i odświeżona wiki
+
+- **metin2sp.pl to teraz pełna strona MT2009 PLUS**: co dodaje paczka, co
+  robią boty, jak zacząć krok po kroku (wirtualizacja, Docker, paczka
+  z Discorda, launcher), najczęstsze pytania i filmy.
+- Na stronie jest **lista zmian**, która sama pobiera nowe wersje z GitHuba
+  – każda aktualizacja pojawia się tam od razu po wydaniu.
+- **Wiki** (metin2sp.pl/wiki) opisuje wszystko, co ostatnio doszło: nowa
+  strona o gildiach (ziemia, zrzutki, budynki, surowce, Dropek, kowal
+  gildyjny), Pierścień Teleportacji i Anty-Exp, Auto Łowy na bilet,
+  Towarzysza, alchemię i wojny gildii.
+- Wiki wygodniej czyta się na telefonie: nowe menu boczne, czytelniejsze
+  tabele i marginesy.
+
+---
+
+## 2.8.2 — 2026-09-27 — Pierścień Teleportacji i Anty-Exp w ItemShopie, Auto Łowy na bilet
+
+Serwer 2.8.2 i klient 2.0.20. **Zaktualizuj oba** w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.8.1. Wędka, nowy filtr podnoszenia Auto Łowów i komunikat o bilecie
+działają dopiero z klientem 2.0.20.
+
+### ItemShop: Pierścień Teleportacji, Pierścień Anty-Exp i Auto Łowy
+
+Na to czekaliście – nowe pozycje na pierwszej stronie ItemShopu:
+
+- **Pierścień Teleportacji** (149 SM, od 30 lvl) – Teleporter w kieszeni:
+  te same cele co u Teleportera, z miasta i spoza niego. Nie zużywa się
+  i działa bez limitu czasu.
+- **Pierścień Anty-Exp** (99 SM) – użyj z ekwipunku, żeby włączyć albo
+  wyłączyć blokadę doświadczenia. Bez limitu czasu.
+- **Auto Łowy (8h)** (29 SM) – 8 godzin automatycznego polowania
+  (klawisz K). Czas leci tylko wtedy, gdy postać jest w grze, a kolejne
+  bilety się sumują (do 30 dni).
+- Nowa opcja w oknie POZIOM TRUDNOŚCI i w panelu klasycznym: Auto Łowy
+  „dostępne dla każdego” (domyślnie, jak dotąd) albo „tylko z biletem
+  z ItemShopu”.
+
+Bilet i Pierścień Anty-Exp są przypisane do postaci: nie da się ich
+sprzedać, wymienić ani wyrzucić.
+
+### Klient 2.0.20
+
+- Nad botami widać, co robią (łowią, walczą, handlują), a klient nie
+  zapisuje już setek wpisów „Unknown Server Command” w syserr.txt.
+- Wędka pokazuje wymagany 30 poziom.
+- Filtr podnoszenia Auto Łowów ma osobno hełmy, tarcze, bransolety, buty,
+  naszyjniki i kolczyki. Dotychczasowe ustawienia „Zbroje” i „Ozdoby”
+  przechodzą na nowe przełączniki.
+- Bez czasu Auto Łowów klient mówi, skąd go wziąć, zamiast po cichu
+  przerywać polowanie.
+
+### Alchemia
+
+- Odłamki Smoczego Kamienia z misji Alchemika wypadają tylko z potworów
+  najwyżej 15 poziomów niższych od postaci (albo dowolnie wyższych).
+- List o wymianie Odłamków na Cor Draconis wyświetla się poprawnie (był za
+  długi dla klienta).
+
+### Wojny gildii
+
+- Boty piją mikstury na wojnie, wstają w obozie z pełnym HP i maną, a runda
+  czeka na ostatniego z przegranych.
+- Równe strony: najwyżej 20 na 20, losowo wybrani z całej gildii.
+
+### Towarzysz
+
+- Zakłada przedmioty, które mu dasz (Szamanka nie stoi już z komunikatem
+  „Założy to, jak tylko skończy cios”).
+- Luruje do 15 poziomów ponad właściciela, a Łucznik strzela z dystansu,
+  zamiast wchodzić w grupę potworów.
+
+### Boty
+
+- Czytają księgi także z blokadą poziomu i kupują tylko te, które mogą
+  przeczytać. Księgi i Kamienie Duchowe łączą się po 200.
+- Zbierają yang i Ucho z Tanaki. Pył na Marmur Błogosławieństwa dopiero od
+  30 lvl.
+- Boty po zakończeniu gry wracają z bronią, zbroją, miksturami i skrzynią
+  startową (dotąd często bez broni i bez celu).
+- Rynek: bot kupuje z lady sprzęt +6 i wyżej o jeden plus lepszy od
+  noszonego albo z tym samym plusem i wyraźnie lepszymi bonusami. Zbroje
+  i biżuteria +0..+3 trafiają na lady wszystkich botów (limit 40 na rodzinę).
+  Paczki ziół i siana trafiają na ladę za pierwszym razem.
+- Kowal i ekwipunek: kamienie bonusu idą w przedmiot, który bot naprawdę
+  założy, a ochrona noszonego przedmiotu działa na każdym kroku ulepszania.
+- Rzadkie osobowości (wędkarz, hazardzista) nie wchodzą do drużyn, a suwak
+  wędkowania działa w pełni.
+
+### Launcher i panele
+
+- Na Windowsie zmiany respawnów i poziomu trudności z panelu działają od
+  razu.
+- Własna edycja dropu Szkatułek Blasku Księżyca przetrwa start
+  i aktualizację.
+- Panel zaawansowany Sebana 1.92.0: osobowości botów, czat na żywo,
+  wiadomości ze świata, respawny, nazwy botów, kreator postaci, juki konne
+  i ekwipunek odświeżany na żywo. Kostiumy i Alchemia postaci zostają.
+
+---
+
+## Klient 2.0.20 — 2026-09-27 — Statusy botów, wędka, filtr Auto Łowów
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.0.18.
+
+- Status bota nad jego głową (co teraz robi).
+- Wędka pokazuje 30 poziom.
+- Filtr podnoszenia Auto Łowów: osobno hełmy, tarcze, bransolety, buty,
+  naszyjniki i kolczyki.
+- Komunikat o braku czasu Auto Łowów z biletem z ItemShopu.
+
+---
+## 2.8.1 — 2026-09-26 — Poprawka startu świeżej instalacji
+
+Poprawka serwera; zawiera wszystko z 2.8.0. Klient bez zmian (2.0.18).
+
+- Na nowej instalacji 2.8.0 kanał CH1 był OFF przy pierwszym uruchomieniu:
+  baza gry przerywała start z błędem ItemShopu („item_index 906 not found in
+  itemshop_time_auction”). Stare aukcje czasowe ItemShopu (906–908, grudzień
+  2024) były kasowane, a zaraz potem wgrywanie ofert ItemShopu dodawało je
+  z powrotem tylko do połowy. Teraz porządek jest robiony także po wgraniu
+  ofert, więc serwer wstaje za pierwszym razem.
+- Kto trafił na ten błąd, nie musi nic robić po aktualizacji. Bez
+  aktualizacji wystarczyło zatrzymać serwer i kliknąć GRAJ ponownie.
+
+---
+
+## 2.8.0 — 2026-09-26 — Alchemia klasami, szarfy po kosztach, nowe wydarzenia
+
+Serwer 2.8.0 i klient 2.0.18. **Zaktualizuj oba** w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.7.0. Pierwszy start po aktualizacji kompiluje serwer od nowa, więc trwa
+dłużej niż zwykle.
+
+### Nowe w grze (klient 2.0.18)
+
+- **Podgląd skrzyni:** mały przycisk w ekwipunku – przeciągasz skrzynkę na
+  okno i widzisz, co może z niej wypaść.
+- **Podgląd dropu:** „?” przy pasku życia potwora albo metina pokazuje, co
+  może z niego wypaść dla Twojej postaci (także Cor Draconis i szarfy).
+- **Przenikanie przez Towarzysza:** Twoja postać przechodzi przez własnego
+  Towarzysza zamiast się o niego blokować.
+- **Masowa zmiana ceny w sklepie** (Ctrl + PPM) zmienia ceny po kolei
+  i sprawdza, czy wszystkie weszły – żadna pozycja już nie „wypada”.
+- Auto Łowy: obrażenia z umiejętności wchodzą.
+- Mapa Katakumb Diabła w kliencie.
+
+### Wydarzenia i miejsca
+
+- **Pirat Tanaka** i **deszcz metinów Zuo** – ustawiasz w panelu (plan
+  tygodniowy albo „Aktywuj teraz”). Za ucho Tanaki Yonah daje Fioletową
+  Hebanową Szkatułkę.
+- **Grota Wygnańców:** Koe-Pung wpuszcza od 75 poziomu za Krwisty Kamień
+  z codziennej misji Seon-Hae (stoi we wszystkich trzech wioskach).
+- **Rajdy botów na Azraela** przez Katakumby Diabła, ogłaszane na czacie.
+- Wieża Demonów: lepsza walka botów na 7. piętrze i z Umarłym Rozpruwaczem.
+- Buffy szamana trafiają do całej drużyny, a łup z potwora należy do tych,
+  którzy go bili.
+
+### Alchemia u botów
+
+- Boty dążą do jak najwyższej **klasy**: zwykłych i błyszczących kamieni nie
+  zakładają, rzadkie noszą na niskich poziomach, starożytne na średnich,
+  legendarne od 75 poziomu (i podnoszą im stopień), mityczne na końcowych.
+- Kamienie ulepszają przed założeniem tak daleko, jak pozwala torba.
+- W sklepach wystawiają kamienie dopiero od klasy rzadkiej.
+
+### Szarfy u botów
+
+- **Cena szarfy = koszt wyrobienia + 25%**, według klasy i absorpcji,
+  przeliczana kursem yang, bez przecen.
+- Drop szarf dla botów taki sam jak dla graczy (także unikaty ze skrzyń
+  bossów).
+- Cele: 5% od 30 poziomu, 10% od 50, unikat od 65, łączenie 4+4 do 21% od
+  90 poziomu. Samotna szarfa bez pary po 3 godzinach idzie do sprzedaży.
+- Boty pochłaniają tylko przedmioty bliskie swojemu poziomowi i z bonusami.
+
+### ItemShop i SM
+
+- **Kostiumy, wierzchowce, pety i nakładki są tylko w ItemShopie** – nie
+  wypadają już z metinów, bossów, skrzyń, Ksiąg Misji ani z łowienia (Rada
+  Pustelnika wypada jak wcześniej).
+- Boty realizują od razu wszystkie Kupony SM, także przy straganie.
+- Panel zaawansowany: **Daj wszystkim botom SM** – kwota rozdawana w kuponach.
+
+### Towarzysz
+
+- Sprzedaje złom z pełnego plecaka u handlarza, walczy pieszo, zmienia
+  królestwo razem z Tobą i sam czyta Księgę Zapomnienia.
+- Może zakładać wszystkie kostiumy.
+
+### Poprawki
+
+- **COOP:** gdy router nie otwiera portów i nie ma VPN, serwer używa adresu
+  z sieci domowej – host może grać, zamiast wracać do wyboru kanału.
+- Fryzura z ItemShopu jest gotowa już przy jednym dobrym bonusie.
+- Sprzedana linia nie wisi już w sklepie bota z ceną 0.
+- Instrukcja instalacji na VPS i instalator prowadzą do serwera MT2009 PLUS
+  (wcześniej instalowały inny projekt, bez alchemii, szarf i juków, a gra
+  prosiła potem o aktualizację klienta).
+
+---
+
+## Klient 2.0.18 — 2026-09-26 — Podgląd skrzyń i dropu, przenikanie Towarzysza
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Wymaga serwera 2.8.0.
+
+- Podgląd skrzyni (przycisk w ekwipunku) i podgląd dropu („?” przy pasku
+  życia potwora albo metina).
+- Twoja postać przechodzi przez własnego Towarzysza.
+- Masowa zmiana ceny w sklepie zmienia wszystkie pozycje po kolei i sprawdza,
+  czy weszły.
+- Auto Łowy: obrażenia z umiejętności wchodzą.
+- Mapa Katakumb Diabła.
+
+---
+
+## 2.7.0 — 2026-09-26 — Alchemia u botów
+
+Serwer 2.7.0, klient bez zmian (2.0.17). Zaktualizuj serwer w launcherze
+(**SPRAWDŹ AKTUALIZACJE**). Zawiera wszystko z 2.6.0. Pierwszy start po
+aktualizacji kompiluje serwer od nowa, więc trwa dłużej niż zwykle.
+
+### Alchemia u botów
+
+- **Codzienne Cory:** każdy bot od 30 poziomu wykonuje dzienne zadanie
+  Alchemika tak jak gracz – co dziesiąty zabity potwór daje odłamek,
+  10 odłamków to Cor Draconis, najwyżej 5 Corów dziennie.
+- **Połowa botów korzysta z alchemii:** otwiera Cory, zakłada najlepszy
+  kamień każdego z 7 rodzajów, ulepsza u Alchemika klasę, stopień i siłę
+  (z tymi samymi szansami i opłatami co gracz) i kupuje Eliksir Czasu, gdy
+  kamieniowi kończy się czas. Im wyższy poziom bota (50, 65, 75, 90), tym
+  lepsze kamienie buduje.
+- Kamienie, których bot nie potrzebuje – nadmiarowe, gorsze kopie albo
+  z bonusami bez znaczenia dla jego klasy – wystawia w sklepie (do 4 linii).
+- **Pozostałe boty** sprzedają Cory w sklepach po 100 000 yang za sztukę,
+  w stosach po co najmniej 5.
+- **Ceny Kamieni Smoka** to średni koszt zrobienia kamienia z Corów po
+  100 000 yang plus 25%, przeliczany według kursu yang tak jak inne towary
+  botów.
+
+### Dla graczy
+
+- Kamienie Smoka można wymieniać i sprzedawać w sklepie.
+- Eliksir Czasu (D) kosztuje 5 000 000 yang.
+
+### Towarzysz
+
+- Z pełnym plecakiem sprzedaje złom u handlarza – gdy stoisz przy
+  handlarzu albo po komendzie „zakupy”. Wcześniej trzymał sprzęt na sklep,
+  którego nigdy nie otwiera.
+
+### Panel i wydania
+
+- Seban Panel (7790): w karcie postaci, pod kostiumami, podgląd noszonych
+  Kamieni Smoka.
+- Każda wersja serwera i klienta trafia też do zakładki **Releases** na
+  GitHubie – z opisem zmian i paczką aktualizacji.
+
+### Poprawki
+
+- Boty zakładają kamienie między walkami, więc nie zapełniają logów
+  odmowami w czasie walki.
+
+---
+
+## Klient 2.0.17 — 2026-09-26 — Naprawa Groty Wygnańców V2
+
+Zaktualizuj klienta w launcherze (**AKTUALIZUJ KLIENTA**). Serwer zostaje 2.6.0.
+
+- Naprawione wejście do Groty Wygnańców V2: klient nie wyłącza się już po
+  przejściu na drugą część Groty.
+
+---
+
+## 2.6.0 — 2026-09-26 — Juki konne, szarfy botów, Grota Wygnańców
+
+Serwer 2.6.0 i klient 2.0.16. **Zaktualizuj oba** w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.5.1. Pierwszy start po aktualizacji kompiluje serwer od nowa, więc trwa
+dłużej niż zwykle.
+
+### Juki konne
+
+- **Piąta strona ekwipunku:** do 45 dodatkowych miejsc (9 rzędów po 5).
+  Pierwszy rząd otwiera Stajenny (koń od 1 poziomu, 1 Medal Konny
+  i 5 Materiałów Rzemieślniczych), kolejne wymagają coraz wyższego poziomu
+  konia (4, 6, 9, 11, 14, 16, 19 i 21). Wszystkie rzędy kosztują razem
+  25 medali i 325 materiałów.
+- **Materiały Rzemieślnicze** robi Dozorca z ulepszaczy: 1000 yang za
+  sztukę, udaje się 55%.
+- Juki działają przy przywołanym koniu, w czasie jazdy na koniu, a teraz
+  także w czasie jazdy na wierzchowcu z pieczęci (od klienta 2.0.15).
+- **Boty:** 30% botów rozwija konia i juki – każdy od 3 do 9 rzędów, po
+  jednym co kilka godzin. Skupują medale, materiały i tanie ulepszacze,
+  a juki służą im za dodatkowe miejsce w plecaku.
+- Pozostałe boty ulepszacze, które nie sprzedały się w sklepie przez
+  12 godzin, przerabiają u Dozorcy i wystawiają Materiały Rzemieślnicze po
+  100 000 yang za sztukę.
+
+### Szarfy u botów
+
+- 60% botów od 30 poziomu buduje własną szarfę: skupuje szarfy z rynku,
+  łączy je u Uriela (dowolne rodzaje tego samego stopnia), pochłania w nią
+  broń albo zbroję i ją zakłada.
+- Cel rośnie z poziomem: 5% od 30 poziomu, 10% od 50, unikatowa szarfa od 65,
+  a najbogatsze boty od 90 poziomu łączą unikaty do 21%.
+
+### Nowe miejsca
+
+- **Grota Wygnańców:** wejście wraca na swoje miejsce – portal w lewym dolnym
+  rogu Doliny Orków, obok niego Seon-Pyeong. Grota V1 (lodowe potwory,
+  Setaou, Silna Lodowa Wiedźma) i Grota V2 (Setaou, Dowódca i Generał
+  Yonghan). Boty chodzą tam od 78 i 84 poziomu i zwołują rajdy na bossów.
+  Wejście wymaga klienta 2.0.16.
+- Skrzynia Azraela i Skrzynia Mroku mają wreszcie zawartość.
+
+### Towarzysz
+
+- Osobne okna **Ekwipunek** i **Umiejętności** (klient 2.0.14): przedmiot
+  Towarzysza przeciągasz do swojego plecaka, a punkty umiejętności
+  rozdajesz w oknie.
+- Towarzysz dostaje wszystkie punkty umiejętności, a szaman trzyma Twoje
+  buffy tak jak swoje, także w trakcie walki.
+- Potwory, które biją Towarzysza, przechodzą na Ciebie, gdy zginie albo go
+  odeślesz, a jego zabicia liczą się do Twoich misji.
+- Nowy Towarzysz zaczyna z pustym plecakiem i startowym wyposażeniem.
+
+### Boty
+
+- Każdy noszony przedmiot ulepszają co najmniej do +4, a Perfekcjonista
+  dąży do +9. Bonusują tylko tam, gdzie się to opłaca, a z kamieniami – od
+  razu, także poza miastem.
+- Ulepszacze trafiają na sklepy w naturalnych stosach, bez chomikowania.
+  Sprzęt z rynku boty kupują tylko od +6.
+- Metinolog używa Wykrywacza Kamieni Metin i idzie do wskazanego kamienia.
+- 100 Magicznego Pyłu boty zamieniają na Marmur Błogosławieństwa do piątego
+  bonusu.
+- Boty otwierają szkatułki z bossów zamiast je wystawiać, a brakujący klucz
+  kupują na rynku.
+- Boty odpuszczają na „Poddaję się”, boty różnych królestw nie biją się już
+  o Metiny, a pełny plecak nie odciąga bota z Wieży Demonów ani z rajdu.
+
+### Poprawki
+
+- Cor Draconis podniesiony z ziemi albo otrzymany dołącza do stosu, który
+  już masz w ekwipunku.
+- Pieczęć wierzchowca po śmierci schodzi do ekwipunku – po wstaniu możesz ją
+  założyć i jechać dalej.
+- Boty w przemianie kulą polimorfii nie zdejmują już broni i nie walczą
+  z bossem gołymi rękami, a bonusując tuż po ciosie nie zostają bez
+  przedmiotu.
+- Boty nie utykają w części Świątyni Hwang odciętej od wyjścia.
+- Kamienie Metin stoją w miejscu i nie zapychają logów serwera błędami.
+- Panel admina: szarfa bota z pochłanianiem i liczba rzędów juków w karcie
+  bota; pole hasła tylko tam, gdzie logowanie go wymaga.
+- Licencja paczki: CC BY-NC-SA 4.0.
+## Klient 2.0.16 — 2026-09-26 — Ładowanie map Skipii
+
+- Naprawiono ładowanie `metin2_map_skipia_dungeon_01` i
+  `metin2_map_skipia_dungeon_02`. Klient ma teraz dane map pod ścieżką,
+  której wymaga silnik, więc wejście na mapę nie kończy się błędem braku
+  `MapProperty.txt`.
+
+---
+
+## Klient 2.0.15 — 2026-09-26 — Juki konne na wierzchowcach
+
+- Juki konne działają podczas jazdy na klasycznym koniu oraz na
+  wierzchowcu użytym z pieczęci. Nadal wymagają konia co najmniej na poziomie
+  1, tak jak po stronie serwera.
+
+---
+
+## Klient 2.0.14 — 2026-09-25 — Ekwipunek Towarzysza i sortowanie
+
+- Okno Towarzysza (**P**) ma teraz osobne okna **Ekwipunek** i
+  **Umiejętności**. Przedmiot towarzysza można przeciągnąć do własnego
+  plecaka.
+- Polecenia Towarzysza są kolejkowane, dlatego szybkie kliknięcia nie gubią
+  rozkazów.
+- Auto Łowy łucznika podchodzą po własny drop także wtedy, gdy przeciwnik
+  pozostaje w zasięgu łuku.
+- Naprawiono przycisk **Scal i uporządkuj** w ekwipunku. Klient ponownie
+  zawiera moduł sortowania i odbiera wynik operacji z serwera.
+
+---
+
+## 2.5.1 — 2026-09-25 — Poprawka: serwer, który nie wpuszczał do gry
+
+Serwer 2.5.1; klient zostaje 2.0.13. Zaktualizuj serwer w launcherze
+(**SPRAWDŹ AKTUALIZACJE**). Zawiera wszystko z 2.5.0.
+
+- **Koniec wyrzucania po wpisaniu loginu i hasła.** Na części światów
+  brakowało w bazie przedmiotów MT2009 PLUS (np. ametystów alchemii), więc
+  serwer gry wyłączał się zaraz po starcie i po zalogowaniu nie było kanału,
+  do którego można wejść. Teraz serwer przy każdym starcie sam dopisuje do
+  bazy brakujące przedmioty. Postacie i ich rzeczy zostają bez zmian.
+
+---
+
+## 2.5.0 — 2026-09-25 — Towarzysz, bossowie botów, medale na straganach
+
+Serwer 2.5.0 i klient 2.0.13. **Zaktualizuj oba** w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.4.1 i wszystkie zmiany serwera Tieru do 2.2.15. Pierwszy start po
+aktualizacji kompiluje serwer od nowa, więc trwa dłużej niż zwykle.
+
+### Towarzysz
+
+- Twój stały kompan: po zalogowaniu kliknij list **Towarzysz**, wybierz
+  klasę, płeć, ścieżkę i nick. Jest z Tobą w grupie, expi po równo, walczy
+  o Ciebie, zbiera Twój drop, a szaman Cię buffuje.
+- Okno Towarzysza pod klawiszem **P**, a na pasku w prawym dolnym rogu
+  przyciski **Towarzysz** i **Auto Łowy**.
+- Szeptem albo komendą `/towarzysz`: przywołaj, wolna ręka, stan, sposób
+  walki.
+
+### Boty
+
+- **Bossowie świata** padają pod grupami botów jednego królestwa: zbierają
+  się poza zasięgiem bossa, buffują się i atakują razem, a gdy boss prawie
+  nie traci życia, przychodzą posiłki.
+- **Medale konne na straganach:** dropper medali wychodzi z Małpiego Lochu
+  z 50 medalami (a nie z 200), idzie do pierwszej wioski i wystawia do 16
+  medali. Zwykłe boty je kupują, szybciej mają konia 10 poziomu i idą na
+  próbę konia bojowego.
+- **Wojna z gildią botów:** mistrz gildii wypowiada ją komendą
+  `/war nazwa_gildii`; obozy i zbiórka przed walką.
+- Rzadkie osobowości botów, receptury zielarskie, Wieża Demonów od 55
+  poziomu, rajdy na bossa bez bójek między królestwami.
+
+### Rozgrywka
+
+- **Zwoje Błogosławieństwa z Metinów** od 15 do 99 poziomu (domyślnie 1%).
+- **Umiejętności:** zwykła staje na 17 punktach, przy 17. punkcie pada rzut
+  na Mistrza; gdy się nie uda, do 30 poziomu resetuje ją Starsza Pani.
+- Broń od 30 poziomu u zwykłego kowala do +6, od +7 pod zwojami.
+- Kowal i inne okna widzą materiały na wszystkich 4 stronach ekwipunku.
+
+### Alchemia i szarfy do wyłączenia
+
+- W panelu admina (**🐉 Alchemia i szarfy**) i w Seban Panelu (Reguły po
+  aktualizacji) włączysz albo wyłączysz alchemię i szarfy – od razu, bez
+  restartu. W `.env`: `M2_ALCHEMY` i `M2_SASHES`.
+- Wyłączenie zatrzymuje tylko nowe Cory, odłamki i szarfy. To, co gracze
+  mają, zostaje, a plecak alchemii działa.
+
+### Poprawki
+
+- **Podgląd dropu** pokazuje tylko przedmioty, które wypadają co najmniej
+  raz na 10 000 zabójstw – bez broni +2 przy psie na 1 poziomie.
+- Auto Łowy po wskrzeszeniu, czekając na życie, rzucają tylko buffy.
+
+### Launcher
+
+- W oknie **POZIOM TRUDNOŚCI** pola **Auto Łowy**, **Towarzysz**
+  i **Skrzynia Ucznia**.
+- **SERWER NA VPS** (eksperymentalne): instalacja i aktualizacja serwera
+  na własnym VPS prosto z launchera.
+- COOP w jednej sieci domowej bez routera; ostrzeżenie o folderze serwera
+  w OneDrive.
+
+---
+
+## Klient 2.0.13 — 2026-09-25 — Towarzysz i przyciski na pasku
+
+- Klawisz **P** otwiera okno Towarzysza z poziomem, HP, PE, położeniem,
+  wykonywaną czynnością i wyposażeniem.
+- Z okna można wydawać polecenia, ustawiać walkę, zbieranie, ochronę i buffy.
+- Pasek w prawym dolnym rogu ma przyciski Towarzysza i Auto Łowów, jeśli
+  szerokość ekranu wynosi co najmniej 940 pikseli.
+- Auto Łowy po wskrzeszeniu, czekając na HP, używają wyłącznie buffów i nie
+  prowokują potworów umiejętnością atakującą.
+- Zachowano wszystkie zmiany klienta MT2009 Plus 2.0.12.
+
+---
+
+## Klient 2.0.12 — 2026-09-25 — Materiały na wszystkich stronach ekwipunku
+
+- Kowal oraz pozostałe okna klienta widzą materiały znajdujące się na
+  stronach 3. i 4. ekwipunku.
+- Przeniesienie materiału między stronami jest uwzględniane bez ponownego
+  logowania.
+- Zachowano oddzielną obsługę dodatkowej strony ekwipunku konia.
+
+---
+
+## 2.4.1 — 2026-09-25 — Cory w stosach, wierzchowce bez „wygasła”, koniec wyrzucania z gry
+
+Serwer 2.4.1 i klient 2.0.11. **Zaktualizuj oba** w launcherze
+(**SPRAWDŹ AKTUALIZACJE**, potem **AKTUALIZUJ KLIENTA**). Zawiera wszystko
+z 2.4.0. Pierwszy start po aktualizacji kompiluje serwer od nowa, więc trwa
+dłużej niż zwykle.
+
+### Cor Draconis i szarfy
+
+- **Cory łączą się w stosy.** Przeciągnięty na taki sam Cor dokłada się do
+  stosu, a ze stosu można oddzielić część.
+- **Boty nie stoją już nad twoim Corem.** Bot nie może podnieść cudzego Cora
+  z ziemi, a mimo to podchodził do niego i czekał, aż zniknie. Teraz go
+  omija – swoje Cory dalej dostaje prosto do plecaka.
+- **Cor i szarfa tylko z potworów w zasięgu poziomu.** Wypadają z Metina
+  albo bossa, który ma najwyżej 15 poziomów mniej niż ty; silniejszy daje
+  drop bez ograniczeń. Postać na 90 poziomie nie wybije już szarfy z Metina
+  na 5 poziomie.
+
+### Wierzchowce
+
+- **Pieczęcie bez limitu czasu działają.** Dzik, Wilk, Tygrys i Lew
+  (niebieskie), Biały Lew, Dzik Wojenny, Wilk Wojenny, Szarżujący Tygrys
+  i Waleczny Lew pisały „Ta pieczęć wierzchowca już wygasła”, choć były
+  nowe. Teraz jeździsz na nich bez końca.
+- **Bonusy pieczęci liczą się raz.** Po śmierci albo teleporcie na
+  wierzchowcu każde kolejne wsiadanie dokładało bonusy jeszcze raz.
+- **Boty jeżdżą na wierzchowcach z ItemShopu.** Koń bojowy zostaje dla nich
+  ważny; ze zwykłego wierzchowca bot zsiada po umiejętność, Metiny bije
+  z siodła, a na deskach, chmurach i łodziach jeździ cały czas.
+
+### Stabilność
+
+- **Koniec wyrzucania do ekranu logowania co pół minuty.** Na części
+  komputerów zegar Dockera (WSL2) chodzi za szybko i co kilkanaście sekund
+  jest cofany o kilka sekund. Serwer brał to za przyspieszanie gry i
+  rozłączał gracza bez komunikatu. Teraz ma na to zapas.
+- Ten sam skok zegara resetował naraz setki botów jako „nieaktywne”
+  i przycinał serwer – już nie.
+- Jeśli masz takie wyrzucanie, zaktualizuj też WSL (`wsl --update`)
+  i Docker Desktop – zegar będzie wtedy równy.
+
+---
+
+## Klient 2.0.11 — 2026-09-25 — Auto Łowy i poprawki ekwipunku
+
+- Pełna, sprawdzona paczka klienta bez funkcji Target Drop i wyszukiwarki
+  sklepów.
+- Zawiera nowe Auto Łowy pod klawiszem **K**.
+- Cor Draconis oraz wszystkie szarfy można normalnie przenosić, handlować
+  nimi i wystawiać je w sklepach.
+- Przycisk alchemii nie nachodzi już na slot naszyjnika.
+- Zawiera też COOP i wszystkie poprawki z klienta 2.0.10.
+
+---
+
+## 2.4.0 — 2026-09-24 — Serwer na bazie Tieru 2.2.9, Cory botów nie leżą na ziemi
+
+Serwer 2.4.0; klient zostaje 2.0.10. Zaktualizuj serwer w launcherze
+(**SPRAWDŹ AKTUALIZACJE**). Zawiera wszystko z 2.3.4 i wszystkie zmiany
+serwera Tieru do 2.2.9. Pierwszy start po aktualizacji kompiluje serwer od
+nowa, więc trwa dłużej niż zwykle.
+
+Nowości z Auto Łowów po stronie klienta (autologin, Szybki Atak) oraz
+statusy botów po angielsku wejdą z następną aktualizacją klienta. Serwer
+jest już na nie gotowy.
+
+### Cor Draconis i szarfy
+
+- Gdy Metina albo bossa bije gracz razem z botami, Cor Draconis i szarfa,
+  które przy podziale dropu przypadną botowi, trafiają od razu do jego
+  plecaka. Wcześniej leżały na ziemi z nazwą bota i nikt nie mógł ich
+  podnieść, dopóki nie wygasła ochrona właściciela.
+
+### Z serwera Tieru (2.2.4–2.2.9)
+
+- **Metiny z konia bojowego:** bot z koniem bojowym bije Metina z siodła,
+  także w Wieży Demonów, a łucznik strzela do kamienia pieszo.
+- **Wieża Demonów:** łucznicy strzelają z 15 m, bot podnosi swój drop
+  w Wieży, kowal na 6. piętrze dostaje przedmiot z plecaka, na 7. piętrze
+  najpierw potwory, potem Metin, a demony pojawiają się raz.
+- **Łucznicy:** botom strzały się nie kończą, a łucznik nie stoi już
+  w walce między umiejętnościami.
+- **Szepty do botów:** bot powie, jaką ścieżką gra; szaman poda swoje
+  buffy; na „chodź do mnie” bot przyjdzie i pomoże w walce.
+- **Boty zmieniają kanały:** przy drugim kanale co 2 minuty kilka botów
+  zamienia się miejscami.
+- **Wojny gildii:** boty nie rzucają się całą gildią na jedną osobę.
+- **Hazardzista i magazyny:** hazardzista trzyma po 2 bazy każdego
+  przedmiotu, pozostałe boty nie trzymają zbroi w magazynach, a to, co
+  hazardzista ulepszył, idzie na sprzedaż.
+- **Tarcze i zbroje** bot ocenia po obronie i bonusach, a nie po poziomie
+  przedmiotu. **Medale konne** na straganach po 2 sztuki.
+- **Broń na 30 poziom** bot z yangiem ulepsza co najmniej do +6.
+- **Próba konia bojowego:** bot sam szuka łuczników na pustyni.
+- **Rybak** otwiera co piątą małżę, reszta idzie na straganie.
+- **Rada Pustelnika** tuż przed czytaniem księgi, więc czytanie się udaje.
+- **Zmiana ceny wielu przedmiotów naraz** (Ctrl + prawy przycisk) nie gubi
+  pozycji.
+- **Launcher:** opisy przy ustawieniach liczby botów, propozycja
+  przełączenia klienta na angielski, gdy launcher jest po angielsku.
+- **COOP:** gdy router nie otwiera portów, launcher mówi to wprost
+  i podpowiada VPN.
+- **Budowanie przy aktualizacji** dobiera liczbę zadań do wolnej pamięci,
+  więc na laptopie nie stoi tak długo.
+- Panele pokazują aktualny poziom botów.
+
+## 2.3.4 — 2026-09-24 — Wierzchowce już nie cofają
+
+Serwer 2.3.4; klient zostaje 2.0.10. Zaktualizuj serwer w launcherze
+(**SPRAWDŹ AKTUALIZACJE**). Zawiera wszystko z 2.3.3. Pierwszy start po
+aktualizacji kompiluje serwer od nowa, więc trwa dłużej niż zwykle.
+
+### Wierzchowce
+
+- Szybkie wierzchowce nie cofają już postaci podczas jazdy. Serwer
+  sprawdzał prędkość każdego jeźdźca tak, jakby jechał na zwykłym koniu
+  bojowym, więc wierzchowce szybsze od niego (np. Manni, Manu, Cerber) były
+  cofane. Teraz serwer liczy prędkość z animacji konkretnego wierzchowca,
+  tak jak klient. Dotyczy to wszystkich wierzchowców, nie tylko Magma Manni.
+- Jeśli jakiś wierzchowiec nadal cofa, podaj jego nazwę na kanale
+  **błędy i bugi** na Discordzie.
+
+## 2.3.3 — 2026-09-24 — Alchemia dla każdego, boty bonusują kostiumy
+
+Serwer 2.3.3; klient zostaje 2.0.10. Zaktualizuj serwer w launcherze
+(**SPRAWDŹ AKTUALIZACJE**). Zawiera wszystko z 2.3.2. Pierwszy start po
+aktualizacji kompiluje serwer od nowa, więc trwa dłużej niż zwykle.
+
+### Alchemia bez misji na 30 poziom
+
+- Każdy gracz ma od razu dostęp do alchemii, bez misji u Alchemika.
+  Kamień z otwartego Cor Draconis trafia do plecaka alchemii, a nie na
+  ziemię, i można go podnieść z ziemi.
+- Naprawiona aktywacja alchemii: zwykły gracz dostawał „Ta komenda nie
+  istnieje”, działało to tylko u GM.
+- Misja u Alchemika działa dalej jako źródło Cor Draconis za Odłamki.
+
+### Boty bonusują kostiumy
+
+- Boty od 30 poziomu z co najmniej 20 mln yang kupują u Handlarki
+  Różności wzmocnienia i zaczarowania kostiumu – po jednym stacku na
+  wizytę i nigdy poniżej 10 mln yang.
+- Wzmacniają kostium, fryzurę i nakładkę, aż mają dwa bonusy (najbogatsze,
+  od 150 mln, trzy), a potem zaczarowują je, aż oba bonusy będą warte
+  zachowania – według tych samych zasad co przy zbrojach i broniach.
+- Jeden przedmiot naraz; nie ruszają kostiumu, któremu zostało mniej niż
+  tydzień.
+
+### Pety
+
+- Bonus petów „atak magiczny %” zaczął naprawdę działać – wcześniej serwer
+  go pomijał.
+
+### Seban Panel
+
+- Profil bota pokazuje jego kostium, fryzurę, nakładkę, szarfę,
+  wierzchowca i peta, z ikonami, nazwami, bonusami i czasem do
+  wygaśnięcia.
+- Dodane ikony ponad 1600 kostiumów, fryzur, nakładek, szarf, wierzchowców
+  i petów.
+
+## Klient 2.0.10 — 2026-09-24 — Poprawka: atak z mounta i sprzedaż u handlarza
+
+- Kto aktualizował klienta z wersji starszej niż 2.0.6 prosto do 2.0.8
+  albo 2.0.9, dostał tylko nowe pliki interfejsu, a stary
+  `metin2client.exe`. Nie działały u niego zwykły atak z kostiumowego
+  mounta (poprawka z 2.0.6) i „Sprzedaj wiele” u handlarza (poprawka
+  z 2.0.7).
+- Klient 2.0.10 to pełna paczka: aktualny `metin2client.exe` razem
+  z interfejsem i COOP z 2.0.9. Po aktualizacji każdy ma wszystkie
+  poprawki, niezależnie od wersji, z której aktualizuje.
+- Przed aktualizacją zamknij grę (sprawdź też Menedżer zadań, czy
+  `metin2client.exe` nie został w tle).
+
+## 2.3.2 — 2026-09-24 — COOP działa: graj ze znajomymi
+
+Serwer 2.3.2 i klient 2.0.9. **Zaktualizuj oba** – w launcherze przy starcie
+albo przyciskami **SPRAWDŹ AKTUALIZACJE** i **AKTUALIZUJ KLIENTA**. Zawiera
+wszystko z 2.3.1.
+
+### COOP – gra ze znajomymi przez internet
+
+- COOP działa z klientem MT2009 Plus: host udostępnia swój świat w oknie
+  **COOP** w launcherze, a znajomi grają na nim ze swojego komputera.
+- **Host:** okno COOP → *Zabezpiecz konta* → *Dodaj znajomego* → *Hostuj*.
+  Launcher otwiera porty gry, ustawia router (UPnP) albo używa VPN
+  (Radmin VPN, Tailscale, ZeroTier, Hamachi), dodaje regułę zapory i daje
+  kod zaproszenia dla każdego znajomego.
+- **Znajomy:** potrzebuje tylko klienta 2.0.9. Uruchamia `Dolacz.bat`
+  w folderze klienta albo wkleja kod w oknie COOP launchera. Na liście
+  serwerów pojawia się świat hosta jako **„Online: …”**, obok localhosta.
+- Przejście na mapy z innego rdzenia działa u znajomych: podczas
+  hostowania serwer podaje klientom adres, pod którym host jest dostępny,
+  a po **Zakończ** wraca do adresu lokalnego.
+- Hostując przez internet (bez VPN), host też łączy się przez swój adres
+  publiczny. Jeśli u hosta zmiana mapy zawiesza się na ładowaniu, jego
+  router tego nie obsługuje – wtedy najprościej hostować przez Radmin VPN
+  albo Tailscale.
+
+## Klient 2.0.9 — 2026-09-24 — COOP
+
+- Klient czyta `coop.cfg` z folderu klienta i dodaje świat znajomego do
+  listy serwerów jako „Online: …”, za localhostem. Bez tego pliku lista
+  wygląda jak dotąd, a uszkodzony plik jest pomijany.
+- Nowy `Dolacz.bat`: wklej kod zaproszenia od hosta, a skrypt zapisze
+  `coop.cfg` i pokaże login i hasło do świata znajomego.
+
+## 2.3.1 — 2026-09-24 — Boty w kostiumach z ItemShopu, nowy balans alchemii
+
+Boty ubierają się w ItemShopie: kostiumy, fryzury, nakładki na broń i pety.
+Alchemia dostaje nowy balans: zamiast odporności na żywioły są bonusy na
+rasy potworów, a najsilniejsze bonusy są mniejsze. Zawiera wszystko z 2.3.0.
+Klient zostaje 2.0.8. Pierwszy start po aktualizacji kompiluje serwer od
+nowa, więc trwa dłużej niż zwykle.
+
+### Boty kupują wygląd w ItemShopie
+
+- Każdy bot od 30 poziomu, który ma Smocze Monety (SM), kupuje w ItemShopie
+  swój wygląd w stałej kolejności: **kostium → fryzura → nakładka na broń →
+  pet**. Mountów na razie nie kupuje.
+- Kupuje wszystko naraz, w jednej sesji zakupów, co kilka sekund kolejną
+  brakującą rzecz, póki starcza SM. Następna sesja jest najwcześniej po
+  godzinie.
+- Każda rzecz jest losowana spośród tych, które bot może założyć (klasa,
+  płeć, poziom, a nakładka pasuje do jego broni), więc boty wyglądają
+  różnie.
+- Kupione rzeczy bot od razu zakłada, a peta przywołuje. Jeśli walka nie
+  pozwala założyć przedmiotu, bot próbuje przy następnej okazji.
+- Gdy skończy się czas przedmiotu, bot przy następnej sesji dokupuje to,
+  czego mu brakuje, i znów losuje wygląd.
+- Pieczęci peta ani kupionego kostiumu czy nakładki bot nie sprzedaje
+  handlarzowi i nie wystawia na straganie.
+
+### Alchemia (kamienie smoka)
+
+- **Bez odporności na żywioły.** Z kamieni znikają odporności na ogień, lód,
+  wiatr, ziemię, błyskawice i ciemność.
+- **Bonusy na rasy zamiast żywiołów.** Drugi stały bonus kamienia (od
+  jakości pradawnej) to teraz: Diament – silny na mistyków, Rubin – na
+  diabły, Jadeit – na zwierzęta, Szafir – na orki, Onyks – na nieumarłych
+  (do 15%), Granat – na ludzi (do 10%). Dotychczasowe bonusy „silny na
+  żywioł” nic nie dawały.
+- **Ametyst** – stałe: silny na potwory i silny na Metiny (do 10%); losowe:
+  szansa na krytyk i na przeszywające (do 8%), wartość ataku (do 160).
+  Bonusy Sungma, które też nic nie dawały, zniknęły.
+- **Słabsze najsilniejsze bonusy** (wartości na mitycznym kamieniu
+  z najwyższego stopnia, +6): wartość ataku do 320 (było 480), obrona do
+  240, średnie obrażenia i obrażenia umiejętności do 16% (było 24%),
+  Max PŻ do 3200 (było 4800), Max PŻ% do 20% (było 32%), silny na klasy
+  i odporność na klasy do 16% (było 24%), STR/INT/DEX/VIT do 13 (było 16).
+  Blok, unik, odbicie, kradzież PŻ oraz odporność na krytyk i przeszywające
+  są też trochę mniejsze.
+- **Poprawiony błąd:** „Wartość ataku” i „Obrona” z alchemii działały jak
+  procent. Mityczny Rubin +6 dawał +480% ataku zamiast +480 wartości ataku.
+  Teraz to zwykła wartość, jak bonus z przedmiotu.
+- Nowe bonusy dostają kamienie tworzone od tej wersji. Kamienie, które już
+  masz, zachowują swoje bonusy.
+
+## 2.3.0 — 2026-09-24
+
+Cor Draconis i szarfy w handlu i na sklepach botów, wyszukiwanie konkretnego
+przedmiotu, nowy wygląd paneli; zawiera wszystko z 2.2.6. Pierwszy start po
+aktualizacji kompiluje serwer od nowa, więc trwa dłużej niż zwykle.
+
+### Cor Draconis i szarfy
+
+- Cor Draconis i wszystkie szarfy można teraz dać innemu graczowi w handlu
+  oraz wystawić w zwykłym sklepie i w sklepie offline.
+- Boty też zdobywają je z Metinów i bossów, z własnymi, niższymi szansami:
+  Cor Draconis 5%, szarfa 3%. Szanse graczy się nie zmieniają. Zdobyty
+  przedmiot trafia prosto do plecaka bota, a przy pełnym plecaku przepada,
+  więc nic nie leży na ziemi.
+- Bot nigdy nie podnosi Cora z ziemi, więc nie zabiera Corów graczy.
+- Boty nie otwierają Corów i nie zakładają ani nie łączą szarf, tylko
+  sprzedają je graczom w swoich sklepach offline. Cena wyjściowa za sztukę:
+  Cor 500 000 yang, szarfa 700 000 yang. Rośnie z inflacją i przy szybkiej
+  sprzedaży, a spada o 10% co 2 godziny bez sprzedaży (najwyżej o połowę).
+- Każdy rodzaj pojawia się naraz w najwyżej 20% sklepów botów, do 3 pozycji
+  w sklepie. Czego bot nie sprzeda przez 12 godzin, to zdejmuje ze sklepu
+  i oddaje handlarce.
+- Wadliwe Skrzydła Władcy Śmierci (85101–85104) nie wypadają już z Metinów,
+  bossów ani szkatułek.
+
+### Wyszukiwarka sklepów
+
+- Po kliknięciu konkretnego przedmiotu wyszukiwarka pokazuje tylko sklepy
+  offline i stragany botów, które mają dokładnie ten przedmiot. Bez
+  zaznaczenia szuka całej kategorii, jak dotąd. Wymaga klienta 2.0.8.
+
+### Panele i launcher
+
+- Panel admina (7788) i Seban Panel (7790) noszą nazwę MT2009 PLUS, mają
+  odnośniki do Discorda (metin2sp.pl/discord) i strony metin2sp.pl.
+  Changelog w Seban Panelu pochodzi z repozytorium MT2009 PLUS.
+- Launcher sam pyta o folder klienta, jeśli klient został przeniesiony,
+  zamiast przerywać aktualizację.
+- Okno logów i pomoc kierują na Discord MT2009 PLUS. Dziennik zmian
+  w launcherze nie pokazuje już starej listy z pamięci podręcznej.
+
+### Dla wydających
+
+- Zmiany silnika MT2009 PLUS są nakładane raz, przy wydaniu
+  (`tools/port/Apply-MT2009PlusEngine.ps1`), tak jak robi to Tieru. Gotowe
+  pliki silnika przychodzą w paczce, a `start-server.ps1` niczego już nie
+  łata. Packager odmawia zbudowania paczki bez tych zmian.
+
+## Klient 2.0.8 — 2026-09-24
+
+- Paczka zawiera Auto Łowy otwierane klawiszem `K`, wraz z wyborem celów i
+  ustawieniami podnoszenia przedmiotów.
+- Wyszukiwarka sklepów pozwala zaznaczyć konkretny przedmiot i znaleźć tylko
+  sklepy offline oraz stragany botów, które go oferują.
+- Usunięta testowa pozycja „mt2009 VPS” z listy serwerów. Pozostaje
+  „mt2009 localhost” z kanałami CH1 i CH2.
+- Usunięte tymczasowe logi szarfy, które po częściowym usunięciu powodowały
+  błąd składni i zamknięcie klienta podczas wchodzenia do gry.
+
 ## Klient 2.0.7 — 2026-09-24
 
 - Naprawiona sprzedaż pojedynczych przedmiotów i opcja „Sprzedaj wiele” u
   handlarzy. Po rozszerzeniu ekwipunku serwer oczekuje dwubajtowego numeru
   pola, a klient wysyłał jeden bajt, przez co pakiet sprzedaży rozstrajał
   połączenie i blokował sterowanie interfejsem.
+
+## 2.2.6 — 2026-09-23
+
+Poprawka ItemShopu; zawiera wszystko z 2.2.5.
+
+- W ItemShopie w grze zakładki Kostiumy, Fryzury +, Nakładki na broń, Pety
+  i Mounty były puste na światach założonych od 2.2.3: z `apply.sh` zniknęło
+  wgrywanie ofert MT2009 Plus (`mariadb/playerbot/mod/*.sql`). Wraca, i przy
+  najbliższym starcie serwera oferty trafiają do bazy (raz na instalację;
+  świat, który już je ma, zostaje bez zmian).
+
+## 2.2.5 — 2026-09-23
+
+Poprawka launchera i paneli; zawiera wszystko z 2.2.4.
+
+- Wydanie 2.2.3 przyniosło oficjalne pliki Tieru także tam, gdzie MT2009
+  Plus ma własne: launcher znów wyglądał jak oficjalny (METIN2,
+  metin2singleplayer.com, „Postaw kawkę”, stare tło), a panel na 7788
+  sprawdzał aktualizacje w repozytorium Tieru. Wraca wygląd MT2009 PLUS,
+  przycisk Discorda i panel pyta tylko repozytorium MT2009 Plus.
+- Launcher znów odrzuca kanał aktualizacji Tieru i sam poprawia pusty albo
+  obcy adres kanału w swojej konfiguracji.
+
+## 2.2.4 — 2026-09-23
+
+Poprawka launchera; zawiera wszystko z 2.2.3.
+
+- Po aktualizacji do 2.2.3 launcher nie startował („Unexpected token
+  'aktualizacji'”): plik `launcher/Metin2Launcher.psm1` trafił do paczki bez
+  znacznika kodowania UTF-8 (BOM), a Windows PowerShell czytał wtedy polskie
+  litery jako inne znaki. Plik ma znów BOM, a pakowacz odmawia zbudowania
+  paczki ze skryptem PowerShell z polskimi znakami i bez BOM.
+- **Klient 2.0.6:** kostiumowe mounty pozwalaja teraz na zwykly atak bez
+  wymogu 11 poziomu konia. Zwykly kon na poziomach 1-10 nadal nie pozwala
+  walczyc. Paczka 2.0.6 zastępuje wadliwa 2.0.5, która była zbudowana ze
+  starego źródła i zamykała klienta przy logowaniu przez brak
+  `NEW_AFFECT_DS_SET`. Wersja 2.0.5 nie trafiła do graczy.
+
 ## 2.2.3 — 2026-09-23
 
 Serwer; klient zostaje 2.0.26. Zawiera wszystko z 2.2.2.

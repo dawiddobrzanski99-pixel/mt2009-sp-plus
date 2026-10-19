@@ -180,6 +180,10 @@ MAPS_game1="$MAPS_game1 158"
 # (playerbot_guild_war.h), and a bot cannot cross cores. 111 (the flags) stays on
 # first for the people's own wars.
 MAPS_game1="$MAPS_game1 110"
+# MT2009_PLUS_ZODIAC_V1 (maps): Swiatynia Zodiaku (358, metin2_12zi_stage) on game1 under either layout - its
+# floors are private copies (3580000+) made on the core of the map, a person's party bots follow into them and the
+# bots' own temple runs go there (a bot cannot cross cores).
+MAPS_game1="$MAPS_game1 358"
 # The difficulty is acted on by the migrate service (event flags the quests
 # read); said here so a support bundle carries it next to the layout.
 log "difficulty: ${M2_DIFFICULTY:-easy} (Biologist and stable keeper waits; apply.sh writes the flags)"

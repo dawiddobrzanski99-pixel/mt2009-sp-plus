@@ -26,6 +26,7 @@ Group	MT2009_chest_50270
 	7	s950283	1	55 -- cenny przedmiot
 	8	s951101	1	60 -- materialy pasow (MT2009_PLUS_BELTS_V1)
 	9	94000	1	25 -- Talizman Ognia+0 (MT2009_PLUS_ELEMENTS_V1, Autor: Digi Rasta)
+	10	s951201	1	20 -- materialy Zodiaku (MT2009_PLUS_NS_WIKI_ITEMS_V1, Autor: Digi Rasta; 70% -> 20% bez materialow z wiki - MT2009_PLUS_NS_WIKI_RECIPES_OFF)
 }
 Group	MT2009_chest_razador_gear
 {
@@ -203,6 +204,7 @@ Group	MT2009_chest_50271
 	8	s951102	1	60 -- materialy pasow (MT2009_PLUS_BELTS_V1)
 	9	94500	1	25 -- Talizman Lodu+0 (MT2009_PLUS_ELEMENTS_V1, Autor: Digi Rasta)
 	10	s951103	1	80 -- kamienie pasow (MT2009_PLUS_BELT_MATS_V1)
+	11	s951202	1	19 -- materialy Zodiaku (MT2009_PLUS_NS_WIKI_ITEMS_V1, Autor: Digi Rasta; 70% -> 19% bez materialow z wiki - MT2009_PLUS_NS_WIKI_RECIPES_OFF)
 }
 Group	MT2009_chest_nemere_gear
 {

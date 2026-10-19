@@ -210,7 +210,8 @@ services:
       # the classic panel's character card, which the package pointed at its
       # author's own panel.mt2009.pl (playerbotify.py, apply_gm_panel_url).
       M2_GM_PANEL_URL: "${M2_GM_PANEL_URL:-http://127.0.0.1:${M2_PANEL_PUBLIC_PORT:-7788}/}"
-      M2_LOG_KEEP_DAYS: "${M2_LOG_KEEP_DAYS:-7}"
+      M2_LOG_KEEP_DAYS: "${M2_LOG_KEEP_DAYS:-2}"
+      M2_LOG_KEEP_HOURS: "${M2_LOG_KEEP_HOURS:-48}"
       M2_TABLE_POSTFIX: "${M2_TABLE_POSTFIX:-}"
       M2_ADMINPAGE_PASSWORD: "${M2_ADMINPAGE_PASSWORD:-}"
       M2_CORE_DUMPS: "${M2_CORE_DUMPS:-0}"
@@ -543,7 +544,7 @@ services:
       TZ: "${M2_TZ:-UTC}"
     ports:
       # 7790 outside: 7789 is the browser bridge's port in this stack.
-      - "${M2_PANEL_BIND_ADDRESS:-${M2_HOST_BIND_ADDRESS:-0.0.0.0}}:${M2_SEBAN_PANEL_PORT:-7790}:7789/tcp"
+      - "0.0.0.0:7790:7789"
     volumes:
       - game-var:/opt/metin2/var:ro
       - rates-spool:/opt/m2spool

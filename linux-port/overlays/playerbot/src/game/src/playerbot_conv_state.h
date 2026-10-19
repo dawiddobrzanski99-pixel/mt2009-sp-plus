@@ -448,6 +448,9 @@ namespace playerbot_conv
 		long long sellUnit;    // what it asks per piece
 		bool onStall;          // it is on the bot's counter (sold there, not by hand)
 		long long stallUnit;
+		// MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: the pieces on its offline counter
+		// it may take off to sell by hand (that counter on this channel), 0 none.
+		int stallHas;
 		std::string stallWhere;
 		long long botGold;
 		// A skill book: the skill (socket 0 of the one book vnum), and the
@@ -457,7 +460,7 @@ namespace playerbot_conv
 		bool needSkill;
 		std::string booksHad;
 		TDealQuote() : found(false), vnum(0), stackable(false), fair(0), botWants(false), wantCount(0), maxBuyUnit(0),
-			botHas(0), minSellUnit(0), sellUnit(0), onStall(false), stallUnit(0), botGold(0), skill(0), needSkill(false) {}
+			botHas(0), minSellUnit(0), sellUnit(0), onStall(false), stallUnit(0), stallHas(0), botGold(0), skill(0), needSkill(false) {}
 	};
 
 	// Whether the asker plays on the other channel than the bot.

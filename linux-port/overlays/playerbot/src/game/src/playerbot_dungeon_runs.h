@@ -469,15 +469,26 @@ namespace
 
 	// ------------------------------------------------------------ the questions others ask
 
+	// MT2009_PLUS_ZODIAC_RUNS_V1: the bots' own Zodiac Temple runs (playerbot_zodiac_runs.h, later) are
+	// runs to every other pass as well.
+	bool IsPlayerBotOnZodiacRun(DWORD pid);
+	bool IsPlayerBotZodiacRunMove(LPCHARACTER ch, long targetMap);
+
 	bool IsPlayerBotOnDungeonRun(DWORD pid)
 	{
-		if (s_mapPlayerBotDgRunBots.empty() || pid == 0 || pid == s_dwPlayerBotDgRunAsking)
+		if (pid == 0 || pid == s_dwPlayerBotDgRunAsking)
+			return false;
+		if (IsPlayerBotOnZodiacRun(pid))
+			return true;
+		if (s_mapPlayerBotDgRunBots.empty())
 			return false;
 		return s_mapPlayerBotDgRunBots.find(pid) != s_mapPlayerBotDgRunBots.end();
 	}
 
 	bool IsPlayerBotDungeonRunMove(LPCHARACTER ch, long targetMap, const char* reason)
 	{
+		if (IsPlayerBotZodiacRunMove(ch, targetMap))	// MT2009_PLUS_ZODIAC_RUNS_V1
+			return true;
 		if (!ch || s_mapPlayerBotDgRunBots.empty())
 			return false;
 		std::map<DWORD, TPlayerBotDgRunBot>::const_iterator it = s_mapPlayerBotDgRunBots.find(ch->GetPlayerID());

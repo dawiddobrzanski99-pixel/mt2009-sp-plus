@@ -47,6 +47,16 @@ namespace
 	// market empty of what it came for asks the world channel.
 	void AnnouncePlayerBotNeed(LPCHARACTER ch);
 
+	// MT2009_PLUS_MARKET_LIFE_V1, point 9 (playerbot_market_life.h, after this
+	// file): the bargain hunter's and the impulse buyer's lines - goods a bot
+	// does not need, bought for the price (GetPlayerBotWhimKind: 0 none) - and
+	// the note of one bought; point 10's barter pass and the census beside the
+	// ledger's report.
+	bool IsPlayerBotWhimCandidate(LPCHARACTER ch, LPITEM offer);
+	int GetPlayerBotWhimKind(LPCHARACTER ch, LPITEM offer, long long price, DWORD sellerPID);
+	void NotePlayerBotWhimBought(LPCHARACTER ch, int kind, DWORD vnum, long long price);
+	void RunPlayerBotMarketLifePass(DWORD dwNow, bool report);
+
 	// MT2009_PLUS_BOT_MINIGAMES_V1 (playerbot_minigames.h, after this file):
 	// a mini game's chest off a counter, to open.
 	bool WantsPlayerBotMinigameChest(LPCHARACTER ch, LPITEM offer);
@@ -184,7 +194,16 @@ namespace
 	}
 
 	// Would this bot rather have the item than the money?
+	bool WantsPlayerBotStallItemOwn(LPCHARACTER ch, LPITEM offer);
+	// MT2009_PLUS_MARKET_LIFE_V1, point 9: or would it buy it on a whim - a
+	// bargain or an impulse - which its purse then decides by the price
+	// (CanPlayerBotPayForOffer, GetPlayerBotWhimKind).
 	bool WantsPlayerBotStallItem(LPCHARACTER ch, LPITEM offer)
+	{
+		return WantsPlayerBotStallItemOwn(ch, offer) || IsPlayerBotWhimCandidate(ch, offer);
+	}
+
+	bool WantsPlayerBotStallItemOwn(LPCHARACTER ch, LPITEM offer)
 	{
 		if (!ch || !offer)
 			return false;
@@ -660,7 +679,9 @@ namespace
 		const long long fair = (long long)GetPlayerBotShopAskingPrice(item);
 		if (fair <= 0)
 			return false;	// nothing to measure a person's price against
-		return price * 100 <= fair * GetPlayerBotPersonPriceCapPercent(ch, item);
+		// MT2009_PLUS_MARKET_LIFE_V1, point 5: a rare kind is paid dearer.
+		return price * 100 <= fair * GetPlayerBotPersonPriceCapPercent(ch, item) *
+				GetPlayerBotRareBuyPercent(item) / 100;
 	}
 
 	bool CanPlayerBotPayForOffer(LPCHARACTER ch, LPITEM item, long long price, DWORD sellerPID) {
@@ -675,6 +696,10 @@ namespace
 		// caps further down refused most of them already; the ban does not
 		// hang on what any one of those caps is set to.
 		if (IsPlayerBotPriceSlipOffer(item, price)) return false;
+		// MT2009_PLUS_MARKET_LIFE_V1, point 9: a line bought on a whim, not for
+		// a need, is paid for by the whim's own rules alone.
+		if (IsPlayerBotWhimCandidate(ch, item) && !WantsPlayerBotStallItemOwn(ch, item))
+			return GetPlayerBotWhimKind(ch, item, price, sellerPID) != 0;
 		// A master's building materials come out of its guild's fund, which
 		// the reserve below keeps from everything else (playerbot_guild_land.h).
 		if (IsPlayerBotGuildBuildMaterial(item->GetVnum()))
@@ -757,7 +782,8 @@ namespace
 			if (item->GetType() == ITEM_SKILLBOOK)
 				return fair > 0 && price <= fair * 2 &&
 						price <= std::max(GetPlayerBotBookBudgetLeft(ch), GetPlayerBotBookSurplus(ch));
-			return fair > 0 && price <= fair * 2 && price <= spare * 30 / 100;
+			// MT2009_PLUS_MARKET_LIFE_V1, point 5: a rare kind dearer.
+			return fair > 0 && price * 100 <= fair * 2 * GetPlayerBotRareBuyPercent(item) && price <= spare * 30 / 100;
 		}
 		// A flooded material for the exchange: at no more than the flood's
 		// price a piece, out of PLAYERBOT_EXCHANGE_BUY_PERCENT of the spare.
@@ -1004,6 +1030,9 @@ namespace
 
 		const int goldBefore = ch->GetGold();
 		// Read before the purchase: a sold line's item is the buyer's after it.
+		// MT2009_PLUS_MARKET_LIFE_V1, point 9: and whether it is a whim's.
+		const int whim = WantsPlayerBotStallItemOwn(ch, line.pkItem) ? 0
+				: GetPlayerBotWhimKind(ch, line.pkItem, line.price, pick.keeper->GetPlayerID());
 		const bool book = line.pkItem->GetType() == ITEM_SKILLBOOK;
 		const bool level30 = IsPlayerBotClassLevel30Weapon(ch, line.pkItem);
 		const bool gambleBase = IsPlayerBotGamblerBaseOffer(ch, line.pkItem);
@@ -1038,6 +1067,8 @@ namespace
 		NotePlayerBotGuildMaterialBought(ch, pick.dwVnum, paid);
 		if (gambleBase)
 			NotePlayerBotGambleBaseBought(ch, pick.dwVnum, paid);
+		if (whim)
+			NotePlayerBotWhimBought(ch, whim, pick.dwVnum, paid);
 		sys_log(0, "PLAYERBOT_MARKET: bought pid=%u name=%s from=%s slot=%u vnum=%u refine=%u count=%u asked=%u paid=%lld gold=%lld",
 				ch->GetPlayerID(), ch->GetName(), pick.keeper->GetName(),
 				(unsigned int)pick.bSlot, pick.dwVnum, (unsigned int)pick.bRefine,
@@ -1673,6 +1704,12 @@ namespace
 		// priced against the ledger and the wallets as they now stand.
 		CorrectPlayerBotStandingSlips(dwNow);
 #endif
+
+		// MT2009_PLUS_MARKET_LIFE_V1: the barter pass, and its census on the
+		// report's pass (RunPlayerBotMarketLifePass).
+		const bool marketReport = s_dwMarketReportTime == 0 ||
+				dwNow - s_dwMarketReportTime >= PLAYERBOT_MARKET_REPORT_INTERVAL;
+		RunPlayerBotMarketLifePass(dwNow, marketReport);
 
 		if (s_dwMarketReportTime != 0 &&
 				dwNow - s_dwMarketReportTime < PLAYERBOT_MARKET_REPORT_INTERVAL)

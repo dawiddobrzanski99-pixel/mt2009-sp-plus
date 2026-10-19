@@ -650,6 +650,50 @@ namespace
 		return false;
 	}
 
+	// MT2009_PLUS_GUILD_HUNT_PARTY_V1: A bot summoned for ORDER_HUNT ("Expimy razem")
+	// joins the player's party so EXP is shared and monsters are fought together.
+	void EnsurePlayerBotHuntParty(LPCHARACTER bot, LPCHARACTER player, DWORD dwNow)
+	{
+		if (!bot || !player || bot->IsDead() || player->IsDead())
+			return;
+		if (bot->GetMapIndex() != player->GetMapIndex())
+			return;
+
+		LPPARTY party = player->GetParty();
+		// If bot is already in player's party, nothing to do
+		if (party && bot->GetParty() == party)
+			return;
+
+		// If player is in a dungeon or party is full, cannot join
+		if (player->GetDungeon() || (party && party->GetMemberCount() >= PARTY_MAX_MEMBER))
+			return;
+
+		// If bot is currently in another party:
+		// if it's another player's human party, leave it alone;
+		// if it's a bot-only party, leave it to join the player.
+		if (bot->GetParty())
+		{
+			if (IsPlayerBotHumanLedParty(bot->GetParty()))
+				return;
+			LeavePlayerBotParty(bot);
+		}
+
+		if (!party)
+		{
+			party = CPartyManager::instance().CreateParty(player);
+			if (!party)
+				return;
+			party->SetParameter(PARTY_EXP_DISTRIBUTION_PARITY);
+			sys_log(0, "PLAYERBOT_GUILD_ORDER: created hunt party for player=%u name=%s",
+					player->GetPlayerID(), player->GetName());
+		}
+
+		party->Join(bot->GetPlayerID());
+		party->Link(bot);
+		sys_log(0, "PLAYERBOT_GUILD_ORDER: bot pid=%u name=%s joined hunt party of player=%u members=%d",
+				bot->GetPlayerID(), bot->GetName(), player->GetPlayerID(), (int)party->GetMemberCount());
+	}
+
 	// A person in the bot's party who is not the one asking.
 	bool PlayerBotPartyHasOtherPerson(LPPARTY party, LPCHARACTER asker)
 	{
@@ -750,6 +794,11 @@ namespace
 			state.dwLastMeaningfulActivityTime = dwNow;
 			SetPlayerBotAction(state, BOT_ACTION_IDLE, dwNow);
 		}
+		if (summon.bOrder == playerbot_guild_order_rules::ORDER_HUNT && bot && player)
+		{
+			if (bot->GetParty() && player->GetParty() && bot->GetParty() == player->GetParty())
+				LeavePlayerBotParty(bot);
+		}
 		sys_log(0, "PLAYERBOT_SUMMON: over pid=%u name=%s by=%s reason=%s walked_ms=%u stayed_ms=%u order=%s",
 				botPID, bot ? bot->GetName() : "?", player ? player->GetName() : "?", SummonEndName(reason),
 				summon.dwArrivedAt ? summon.dwArrivedAt - summon.dwStartedAt : dwNow - summon.dwStartedAt,
@@ -842,6 +891,8 @@ namespace
 		ClearPlayerBotRoute(state, true);
 		state.dwLastMeaningfulActivityTime = dwNow;
 		const bool sameMap = bot->GetMapIndex() == player->GetMapIndex();
+		if (order == playerbot_guild_order_rules::ORDER_HUNT && sameMap)
+			EnsurePlayerBotHuntParty(bot, player, dwNow);
 		sys_log(0, "PLAYERBOT_SUMMON: called pid=%u name=%s by=%s map=%ld to_map=%ld distance=%d order=%s",
 				bot->GetPlayerID(), bot->GetName(), player->GetName(), bot->GetMapIndex(), summon.lMapIndex,
 				sameMap ? DISTANCE_APPROX(bot->GetX() - player->GetX(), bot->GetY() - player->GetY()) : -1,
@@ -1037,19 +1088,8 @@ namespace
 			return true;
 		}
 
-		// Beside the person, an order's bot fights what the order says; on the
-		// way, and for a whisper's call throughout, the guard. With nothing to
-		// fight it keeps its place below.
-		if (guildOrder && summon.dwArrivedAt != 0)
-		{
-			if (FightPlayerBotGuildOrderFoe(ch, state, player, summon.bOrder, dwNow))
-				return true;
-		}
-		else if (GuardPlayerBotSummon(ch, state, summon, player, dwNow))
-			return true;
-
 		const int distance = DISTANCE_APPROX(ch->GetX() - player->GetX(), ch->GetY() - player->GetY());
-		if (summon.dwArrivedAt == 0 && distance <= PLAYERBOT_SUMMON_STAY_DISTANCE)
+		if (summon.dwArrivedAt == 0 && distance <= PLAYERBOT_SUMMON_FOLLOW_DISTANCE)
 		{
 			summon.dwArrivedAt = dwNow;
 			summon.dwUntil = dwNow + summon.dwStayMs;
@@ -1060,6 +1100,21 @@ namespace
 					ch->GetPlayerID(), ch->GetName(), player->GetName(), dwNow - summon.dwStartedAt,
 					playerbot_guild_order_rules::OrderName((playerbot_guild_order_rules::EOrder)summon.bOrder));
 		}
+
+		if (summon.bOrder == playerbot_guild_order_rules::ORDER_HUNT)
+			EnsurePlayerBotHuntParty(ch, player, dwNow);
+
+		// Beside the person, an order's bot fights what the order says; on the
+		// way, and for a whisper's call throughout, the guard. With nothing to
+		// fight it keeps its place below.
+		if (guildOrder && (summon.dwArrivedAt != 0 || distance <= PLAYERBOT_SUMMON_GUARD_RANGE))
+		{
+			if (FightPlayerBotGuildOrderFoe(ch, state, player, summon.bOrder, dwNow))
+				return true;
+		}
+		else if (GuardPlayerBotSummon(ch, state, summon, player, dwNow))
+			return true;
+
 		// After arrival the bot stays put while the person moves about near it,
 		// and once they are past PLAYERBOT_SUMMON_FOLLOW_DISTANCE it walks after
 		// them until it is close again - two distances, or a person standing on
@@ -1079,9 +1134,8 @@ namespace
 			const int* side = kSide[ch->GetPlayerID() % 8];
 			const long goalX = player->GetX() + side[0] * PLAYERBOT_SUMMON_OFFSET / 200;
 			const long goalY = player->GetY() + side[1] * PLAYERBOT_SUMMON_OFFSET / 200;
-			// The horse for a long walk; UpdatePlayerBotTravelMount refuses it
-			// for a short one by itself.
-			MovePlayerBot(ch, goalX, goalY, dwNow, PLAYERBOT_SUMMON_SNAP_CELLS, true, true, false, false);
+			const bool allowHorse = distance >= PLAYERBOT_HORSE_MOUNT_DISTANCE;
+			MovePlayerBot(ch, goalX, goalY, dwNow, PLAYERBOT_SUMMON_SNAP_CELLS, true, allowHorse, false, false);
 			SetPlayerBotAction(state, BOT_ACTION_TRAVEL, dwNow);
 			return true;
 		}
@@ -1089,13 +1143,13 @@ namespace
 			ClearPlayerBotRoute(state, true);
 		if (ch->IsStateMove())
 			ch->Stop();
-		// MT2009_PLUS_GUILD_HELP_FIGHT_V1: a helper with nothing to fight gets
-		// off its horse beside the person, ready for the next blow, instead of
-		// standing there in the saddle it came in (the owner, 2 October). The
-		// follow's long walk mounts it again (UpdatePlayerBotTravelMount), and
-		// the flip hold keeps it from doing so at once.
-		if (summon.bOrder == playerbot_guild_order_rules::ORDER_HELP && ch->IsRiding())
-			SetPlayerBotRidingForTravel(ch, state, false, dwNow, "guild_help_idle");
+		// MT2009_PLUS_GUILD_HELP_FIGHT_V1: a helper or hunter with nothing to fight gets
+		// off its horse beside the person if it cannot fight from horseback, ready for the next blow,
+		// instead of standing there in the saddle it came in.
+		if ((summon.bOrder == playerbot_guild_order_rules::ORDER_HELP ||
+				summon.bOrder == playerbot_guild_order_rules::ORDER_HUNT) &&
+				ch->IsRiding() && !CanPlayerBotEverFightOnHorse(ch))
+			SetPlayerBotRidingForTravel(ch, state, false, dwNow, "guild_order_idle");
 		SetPlayerBotAction(state, BOT_ACTION_IDLE, dwNow);
 		return true;
 	}
@@ -1447,7 +1501,9 @@ namespace
 				const long mapIndex = bot->GetMapIndex();
 				const long baseMap = mapIndex >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN ? mapIndex / 10000 : mapIndex;
 				s.mapIndex = baseMap;
-				s.inDungeon = mapIndex >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN;
+				// MT2009_PLUS_BOT_PRIORITIES_V1: a raid with its party too - the
+				// tower, a boss, the Catacomb, a dungeon run, from the call on.
+				s.inDungeon = mapIndex >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN || IsPlayerBotInDungeonBusiness(bot, state);
 				s.inTown = IsPlayerBotVillageMap(baseMap);
 				s.safeZone = IsPlayerBotSafeZone(mapIndex, bot->GetX(), bot->GetY());
 				s.action = MapPlayerBotConvAction(state.bCurrentAction);

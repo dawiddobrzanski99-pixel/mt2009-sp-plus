@@ -50,7 +50,19 @@
 // (score >= 220), 83031 Srebrne Trofeum Yutnori (150-219), 83034 Brazowy
 // Pakiet Yutnori (< 150); the trophies hold the Golden/Silver bundles,
 // 83032/83033 - Owsap's 50920-50922 are our Receptura items.
+//
+// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion] - "play N times" (N of 1, 2, 5, 10, 25, 50). The
+// window sends "/minigame_count yutnori <n>" just before its start packet
+// (MinigameCountCommand below; cmd.cpp must call it for "/minigame_count",
+// as it calls WheelCommand for "/kolo"). The start takes the count - and
+// forgets it, whether the game starts or not - and costs n boards and
+// n x 30 000 yang; the one game played earns n boxes of its score
+// (minigame_yutnori.pending_count beside pending_reward; they are handed out
+// one by one, those without room wait). The ranking counts it as n games of
+// its score (total + n x the score, games + n; the best score is its own).
 #include "item.h"
+
+void RumiSetPlayCount(LPCHARACTER ch, int count);	// playerbot_rumi.h
 
 // MT2009_PLUS_BOT_MINIGAMES_V1: a bot's trunk (playerbot_minigames.h, later in the unit).
 namespace
@@ -118,6 +130,7 @@ namespace mt2009_yutnori
 	const char* const QF_PIECE = "minigame_yutnori.piece_count";
 	const char* const QF_BOARD = "minigame_yutnori.board_count";
 	const char* const QF_PENDING = "minigame_yutnori.pending_reward";
+	const char* const QF_PENDING_COUNT = "minigame_yutnori.pending_count";	// how many of it (0: one)
 
 	const DWORD BOOT_DELAY_MS = 30000;	// as the event manager: the flags come a moment after boot
 
@@ -148,9 +161,33 @@ namespace mt2009_yutnori
 		BYTE	comNext;
 		EExpect	expect;
 		bool	warned;		// one log line for packets out of turn
+		int		count;		// games this one counts for (the fee paid, the boxes earned)
 	};
 
 	std::map<DWORD, TGame> s_games;	// pid -> the game
+
+	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]
+	const int PLAY_COUNTS[] = { 1, 2, 5, 10, 25, 50 };
+	std::map<DWORD, int> s_playCount;	// pid -> the count asked for the next start
+
+	bool ValidPlayCount(int count)
+	{
+		for (size_t i = 0; i < sizeof(PLAY_COUNTS) / sizeof(PLAY_COUNTS[0]); ++i)
+			if (PLAY_COUNTS[i] == count)
+				return true;
+		return false;
+	}
+
+	// The count for this start; every start attempt forgets it.
+	int TakePlayCount(DWORD pid)
+	{
+		std::map<DWORD, int>::iterator it = s_playCount.find(pid);
+		if (it == s_playCount.end())
+			return 1;
+		const int count = it->second;
+		s_playCount.erase(it);
+		return ValidPlayCount(count) ? count : 1;
+	}
 	DWORD s_dwBootAt = 0;
 	DWORD s_dwNextSecond = 0;
 
@@ -208,8 +245,9 @@ namespace mt2009_yutnori
 
 	// ------------------------------------------------------------ the reward
 
-	// The earned box, once: the flag goes to 0 before the item is made. false:
-	// nothing to give, or no room (the player is told, the flag stays).
+	// The earned boxes (one, or as many as the game counted for), each once:
+	// the flags go down before the item is made. false: nothing to give, or no
+	// room for all of them (the player is told, the rest stays in the flags).
 	bool DeliverPending(LPCHARACTER ch)
 	{
 		const DWORD vnum = (DWORD)MAX(0, ch->GetQuestFlag(QF_PENDING));
@@ -218,17 +256,28 @@ namespace mt2009_yutnori
 		if (!ValidReward(vnum))
 		{
 			ch->SetQuestFlag(QF_PENDING, 0);
+			ch->SetQuestFlag(QF_PENDING_COUNT, 0);
 			return false;
 		}
-		if (ch->GetEmptyInventory(1) < 0)
+		int left = MAX(1, ch->GetQuestFlag(QF_PENDING_COUNT));
+		int given = 0;
+		while (left > 0)
 		{
-			ch->ChatPacket(CHAT_TYPE_INFO, "Yut Nori: zwolnij miejsce w ekwipunku, aby odebrac nagrode.");
-			return false;
+			if (ch->GetEmptyInventory(1) < 0)
+			{
+				ch->ChatPacket(CHAT_TYPE_INFO, "Yut Nori: zwolnij miejsce w ekwipunku, aby odebrac nagrode.");
+				break;
+			}
+			--left;
+			ch->SetQuestFlag(QF_PENDING_COUNT, left);
+			if (!left)
+				ch->SetQuestFlag(QF_PENDING, 0);
+			ch->AutoGiveItem(vnum, 1);
+			++given;
 		}
-		ch->SetQuestFlag(QF_PENDING, 0);
-		ch->AutoGiveItem(vnum, 1);
-		sys_log(0, "YUTNORI: %s (pid %u) receives %u", ch->GetName(), ch->GetPlayerID(), vnum);
-		return true;
+		if (given)
+			sys_log(0, "YUTNORI: %s (pid %u) receives %u x%d (%d still owed)", ch->GetName(), ch->GetPlayerID(), vnum, given, left);
+		return left == 0;
 	}
 
 	void Finish(LPCHARACTER ch, TGame& g, bool rewardable)
@@ -251,13 +300,17 @@ namespace mt2009_yutnori
 			}
 		}
 		if (store)
+		{
 			ch->SetQuestFlag(QF_PENDING, (int)vnum);
+			ch->SetQuestFlag(QF_PENDING_COUNT, MAX(1, g.count));
+		}
+		const int games = MAX(1, g.count);	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: the ranking counts them all
 		DBManager::instance().Query(
 				"INSERT INTO player.minigame_yutnori (season, pid, best_score, total_score, games, last_play) "
-				"VALUES (%u, %u, %d, %d, 1, NOW()) ON DUPLICATE KEY UPDATE "
-				"total_score = total_score + %d, best_score = GREATEST(best_score, %d), games = games + 1, last_play = NOW()",
-				g.season, g.pid, g.score, g.score, g.score, g.score);
-		sys_log(0, "YUTNORI: %s (pid %u) ends with %d points, season %u", ch->GetName(), g.pid, g.score, g.season);
+				"VALUES (%u, %u, %d, %d, %d, NOW()) ON DUPLICATE KEY UPDATE "
+				"total_score = total_score + %d, best_score = GREATEST(best_score, %d), games = games + %d, last_play = NOW()",
+				g.season, g.pid, g.score, g.score * games, games, g.score * games, g.score, games);
+		sys_log(0, "YUTNORI: %s (pid %u) ends with %d points, season %u, x%d", ch->GetName(), g.pid, g.score, g.season, MAX(1, g.count));
 	}
 
 	// ------------------------------------------------------------ the board (Owsap's)
@@ -641,6 +694,7 @@ namespace mt2009_yutnori
 
 	void Start(LPCHARACTER ch)
 	{
+		const int count = TakePlayCount(ch->GetPlayerID());	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]
 		if (Find(ch))
 			return;
 		if (!InGameEventIsActive(EVENT_KEY))
@@ -658,14 +712,15 @@ namespace mt2009_yutnori
 		if (ch->GetQuestFlag(QF_PENDING) && !DeliverPending(ch) && ch->GetQuestFlag(QF_PENDING))
 			return;
 		const int boards = ch->GetQuestFlag(QF_BOARD);
-		if (boards <= 0 || ch->GetGold() < START_GOLD)
+		const long long gold = (long long)START_GOLD * count;
+		if (boards < count || (long long)ch->GetGold() < gold)
 		{
-			ch->ChatPacket(CHAT_TYPE_INFO, "Yut Nori: potrzebujesz planszy do Yut Nori i 30 000 yang.");
+			ch->ChatPacket(CHAT_TYPE_INFO, "Yut Nori: potrzebujesz %d x plansza do Yut Nori i %d yang.", count, (int)gold);
 			return;
 		}
 
-		ch->SetQuestFlag(QF_BOARD, boards - 1);
-		PlayerBotChangeGold(ch, -(long long)START_GOLD);
+		ch->SetQuestFlag(QF_BOARD, boards - count);
+		PlayerBotChangeGold(ch, -gold);
 
 		TGame g;
 		memset(&g, 0, sizeof(g));
@@ -678,8 +733,9 @@ namespace mt2009_yutnori
 		g.prob = YUTSEM1;
 		g.comNext = 0;
 		g.expect = EXPECT_PC_THROW;
+		g.count = count;
 		s_games[g.pid] = g;
-		sys_log(0, "YUTNORI: %s (pid %u) starts a game, season %u, %d board(s) left", ch->GetName(), g.pid, season, boards - 1);
+		sys_log(0, "YUTNORI: %s (pid %u) starts a game x%d, season %u, %d board(s) left", ch->GetName(), g.pid, count, season, boards - count);
 		SendRaw(ch, YUTNORI_GC_SUBHEADER_START, NULL, 0);
 	}
 
@@ -756,7 +812,49 @@ namespace mt2009_yutnori
 			else
 				++it;
 		}
+		// A count asked for by a player who then left.
+		for (std::map<DWORD, int>::iterator it = s_playCount.begin(); it != s_playCount.end(); )
+		{
+			if (!CHARACTER_MANAGER::instance().FindByPID(it->first))
+				s_playCount.erase(it++);
+			else
+				++it;
+		}
 	}
+}
+
+// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: the next Yut Nori start counts for n games; 1 or
+// a count that is not one of the window's forgets it.
+void YutnoriSetPlayCount(LPCHARACTER ch, int count)
+{
+	using namespace mt2009_yutnori;
+	if (!Eligible(ch))
+		return;
+	if (count > 1 && ValidPlayCount(count))
+		s_playCount[ch->GetPlayerID()] = count;
+	else
+		s_playCount.erase(ch->GetPlayerID());
+}
+
+// "/minigame_count <rumi|yutnori> <n>" - the windows' "Liczba gier" row, sent
+// just before the game's start packet (uiminigameutil.SendPlayCount). cmd.cpp
+// calls this for the command, as it calls WheelCommand for "/kolo". Catch the
+// King needs no command (its start packet carries the stake), nor does the
+// wheel ("/kolo krec <n>").
+void MinigameCountCommand(LPCHARACTER ch, const char* argument)
+{
+	if (!mt2009_yutnori::Eligible(ch) || !argument)
+		return;
+	char game[32], arg[32];
+	const char* rest = one_argument(argument, game, sizeof(game));
+	one_argument(rest, arg, sizeof(arg));
+	int count = 0;
+	if (*arg)
+		str_to_number(count, arg);
+	if (!strcmp(game, "rumi"))
+		RumiSetPlayCount(ch, count);
+	else if (!strcmp(game, "yutnori"))
+		YutnoriSetPlayCount(ch, count);
 }
 
 // The events' tick (playerbot_ingame_events.h, InGameEventTick).

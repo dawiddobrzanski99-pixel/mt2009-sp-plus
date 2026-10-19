@@ -305,6 +305,23 @@ bool BagCell(LPCHARACTER ch, int cell)
 	return cell >= 0 && cell < ch->GetInventoryMaxCount();
 }
 
+// MT2009_PLUS_COLLECTOR_ZODIAC_V1 (a player's wish, 10 October): the Zodiac
+// Insignia 33001-33022 carry ANTI_SAFEBOX (and ANTI_GIVE, DROP, MYSHOP) - not
+// for the classic safebox, but the collector's store takes them: it holds a
+// collection of the account's own, nothing in it changes hands, and they are
+// what a run brings home by the dozen. 33023 (Insygnia Straznika) and 33024
+// (Insygnia Zodiaku) have no antiflag and went in already, as did the Prism
+// of Revival 33025 and the boxes 33029/33030. The Prism (Q) 33032 stays out:
+// a bound copy of 33025, held back from the safebox on purpose.
+// The client's window knows the same range (uicollector.py, __Refused).
+const DWORD ZODIAC_INSIGNIA_FIRST = 33001;
+const DWORD ZODIAC_INSIGNIA_LAST = 33024;
+
+bool StorableDespiteSafeboxFlag(DWORD vnum)
+{
+	return vnum >= ZODIAC_INSIGNIA_FIRST && vnum <= ZODIAC_INSIGNIA_LAST;
+}
+
 // Whether this bag item may go into the store: the classic safebox's rules.
 int Storable(LPCHARACTER ch, LPITEM item)
 {
@@ -312,7 +329,8 @@ int Storable(LPCHARACTER ch, LPITEM item)
 		return RESULT_NO_ITEM;
 	if (item->GetCell() >= INVENTORY_DEFAULT_MAX_NUM && IS_SET(item->GetFlag(), ITEM_FLAG_IRREMOVABLE))
 		return RESULT_REFUSED;
-	if (item->GetVnum() == UNIQUE_ITEM_SAFEBOX_EXPAND || IS_SET(item->GetAntiFlag(), ITEM_ANTIFLAG_SAFEBOX))
+	if (item->GetVnum() == UNIQUE_ITEM_SAFEBOX_EXPAND ||
+			(IS_SET(item->GetAntiFlag(), ITEM_ANTIFLAG_SAFEBOX) && !StorableDespiteSafeboxFlag(item->GetVnum())))
 		return RESULT_REFUSED;
 	// MT2009_PLUS_COLLECTOR_ITEM_SELF_V1 (the owner, 6 October): the
 	// "Kolekcjoner" item itself never goes in - stored, it could not open the store.

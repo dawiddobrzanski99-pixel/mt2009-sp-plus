@@ -42,7 +42,7 @@
       {{ field('level', 'od niego zależy m.in. kara do exp za różnicę poziomów') }}
       <label class="{{ 'dbe-boot' if 'rank' in boot_always }}">{{ specs['rank'].label }}
         <select name="rank">{% set cur = (raw['rank'] if 'rank' in raw else mob['rank'])|int %}{% for r, label in ranks.items() %}<option value="{{ r }}" {{ 'selected' if cur == r }}>{{ r }} – {{ label }}</option>{% endfor %}</select>
-        <small>Boss i Król liczą się jako bossowie (respawn „Metiny i bossy”, bonus „Silny przeciw bossom”).</small></label>
+        <small>Boss i Król liczą się jako bossowie (respawn „Bossy”, bonus „Silny przeciw bossom”).</small></label>
     </div>
   </section>
 

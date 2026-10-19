@@ -471,9 +471,27 @@ m2-tail-syserr &
 # -----------------------------------------------------------------------------
 # Watch loop
 # -----------------------------------------------------------------------------
+LOG_PRUNE_NEXT=0
 while :; do
   sleep 5
   [ "$SHUTTING_DOWN" = "0" ] || break
+
+  # MT2009_PLUS_LOG_KEEP_48H_V1 (the owner, 11 October: "logi serwera za duzo
+  # zajmuja ... przechowywane max 48 godzin"): once an hour the cores' rotated
+  # logs (log/YYYYMMDD/syslog.HH, syserr.HH) older than M2_LOG_KEEP_HOURS
+  # (48 by default) go, and the day folders they leave empty. The live
+  # syslog/syserr of the running hour are never touched.
+  now_s=$(date +%s)
+  if [ "$now_s" -ge "$LOG_PRUNE_NEXT" ]; then
+    LOG_PRUNE_NEXT=$((now_s + 3600))
+    keep_min=$(( ${M2_LOG_KEEP_HOURS:-48} * 60 ))
+    for name in "${!CORE_DIR[@]}"; do
+      d="${CORE_DIR[$name]}/log"
+      [ -d "$d" ] || continue
+      find "$d" -mindepth 2 -type f -mmin "+$keep_min" -delete 2>/dev/null
+      find "$d" -mindepth 1 -type d -empty -delete 2>/dev/null
+    done
+  fi
 
   # Did somebody save the panel's rates page?  `m2-rates poll' exits 10 when a
   # request the panel left in the spool has not been dealt with yet.  It is

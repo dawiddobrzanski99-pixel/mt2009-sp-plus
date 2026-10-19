@@ -3,8 +3,10 @@
 
 #include <cstdint>
 #include <map>
+#include "playerbot_duel_rules.h"
 
-// A challenge to a duel, kept until the bot's next tick answers it.
+// A challenge to a duel. Human challenges remain pending through preparation
+// and ready chat; autonomous bot challenges retain their existing acceptance.
 //
 // CPVPManager::Insert is a two-sided agreement: the first call makes the CPVP
 // and tells the victim "%s challenged you to a battle", the second call from
@@ -31,17 +33,33 @@ struct Challenge
 {
 	uint32_t challengerPid;
 	uint32_t seenAt;
+	playerbot_duel::Phase phase = playerbot_duel::Phase::React;
+	uint32_t reactAt = 0, readyAt = 0, nextMove = 0, nextItem = 0;
+	bool playerReady = false, reminded = false, alchemyStarted = false, reserveLogged = false;
+	int desiredRange = 0, threat = 0, budget = 0;
+	long originX = 0, originY = 0, map = 0;
+	playerbot_duel::StealthPlan stealthPlan = playerbot_duel::StealthPlan::None;
+	bool setupMoveDone = false;
+	uint32_t setupMoveUntil = 0;
+	// MT2009_PLUS_BOT_DUEL_AI_V1: a bot challenged by another bot through the
+	// prepared path; the challenger answers the ready chat itself (answerAt).
+	bool botChallenger = false;
+	uint32_t answerAt = 0;
 };
 
 inline std::map<uint32_t, Challenge> challenges;
+// MT2009_PLUS_BOT_DUEL_AI_V1: the challenging bot's own preparation, keyed by
+// the challenger; challengerPid holds the bot it challenged.
+inline std::map<uint32_t, Challenge> botSides;
 
-// Called from the engine for a bot that was just challenged. The newest
-// challenge wins: answering one that somebody has already walked away from is
-// worse than answering none.
+// Called from the engine for a bot that was just challenged. Keep one pending
+// preparation per bot: another person must not steal its ready handshake.
 inline void NoteChallenge(uint32_t challengerPid, uint32_t botPid)
 {
 	if (!challengerPid || !botPid || challengerPid == botPid)
 		return;
+	// One pending pair per bot. A new person cannot steal an ongoing preparation.
+	if (challenges.count(botPid)) return;
 	Challenge& challenge = challenges[botPid];
 	challenge.challengerPid = challengerPid;
 	challenge.seenAt = 0;
@@ -65,6 +83,16 @@ inline void Forget(uint32_t botPid)
 {
 	challenges.erase(botPid);
 }
+inline bool NoteReady(uint32_t botPid,uint32_t senderPid) {
+	auto it=challenges.find(botPid);
+	if(it==challenges.end() || it->second.challengerPid!=senderPid) return false;
+	it->second.playerReady=true;
+	return true;
+}
+inline bool PreparationExpired(const Challenge& c,uint32_t now) {
+	return c.readyAt ? now-c.readyAt>playerbot_duel::readyTimeout :
+		c.seenAt && now-c.seenAt>playerbot_duel::prepareTimeout;
+}
 
 // How long this bot believes it is in an agreed duel.
 //
@@ -78,9 +106,31 @@ struct Duel
 {
 	uint32_t opponentPid;
 	uint32_t until;
+	bool prepared = false, alchemyStarted = false;
+	uint32_t nextDecision = 0, nextMove = 0, moveUntil = 0, nextChase = 0;
+	uint32_t openingSkill = 0;
+	uint32_t chargeUntil = 0, meleeUntil = 0, nextTrace = 0;
+	uint32_t lastWeaponAt = 0, nextOpponentCheck = 0, dispelAt = 0, nextBuffCheck = 0;
+	unsigned weaponChain = 0;
+	bool opponentBuff = false;
+	int observedHP = 0;
+	uint32_t lastDamagedAt = 0;
+	bool stealthOpening = false;
+	playerbot_duel::SkillHitSequence skillHits;
+	// MT2009_PLUS_BOT_DUEL_AI_V1: a prepared bot-v-bot duel; the challenged
+	// side (botOwner) is the one counted in the census.
+	bool botPair = false, botOwner = false;
 };
 
 inline std::map<uint32_t, Duel> duels;
+struct Result { unsigned wins=0, losses=0, draws=0; int streak=0, last=0; };
+inline std::map<std::pair<uint32_t,uint32_t>, Result> history;
+inline void RecordResult(uint32_t bot,uint32_t foe,int outcome) {
+	const auto key=std::make_pair(bot,foe);
+	if (!history.count(key) && history.size()>=2048) history.erase(history.begin());
+	auto& r=history[key]; r.last=outcome;
+	if(outcome>0) {++r.wins;r.streak=0;} else if(outcome<0) {++r.losses;r.streak=std::min(r.streak+1,2);} else ++r.draws;
+}
 
 // No duel is assumed to last longer than this (PLAYERBOT_PVP_DUEL_ASSUMED is
 // three minutes); a deadline further ahead is none.
@@ -103,6 +153,7 @@ inline void NoteDuelStarted(uint32_t botPid, uint32_t opponentPid, uint32_t unti
 	if (!botPid)
 		return;
 	Duel& duel = duels[botPid];
+	duel = Duel{};
 	duel.opponentPid = opponentPid;
 	duel.until = until;
 }
@@ -114,7 +165,9 @@ inline bool IsInDuel(uint32_t botPid, uint32_t now)
 		return false;
 	if (!DuelStands(it->second.until, now))
 	{
-		duels.erase(it);
+		// The manager must still see a prepared duel to clean its engine pair,
+		// temporary alchemy and target after an expiry.
+		if (!it->second.prepared) duels.erase(it);
 		return false;
 	}
 	return true;
@@ -137,7 +190,7 @@ inline uint32_t GetDuelOpponent(uint32_t botPid, uint32_t now)
 		return 0;
 	if (!DuelStands(it->second.until, now))
 	{
-		duels.erase(it);
+		if (!it->second.prepared) duels.erase(it);
 		return 0;
 	}
 	return it->second.opponentPid;

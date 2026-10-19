@@ -439,6 +439,20 @@ quest web_admin begin
 									else
 										syschat("GM zresetowa\179 Tw\243j limit dziennych dungeon\243w.")
 									end
+								elseif cmd == "EXPUNLOCK" or cmd == "EXPLOCK" then
+									-- MT2009_PLUS_BOT_EXP_UNLOCK_V1: the advanced panel's
+									-- "Odblokuj exp" / "Przywroc blokade" on a bot's page. The
+									-- bot's quest flag playerbot.exp_unlocked, which the bots'
+									-- core honours over every lock it would put on the bot
+									-- (ManagePlayerBotExpLock lifts AFFECT_EXP_BLOCK while it is
+									-- 1). Bots only: a person's experience is the person's.
+									if pc.is_playerbot == nil or not pc.is_playerbot() then
+										result = "not_allowed"
+									elseif cmd == "EXPUNLOCK" then
+										pc.setf("playerbot", "exp_unlocked", 1)
+									else
+										pc.setf("playerbot", "exp_unlocked", 0)
+									end
 								else
 									result = "unknown_cmd"
 								end
@@ -446,7 +460,7 @@ quest web_admin begin
 								-- Only words from our own short list may
 								-- reach the database. Nothing a user typed
 								-- can get in here.
-								if result ~= "done" and result ~= "bad_args" and result ~= "no_skill" and result ~= "has_item" and result ~= "full" and result ~= "failed" and result ~= "qty_too_big" and result ~= "partial" and result ~= "no_gm" then
+								if result ~= "done" and result ~= "bad_args" and result ~= "no_skill" and result ~= "has_item" and result ~= "full" and result ~= "failed" and result ~= "qty_too_big" and result ~= "partial" and result ~= "no_gm" and result ~= "not_allowed" then
 									result = "unknown_cmd"
 								end
 
@@ -567,11 +581,14 @@ quest web_admin begin
 				end
 			end
 
-			-- Respawn times, the same way: fastBossSpawn and fastMobSpawn
-			-- are read by the engine's regen_event as a percent of each
-			-- regen line's delay (0 = untouched), the map-less names being
-			-- the fallback playerbotify adds to Seban's per-map ones.
-			-- arg1 = "boss,mob", digits only, 0..100.
+			-- Respawn times, the same way: fastMetinSpawn, fastBossSpawn and
+			-- fastMobSpawn are read by the engine's regen_event as a percent
+			-- of each regen line's delay (0 = untouched), the map-less names
+			-- being the fallback playerbotify adds to Seban's per-map ones.
+			-- arg1 = "metin,boss,mob", digits only, 0..100 (MT2009_PLUS_REGEN_METIN_SPLIT_V1:
+			-- Metins apart from bosses). A panel of before the
+			-- split sends "boss,mob", its one figure for Metins and bosses
+			-- alike, and both get it.
 			local grows = wa_query("SELECT id, arg1 FROM player.web_admin_queue WHERE status='pending' AND cmd='REGEN' ORDER BY id ASC LIMIT 3")
 			if type(grows) == "table" then
 				local gi
@@ -579,19 +596,25 @@ quest web_admin begin
 					local gr = grows[gi]
 					if type(gr) == "table" then
 						local gqid = tonumber(gr.id)
-						local gboss, gmob = nil, nil
+						local gmetin, gboss, gmob = nil, nil, nil
 						if type(gr.arg1) == "string" then
-							local _, _, b1, b2 = string.find(gr.arg1, "^(%d+),(%d+)$")
+							local _, _, b0, b1, b2 = string.find(gr.arg1, "^(%d+),(%d+),(%d+)$")
+							if b0 == nil then
+								_, _, b1, b2 = string.find(gr.arg1, "^(%d+),(%d+)$")
+								b0 = b1
+							end
+							gmetin = tonumber(b0)
 							gboss = tonumber(b1)
 							gmob = tonumber(b2)
 						end
 						if gqid ~= nil then
 							local gres = "done"
-							if gboss == nil or gmob == nil or gboss > 100 or gmob > 100 then
+							if gmetin == nil or gboss == nil or gmob == nil or gmetin > 100 or gboss > 100 or gmob > 100 then
 								gres = "bad_args"
 							elseif game.set_event_flag == nil then
 								gres = "failed"
 							else
+								game.set_event_flag("fastMetinSpawn", gmetin)
 								game.set_event_flag("fastBossSpawn", gboss)
 								game.set_event_flag("fastMobSpawn", gmob)
 							end
@@ -602,10 +625,12 @@ quest web_admin begin
 			end
 
 			-- How many a respawn line keeps standing, the same way
-			-- (Kiciamol, 18 September): m2_boss_count and m2_mob_count are
-			-- percents of each line's own count that regen_spawn tops up to
-			-- (regen_target_count; 100 = as the line says, 400 = four times).
-			-- arg1 = "boss,mob", digits only, 100..400.
+			-- (Kiciamol, 18 September): m2_metin_count, m2_boss_count and
+			-- m2_mob_count are percents of each line's own count that
+			-- regen_spawn tops up to (regen_target_count; 100 = as the line
+			-- says, 400 = four times). arg1 = "metin,boss,mob", digits only,
+			-- 100..400; "boss,mob" from a panel of before the split (MT2009_PLUS_REGEN_METIN_SPLIT_V1)
+			-- sets the Metins and the bosses alike.
 			local crows = wa_query("SELECT id, arg1 FROM player.web_admin_queue WHERE status='pending' AND cmd='REGEN_COUNT' ORDER BY id ASC LIMIT 3")
 			if type(crows) == "table" then
 				local ci
@@ -613,19 +638,26 @@ quest web_admin begin
 					local cr = crows[ci]
 					if type(cr) == "table" then
 						local cqid = tonumber(cr.id)
-						local cboss, cmob = nil, nil
+						local cmetin, cboss, cmob = nil, nil, nil
 						if type(cr.arg1) == "string" then
-							local _, _, c1, c2 = string.find(cr.arg1, "^(%d+),(%d+)$")
+							local _, _, c0, c1, c2 = string.find(cr.arg1, "^(%d+),(%d+),(%d+)$")
+							if c0 == nil then
+								_, _, c1, c2 = string.find(cr.arg1, "^(%d+),(%d+)$")
+								c0 = c1
+							end
+							cmetin = tonumber(c0)
 							cboss = tonumber(c1)
 							cmob = tonumber(c2)
 						end
 						if cqid ~= nil then
 							local cres = "done"
-							if cboss == nil or cmob == nil or cboss < 100 or cboss > 400 or cmob < 100 or cmob > 400 then
+							if cmetin == nil or cboss == nil or cmob == nil or cmetin < 100 or cmetin > 400 or
+									cboss < 100 or cboss > 400 or cmob < 100 or cmob > 400 then
 								cres = "bad_args"
 							elseif game.set_event_flag == nil then
 								cres = "failed"
 							else
+								game.set_event_flag("m2_metin_count", cmetin)
 								game.set_event_flag("m2_boss_count", cboss)
 								game.set_event_flag("m2_mob_count", cmob)
 							end
@@ -966,6 +998,40 @@ quest web_admin begin
 								game.set_event_flag("m2_mob_hp", mval)
 							end
 							wa_query("UPDATE player.web_admin_queue SET status='" .. mres .. "' WHERE id=" .. mqid .. " AND status='pending' LIMIT 1")
+						end
+					end
+				end
+			end
+
+			-- The chance of bonus lines on a dropped weapon or piece of armour,
+			-- the same way (MT2009_PLUS_DROP_BONUS_PCT_V1, server-patches/dropbonus):
+			-- m2_drop_bonus_pct is a percent of the game's own chance, which
+			-- every core reads at its next drop (item_manager.cpp
+			-- SetDropRarePct). arg1 = the percent, digits only,
+			-- 10..1000. Its own block, so its locals end with it.
+			do
+				local brows = wa_query("SELECT id, arg1 FROM player.web_admin_queue WHERE status='pending' AND cmd='DROP_BONUS' ORDER BY id ASC LIMIT 3")
+				if type(brows) == "table" then
+					local bi
+					for bi = 1, table.getn(brows) do
+						local br = brows[bi]
+						if type(br) == "table" then
+							local bqid = tonumber(br.id)
+							local bval = nil
+							if type(br.arg1) == "string" and string.find(br.arg1, "^%d+$") then
+								bval = tonumber(br.arg1)
+							end
+							if bqid ~= nil then
+								local bres = "done"
+								if bval == nil or bval < 10 or bval > 1000 then
+									bres = "bad_args"
+								elseif game.set_event_flag == nil then
+									bres = "failed"
+								else
+									game.set_event_flag("m2_drop_bonus_pct", bval)
+								end
+								wa_query("UPDATE player.web_admin_queue SET status='" .. bres .. "' WHERE id=" .. bqid .. " AND status='pending' LIMIT 1")
+							end
 						end
 					end
 				end

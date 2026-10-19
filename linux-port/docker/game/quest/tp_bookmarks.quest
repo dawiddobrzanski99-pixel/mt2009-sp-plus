@@ -52,7 +52,10 @@ quest tp_bookmarks begin
 
 		-- no teleport out of these (the scroll's 113 and 200, the war and duel maps)
 		function blocked_from(idx)
-			return idx == 81 or idx == 110 or idx == 111 or idx == 112 or idx == 113
+			if idx == 110 or idx == 111 then
+				return guild.get_any_war() ~= 0
+			end
+			return idx == 81 or idx == 112 or idx == 113
 				or idx == 181 or idx == 182 or idx == 183 or idx == 200 or idx == 250
 		end
 
@@ -251,7 +254,11 @@ quest tp_bookmarks begin
 				cur = math.floor(cur / 10000)
 			end
 			if tp_bookmarks.blocked_from(cur) then
-				syschat("Z tego miejsca nie mo¿na siê teleportowaæ.")
+				if cur == 110 or cur == 111 then
+					syschat("Nie mo¿esz siê teleportowaæ w trakcie wojny gildii.")
+				else
+					syschat("Z tego miejsca nie mo¿na siê teleportowaæ.")
+				end
 				return
 			end
 			if pc.is_pvp() or pc.is_arena() then

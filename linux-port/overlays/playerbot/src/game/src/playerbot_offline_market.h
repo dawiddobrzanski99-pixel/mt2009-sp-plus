@@ -73,9 +73,12 @@ namespace {
         if (price <= 0 || price > budget) return -1;
         auto preview = BotOfflinePreview(*line);
         if (!preview) return -1;
-        const bool want = WantsPlayerBotStallItem(ch, preview) &&
+        // MT2009_PLUS_MARKET_LIFE_V1, point 9: a whim's line (a bargain, an
+        // impulse) ranks under every line the bot needs.
+        const bool own = WantsPlayerBotStallItemOwn(ch, preview);
+        const bool want = (own || IsPlayerBotWhimCandidate(ch, preview)) &&
             CanPlayerBotPayForOffer(ch, preview, price, shop->GetOwnerPID()) && ch->GetEmptyInventory(preview->GetSize()) >= 0;
-        int priority = IsPlayerBotProgressionOffer(ch, preview) ? 200 : 0;
+        int priority = (IsPlayerBotProgressionOffer(ch, preview) ? 200 : 0) + (own ? 1 : 0);
         // The class's level-30 weapon comes first, and of those the
         // highest average line, the price only breaking a tie: "12% za
         // 300k albo 26% za 450k - wybierze drozsza" (community patch 2).
@@ -227,6 +230,9 @@ namespace {
         const bool wanted = finalPreview && (haggled || setPiece || WantsPlayerBotStallItem(ch, finalPreview));
         const bool payable = wanted && (haggled || setPiece || CanPlayerBotPayForOffer(ch, finalPreview, price, shop->GetOwnerPID()));
         const bool stillWanted = payable && ch->GetEmptyInventory(finalPreview->GetSize()) >= 0;
+        // MT2009_PLUS_MARKET_LIFE_V1, point 9: a bargain's or an impulse's line.
+        const int whim = stillWanted && !haggled && !setPiece && !WantsPlayerBotStallItemOwn(ch, finalPreview)
+            ? GetPlayerBotWhimKind(ch, finalPreview, (long long)price, shop->GetOwnerPID()) : 0;
         if (finalPreview) M2_DELETE(finalPreview);
         if (!stillWanted) {
             DropPlayerBotOfflinePick(ch, state, !wanted ? "no_longer_wanted" : !payable ? "cannot_pay" : "no_room");
@@ -267,6 +273,8 @@ namespace {
             manager.RecvShopBuyItemClientPacket(ch, o.buyOwner, o.buyItem, false, price);
             const bool sent = EndCall(ch->GetPlayerID());
             manager.RecvCloseShopGuestClientPacket(ch);
+            if (sent && whim)
+                NotePlayerBotWhimBought(ch, whim, boughtVnum, (long long)price);
             sys_log(0, "PLAYERBOT_OFFLINE: purchase_requested buyer=%u owner=%u item=%u vnum=%u price=%lld sent=%d",
                 ch->GetPlayerID(), o.buyOwner, o.buyItem, (unsigned int)boughtVnum, (long long)price, sent);
         }

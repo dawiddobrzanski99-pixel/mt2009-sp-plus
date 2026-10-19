@@ -367,11 +367,49 @@ namespace
 		return subType == ARMOR_BODY || subType == ARMOR_HEAD || subType == ARMOR_SHIELD;
 	}
 
+	// Defined below with the merchants' ladder.
+	DWORD FindPlayerBotBestMerchantSlotVnum(LPCHARACTER ch, int wearCell);
+	int GetPlayerBotProtoLevelLimit(const TItemTable* proto);
+
+	// MT2009_PLUS_BOT_SMITHY_V1, point 2 (the owner's list after 2.29.0:
+	// "Tarcze i helmy dobierane do poziomu bota"): the level of the best
+	// helmet or shield the village merchants sell this bot - 0, 21 or 41 on
+	// these files - by class, sex and level, kept: the shops do not change
+	// while the world runs, and the equipment pass asks it of every piece.
+	int GetPlayerBotMerchantLadderLevel(LPCHARACTER ch, int wearCell)
+	{
+		if (!ch)
+			return 0;
+		static std::map<DWORD, int> s_cache;
+		const DWORD key = (DWORD)ch->GetJob() | ((DWORD)GET_SEX(ch) << 3) | ((DWORD)wearCell << 4) |
+				((DWORD)ch->GetLevel() << 12);
+		std::map<DWORD, int>::const_iterator it = s_cache.find(key);
+		if (it != s_cache.end())
+			return it->second;
+		const DWORD vnum = FindPlayerBotBestMerchantSlotVnum(ch, wearCell);
+		const TItemTable* proto = vnum ? ITEM_MANAGER::instance().GetTable(vnum) : NULL;
+		const int level = proto ? GetPlayerBotProtoLevelLimit(proto) : 0;
+		s_cache[key] = level;
+		return level;
+	}
+
 	bool IsPlayerBotOutdatedGear(LPCHARACTER ch, LPITEM item)
 	{
-		return ch && item && item->GetType() == ITEM_ARMOR && IsPlayerBotOutdatedGearSubType(item->GetSubType()) &&
-				(int)ch->GetLevel() >= PLAYERBOT_OUTDATED_GEAR_MIN_LEVEL &&
-				(int)item->GetLevelLimit() + PLAYERBOT_OUTDATED_GEAR_LEVELS <= (int)ch->GetLevel();
+		if (!ch || !item || item->GetType() != ITEM_ARMOR || !IsPlayerBotOutdatedGearSubType(item->GetSubType()))
+			return false;
+		if ((int)ch->GetLevel() >= PLAYERBOT_OUTDATED_GEAR_MIN_LEVEL &&
+				(int)item->GetLevelLimit() + PLAYERBOT_OUTDATED_GEAR_LEVELS <= (int)ch->GetLevel())
+			return true;
+		// MT2009_PLUS_BOT_SMITHY_V1, point 2: a helmet or a shield under the
+		// merchants' best for the bot is outdated from level twenty-one - the
+		// Bojowa Tarcza +6 a bot of forty kept because its numbers beat a
+		// Czarna Okragla Tarcza +0 gives way to it, and the anvil raises the
+		// new one from there.
+		if (item->GetSubType() == ARMOR_BODY || (int)ch->GetLevel() < PLAYERBOT_HELM_SHIELD_LADDER_MIN_LEVEL)
+			return false;
+		const int ladder = GetPlayerBotMerchantLadderLevel(ch,
+				item->GetSubType() == ARMOR_HEAD ? WEAR_HEAD : WEAR_SHIELD);
+		return ladder > 0 && (int)item->GetLevelLimit() < ladder;
 	}
 
 	// Whether `worn` gives way to `item` by that rule.
@@ -386,8 +424,12 @@ namespace
 	// with none such in its bag already.
 	bool IsPlayerBotOutdatedGearOffer(LPCHARACTER ch, LPITEM offer)
 	{
+		// MT2009_PLUS_BOT_SMITHY_V1, point 2: a helmet or a shield from the
+		// ladder's own level.
+		const int minLevel = offer && offer->GetType() == ITEM_ARMOR && offer->GetSubType() != ARMOR_BODY
+				? PLAYERBOT_HELM_SHIELD_LADDER_MIN_LEVEL : PLAYERBOT_OUTDATED_GEAR_MIN_LEVEL;
 		if (!ch || !offer || offer->GetType() != ITEM_ARMOR || !IsPlayerBotOutdatedGearSubType(offer->GetSubType()) ||
-				(int)ch->GetLevel() < PLAYERBOT_OUTDATED_GEAR_MIN_LEVEL || !IsPlayerBotEquipmentCandidate(ch, offer))
+				(int)ch->GetLevel() < minLevel || !IsPlayerBotEquipmentCandidate(ch, offer))
 			return false;
 		const int wearCell = offer->FindEquipCell(ch);
 		LPITEM worn = wearCell >= 0 && wearCell < WEAR_MAX_NUM ? ch->GetWear((BYTE)wearCell) : NULL;
@@ -980,6 +1022,8 @@ namespace
 		{ 17200, JOB_SURA },      // Kolczyki Z Niebian.Lez
 		// Ninja
 		{ 17080, JOB_ASSASSIN },  // Jadeitowe Kolczyki
+		// MT2009_PLUS_BOT_SMITHY_V1, point 1: the Ninja's first choice too.
+		{ 17100, JOB_ASSASSIN },  // Ebonitowe Kolczyki
 		{ 16160, JOB_ASSASSIN },  // Krysztalowy Naszyjnik
 		{ 17160, JOB_ASSASSIN },  // Krysztalowe Kolczyki
 		// Szaman
@@ -1007,6 +1051,23 @@ namespace
 	{
 		return ch && PlayerBotNavHash(ch->GetPlayerID() ^ 0x4a45574cU) % 100U <
 				PLAYERBOT_JEWEL_LIST_FOLLOWER_PERCENT;
+	}
+
+	// MT2009_PLUS_BOT_SMITHY_V1, point 1 (the owner's list after 2.29.0): the
+	// Ebonitowe Kolczyki are the first choice of the bots that go by the list
+	// (IsPlayerBotJewelListFollower), and only of a Warrior or a Ninja - the
+	// rest choose by the score as ever, and a Sura keeps its own earrings
+	// (the list's Zlote, Bialego Zlota and Niebianskich Lez). The list's own
+	// preference makes every listed piece better; this makes the Ebony pair
+	// better than the other listed earrings as well.
+	bool IsPlayerBotFirstChoiceEarrings(LPCHARACTER ch, LPITEM item)
+	{
+		if (!ch || !item || item->GetType() != ITEM_ARMOR || item->GetSubType() != ARMOR_EAR ||
+				(ch->GetJob() != JOB_WARRIOR && ch->GetJob() != JOB_ASSASSIN))
+			return false;
+		const BYTE refine = item->GetRefineLevel();
+		return refine <= 9 && item->GetVnum() >= refine &&
+				item->GetVnum() - refine == PLAYERBOT_EBONY_EARRINGS_VNUM;
 	}
 
 	bool IsPlayerBotListedJewel(LPCHARACTER ch, LPITEM item)
@@ -1298,9 +1359,12 @@ namespace
 		// it (IsPlayerBotJewelListFollower; Patch 4, point 1).
 		if (ch && IsPlayerBotListedJewel(ch, item) && IsPlayerBotJewelListFollower(ch))
 		{
-			score = score * (100 + PLAYERBOT_JEWEL_LIST_PREFERENCE_PERCENT) / 100;
+			// MT2009_PLUS_BOT_SMITHY_V1, point 1: the Ebony pair first.
+			const long long pct = PLAYERBOT_JEWEL_LIST_PREFERENCE_PERCENT +
+					(IsPlayerBotFirstChoiceEarrings(ch, item) ? PLAYERBOT_EBONY_EARRINGS_FIRST_PERCENT : 0);
+			score = score * (100 + pct) / 100;
 			if (terms)
-				terms->Set(per::TERM_LISTED_JEWEL_PCT, PLAYERBOT_JEWEL_LIST_PREFERENCE_PERCENT);
+				terms->Set(per::TERM_LISTED_JEWEL_PCT, pct);
 		}
 		if (terms)
 			terms->Set(per::TERM_TOTAL, score);
@@ -1576,9 +1640,34 @@ namespace
 	// the dagger is refined at the blacksmith towards this first.
 	bool HasPlayerBotUsableStoneDagger(LPCHARACTER ch)
 	{
+		// MT2009_PLUS_BOT_ARCHER_STONE_SWAP_V1: the blade in the hand counts
+		// first. FindPlayerBotStoneWeapon looks at the hand only when the bag
+		// holds no blade, so a +4 dagger drawn for a stone with a +0 sword left
+		// in the bag read as "no usable dagger": the bow went back, the dagger
+		// came out of the hand into the bag, read as usable again - and the
+		// Archer swapped bow and dagger at the Metin round and round.
+		LPITEM worn = ch ? ch->GetWear(WEAR_WEAPON) : NULL;
+		if (worn && IsPlayerBotStoneMeleeWeapon(ch, worn) && worn->GetRefineLevel() >= PLAYERBOT_ARCHER_STONE_MIN_REFINE)
+			return true;
 		LPITEM w = FindPlayerBotStoneWeapon(ch, true);
 		return w && w->GetRefineLevel() >= PLAYERBOT_ARCHER_STONE_MIN_REFINE;
 	}
+
+	// MT2009_PLUS_BOT_ARCHER_STONE_SWAP_V1: the stone an Archer drew its blade
+	// for, and when its stone mode last flipped. The mode stays on while that
+	// stone stands within PLAYERBOT_ARCHER_STONE_KEEP_DISTANCE, whatever the
+	// target is now - the stone's own waves and a monster hitting the bot used
+	// to take the target off the stone for a moment, and every such moment was
+	// a swap to the bow and back - and no flip follows another sooner than
+	// PLAYERBOT_ARCHER_STONE_FLIP_MS, but for the stone gone or the bot dead.
+	struct TPlayerBotArcherStone
+	{
+		DWORD stoneVID;
+		DWORD flippedAt;
+	};
+	std::map<DWORD, TPlayerBotArcherStone> s_mapPlayerBotArcherStone;
+	const int PLAYERBOT_ARCHER_STONE_KEEP_DISTANCE = 1500;
+	const DWORD PLAYERBOT_ARCHER_STONE_FLIP_MS = 4000;
 
 	// What the hand should hold right now: the job's weapon, or the stone
 	// weapon while an Archer is on a stone.
@@ -1714,11 +1803,37 @@ namespace
 			// decides them.
 			const bool inTower = ch->GetMapIndex() == PLAYERBOT_MAP_DEMON_TOWER ||
 					IsPlayerBotDemonTowerInstance(ch->GetMapIndex());
-			const bool wantMelee = target && !target->IsDead() &&
-					state.dwLurePlayerPID == 0 && HasPlayerBotUsableStoneDagger(ch) &&
+			const bool usable = state.dwLurePlayerPID == 0 && HasPlayerBotUsableStoneDagger(ch);
+			bool wantMelee = target && !target->IsDead() && usable &&
 					(inTower ? CountPlayerBotArrows(ch) == 0 : target->IsStone());
-			if (wantMelee != state.bMeleeForStone)
+			// MT2009_PLUS_BOT_ARCHER_STONE_SWAP_V1: the stone remembered, and the
+			// mode kept while it stands near.
+			TPlayerBotArcherStone& memo = s_mapPlayerBotArcherStone[ch->GetPlayerID()];
+			if (wantMelee && !inTower && target)
+				memo.stoneVID = target->GetVID();
+			bool stoneGone = true;
+			if (!wantMelee && state.bMeleeForStone && usable && !inTower && memo.stoneVID != 0)
 			{
+				LPCHARACTER stone = CHARACTER_MANAGER::instance().Find(memo.stoneVID);
+				if (stone && !stone->IsDead() && stone->IsStone() && stone->GetMapIndex() == ch->GetMapIndex() &&
+						DISTANCE_APPROX(stone->GetX() - ch->GetX(), stone->GetY() - ch->GetY()) <=
+							PLAYERBOT_ARCHER_STONE_KEEP_DISTANCE)
+				{
+					wantMelee = true;
+					stoneGone = false;
+				}
+			}
+			else if (!wantMelee && target && !target->IsDead())
+				stoneGone = false;
+			if (!wantMelee && stoneGone)
+				memo.stoneVID = 0;
+			// No flip sooner than the last one's hold, but for a stone gone
+			// (or no blade left), which ends the mode at once.
+			const bool hold = memo.flippedAt != 0 && dwNow - memo.flippedAt < PLAYERBOT_ARCHER_STONE_FLIP_MS &&
+					!(state.bMeleeForStone && (stoneGone || !usable)) && !ch->IsDead();
+			if (wantMelee != state.bMeleeForStone && !hold)
+			{
+				memo.flippedAt = dwNow ? dwNow : 1;
 				state.bMeleeForStone = wantMelee;
 				state.dwNextEquipmentCheckTime = dwNow;
 				sys_log(0, "PLAYERBOT_GEAR: archer %s pid=%u name=%s target_vid=%u",
@@ -2576,9 +2691,21 @@ namespace
 	// blacksmith pass, the scroll pass in the field, the planner, the refine
 	// target and the scroll purchase all ask it, through
 	// FindPlayerBotRefineScrollCellFor where they look for the scroll itself.
+	// MT2009_PLUS_MARKET_LIFE_V1, point 2 (the owner's list, 9 October): "tylko
+	// w kilku oplacalnych przypadkach" - the step where the sheet's next plus
+	// is worth the scroll and a half over the present one, from
+	// PLAYERBOT_LOW_GEAR_SCROLL_MIN_PLUS (playerbot_market_life.h).
+	// Point 1: and no Blessing Scroll on a piece worth less than the scroll
+	// itself, at any level (IsPlayerBotCheaperThanBlessingScroll).
+	bool IsPlayerBotLowGearScrollWorthIt(LPITEM item);
+	bool IsPlayerBotCheaperThanBlessingScroll(LPITEM item);
 	bool IsPlayerBotScrollFreeGear(LPITEM item)
 	{
-		return item && item->GetLevelLimit() <= PLAYERBOT_SCROLL_FREE_GEAR_MAX_LEVEL;
+		if (!item)
+			return false;
+		if (item->GetLevelLimit() <= PLAYERBOT_SCROLL_FREE_GEAR_MAX_LEVEL && !IsPlayerBotLowGearScrollWorthIt(item))
+			return true;
+		return IsPlayerBotCheaperThanBlessingScroll(item);
 	}
 
 	// The weapons the operator's anvil table reaches: the level-30 family and
@@ -2679,10 +2806,21 @@ namespace
 	// dagger, the bell or the fan, whichever its build wields - is every bot's
 	// from level thirty, whatever its level now: a bot of forty-two on an old
 	// world without one is sent for it as surely as a bot of thirty.
+	// MT2009_PLUS_BOT_SMITHY_V1, point 5 (Piciu713): a Ninja on the dagger
+	// line buys the Kozik Czarnego Liscia for its level thirty, not the Miecz
+	// Pelni Ksiezyca - the sword it may hold is not the weapon its skills are
+	// for. The class's level-30 weapon of such a Ninja is the dagger alone.
+	bool IsPlayerBotLevel30KindFor(LPCHARACTER ch, BYTE subType)
+	{
+		if (ch && ch->GetJob() == JOB_ASSASSIN && ch->GetSkillGroup() == 1)
+			return subType == WEAPON_DAGGER;
+		return true;
+	}
+
 	bool IsPlayerBotClassLevel30Weapon(LPCHARACTER ch, LPITEM item)
 	{
 		return ch && item && IsPlayerBotSpecialLevel30Weapon(item) && IsPlayerBotWeapon(ch, item) &&
-				item->CanUsedBy(ch);
+				item->CanUsedBy(ch) && IsPlayerBotLevel30KindFor(ch, item->GetSubType());
 	}
 
 	// Defined below, beside the scroll count it asks.
@@ -2957,7 +3095,9 @@ namespace
 					!IsPlayerBotWeapon(ch, item) || item->GetLevelLimit() > ch->GetLevel() ||
 					IsPlayerBotBannedLowWeapon(ch, item))
 				continue;
-			if (!IsPlayerBotSpecialLevel30Weapon(item))
+			// MT2009_PLUS_BOT_SMITHY_V1, point 5: another kind than the bot's
+			// own (the dagger Ninja's sword) is a weapon to beat, no project.
+			if (!IsPlayerBotSpecialLevel30Weapon(item) || !IsPlayerBotLevel30KindFor(ch, item->GetSubType()))
 			{
 				view.toBeat = std::max(view.toBeat, GetPlayerBotWeaponHitDamage(item, ch));
 				continue;
@@ -3050,7 +3190,7 @@ namespace
 	bool IsPlayerBotBetterLevel30Offer(LPCHARACTER ch, LPITEM offer)
 	{
 		if (!ch || !IsPlayerBotSpecialLevel30Weapon(offer) || !IsPlayerBotWeapon(ch, offer) ||
-				offer->GetLevelLimit() > ch->GetLevel())
+				offer->GetLevelLimit() > ch->GetLevel() || !IsPlayerBotLevel30KindFor(ch, offer->GetSubType()))
 			return false;
 		TPlayerBotLevel30View view;
 		ReadPlayerBotLevel30View(ch, view);
@@ -3086,10 +3226,14 @@ namespace
 		if (!worn)
 			return true;
 		static const DWORD families[] = { 290, 1170, 2150, 3210, 5110, 7160 };
+		// MT2009_PLUS_BOT_SMITHY_V1, point 5: a dagger Ninja holding a sword
+		// looks for the dagger.
+		const BYTE wantedSubType = IsPlayerBotLevel30KindFor(ch, worn->GetSubType())
+				? worn->GetSubType() : (BYTE)WEAPON_DAGGER;
 		for (size_t i = 0; i < sizeof(families) / sizeof(families[0]); ++i)
 		{
 			const TItemTable* proto = ITEM_MANAGER::instance().GetTable(families[i] + PLAYERBOT_LEVEL30_PROJECT_PLUS);
-			if (!proto || proto->bType != ITEM_WEAPON || proto->bSubType != worn->GetSubType())
+			if (!proto || proto->bType != ITEM_WEAPON || proto->bSubType != wantedSubType)
 				continue;
 			return GetPlayerBotWeaponHitDamageAt(NULL, proto, ch, PLAYERBOT_LEVEL30_HOPED_AVERAGE) * 100 >
 					view.toBeat * (100 + PLAYERBOT_LEVEL30_PROJECT_MARGIN_PERCENT);
@@ -3513,8 +3657,11 @@ namespace
 		// The helmet worn from level fifty goes to +6 at least, past the
 		// persona's cap on the small pieces: it was the outdated gear's slot
 		// that never climbed (PLAYERBOT_OUTDATED_HELMET_PLUS).
+		// MT2009_PLUS_BOT_SMITHY_V1, point 2: from level thirty, the level the
+		// helmet ladder answers for (IsPlayerBotOutdatedGear) - the anvil
+		// raises the helmet the bot now wears for its level.
 		if (ch && item && item->IsEquipped() && item->GetType() == ITEM_ARMOR && item->GetSubType() == ARMOR_HEAD &&
-				(int)ch->GetLevel() >= PLAYERBOT_OUTDATED_GEAR_MIN_LEVEL && target < PLAYERBOT_OUTDATED_HELMET_PLUS)
+				(int)ch->GetLevel() >= PLAYERBOT_SAFE_ANVIL_YOUNG_LEVEL && target < PLAYERBOT_OUTDATED_HELMET_PLUS)
 			target = PLAYERBOT_OUTDATED_HELMET_PLUS;
 		return IsPlayerBotScrollRulePiece(ch, item)
 				? (BYTE)playerbot_refine_rules::ScrollRuleTarget((int)target) : target;
@@ -3774,7 +3921,8 @@ namespace
 		{
 			const TItemTable* proto = ITEM_MANAGER::instance().GetTable(families[i]);
 			if (!proto || proto->bType != ITEM_WEAPON || !IsPlayerBotWeaponSubTypeFor(ch, proto->bSubType) ||
-					!IsPlayerBotProtoForCharacter(ch, proto))
+					!IsPlayerBotProtoForCharacter(ch, proto) ||
+					!IsPlayerBotLevel30KindFor(ch, proto->bSubType))	// MT2009_PLUS_BOT_SMITHY_V1, point 5
 				continue;
 			for (DWORD plus = 0; plus < 10; ++plus)
 			{
@@ -5234,6 +5382,10 @@ namespace
 		return false;
 	}
 
+	// MT2009_PLUS_BOT_GUILD_SHAMAN_V1: a red potion drunk on a strong map, for
+	// who needs a Shaman there (playerbot_guild_shaman.h, which comes later).
+	void NotePlayerBotStrongMapHardship(LPCHARACTER ch, int kind);
+
 	// The threshold is the caller's (a war drinks sooner), and the healing a
 	// potion already under way will bring counts: the engine refuses a use
 	// that it would carry past the top anyway.
@@ -5254,7 +5406,8 @@ namespace
 		// full bags of red potions do not have a fight, they have an endurance
 		// test. Asked before the clock below, so a duel does not spend the
 		// bot's next potion attempt either.
-		if (playerbot_pvp::IsInDuel(ch->GetPlayerID(), dwNow))
+		if (playerbot_duel::BlockHP(playerbot_pvp::IsInDuel(ch->GetPlayerID(), dwNow),
+				state.dwGuildWarEnemyGID != 0 || ch->GetWarMap() != NULL))
 			return false;
 
 		if (dwNow < state.dwNextPotionTime)
@@ -5280,13 +5433,17 @@ namespace
 				{
 					sys_log(0, "PLAYERBOT_AI: used health potion pid=%u name=%s vnum=%u hp=%d/%d",
 							ch->GetPlayerID(), ch->GetName(), potionVnum, ch->GetHP(), ch->GetMaxHP());
+					NotePlayerBotStrongMapHardship(ch, 2); // MT2009_PLUS_BOT_GUILD_SHAMAN_V1
 					return true;
 				}
 			}
 		}
 		// MT2009_PLUS_BOT_BELTS_V1: the belt's pouch, once the bag has none (playerbot_belts.h).
 		if (UsePlayerBotBeltPotion(ch, redPotionVnums, sizeof(redPotionVnums) / sizeof(redPotionVnums[0]), "health"))
+		{
+			NotePlayerBotStrongMapHardship(ch, 2); // MT2009_PLUS_BOT_GUILD_SHAMAN_V1
 			return true;
+		}
 
 		if (dwNow >= state.dwNextPotionLogTime)
 		{
@@ -5315,6 +5472,10 @@ namespace
 		const DWORD bluePotionVnums[] = { 27052, 27004, 27005, 27006, 71020, 27864, 27876 };
 		for (size_t potionIndex = 0; potionIndex < sizeof(bluePotionVnums) / sizeof(bluePotionVnums[0]); ++potionIndex)
 		{
+			// Blessing of the Dragon restores HP as well as SP; never bypass the duel's HP rule.
+			if (bluePotionVnums[potionIndex] == 71020 &&
+					playerbot_duel::BlockHP(playerbot_pvp::IsInDuel(ch->GetPlayerID(), dwNow),
+					state.dwGuildWarEnemyGID != 0 || ch->GetWarMap() != NULL)) continue;
 			for (WORD cell = 0; cell < PLAYERBOT_BAG_CELLS; ++cell)
 			{
 				LPITEM item = ch->GetInventoryItem(cell);
@@ -5331,7 +5492,16 @@ namespace
 			}
 		}
 		// MT2009_PLUS_BOT_BELTS_V1: and the pouch's (playerbot_belts.h).
-		if (UsePlayerBotBeltPotion(ch, bluePotionVnums, sizeof(bluePotionVnums) / sizeof(bluePotionVnums[0]), "mana"))
+		// Apply the same duel policy to the new belt pouch fallback: 71020
+		// restores HP too, even when selected as a mana potion.
+		const bool blockHP = playerbot_duel::BlockHP(playerbot_pvp::IsInDuel(ch->GetPlayerID(), dwNow),
+				state.dwGuildWarEnemyGID != 0 || ch->GetWarMap() != NULL);
+		DWORD beltManaVnums[sizeof(bluePotionVnums) / sizeof(bluePotionVnums[0])];
+		size_t beltManaCount = 0;
+		for (size_t i = 0; i < sizeof(bluePotionVnums) / sizeof(bluePotionVnums[0]); ++i)
+			if (!blockHP || bluePotionVnums[i] != 71020)
+				beltManaVnums[beltManaCount++] = bluePotionVnums[i];
+		if (UsePlayerBotBeltPotion(ch, beltManaVnums, beltManaCount, "mana"))
 			return true;
 
 		return false;

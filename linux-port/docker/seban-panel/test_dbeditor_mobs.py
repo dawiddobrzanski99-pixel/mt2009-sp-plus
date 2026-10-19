@@ -482,8 +482,11 @@ class SpawnTests(Base):
     def test_overview_shows_base_and_effective_times(self):
         self.fake.set_flag("fastBossSpawn", 50)
         self.fake.set_flag("m2_boss_count", 200)
+        # MT2009_PLUS_REGEN_METIN_SPLIT_V1: the Metins' own rows, as the migration copies them.
+        self.fake.set_flag("fastMetinSpawn", 50)
+        self.fake.set_flag("m2_metin_count", 200)
         page = self.text(self.client.get("/db/spawns"))
-        self.assertIn("Metiny i bossy co 50%", page)
+        self.assertIn("Metiny co 50%</b>, <b>bossy co 50%", page)
         self.assertIn("Chegal", page)                         # the timed boss
         self.assertIn("co 3 h 30 min – 4 h 30 min", page)
         page = self.text(self.client.get("/db/spawns/mapa/metin2_map_a1"))
@@ -502,6 +505,8 @@ class SpawnTests(Base):
         self.assertEqual(sf.count_percent({"m2_mob_count": 300}, False, 1, True), 300)
         self.assertEqual(sf.count_percent({"m2_mob_count": 300}, False, 1, False), 100)   # NPC in the line
         self.assertEqual(sf.count_percent({"m2_mob_count": 300}, False, 10001, True), 100)  # a dungeon instance
+        self.assertEqual(sf.delay_percent({"fastBossSpawn": 50, "fastMetinSpawn": 30}, True, 1, stone=True), (30, "world"))
+        self.assertEqual(sf.count_percent({"m2_boss_count": 300, "m2_metin_count": 200}, True, 1, True, stone=True), 200)
         self.assertEqual(sf.parse_time("55m-85mm"), (3300, 5100))
         self.assertEqual(sf.parse_time("1000s"), (1000, 1000))
         self.assertEqual(sf.parse_time("1h30m"), (5400, 5400))

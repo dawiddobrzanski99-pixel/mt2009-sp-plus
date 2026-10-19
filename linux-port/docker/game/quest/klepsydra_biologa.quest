@@ -1,0 +1,13 @@
+quest klepsydra_biologa begin
+    state start begin
+        when 71102.use begin
+            if not collect_data.is_wait() then
+                syschat("Biolog nie wymaga teraz oczekiwania. Klepsydra nie zostala zuzyta.")
+                return
+            end
+            collect_data.reset_time()
+            pc.remove_item(71102, 1)
+            syschat("Czas oczekiwania u Biologa zostal wyzerowany.")
+        end
+    end
+end

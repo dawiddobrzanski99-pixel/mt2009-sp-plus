@@ -258,7 +258,18 @@ namespace
 		if (unit == 0)
 			return 0;
 		unit = (DWORD)((unsigned long long)unit * (85 + number(0, 10)) / 100);
-		return HumanizePlayerBotPrice(unit, false);
+		unit = HumanizePlayerBotPrice(unit, false);
+		// MT2009_PLUS_NPC_PRICE_CAP_V1: a thing an NPC sells is wanted only under the NPC's
+		// price (GetPlayerBotNpcShopUnitPrice) - "K> Kwiat Zywiolu, place 169k" while Mistrz
+		// sells it for 100 000 (the owner, 12 October). A tenth under it, as people write it.
+		const long long npc = GetPlayerBotNpcShopUnitPrice(vnum);
+		if (npc > 0 && (long long)unit >= npc)
+		{
+			unit = HumanizePlayerBotPrice((DWORD)std::min<long long>(0xFFFFFFFFLL, npc * 90 / 100), false);
+			if ((long long)unit >= npc)
+				unit = (DWORD)std::max<long long>(1, npc - 1);
+		}
+		return unit;
 	}
 
 	// "S> ..." from the bot's own counter: one or two of its lines, the
@@ -455,9 +466,57 @@ namespace
 		return true;
 	}
 
+	// MT2009_PLUS_MARKET_LIFE_V1, point 9: a bargain hunter's line
+	// (IsPlayerBotBargainHunter) for a kind the counters lack - the market
+	// index furthest over its usual, a little drawn - at what the market pays,
+	// written the way people write them: "skupuje", lower case, no full stop.
+	bool BuildPlayerBotTradeHunterLine(LPCHARACTER ch, DWORD dwNow, std::string& out)
+	{
+		if (!IsPlayerBotBargainHunter(ch))
+			return false;
+		DWORD best = 0;
+		int bestScore = 0;
+		for (TPlayerBotMarketIndexMap::const_iterator it = s_mapPlayerBotMarketIndex.begin();
+				it != s_mapPlayerBotMarketIndex.end(); ++it)
+		{
+			if (it->second.index < 110.0)
+				continue;
+			const int score = (int)it->second.index + number(0, 40);
+			if (score > bestScore)
+			{
+				bestScore = score;
+				best = it->first;
+			}
+		}
+		const TItemTable* proto = best ? ITEM_MANAGER::instance().GetTable(best) : NULL;
+		if (!proto)
+			return false;
+		const DWORD unit = GetPlayerBotWantedUnitPrice(best, dwNow);
+		if (unit == 0)
+			return false;
+		const int count = IS_SET(proto->dwFlags, ITEM_FLAG_STACKABLE) ? (number(0, 1) ? 10 : 25) : 1;
+		s_PlayerBotTradeMeaning = TPlayerBotTradeMeaning();
+		s_PlayerBotTradeMeaning.kind = playerbot_conv::PL_BUY;
+		s_PlayerBotTradeMeaning.vnum = best;
+		s_PlayerBotTradeMeaning.count = count;
+		s_PlayerBotTradeMeaning.unit = unit;
+		s_PlayerBotTradeMeaning.name = proto->szLocaleName;
+		static const char* const k[] = { "skupuje %s, %s/szt, pw", "kupie %s kazda ilosc po %s, pisac",
+			"K> %s hurt, %s za sztuke", "ktos ma %s? dam %s/szt" };
+		char buf[CHAT_MAX_LEN + 1];
+		snprintf(buf, sizeof(buf), PickPlayerBotChatLine(k), proto->szLocaleName,
+				playerbot_conv::FormatYang(unit).c_str());
+		out = buf;
+		return true;
+	}
+
 	// One bot's trade line, of what it really has or wants.
 	bool BuildPlayerBotTradeChatLine(LPCHARACTER ch, DWORD dwNow, std::string& out)
 	{
+		// MT2009_PLUS_MARKET_LIFE_V1, point 9: a hunter now and then asks for
+		// what the market lacks.
+		if (number(1, 100) <= 30 && BuildPlayerBotTradeHunterLine(ch, dwNow, out))
+			return true;
 		const int roll = number(1, 100);
 		if (roll <= 45 && BuildPlayerBotTradeSellFromStall(ch, out))
 			return true;

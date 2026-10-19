@@ -283,4 +283,5 @@ Group	box_50254
 	100	39004	1	5	-- Marmur Blogoslawienstwa
 	101	71130	1	5	-- Przepustka
 	102	s951103	1	30	-- kamienie pasow, ok. 1.9% (MT2009_PLUS_BELT_MATS_V1, special_item_group.dungeons.txt)
+	102	30618	1	65	-- Kamien Ksiezycowy, ~5% (MT2009_PLUS_ZODIAC_ITEMS_V1, wlasciciel 9.10)
 }

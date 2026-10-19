@@ -1,0 +1,52 @@
+{
+  "59001": {
+    "name": "Skrzynia Ulep. - M1",
+    "icon": "icon/item/59001.tga",
+    "description": "Ulepszacze z M1"
+  },
+  "59002": {
+    "name": "Skrzynia Ulep. - M2",
+    "icon": "icon/item/59002.tga",
+    "description": "Ulepszacze z M2"
+  },
+  "59003": {
+    "name": "Skrzynia Ulep. - Dolina",
+    "icon": "icon/item/59003.tga",
+    "description": "Ulepszacze z Doliny Orków"
+  },
+  "59004": {
+    "name": "Skrzynia Ulep. - Pustynia",
+    "icon": "icon/item/59004.tga",
+    "description": "Ulepszacze z Pustyni"
+  },
+  "59005": {
+    "name": "Skrzynia Ulep. - Malpy (Tr.)",
+    "icon": "icon/item/59005.tga",
+    "description": "Ulepszacze z Trudnego Lochu Małp"
+  },
+  "59006": {
+    "name": "Skrzynia Ulep. - Sohan",
+    "icon": "icon/item/59006.tga",
+    "description": "Ulepszacze z Sohan"
+  },
+  "59007": {
+    "name": "Skrzynia Ulep. - Las Duchow",
+    "icon": "icon/item/59007.tga",
+    "description": "Ulepszacze z Lasu Duchów"
+  },
+  "59008": {
+    "name": "Skrzynia Ulep. - Ognista Kraina",
+    "icon": "icon/item/59008.tga",
+    "description": "Ulepszacze z Ognistej Krainy"
+  },
+  "59009": {
+    "name": "Skrzynia Skladnikow Mikstur",
+    "icon": "icon/item/59009.tga",
+    "description": "Składniki mikstur"
+  },
+  "59011": {
+    "icon": "icon/item/59011.tga",
+    "name": "Skrzynia z Odłamkami",
+    "description": "Jeden losowy odłamek do bonusów 6. i 7. Szary 30%, Biały 23%, Zielony 17%, Żółty 12%, Niebieski 8%, Fioletowy 5%, Czerwony 3%, Tęczowy 1,5%, Święty 0,5%."
+  }
+}

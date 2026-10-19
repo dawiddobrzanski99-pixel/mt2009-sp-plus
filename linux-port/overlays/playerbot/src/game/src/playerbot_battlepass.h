@@ -895,6 +895,9 @@ namespace mt2009_battlepass
 namespace { void NoteOchaoBotKill(LPCHARACTER killer, LPCHARACTER victim); }
 // MT2009_PLUS_AREZZO_BOTS_V1 (kills): and the Arezzo maps' (playerbot_arezzo_bots.h).
 namespace { void NoteArezzoBotKill(LPCHARACTER killer, LPCHARACTER victim); }
+// MT2009_PLUS_BOT_DAY_GOAL_V1 (kills): and a bot's Cel Dnia (playerbot_day_goal.h).
+namespace { void NotePlayerBotDayGoalKill(LPCHARACTER killer, LPCHARACTER victim); }
+namespace { void NotePlayerBotDayGoalSharedKill(LPCHARACTER killer, LPCHARACTER victim, const std::vector<LPCHARACTER>& hurt); }
 
 // MT2009_PLUS_WEEKLY_RANKING_V1: the weekly ranking counts the same deeds
 // (playerbot_weekly_rank.h, included later).
@@ -908,6 +911,7 @@ void BattlePassOnKill(LPCHARACTER killer, LPCHARACTER victim)
 	WeeklyRankOnKill(killer, victim); // MT2009_PLUS_WEEKLY_RANKING_V1
 	NoteOchaoBotKill(killer, victim); // MT2009_PLUS_OCHAO_BOTS_V1 (kills)
 	NoteArezzoBotKill(killer, victim); // MT2009_PLUS_AREZZO_BOTS_V1 (kills)
+	NotePlayerBotDayGoalKill(killer, victim); // MT2009_PLUS_BOT_DAY_GOAL_V1 (kills)
 	if (!killer || !victim || victim->IsPC() || !mt2009_battlepass::Counts(killer))
 		return;
 	const DWORD race = victim->GetRaceNum();
@@ -951,6 +955,7 @@ namespace mt2009_battlepass
 void BattlePassOnKillShared(LPCHARACTER killer, LPCHARACTER victim, const std::vector<LPCHARACTER>& hurt)
 {
 	WeeklyRankOnKillShared(killer, victim, hurt); // MT2009_PLUS_WEEKLY_RANKING_V1
+	NotePlayerBotDayGoalSharedKill(killer, victim, hurt); // MT2009_PLUS_BOT_DAY_GOAL_V1 (kills)
 	if (!victim || victim->IsPC() || !(victim->IsStone() || victim->GetMobRank() >= MOB_RANK_BOSS))
 		return;
 	std::set<DWORD> done;

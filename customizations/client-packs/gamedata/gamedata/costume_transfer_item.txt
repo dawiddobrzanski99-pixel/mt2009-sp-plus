@@ -1,0 +1,2 @@
+# Costume transfer quest catalyst; generated for the legacy client
+70065	Transfer bonusów	0	1	0	8196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	70065

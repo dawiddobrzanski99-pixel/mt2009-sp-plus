@@ -34,6 +34,19 @@
 //   WOF spin <spin id> <slot 0-9>
 //   WOF gift <vnum> <count> <rare>
 //   WOF fail                  - the spin was refused (the window unlocks)
+//
+// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion] - "spin N times" (N of 1, 2, 5, 10, 25, 50):
+// "/kolo krec <n>" takes n x the tickets and draws n rewards, as ONE spin row:
+// its vnum/count/rare/slot are the reward the wheel shows (a rare one when
+// there is one), the new column `rewards` holds all n ("vnum|count|rare#...")
+// and `spins` is n. The window turns once ("WOF spin <id> <slot> <n>") and
+// asks "/kolo odbierz <id>" as before; the row's one UPDATE (state 0 -> 1)
+// still decides which core gives - all n at once. Rewards that find no room
+// go into a new pending row (cost 0) and come with the next claim. More than
+// one reward given by a claim is told as
+//   WOF giftsbegin <n> / WOF gifts <vnum>|<count>|<rare>#... / WOF giftsend
+// (one stays "WOF gift"). The two columns are added to an existing table at
+// the first load; if that fails, only single spins work.
 namespace mt2009_wheel
 {
 	const DWORD TICKET_VNUM = 80030;
@@ -58,6 +71,55 @@ namespace mt2009_wheel
 		DWORD count;
 		bool rare;
 	};
+
+	typedef Slot Gift;	// a reward given
+
+	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]
+	const int SPIN_COUNTS[] = { 1, 2, 5, 10, 25, 50 };
+	bool s_bMulti = false;	// wheel_spin has the columns `rewards` and `spins`
+
+	bool ValidSpinCount(int spins)
+	{
+		for (size_t i = 0; i < sizeof(SPIN_COUNTS) / sizeof(SPIN_COUNTS[0]); ++i)
+			if (SPIN_COUNTS[i] == spins)
+				return true;
+		return false;
+	}
+
+	// "vnum|count|rare#vnum|count|rare#..."
+	std::string FormatGifts(const std::vector<Gift>& gifts, size_t from)
+	{
+		std::string out;
+		for (size_t i = from; i < gifts.size(); ++i)
+		{
+			char part[48];
+			snprintf(part, sizeof(part), "%u|%u|%d#", gifts[i].vnum, gifts[i].count, gifts[i].rare ? 1 : 0);
+			out += part;
+		}
+		return out;
+	}
+
+	void ParseGifts(const char* text, std::vector<Gift>& out)
+	{
+		const char* p = text;
+		while (p && *p)
+		{
+			unsigned int vnum = 0, count = 1, rare = 0;
+			if (sscanf(p, "%u|%u|%u", &vnum, &count, &rare) < 2)
+				break;
+			if (vnum)
+			{
+				Gift g;
+				g.vnum = vnum;
+				g.count = std::max<DWORD>(1, count);
+				g.rare = rare != 0;
+				out.push_back(g);
+			}
+			p = strchr(p, '#');
+			if (p)
+				++p;
+		}
+	}
 
 	std::vector<Reward> s_vecRewards;
 	unsigned long long s_ullWeights = 0;
@@ -145,6 +207,27 @@ namespace mt2009_wheel
 				") AS t WHERE NOT EXISTS (SELECT 1 FROM player.wheel_config) "
 				"AND NOT EXISTS (SELECT 1 FROM player.wheel_reward)");
 		Query("INSERT IGNORE INTO player.wheel_config (id, enabled, cost_vnum, cost_count) VALUES (1, 1, 80030, 1)");
+		// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: the columns of a spin of many, added once to
+		// a table made before them.
+		for (int pass = 0; pass < 2 && !s_bMulti; ++pass)
+		{
+			std::unique_ptr<SQLMsg> cols(AccountDB::instance().DirectQuery(
+					"SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='player' "
+					"AND TABLE_NAME='wheel_spin' AND COLUMN_NAME IN ('rewards', 'spins')"));
+			if (cols.get() && cols->uiSQLErrno == 0 && cols->Get() && cols->Get()->pSQLResult)
+			{
+				MYSQL_ROW row = mysql_fetch_row(cols->Get()->pSQLResult);
+				int found = 0;
+				if (row && row[0])
+					str_to_number(found, row[0]);
+				s_bMulti = found == 2;
+			}
+			if (!s_bMulti && pass == 0)
+				Query("ALTER TABLE player.wheel_spin ADD COLUMN rewards TEXT NULL, "
+						"ADD COLUMN spins INT UNSIGNED NOT NULL DEFAULT 1");
+		}
+		if (!s_bMulti)
+			sys_err("WHEEL: wheel_spin has no rewards/spins columns - only single spins");
 		return true;
 	}
 
@@ -206,24 +289,24 @@ namespace mt2009_wheel
 		s_bLoaded = true;
 	}
 
-	// One slot for the reward won, drawn by weight, the other nine from the
-	// rest of the pool in a random order (again when the pool is small).
-	bool Draw(std::vector<Slot>& slots, int& winSlot)
+	// One reward of the pool, by weight (its index). The pool is not empty.
+	size_t Roll()
 	{
-		if (s_vecRewards.empty() || s_ullWeights == 0)
-			return false;
 		const unsigned long long roll = (unsigned long long)number(1, (int)std::min<unsigned long long>(s_ullWeights, 0x7FFFFFFF));
-		size_t won = 0;
 		unsigned long long acc = 0;
 		for (size_t i = 0; i < s_vecRewards.size(); ++i)
 		{
 			acc += s_vecRewards[i].weight;
 			if (roll <= acc)
-			{
-				won = i;
-				break;
-			}
+				return i;
 		}
+		return 0;
+	}
+
+	// The wheel's ten slots: one for the reward won, the other nine from the
+	// rest of the pool in a random order (again when the pool is small).
+	void Layout(size_t won, std::vector<Slot>& slots, int& winSlot)
+	{
 		std::vector<size_t> others;
 		for (size_t i = 0; i < s_vecRewards.size(); ++i)
 			if (i != won)
@@ -249,7 +332,6 @@ namespace mt2009_wheel
 			slot.rare = s_vecRewards[pick].rare;
 			slots.push_back(slot);
 		}
-		return true;
 	}
 
 	bool TooSoon(LPCHARACTER ch)
@@ -262,39 +344,135 @@ namespace mt2009_wheel
 		return false;
 	}
 
-	// Gives one pending spin, once: the core whose UPDATE changes the row.
-	bool Claim(LPCHARACTER ch, DWORD spinId)
+	// What a claim gave, to the window: one reward as before, more as a list.
+	void SendGifts(LPCHARACTER ch, const std::vector<Gift>& gifts)
+	{
+		if (gifts.empty())
+			return;
+		if (gifts.size() == 1)
+		{
+			ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF gift %u %u %u", gifts[0].vnum, gifts[0].count, gifts[0].rare ? 1 : 0);
+			return;
+		}
+		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF giftsbegin %u", (unsigned int)gifts.size());
+		std::string line;
+		for (size_t i = 0; i < gifts.size(); ++i)
+		{
+			char part[48];
+			snprintf(part, sizeof(part), "%u|%u|%d#", gifts[i].vnum, gifts[i].count, gifts[i].rare ? 1 : 0);
+			if (line.size() + strlen(part) > 400)
+			{
+				ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF gifts %s", line.c_str());
+				line.clear();
+			}
+			line += part;
+		}
+		if (!line.empty())
+			ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF gifts %s", line.c_str());
+		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF giftsend");
+	}
+
+	enum { CLAIM_NONE = 0, CLAIM_GIVEN = 1, CLAIM_NO_ROOM = -1 };
+
+	// Gives one pending spin (all its rewards), once: the core whose UPDATE
+	// changes the row. What was given is added to `got` (the caller tells the
+	// window). Without room for even the first reward the row is left pending;
+	// rewards that do not fit after it go into a new pending row.
+	int Claim(LPCHARACTER ch, DWORD spinId, std::vector<Gift>& got, bool quiet)
 	{
 		char query[256];
 		snprintf(query, sizeof(query),
-				"SELECT vnum, count, rare FROM player.wheel_spin WHERE id=%u AND pid=%u AND state=0",
-				spinId, ch->GetPlayerID());
+				"SELECT vnum, count, rare%s FROM player.wheel_spin WHERE id=%u AND pid=%u AND state=0",
+				s_bMulti ? ", rewards" : "", spinId, ch->GetPlayerID());
 		std::unique_ptr<SQLMsg> msg(AccountDB::instance().DirectQuery(query));
 		if (!msg.get() || msg->uiSQLErrno != 0 || !msg->Get() || !msg->Get()->pSQLResult)
-			return false;
+			return CLAIM_NONE;
 		MYSQL_ROW row = mysql_fetch_row(msg->Get()->pSQLResult);
 		if (!row)
-			return false;
+			return CLAIM_NONE;
 		DWORD vnum = 0, count = 1, rare = 0;
 		str_to_number(vnum, row[0]);
 		str_to_number(count, row[1]);
 		str_to_number(rare, row[2]);
+		std::vector<Gift> gifts;
+		if (s_bMulti && row[3] && *row[3])
+			ParseGifts(row[3], gifts);
+		if (gifts.empty() && vnum)
+		{
+			Gift g;
+			g.vnum = vnum;
+			g.count = std::max<DWORD>(1, count);
+			g.rare = rare != 0;
+			gifts.push_back(g);
+		}
+		if (!gifts.empty())
+		{
+			const TItemTable* first = ITEM_MANAGER::instance().GetTable(gifts[0].vnum);
+			if (first && ch->GetEmptyInventory(first->bSize) < 0)
+			{
+				if (!quiet)
+					ch->ChatPacket(CHAT_TYPE_INFO, "Kolo Fortuny: zrob miejsce w ekwipunku - nagroda czeka.");
+				return CLAIM_NO_ROOM;
+			}
+		}
 		snprintf(query, sizeof(query),
 				"UPDATE player.wheel_spin SET state=1, given=NOW() WHERE id=%u AND pid=%u AND state=0",
 				spinId, ch->GetPlayerID());
 		std::unique_ptr<SQLMsg> taken(AccountDB::instance().DirectQuery(query));
 		if (!taken.get() || taken->uiSQLErrno != 0 || !taken->Get() || taken->Get()->uiAffectedRows != 1)
-			return false;
-		if (vnum)
-			ch->AutoGiveItem(vnum, (ITEM_COUNT)std::max<DWORD>(1, count));
-		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF gift %u %u %u", vnum, count, rare);
-		sys_log(0, "WHEEL: %s (pid %u) got %u x%u from spin %u%s", ch->GetName(), ch->GetPlayerID(), vnum, count,
-				spinId, rare ? " (rare)" : "");
-		return true;
+			return CLAIM_NONE;
+
+		size_t given = 0;
+		for (; given < gifts.size(); ++given)
+		{
+			const TItemTable* t = ITEM_MANAGER::instance().GetTable(gifts[given].vnum);
+			if (!t)
+				continue;	// an item this world lost since the spin
+			if (given > 0 && ch->GetEmptyInventory(t->bSize) < 0)
+				break;
+			ch->AutoGiveItem(gifts[given].vnum, (ITEM_COUNT)gifts[given].count);
+			got.push_back(gifts[given]);
+		}
+		sys_log(0, "WHEEL: %s (pid %u) got %u of %u reward(s) from spin %u (shown %u x%u%s)", ch->GetName(), ch->GetPlayerID(),
+				(unsigned int)given, (unsigned int)gifts.size(), spinId, vnum, count, rare ? ", rare" : "");
+
+		if (given < gifts.size())
+		{
+			// The rest waits as a pending row of its own (nothing was paid for it).
+			const std::string rest = FormatGifts(gifts, given);
+			std::string insert = "INSERT INTO player.wheel_spin (pid, items, slot, vnum, count, rare, cost_vnum, cost_count, rewards, spins) VALUES (";
+			char head[160];
+			snprintf(head, sizeof(head), "%u, '', 0, %u, %u, %d, 0, 0, '", ch->GetPlayerID(), gifts[given].vnum, gifts[given].count,
+					gifts[given].rare ? 1 : 0);
+			insert += head;
+			insert += rest;
+			snprintf(head, sizeof(head), "', %u)", (unsigned int)(gifts.size() - given));
+			insert += head;
+			std::unique_ptr<SQLMsg> kept(AccountDB::instance().DirectQuery(insert.c_str()));
+			if (kept.get() && kept->uiSQLErrno == 0 && kept->Get() && kept->Get()->uiInsertID)
+			{
+				if (!quiet)
+					ch->ChatPacket(CHAT_TYPE_INFO, "Kolo Fortuny: brak miejsca - %u nagrod czeka. Zrob miejsce i otworz kolo ponownie.",
+							(unsigned int)(gifts.size() - given));
+			}
+			else
+			{
+				// Not written: given all the same (never lost).
+				sys_err("WHEEL: the rest of spin %u of %s not written - given without a room check", spinId, ch->GetName());
+				for (; given < gifts.size(); ++given)
+				{
+					if (!ITEM_MANAGER::instance().GetTable(gifts[given].vnum))
+						continue;
+					ch->AutoGiveItem(gifts[given].vnum, (ITEM_COUNT)gifts[given].count);
+					got.push_back(gifts[given]);
+				}
+			}
+		}
+		return CLAIM_GIVEN;
 	}
 
-	// Every pending spin of the player, given now.
-	int ClaimAll(LPCHARACTER ch)
+	// Every pending spin of the player, given now (until one finds no room).
+	int ClaimAll(LPCHARACTER ch, std::vector<Gift>& got, bool quiet)
 	{
 		char query[160];
 		snprintf(query, sizeof(query),
@@ -313,8 +491,13 @@ namespace mt2009_wheel
 		}
 		int given = 0;
 		for (size_t i = 0; i < ids.size(); ++i)
-			if (Claim(ch, ids[i]))
+		{
+			const int result = Claim(ch, ids[i], got, quiet);
+			if (result == CLAIM_NO_ROOM)
+				break;
+			if (result == CLAIM_GIVEN)
 				++given;
+		}
 		return given;
 	}
 
@@ -346,7 +529,11 @@ namespace mt2009_wheel
 			{
 				LPCHARACTER ch = CHARACTER_MANAGER::instance().FindByPID(pending[i].second);
 				if (ch && Eligible(ch) && ch->GetSectree())
-					Claim(ch, pending[i].first);
+				{
+					std::vector<Gift> got;
+					Claim(ch, pending[i].first, got, true);
+					SendGifts(ch, got);
+				}
 			}
 		}
 		for (std::map<DWORD, DWORD>::iterator it = s_mapLastCommand.begin(); it != s_mapLastCommand.end(); )
@@ -379,7 +566,11 @@ namespace mt2009_wheel
 	{
 		Load(false);
 		EnsureTick();
-		ClaimAll(ch);
+		{
+			std::vector<Gift> got;
+			ClaimAll(ch, got, false);
+			SendGifts(ch, got);
+		}
 		SendInfo(ch);
 		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF poolbegin %llu", s_ullWeights);
 		std::string line;
@@ -408,18 +599,28 @@ namespace mt2009_wheel
 		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF fail");
 	}
 
-	void Spin(LPCHARACTER ch)
+	// spins: 1, or one of SPIN_COUNTS - that many tickets' worth and rewards,
+	// one turn of the wheel.
+	void Spin(LPCHARACTER ch, int spins)
 	{
 		Load(false);
 		EnsureTick();
 		if (!s_bEnabled)
 			return Fail(ch, "kolo jest teraz wylaczone.");
+		if (!ValidSpinCount(spins))
+			return Fail(ch, "niepoprawna liczba losowan.");
+		if (spins > 1 && !s_bMulti)
+			return Fail(ch, "wiele losowan naraz jest teraz niedostepne.");
 		if (!ch->CanHandleItem())
 			return Fail(ch, "najpierw zamknij handel, sklep lub ulepszanie.");
 		// A spin the window never claimed is given before a new one.
-		ClaimAll(ch);
-		const DWORD cost = std::max<DWORD>(1, s_dwCostCount);
-		if (!s_dwCostVnum || ch->CountSpecifyItem(s_dwCostVnum) < cost)
+		{
+			std::vector<Gift> got;
+			ClaimAll(ch, got, false);
+			SendGifts(ch, got);
+		}
+		const DWORD cost = std::max<DWORD>(1, s_dwCostCount) * (DWORD)spins;
+		if (!s_dwCostVnum || (DWORD)ch->CountSpecifyItem(s_dwCostVnum) < cost)
 		{
 			char text[128];
 			const TItemTable* ticket = ITEM_MANAGER::instance().GetTable(s_dwCostVnum);
@@ -428,45 +629,86 @@ namespace mt2009_wheel
 			SendInfo(ch);
 			return Fail(ch, text);
 		}
+		if (s_vecRewards.empty() || s_ullWeights == 0)
+			return Fail(ch, "brak nagrod - sprobuj pozniej.");
+		// The rewards, each drawn by weight; the wheel shows the first rare one,
+		// or the first.
+		std::vector<size_t> rolls;
+		size_t shown = 0;
+		bool shownRare = false;
+		for (int i = 0; i < spins; ++i)
+		{
+			const size_t won = Roll();
+			if (!shownRare && s_vecRewards[won].rare)
+			{
+				shown = rolls.size();
+				shownRare = true;
+			}
+			rolls.push_back(won);
+		}
+		// The shown reward first: it is the one a claim needs room for.
+		std::swap(rolls[0], rolls[shown]);
 		std::vector<Slot> slots;
 		int winSlot = 0;
-		if (!Draw(slots, winSlot))
-			return Fail(ch, "brak nagrod - sprobuj pozniej.");
+		Layout(rolls[0], slots, winSlot);
 		const TItemTable* prize = ITEM_MANAGER::instance().GetTable(slots[winSlot].vnum);
 		if (!prize || ch->GetEmptyInventory(prize->bSize) < 0)
 			return Fail(ch, "zrob miejsce w ekwipunku.");
-		std::string items;
-		for (size_t i = 0; i < slots.size(); ++i)
+		const std::string items = FormatGifts(slots, 0);
+		std::string rewards;
+		if (spins > 1)
 		{
-			char part[48];
-			snprintf(part, sizeof(part), "%u|%u|%d#", slots[i].vnum, slots[i].count, slots[i].rare ? 1 : 0);
-			items += part;
+			std::vector<Gift> all;
+			for (size_t i = 0; i < rolls.size(); ++i)
+			{
+				Gift g;
+				g.vnum = s_vecRewards[rolls[i]].vnum;
+				g.count = s_vecRewards[rolls[i]].count;
+				g.rare = s_vecRewards[rolls[i]].rare;
+				all.push_back(g);
+			}
+			rewards = FormatGifts(all, 0);
 		}
 		ch->RemoveSpecifyItem(s_dwCostVnum, cost);
-		char query[512];
-		snprintf(query, sizeof(query),
-				"INSERT INTO player.wheel_spin (pid, items, slot, vnum, count, rare, cost_vnum, cost_count) "
-				"VALUES (%u, '%s', %d, %u, %u, %d, %u, %u)",
+		char head[512];
+		snprintf(head, sizeof(head), "%u, '%s', %d, %u, %u, %d, %u, %u",
 				ch->GetPlayerID(), items.c_str(), winSlot, slots[winSlot].vnum, slots[winSlot].count,
 				slots[winSlot].rare ? 1 : 0, s_dwCostVnum, cost);
-		std::unique_ptr<SQLMsg> msg(AccountDB::instance().DirectQuery(query));
+		std::string query = "INSERT INTO player.wheel_spin (pid, items, slot, vnum, count, rare, cost_vnum, cost_count";
+		if (spins > 1)
+			query += ", rewards, spins";
+		query += ") VALUES (";
+		query += head;
+		if (spins > 1)
+		{
+			char tail[32];
+			snprintf(tail, sizeof(tail), "', %d", spins);
+			query += ", '";
+			query += rewards;
+			query += tail;
+		}
+		query += ")";
+		std::unique_ptr<SQLMsg> msg(AccountDB::instance().DirectQuery(query.c_str()));
 		const DWORD spinId = (msg.get() && msg->uiSQLErrno == 0 && msg->Get()) ? msg->Get()->uiInsertID : 0;
 		if (!spinId)
 		{
-			// Not written: the ticket back, nothing drawn.
+			// Not written: the tickets back, nothing drawn.
 			ch->AutoGiveItem(s_dwCostVnum, (ITEM_COUNT)cost);
 			sys_err("WHEEL: spin of %s not written, ticket returned", ch->GetName());
 			return Fail(ch, "blad bazy - bilet zwrocony.");
 		}
-		sys_log(0, "WHEEL: %s (pid %u) spin %u: slot %d, %u x%u", ch->GetName(), ch->GetPlayerID(), spinId, winSlot,
+		sys_log(0, "WHEEL: %s (pid %u) spin %u x%d: slot %d, %u x%u", ch->GetName(), ch->GetPlayerID(), spinId, spins, winSlot,
 				slots[winSlot].vnum, slots[winSlot].count);
 		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF items %u %s", spinId, items.c_str());
-		ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF spin %u %d", spinId, winSlot);
+		if (spins > 1)
+			ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF spin %u %d %d", spinId, winSlot, spins);
+		else
+			ch->ChatPacket(CHAT_TYPE_COMMAND, "WOF spin %u %d", spinId, winSlot);
 		SendInfo(ch);
 	}
 }
 
-// "/kolo" (the window), "/kolo krec", "/kolo odbierz <id>", and for a GM
+// "/kolo" (the window), "/kolo krec [n]", "/kolo odbierz <id>", and for a GM
 // "/kolo przeladuj" (server-patches/playerqol, MT2009_PLUS_WHEEL_V1).
 void WheelCommand(LPCHARACTER ch, const char* argument)
 {
@@ -481,15 +723,20 @@ void WheelCommand(LPCHARACTER ch, const char* argument)
 	{
 		if (mt2009_wheel::TooSoon(ch))
 			return mt2009_wheel::Fail(ch, NULL);
-		mt2009_wheel::Spin(ch);
+		int spins = 1;	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: "/kolo krec <n>"
+		if (*arg)
+			str_to_number(spins, arg);
+		mt2009_wheel::Spin(ch, spins);
 	}
 	else if (!strcmp(sub, "odbierz"))
 	{
 		DWORD id = 0;
 		str_to_number(id, arg);
 		mt2009_wheel::Load(false);
-		if (!id || !mt2009_wheel::Claim(ch, id))
-			mt2009_wheel::ClaimAll(ch);
+		std::vector<mt2009_wheel::Gift> got;
+		if (!id || mt2009_wheel::Claim(ch, id, got, false) == mt2009_wheel::CLAIM_NONE)
+			mt2009_wheel::ClaimAll(ch, got, false);
+		mt2009_wheel::SendGifts(ch, got);
 		mt2009_wheel::SendInfo(ch);
 	}
 	else if (!strcmp(sub, "przeladuj") && ch->GetGMLevel() > GM_PLAYER)

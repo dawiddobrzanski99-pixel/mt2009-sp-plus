@@ -303,6 +303,9 @@ namespace
 			{
 				if (mapIndex >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN)
 					mapIndex /= 10000;
+				// MT2009_PLUS_ZODIAC_NAV_V1: no grid for an open arena map (playerbot_types.h).
+				if (IsPlayerBotOpenArenaMap(mapIndex))
+					return false;
 				// Every kingdom's own four maps, not only Chunjo's: a Shinsoo bot
 				// standing on map 1 with no grid here cannot plan a step, and the
 				// whole of its local life is on 1, 3, 4 and 5. IsKingdomMap covers
@@ -349,10 +352,25 @@ namespace
 				m_height = (setting.iHeight + PLAYERBOT_NAV_CELL - 1) / PLAYERBOT_NAV_CELL;
 
 				const size_t cellCount = (size_t)m_width * (size_t)m_height;
-				m_blocked.assign(cellCount, 1);
-				m_water.assign(cellCount, 0);
-				m_clearance.assign(cellCount, 0);
-				m_component.assign(cellCount, 0);
+				// MT2009_PLUS_NAV_GRID_NOMEM_V1: the 32-bit core runs close to its
+				// address-space limit; a failed grid allocation must not abort it.
+				try
+				{
+					m_blocked.assign(cellCount, 1);
+					m_water.assign(cellCount, 0);
+					m_clearance.assign(cellCount, 0);
+					m_component.assign(cellCount, 0);
+				}
+				catch (const std::bad_alloc&)
+				{
+					std::vector<BYTE>().swap(m_blocked);
+					std::vector<BYTE>().swap(m_water);
+					std::vector<BYTE>().swap(m_clearance);
+					m_component.clear(); m_component.shrink_to_fit();
+					m_mapIndex = 0;
+					sys_err("PLAYERBOT_NAV: grid allocation failed map=%ld cells=%u", mapIndex, (unsigned)cellCount);
+					return false;
+				}
 
 				size_t walkableCount = 0;
 				for (int gy = 0; gy < m_height; ++gy)

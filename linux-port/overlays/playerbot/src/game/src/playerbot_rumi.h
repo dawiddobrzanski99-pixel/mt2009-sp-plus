@@ -60,6 +60,15 @@
 //    bot of the season's top ten gets its place's prize in the reward window
 //    (MT2009_PLUS_MINIGAME_BOT_RANKING_V1, marked with F_CLAIMED as a
 //    player's claim is).
+//
+// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion] - "play N times" (N of 1, 2, 5, 10, 25, 50). The
+// window sends "/minigame_count rumi <n>" (MinigameCountCommand,
+// playerbot_yutnori.h -> RumiSetPlayCount) just before its start packet. The
+// start takes the count - and forgets it, whether the game starts or not - and
+// costs n card sets and n x 30 000 yang; the one game played gives n chests of
+// its score (those that do not fit wait in the owed-chest flags, as after a
+// logout). The season's ranking counts it as n games of its score (the total
+// grows by n x the score, the games by n; the best score is the game's own).
 #include "packet.h"
 #include <random>
 
@@ -142,11 +151,35 @@ namespace mt2009_rumi
 		bool normal;
 		DWORD startedAt;
 		int combos;
+		int count;		// games this one counts for (the fee paid, the chests given)
 	};
 
 	std::map<DWORD, Game> s_games;		// pid -> the game
 	std::set<DWORD> s_capable;			// pids whose exe sent CG 181 on this core
 	DWORD s_dwNextSweep = 0;
+
+	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]
+	const int PLAY_COUNTS[] = { 1, 2, 5, 10, 25, 50 };
+	std::map<DWORD, int> s_playCount;	// pid -> the count asked for the next start
+
+	bool ValidPlayCount(int count)
+	{
+		for (size_t i = 0; i < sizeof(PLAY_COUNTS) / sizeof(PLAY_COUNTS[0]); ++i)
+			if (PLAY_COUNTS[i] == count)
+				return true;
+		return false;
+	}
+
+	// The count for this start; every start attempt forgets it.
+	int TakePlayCount(DWORD pid)
+	{
+		std::map<DWORD, int>::iterator it = s_playCount.find(pid);
+		if (it == s_playCount.end())
+			return 1;
+		const int count = it->second;
+		s_playCount.erase(it);
+		return ValidPlayCount(count) ? count : 1;
+	}
 
 	std::mt19937& Rng()
 	{
@@ -298,14 +331,17 @@ namespace mt2009_rumi
 		return normal ? REWARD_NORMAL_LOW : REWARD_XMAS_LOW;
 	}
 
-	void SaveScore(DWORD pid, WORD score)
+	// games: how many games this one counts for (MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]).
+	void SaveScore(DWORD pid, WORD score, int games = 1)
 	{
 		const DWORD season = SeasonId();
+		games = std::max(1, games);
+		const unsigned int total = (unsigned int)score * (unsigned int)games;
 		DBManager::instance().Query(
 				"INSERT INTO player.mt2009_rumi_score (pid, season, best_score, total_score, games, last_play) "
-				"VALUES (%u, %u, %u, %u, 1, NOW()) ON DUPLICATE KEY UPDATE "
-				"total_score = total_score + %u, best_score = GREATEST(best_score, %u), games = games + 1, last_play = NOW()",
-				pid, season, (unsigned int)score, (unsigned int)score, (unsigned int)score, (unsigned int)score);
+				"VALUES (%u, %u, %u, %u, %d, NOW()) ON DUPLICATE KEY UPDATE "
+				"total_score = total_score + %u, best_score = GREATEST(best_score, %u), games = games + %d, last_play = NOW()",
+				pid, season, (unsigned int)score, total, games, total, (unsigned int)score, games);
 	}
 
 	// The leading core keeps the season's flags (Owsap had none): a new
@@ -522,20 +558,25 @@ namespace mt2009_rumi
 		}
 		const WORD score = it->second.score;
 		const int combos = it->second.combos;
+		const int count = std::max(1, it->second.count);
 		// Out of the list before anything is given.
 		s_games.erase(it);
-		SaveScore(ch->GetPlayerID(), score);
+		SaveScore(ch->GetPlayerID(), score, count);
 		if (!t)
 			sys_err("RUMI: no item_proto row for the chest %u", vnum);
-		else if (logout)
+		else if (logout || count > 1)
 		{
+			// A game of many: the chests are owed first and handed out one by
+			// one - those without room stay owed (the next open of the window).
 			const std::string flag = PendingFlag(vnum);
-			ch->SetQuestFlag(flag, std::max(0, ch->GetQuestFlag(flag)) + 1);
+			ch->SetQuestFlag(flag, std::max(0, ch->GetQuestFlag(flag)) + count);
+			if (!logout)
+				GivePending(ch);
 		}
 		else
 			ch->AutoGiveItem(vnum, 1);
-		sys_log(0, "RUMI: %s ends a game%s - score %u, %d combination(s), chest %u",
-				ch->GetName(), logout ? " by leaving" : "", (unsigned int)score, combos, vnum);
+		sys_log(0, "RUMI: %s ends a game%s - score %u, %d combination(s), chest %u x%d",
+				ch->GetName(), logout ? " by leaving" : "", (unsigned int)score, combos, vnum, count);
 		if (!logout)
 			Send(ch, RUMI_GC_SUBHEADER_END, NULL, 0);
 		return true;
@@ -544,6 +585,7 @@ namespace mt2009_rumi
 	void Start(LPCHARACTER ch)
 	{
 		const DWORD pid = ch->GetPlayerID();
+		const int count = TakePlayCount(pid);	// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]
 		if (!EventOn())
 		{
 			Info(ch, "Event Okey w\xb3" "a\x9c" "nie si\xea nie odbywa.");
@@ -558,16 +600,18 @@ namespace mt2009_rumi
 			return;
 		}
 		const int cards = Flag(ch, F_CARDS);
-		if (cards <= 0 || ch->GetGold() < START_GOLD)
+		const long long gold = (long long)START_GOLD * count;
+		if (cards < count || (long long)ch->GetGold() < gold)
 		{
 			Info(ch, "Masz za ma\xb3o przedmiot\xf3w lub pieni\xea" "dzy, aby gra\xe6.");
 			return;
 		}
-		ch->SetQuestFlag(F_CARDS, cards - 1);
-		PlayerBotChangeGold(ch, -(long long)START_GOLD);
+		ch->SetQuestFlag(F_CARDS, cards - count);
+		PlayerBotChangeGold(ch, -gold);
 
 		Game& g = s_games[pid];
 		g = Game();
+		g.count = count;
 		g.normal = EventNormal();
 		g.startedAt = get_global_time();
 		for (BYTE color = COLOR_RED; color <= COLOR_YELLOW; color += 10)
@@ -583,11 +627,25 @@ namespace mt2009_rumi
 		Send(ch, RUMI_GC_SUBHEADER_START, NULL, 0);
 		SendDeck(ch, g);
 		Info(ch, "Rozpoczynasz gr\xea w Okey!");
-		sys_log(0, "RUMI: %s starts a game (%s chests, %d card set(s) left)", ch->GetName(), g.normal ? "normal" : "xmas", cards - 1);
+		sys_log(0, "RUMI: %s starts a game x%d (%s chests, %d card set(s) left)", ch->GetName(), count, g.normal ? "normal" : "xmas", cards - count);
 	}
 }
 
 // ---------------------------------------------------------------- the engine's
+
+// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: "/minigame_count rumi <n>" (MinigameCountCommand,
+// playerbot_yutnori.h). The next start counts for n games; 1 or a count that
+// is not one of the window's forgets it.
+void RumiSetPlayCount(LPCHARACTER ch, int count)
+{
+	using namespace mt2009_rumi;
+	if (!Eligible(ch))
+		return;
+	if (count > 1 && ValidPlayCount(count))
+		s_playCount[ch->GetPlayerID()] = count;
+	else
+		s_playCount.erase(ch->GetPlayerID());
+}
 
 // HEADER_CG_MINI_GAME_RUMI (input_main.cpp). Owsap's MiniGameRumi + Analyze.
 void RumiPacket(LPCHARACTER ch, const char* data)
@@ -648,6 +706,7 @@ void RumiDisconnect(LPCHARACTER ch)
 	if (s_games.count(ch->GetPlayerID()))
 		Settle(ch, true);
 	s_capable.erase(ch->GetPlayerID());
+	s_playCount.erase(ch->GetPlayerID());
 }
 
 // UseItemEx: the card (a card towards a set, while the event runs) and the

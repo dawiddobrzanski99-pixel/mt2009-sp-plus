@@ -234,7 +234,10 @@ RUN set -eux; \
     # server-patches/clearmissions).
     # guild.treasury_available and guild.treasury_spend for our guild_building
     # (MT2009_PLUS_GUILD_TREASURY_V1, server-patches/enginefixes).
-    for fn in mes.get_message pc.get_special_flag pc.set_special_flag mysql_direct_query pc.equip_slot pc.unequip_slot item.set_attr item.get_max_stack item.use pc.open_special_shop affect.add_new affect.remove_new pc.is_playerbot affect.get_duration pc.has_affect pc.warp_channel game.get_catchking_score game.get_catchking_myscore game.catchking_claim_reward game.catchking_use_item game.catchking_deliver pc.clear_quest_letter guild.treasury_available guild.treasury_spend; do \
+    # zodiac_temple.*, pc.*animasphere, pc.*_flag_cz_ulimit_enter, d.zodiac_* and
+    # game.zodiac_temple_table for the Zodiac Temple's quests (MT2009_PLUS_ZODIAC_V1,
+    # playerbot_zodiac_questlua.cpp; Autor: Digi Rasta).
+    for fn in mes.get_message pc.get_special_flag pc.set_special_flag mysql_direct_query pc.equip_slot pc.unequip_slot item.set_attr item.get_max_stack item.use pc.open_special_shop affect.add_new affect.remove_new pc.is_playerbot affect.get_duration pc.has_affect pc.warp_channel game.get_catchking_score game.get_catchking_myscore game.catchking_claim_reward game.catchking_use_item game.catchking_deliver pc.clear_quest_letter guild.treasury_available guild.treasury_spend zodiac_temple.starttemple zodiac_temple.startlogin zodiac_temple.new_floor zodiac_temple.setflag zodiac_temple.getflag pc.set_animasphere pc.get_animasphere pc.delete_animasphere pc.is_flag_cz_ulimit_enter pc.set_flag_cz_ulimit_enter d.zodiac_notice d.zodiac_notice_clear d.zodiac_time d.zodiac_time_clear game.zodiac_temple_table guild.leave_war is_on_war_map collect_data.is_wait collect_data.reset_time pc.has_master_skill pc.clear_skill is_any_skill_at_level pc.get_reputation pc.add_reputation; do \
       grep -qx "$fn" /tmp/qc-work/quest_functions || echo "$fn" >> /tmp/qc-work/quest_functions; \
     done; \
     # MT2009_PLUS_HORSE30_V1 (Digi Rasta's horse to level 30): konie is the
@@ -323,7 +326,10 @@ RUN set -eux; \
     # mapa_tab is the teleport map under TAB: "/tabteleport <key>" from the client's window
     # (root uiteleportmap.py), free, only while m2_teleport_map_on is set; "MAPA_TAB 1|0" tells
     # the client whether TAB opens it (MT2009_PLUS_TELEPORT_MAP_V1, Autor: Mur4s).
-    for q in web_admin speed_boost starter_chest starter_kit konie horse_inventory gm_profile new_quest_lv19 teleport_ring pony_buy horse_upgrade horse_upgrade2 deviltower_zone fishing_pass_shop collect_quest_lv85 towarzysz devilcatacomb_zone check_trans_ticket heavens_cave_keyquest tanaka_ears acce_costume_uriel ah_yu_shop costume_bonus_transfer dragon_soul dragon_soul_refine dragon_soul_shop autohunt_time antiexp_ring seon_pyeong flea_market temple_of_the_ochao razador_dungeon nemere_dungeon blue_dragon_lair goblin_skarbow biblioteka_wiedzy map_warp dungeon_panel wzgorze_wukonga ruiny_skorpiona starozytna_dzungla ruiny_atlantydy seonhae minigame_rumi minigame_catchking minigame_yutnori tp_bookmarks ksiegi_seonhae usun_misje guild_building kolekcjoner_item pasy energia_alchemik zywioly mapa_tab; do \
+    # zodiac_temples (the twelve portals of the day on 358 and the Teleporter's entry),
+    # zodiac_milbon (Mnich Milbon's insignia exchange), zodiac_prism_mission and
+    # zodiac_emergency_mission are the Zodiac Temple (MT2009_PLUS_ZODIAC_V1, Autor: Digi Rasta).
+    for q in ukrainka_wymiany web_admin speed_boost starter_chest starter_kit konie horse_inventory gm_profile new_quest_lv19 teleport_ring pony_buy horse_upgrade horse_upgrade2 deviltower_zone fishing_pass_shop collect_quest_lv85 towarzysz devilcatacomb_zone check_trans_ticket heavens_cave_keyquest tanaka_ears acce_costume_uriel ah_yu_shop costume_bonus_transfer dragon_soul dragon_soul_refine dragon_soul_shop autohunt_time antiexp_ring seon_pyeong flea_market temple_of_the_ochao razador_dungeon nemere_dungeon blue_dragon_lair goblin_skarbow biblioteka_wiedzy map_warp dungeon_panel wzgorze_wukonga ruiny_skorpiona starozytna_dzungla ruiny_atlantydy seonhae minigame_rumi minigame_catchking minigame_yutnori tp_bookmarks ksiegi_seonhae usun_misje guild_building kolekcjoner_item pasy energia_alchemik zywioly mapa_tab zodiac_temples zodiac_milbon zodiac_prism_mission zodiac_emergency_mission guild_war_join klepsydra_biologa shop_unlock_slots skill_reset2 desert_first_quest desert_second_quest desert_third_quest orcvalley_first_quest; do \
       [ -f "/quest-add/$q.quest" ] || continue; \
       sed 's/\r$//' "/quest-add/$q.quest" > "/tmp/qc-work/$q.quest"; \
       ( cd /tmp/qc-work && /src/Server/game/src/quest/qc "$q.quest" ); \
@@ -800,6 +806,12 @@ RUN set -eu; L=/opt/metin2/share/locale/poland \
 # same lists in costume_sets.py.
 COPY costume_sets.txt /opt/metin2/share/locale/poland/costume_sets.txt
 
+# The drop wiki's extras (server-patches/dropwiki, MT2009_PLUS_DROP_WIKI_V2): the drops only quests or the
+# engine give (dungeon bosses' chests, the Zodiac General's Zlota Skrzynia), Mnich Milbon's exchanges and the
+# dungeons' regen files. The game reads it from its locale at the first wiki question; the rest the wiki
+# reads from the tables themselves.
+COPY drop_wiki.txt /opt/metin2/share/locale/poland/drop_wiki.txt
+
 # Seon-Pyeong's recipes (port/shareify.py renders cube.seon_pyeong.txt and this
 # step; the quest that opens his window is quest/seon_pyeong.quest above): a +9
 # piece of level 65-66 into its level-80 successor. The package's cube.txt has
@@ -814,6 +826,29 @@ RUN set -eu; C=/opt/metin2/share/locale/poland/cube.txt; A=/tmp/cube-add/cube.se
  && rm -rf /tmp/cube-add \
  && test "$(grep -c -E '^npc[[:blank:]]+20091[[:space:]]*$' "$C")" -eq "$n" \
  && echo "share: Seon-Pyeong's recipes appended to cube.txt ($n)"
+
+# MT2009_PLUS_NS_WIKI_ITEMS_V1 (share): the official PL wiki's item families and materials the world
+# did not have (Autor: Digi Rasta, nowy-system 0.33.0; the items are mariadb/playerbot/wiki_nowe.sql):
+#  * cube.wiki_nowe.txt - 18 recipes at Seon-Pyeong (20091), after his own above: the six Cyjanitowe
+#    weapons from the level-87 +9 one, the Turmalin bracelet and necklace, Ogniste Buty / Buty Oceanu
+#    from Buty Zimorodka / Euforii +5..+9;
+#  * special_item_group.wiki_nowe.txt - groups 951201 / 951202, the materials the Razador and Nemere
+#    chests give at 70% (their "s951201" / "s951202" lines are in special_item_group.dungeons.txt).
+# MT2009_PLUS_NS_WIKI_RECIPES_OFF (the owner, 9 October): the 18 recipes are NOT appended for now - the items
+# stay in the world (wiki_nowe.sql) and the client, crafting them comes in a later update; cube.wiki_nowe.txt
+# is kept as it is (to switch it on: the four cube.txt lines before this change back in place of "n=0").
+COPY cube.wiki_nowe.txt special_item_group.wiki_nowe.txt /tmp/wikinowe-add/
+RUN set -eu; L=/opt/metin2/share/locale/poland; C=$L/cube.txt; G=$L/special_item_group.txt; A=/tmp/wikinowe-add \
+ && for f in "$A"/*.txt; do sed -i '1s/^\xEF\xBB\xBF//; s/\r$//; s/$/\r/' "$f"; done \
+ && ! grep -q 'MT2009_PLUS_NS_WIKI_ITEMS_V1' "$C" \
+ && ! grep -q -E '^[[:blank:]]*Vnum[[:blank:]]+95120[12]([^0-9]|$)' "$G" \
+ && n=0 \
+ && { [ -z "$(tail -c 1 "$G")" ] || printf '\r\n' >> "$G"; } \
+ && cat "$A/special_item_group.wiki_nowe.txt" >> "$G" \
+ && test "$(grep -c -E '^[[:blank:]]*Vnum[[:blank:]]+95120[12]([^0-9]|$)' "$G")" -eq 2 \
+ && test "$(grep -c -E '^[[:blank:]]*[0-9]+[[:blank:]]+s95120[12][[:blank:]]' "$G")" -eq 2 \
+ && rm -rf "$A" \
+ && echo "share: wiki items - $n recipes at Seon-Pyeong, chest groups 951201 / 951202 (MT2009_PLUS_NS_WIKI_ITEMS_V1)"
 
 # MT2009_PLUS_BELTS_V1 (share): the belt system (Pasy; Autor: Digi Rasta, nowy-system v0.27.0).
 # cube.pasy.txt - the nine belt recipes of the package's cube.txt (at Yu-Hwan and Jae-Seon Kim,
@@ -1154,6 +1189,55 @@ RUN set -eu; L=/opt/metin2/share/locale/poland; A=/tmp/atlantyda-add \
  && test "$(od -An -tx1 -N8 "$L/map/plechito_summer2022_dungeon/server_attr" | tr -d ' ')" = 0c0000000c000000 \
  && rm -rf "$A" \
  && echo "share: Ruiny Atlantydy (158), Mag Atlantydy in Orc Valley"
+
+# MT2009_PLUS_ZODIAC_V1 (share): Swiatynia Zodiaku (Autor: Digi Rasta, nowy-system 0.35.0, from WLsj24's
+# "ZodiacTemple"; server-patches/zodiak/README.md) - metin2_12zi_stage, 358, 6x6 at 307200 1408000 (its private
+# copies 3580000-3589999 are the temple's floors), hosted by game1 (bin/m2-render-config). The temple's data
+# (data/dungeon/zodiac: the portals of each weekday, the merchant), the monsters' motions (data/monster/12zi_*,
+# cz_*: the server times attacks by them), 51 groups (vnums 2608-2937, none of ours), 41 server texts in Polish
+# (locale_string.zodiak.txt), the map's name for the quests, /goto zodiac for game masters and Zlota Skrzynia
+# Zodiaku's groups (special_item_group.zodiak.txt, MT2009_PLUS_ZODIAC_ITEMS_V1).
+COPY zodiak/ /tmp/zodiak-add/
+RUN set -eu; L=/opt/metin2/share/locale/poland; A=/tmp/zodiak-add \
+ && find "$A" -type f -name '*.txt' -exec sed -i '1s/^\xEF\xBB\xBF//; s/\r$//; s/$/\r/' {} + \
+ && rm -rf "$L/map/metin2_12zi_stage" && cp -a "$A/map/metin2_12zi_stage" "$L/map/" \
+ && { [ -z "$(tail -c 1 "$L/map/index")" ] || printf '\n' >> "$L/map/index"; } \
+ && sed -i -E '/^358[[:blank:]]/d' "$L/map/index" \
+ && printf '358 metin2_12zi_stage\n' >> "$L/map/index" \
+ && test "$(grep -c -E '^358[[:blank:]]+metin2_12zi_stage[[:space:]]*$' "$L/map/index")" = 1 \
+ && test -s "$L/map/metin2_12zi_stage/server_attr" \
+ && mkdir -p /opt/metin2/share/data/dungeon /opt/metin2/share/data/monster \
+ && rm -rf /opt/metin2/share/data/dungeon/zodiac && cp -a "$A/data/dungeon/zodiac" /opt/metin2/share/data/dungeon/ \
+ && for m in "$A"/data/monster/*; do rm -rf "/opt/metin2/share/data/monster/$(basename "$m")"; cp -a "$m" /opt/metin2/share/data/monster/; done \
+ && test -s /opt/metin2/share/data/monster/12zi_mouse_boss/motlist.txt \
+ && ! grep -q -E '^Group[[:blank:]]+Zodiac' "$L/group.txt" \
+ && { [ -z "$(tail -c 1 "$L/group.txt")" ] || printf '\n' >> "$L/group.txt"; } \
+ && sed 's/\r$//' "$A/group.zodiak.txt" >> "$L/group.txt" \
+ && test "$(grep -c -E '^Group[[:blank:]]+Zodiac' "$L/group.txt")" = 51 \
+ && ! grep -q -F '"Osiagnieto limit zakupu tego przedmiotu.";' "$L/locale_string.txt" \
+ && { [ -z "$(tail -c 1 "$L/locale_string.txt")" ] || printf '\n' >> "$L/locale_string.txt"; } \
+ && printf '\n' >> "$L/locale_string.txt" && sed 's/\r$//' "$A/locale_string.zodiak.txt" >> "$L/locale_string.txt" \
+ && grep -q -F '"Osiagnieto limit zakupu tego przedmiotu.";' "$L/locale_string.txt" \
+ && for f in "$L/translate.lua" "$L/quest/libs/translate/translate.lua"; do \
+      [ -f "$f" ] || continue; \
+      LC_ALL=C grep -a -q 'map_names\[358\]' "$f" && continue; \
+      { [ -z "$(tail -c 1 "$f")" ] || printf '\r\n' >> "$f"; }; \
+      printf '\r\n-- MT2009_PLUS_ZODIAC_V1\r\ntranslate.general.map_names[358] = "\214wi\271tynia Zodiaku"\r\n' >> "$f"; \
+    done \
+ && f="$L/special_item_group.txt" \
+ && ! grep -q -E '^[[:blank:]]*Vnum[[:blank:]]+(33033|951311)([^0-9]|$)' "$f" \
+ && { [ -z "$(tail -c 1 "$f")" ] || printf '\r\n' >> "$f"; } \
+ && cat "$A/special_item_group.zodiak.txt" >> "$f" \
+ && test "$(grep -c -E '^[[:blank:]]*Vnum[[:blank:]]+(33033|951311)([^0-9]|$)' "$f")" = 2 \
+ && F="$L/mob_drop_item.txt" \
+ && ! grep -q -E '^Group[[:blank:]]+MT2009_zodiak_mat' "$F" \
+ && { [ -z "$(tail -c 1 "$F")" ] || printf '\r\n' >> "$F"; } \
+ && cat "$A/mob_drop_item.zodiak.txt" >> "$F" \
+ && test "$(grep -c -E '^Group[[:blank:]]+MT2009_zodiak_mat' "$F")" = 11 \
+ && S="$L/settings.lua" \
+ && { LC_ALL=C grep -a -q 'add_goto_info("zodiac"' "$S" || printf 'add_goto_info("zodiac", 0, 358, 3332, 14325)\r\n' >> "$S"; } \
+ && rm -rf "$A" \
+ && echo "share: Swiatynia Zodiaku (358, 51 groups, temple data, motions, texts, /goto zodiac)"
 # MT2009_PLUS_AREZZO_ARGES_SKILL_V1: Arges (9606, Dolina Cyklopow; the folder of the official
 # cyclops boss 3190) uses skill 256, and the server times a monster's skill by the
 # SPECIAL_ATTACKING event (type 4) of its motion - cyclops_boss/special_attack.msa has only
@@ -1386,3 +1470,45 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=180s --retries=4 \
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["m2-supervise"]
+
+
+# CUSTOM_UKRAINKA_RUNTIME_V1
+COPY ukrainka/ /tmp/ukrainka/
+RUN set -eu; \
+    L=/opt/metin2/share/locale/poland; \
+    cat /tmp/ukrainka/crafting_override.lua >> "$L/quest/libs/crafting/crafting_data.lua"; \
+    for M in a1 b1 c1; do \
+      F="$L/map/metin2_map_$M/npc.txt"; \
+      test -f "$F"; \
+      if ! grep -Eq '[[:space:]]30099([[:space:]]|$)' "$F"; then \
+        cat "/tmp/ukrainka/npc.$M.txt" >> "$F"; \
+      fi; \
+    done
+
+
+# CUSTOM_UKRAINKA_KD_IMAGE_V1
+RUN set -eu; \
+    C=/opt/metin2/share/locale/poland/cube.txt; \
+    awk -f /tmp/ukrainka/kd_replace.awk "$C" > "$C.ukrainka"; \
+    cat /tmp/ukrainka/kd_recipes.txt >> "$C.ukrainka"; \
+    mv "$C.ukrainka" "$C"; \
+    chmod a+r "$C"
+
+
+# CUSTOM_UKRAINKA_QUESTNPC_V1
+RUN set -eu; \
+    F=/opt/metin2/share/locale/poland/quest/questnpc.txt; \
+    awk '$1 != 30099 {print} END {print "30099 Ukrainka"}' "$F" > "$F.ukrainka"; \
+    mv "$F.ukrainka" "$F"; chmod a+r "$F"
+
+# CUSTOM_UKRAINKA_QUEST_DIRECTORY_V2
+RUN set -eu; \
+    Q=/opt/metin2/share/locale/poland/quest/object; \
+    test -d "$Q/30099/chat"; \
+    mkdir -p "$Q/Ukrainka"; \
+    cp -a "$Q/30099/." "$Q/Ukrainka/"
+
+
+# CUSTOM_UKRAINKA_NATIVE_RECIPES_V1
+COPY --chmod=0644 ukrainka/cube.native.txt /opt/metin2/share/locale/poland/cube.txt
+COPY --chmod=0644 ukrainka/cube.native.txt /opt/metin2/share/locale/poland/cube.image.txt

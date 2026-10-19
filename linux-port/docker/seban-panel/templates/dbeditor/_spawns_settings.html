@@ -3,8 +3,8 @@
 <section class="panel dbe-respawn-setting">
   <h2>⚙️ Czas bazowy i czas w grze</h2>
   <p>Czasy w tych plikach to <b>czasy bazowe</b>. Ustawienie na stronie <a href="{{ url_for('respawns') }}">Respawny</a> działa dalej, na żywo, na każdy wiersz:
-    teraz <b>Metiny i bossy co {{ settings.boss }}%</b> czasu, <b>zwykłe potwory co {{ settings.mob }}%</b>
-    {%- if settings.boss_count > 100 or settings.mob_count > 100 %}, liczebność: Metiny i bossy {{ settings.boss_count }}%, zwykłe {{ settings.mob_count }}%{% endif %}.</p>
+    teraz <b>Metiny co {{ settings.metin }}%</b>, <b>bossy co {{ settings.boss }}%</b> czasu, <b>zwykłe potwory co {{ settings.mob }}%</b>
+    {%- if settings.metin_count > 100 or settings.boss_count > 100 or settings.mob_count > 100 %}, liczebność: Metiny {{ settings.metin_count }}%, bossy {{ settings.boss_count }}%, zwykłe {{ settings.mob_count }}%{% endif %}.</p>
   <p class="muted">Gra liczy: <i>czas z pliku × procent</i> (nigdy mniej niż 3 s) – kolumna „W grze” pokazuje ten wynik. Tutaj zmieniasz tylko czas bazowy,
     więc nic nie liczy się podwójnie: zmiana na stronie Respawny od razu przelicza też Twoje nowe czasy.
     Bossowie czasowi (special_spawns) mają własny zegar – ustawienie z Respawnów ich nie dotyczy.

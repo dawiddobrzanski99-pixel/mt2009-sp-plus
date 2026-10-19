@@ -1,0 +1,20 @@
+# Costume attribute items; generated for the legacy client
+70063	Transformuj kostium	35	1	0	8196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	70063
+70064	Zaczaruj kostium	34	1	0	8196	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	70064
+85200	Szarfa Mroku (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85200
+85201	Szarfa Chwa³a (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85201
+85202	Szarfa Druida (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85202
+85203	Szarfa Wikinga (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85203
+85204	Szarfa MroŸ. Rycerza (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85204
+85205	Szarfa Ognist. Rycerza (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85205
+85206	Szarfa Anielska (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85206
+85207	Szarfa Cienia (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85207
+85208	Szarfa Ksiê¿ycowa (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85208
+85209	Szarfa Szmaragd. W³adcy (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85209
+85210	Szarfa Leœnego Ksiêcia (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85210
+85211	Szarfa Plaga (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85211
+85212	Szarfa Króla Lodu (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85212
+85214	Szarfa Letniej Chwa³y (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85214
+85215	Szarfa B³k. Wiatru (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85215
+85216	Szarfa Arkt. Króla (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85216
+85217	Szarfa Upiornej Nocy (nak³.)	10	1	0	16384	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85217

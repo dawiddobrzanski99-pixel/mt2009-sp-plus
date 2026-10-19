@@ -38,10 +38,13 @@ quest mapa_tab begin
 			cmdchat("MAPA_TAB " .. v)
 		end
 
-		-- no teleport out of these (as tp_bookmarks: wedding, guild war arena,
+		-- no teleport out of these (as tp_bookmarks: wedding, guild war arena while active,
 		-- duel, OX, empire war, GM maps)
 		function blocked_from(idx)
-			return idx == 81 or idx == 110 or idx == 111 or idx == 112 or idx == 113
+			if idx == 110 or idx == 111 then
+				return guild.get_any_war() ~= 0
+			end
+			return idx == 81 or idx == 112 or idx == 113
 				or idx == 181 or idx == 182 or idx == 183 or idx == 200 or idx == 250
 		end
 
@@ -78,7 +81,11 @@ quest mapa_tab begin
 				cur = math.floor(cur / 10000)
 			end
 			if mapa_tab.blocked_from(cur) then
-				syschat("Z tego miejsca nie mozna sie teleportowac.")
+				if cur == 110 or cur == 111 then
+					syschat("Nie mozesz sie teleportowac w trakcie wojny gildii.")
+				else
+					syschat("Z tego miejsca nie mozna sie teleportowac.")
+				end
 				return
 			end
 			if pc.is_pvp() or pc.is_arena() then

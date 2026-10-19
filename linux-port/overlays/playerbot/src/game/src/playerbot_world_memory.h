@@ -511,12 +511,26 @@ namespace
 	// five percent from the one before would otherwise walk a price sevenfold
 	// in the ten minutes they take to open. An hour with no counter asking at
 	// all and the memory is dropped: the next ask starts fresh.
+	// MT2009_PLUS_MARKET_FAIR_EXPORT_V1: set while the market's prices are
+	// worked out for the panel (playerbot_market_fair_export.h) - the limiter
+	// then reads its anchor and leaves it as it stands: a look is no counter.
+	bool s_bPlayerBotAskStepReadOnly = false;
+
 	DWORD LimitPlayerBotAskStep(DWORD vnum, BYTE refine, DWORD wanted, DWORD dwNow,
 			DWORD skillVnum = 0)
 	{
 		// Before the reference below is taken: a new rate clears the map.
 		ForgetPlayerBotPricesOnRateChange();
-		TPlayerBotAskMemory& mem = s_mapAskMemory[PlayerBotSaleKey(vnum, refine, skillVnum)];
+		TPlayerBotAskMemory readOnly;
+		if (s_bPlayerBotAskStepReadOnly)
+		{
+			TPlayerBotAskMap::const_iterator it = s_mapAskMemory.find(PlayerBotSaleKey(vnum, refine, skillVnum));
+			if (it == s_mapAskMemory.end())
+				return wanted;
+			readOnly = it->second;
+		}
+		TPlayerBotAskMemory& mem = s_bPlayerBotAskStepReadOnly ? readOnly
+				: s_mapAskMemory[PlayerBotSaleKey(vnum, refine, skillVnum)];
 		// An anchor under the floor is not a price to step away from, it is an
 		// accident to forget. One yang got onto the counters because the median
 		// wallet is zero until the ledger has run for the first time, and in

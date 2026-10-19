@@ -53,8 +53,8 @@ quest razador_dungeon begin
 				limit_min = 60,
 				-- MT2009_PLUS_DUNGEON_FEE_V1: the price of a new expedition (each player, paid on entering it) and
 				-- how many new expeditions a player may start a day (Polish midnight).
-				fee = 3500000, fee_text = "3 500 000", -- MT2009_PLUS_AREZZO_BALANCE_V1: half of the 7 000 000 of MT2009_PLUS_DUNGEON_FEE_LEADER_V1 (the owner, 5 October: "7kk", then halved)
-				daily = 5,
+				fee = 7000000, fee_text = "7 000 000", -- Shared fix: entry fee x2.
+				daily = 10,
 				doors = {{320,394},{293,359},{333,321},{378,320},{400,355},{394,401}},
 				doors_dir = {135,90,210,152,90,223},
 				idoors = {{268,447},{234,359},{300,264},{454,217},{470,355},{467,469}},
@@ -90,8 +90,7 @@ quest razador_dungeon begin
 		end
 
 		function over_limit()
-			local c = razador_dungeon.cfg()
-			return not pc.is_gm() and razador_dungeon.runs_today() >= c.daily
+			return false -- No daily entry limit.
 		end
 
 		function too_poor()
@@ -129,7 +128,7 @@ quest razador_dungeon begin
 				pc.setf("razador_dungeon", "runs", 0)
 			end
 			pc.setf("razador_dungeon", "runs", pc.getf("razador_dungeon", "runs") + 1)
-			syschat("Op³ata za wejœcie: "..c.fee_text.." Yang. Dzisiejsza wyprawa "..pc.getf("razador_dungeon", "runs").."/"..c.daily..".")
+			syschat("Oplata za wejscie: "..c.fee_text.." Yang. Bez limitu dobowego.")
 			return true
 		end
 
@@ -364,7 +363,7 @@ quest razador_dungeon begin
 			say("")
 			say_reward("Wymagany poziom: "..c.min_level..". Bez czekania miêdzy wyprawami.") -- MT2009_PLUS_DUNGEON_NO_PLAYER_COOLDOWN_V1
 			say_reward("Boty z Twojej dru¿yny wejd¹ do lochu razem z Tob¹.")
-			say_reward("Wejœcie: "..c.fee_text.." Yang. Najwy¿ej "..c.daily.." wypraw dziennie (dziœ: "..razador_dungeon.runs_today().."/"..c.daily..").") -- MT2009_PLUS_DUNGEON_FEE_V1
+			say_reward("Wejscie: "..c.fee_text.." Yang. Bez limitu wypraw dziennie.")
 			say_reward("P³acisz tylko za siebie - boty z dru¿yny i towarzysz wchodz¹ bez op³aty.") -- MT2009_PLUS_DUNGEON_FEE_LEADER_V1
 			if select("PrzejdŸ do Czyœæca Ognia", "Nie teraz") ~= 1 then
 				return

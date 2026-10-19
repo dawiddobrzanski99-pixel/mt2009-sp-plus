@@ -1,0 +1,7 @@
+title subImage
+version 1.0
+image "atlas/metin2_map_skipia_dungeon_02/atlas.tga"
+left 0
+top 0
+right 510
+bottom 510

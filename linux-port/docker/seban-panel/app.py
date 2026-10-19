@@ -47,6 +47,314 @@ import decisions
 import event_autogen  # MT2009_PLUS_EVENTS_AUTOGEN_V1
 
 app = Flask(__name__)
+
+# CUSTOM_CHANGES_PAGE_V3
+_custom_changes_seed_v3 = {'updated': '2026-10-16T15:55:43+02:00', 'changes': [{'category': 'Walka', 'text': 'Obrażenia mobów ×1,8; bossów i minibossów ×1,4. Mnożnik tylko raz.', 'introduced': False, 'checked': False}, {'category': 'Walka', 'text': 'Z metinów o 50% więcej przywoływanych grup potworów.', 'introduced': False, 'checked': False}, {'category': 'Dungeon', 'text': 'Podwojony dzienny limit wejść na dungeony.', 'introduced': False, 'checked': False}, {'category': 'Dungeon', 'text': 'Na odpowiednich piętrach dungeonów 40 mobów zamiast 60.', 'introduced': False, 'checked': False}, {'category': 'Dungeon', 'text': 'Licznik czasu pobytu na dungeonie na górze ekranu.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'HP mobów, bossów i metinów jako procenty; gracze bez tej zmiany.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Panel: Biolog, Polowanie, Metinologia i Bossologia; skrót Ctrl+N.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Automatyczny podgląd bieżącego etapu i obowiązkowa kolejność wykonywania.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Polowanie: 26 etapów, po 100 mobów; bez wymaganego poziomu.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Etap 5 Polowania: Dziki Sługa. Pozostałe cele zgodnie z uzgodnioną listą.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Metinologia: po 50 metinów, od metina poziomu 25; bez wymaganego poziomu postaci.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Bossologia: 30 celów, po 20 zabójstw; kolejność regionów i nagrody z naszej listy.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Migracja etapów zachowująca postęp, bez ponownej wypłaty nagród.', 'introduced': False, 'checked': False}, {'category': 'Misje', 'text': 'Usunięcie uzgodnionych zbędnych questów i zastąpienie starego Polowania.', 'introduced': False, 'checked': False}, {'category': 'Biolog', 'text': 'Aktualne badanie, czas oczekiwania, nagrody i teleport do Biologa.', 'introduced': False, 'checked': False}, {'category': 'Biolog', 'text': 'Pobieranie materiałów również z Kolekcjonera.', 'introduced': False, 'checked': False}, {'category': 'Bonusy', 'text': 'Audyt sum bonusów: questy, Biolog, koń, gildia, ranga i polimorfia.', 'introduced': False, 'checked': False}, {'category': 'Bonusy', 'text': 'Koń: bez bonusów na bossy i metiny; 5% na potwory. Usunięcie starych bonusów u graczy.', 'introduced': False, 'checked': False}, {'category': 'Bonusy', 'text': 'Gildia: połowa wcześniejszych bonusów na moby/bossy/metiny, +1 do statystyk za poziom.', 'introduced': False, 'checked': False}, {'category': 'Bonusy', 'text': 'Gildia na poziomie 20: żywioły 10%, drop 5%, Yang 5%; przeliczenie członków.', 'introduced': False, 'checked': False}, {'category': 'Bonusy', 'text': 'Regionalne nagrody Polowania i poprawne nazwy bonusów w podglądzie celu.', 'introduced': False, 'checked': False}, {'category': 'Ranking', 'text': 'Poprawne wyświetlanie rankingu i tytułów.', 'introduced': False, 'checked': False}, {'category': 'Ranking', 'text': 'Brak duplikowania bonusów i nagród rankingu, także po relogu i aktualizacji.', 'introduced': False, 'checked': False}, {'category': 'Kolekcjoner', 'text': 'Ulepszanie pobiera materiały z EQ i Kolekcjonera.', 'introduced': True, 'checked': False}, {'category': 'Kolekcjoner', 'text': 'Poprawne sumy materiałów i kolory w oknie ulepszania.', 'introduced': False, 'checked': False}, {'category': 'Przedmioty', 'text': 'Stackowanie Egzo i Rad Pustelnika oraz właściwe ograniczenia handlu.', 'introduced': False, 'checked': False}, {'category': 'Przedmioty', 'text': 'Medale Konne z Wukonga łączą się ze zwykłymi medalami.', 'introduced': False, 'checked': False}, {'category': 'Gildia', 'text': 'Wypłacanie Yang ze skarbca przez lidera.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Zachowanie wszystkich ręcznych zmian dropu wykonanych w panelu.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': '50122: metiny poziomu 50+ 2%, bossy 5%; bez podwójnego losowania.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Skrzynki ulepszaczy: odpowiednie szanse dla mobów, metinów, bossów i dungeonów.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Ilości skrzynek: zwykle 1–5, Wukong 2–5, Razador 3–5.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Skrzynka Lasu nie z metinów 50/55; ma wypadać z metinów 65.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Świątynia: właściwe materiały Doliny; materiały Biologa z właściwych mobów i skrzynek.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Usunięcie wskazanych średnich/dużych mikstur i grotów; zachowanie zielonych, fioletowych i questowych wyjątków.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': '59010 Skrzynia Receptur: receptury z dotychczasowych grup metinów, nie receptury autopotek.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Cory 50256–50259: osobne progresje metinów, bossów mapowych i końcowych bossów dungeonów.', 'introduced': False, 'checked': False}, {'category': 'Drop', 'text': 'Wiki i podgląd odpowiadają rzeczywistemu dropowi, także wpisom dodanym ręcznie.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'Zachowanie zaakceptowanej mapy pod TAB z elementami LoL i WoT.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'Ikony, nazwy i opisy: KU, KD, 50122, skrzynki ulepszaczy, Klepsydra Biologa i nowe przedmioty.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'Eksport dbdata z panelu zachowuje nasze ikony, opisy i konfigurację.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'Czytelne tooltipy gildii i bonusów postaci, bez numerów bonusów i rozsypanych znaków.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'Duże ogłoszenia GM z uzgodnionym wyglądem.', 'introduced': False, 'checked': False}, {'category': 'Klient', 'text': 'Czat podnoszenia pokazuje rzeczywistą liczbę otrzymanych przedmiotów.', 'introduced': False, 'checked': False}, {'category': 'Boty', 'text': 'Podnoszenie i otwieranie skrzynek KU, sakiewek KD, ulepszaczy i nowych skrzynek.', 'introduced': False, 'checked': False}, {'category': 'Boty', 'text': 'Towarzysz nie otwiera żywych ryb, również przekazanych przez gracza.', 'introduced': False, 'checked': False}, {'category': 'Aktualizacje', 'text': 'Pełne porównanie przed/po: kod, questy, baza konfiguracyjna, panel i paczki klienta.', 'introduced': False, 'checked': False}, {'category': 'Kopia', 'text': 'Paczka awaryjna naszych zmian i dropu z panelu, bez kont, EQ i postępów graczy.', 'introduced': False, 'checked': False}], 'ideas': ['Bossy poruszają się i ścigają normalnie, ale uderzenia graczy nie mogą ich przepychać. Sprawdzić serwer i klienta.', 'Dokończyć diagnostykę lagów: gorące wątki gry, nawigacja botów, baza i błędy map.', 'Naprawić oba problemy rankingu i potwierdzić brak ponownego przyznawania nagród.', 'Po każdej aktualizacji sprawdzić całą listę naszych zmian, a nie tylko ostatnią paczkę.']}
+_custom_changes_html_v3 = '<!doctype html>\n<html lang="pl"><head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Metin2 · Zmiany i pomysły</title>\n<style>\n:root{color-scheme:dark;--gold:#e6bd70;--muted:#a9b8cd}\n*{box-sizing:border-box}\nbody{margin:0;background:radial-gradient(ellipse at top,#253249,#10151f 80%);color:#edf0f7;font:14px/1.6 system-ui,sans-serif;min-height:100vh}\nmain{max-width:2500px;margin:auto;padding:28px 20px}\nh1{font-size:clamp(28px,3vw,42px);color:var(--gold);margin:8px 0}\nh2,h3{color:var(--gold);margin:0}\nsmall,.muted{color:var(--muted)}\nbutton,.link{border:1px solid #43516a;border-radius:9px;padding:10px 13px;background:#202d42;color:#edf0f7;cursor:pointer;text-decoration:none;font:inherit}\nbutton:hover,.link:hover{border-color:var(--gold)}\nbutton:disabled{opacity:.5;cursor:default}\n.actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}\n.active{border-color:var(--gold)}\ninput[type=search],select,textarea{width:100%;padding:12px;border:1px solid #43516a;border-radius:10px;background:#101722;color:#edf0f7;font:inherit}\ntextarea{resize:vertical;margin:10px 0}\n.board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;align-items:start;margin-top:22px}\n.column{min-width:0;border:1px solid #354159;border-radius:13px;background:#141e2be6;overflow:hidden}\n.column-head{padding:15px;background:linear-gradient(130deg,#293b57,#1c293c);border-bottom:1px solid #40516c}\n.column-head h2{font-size:18px}\n.column-head p{font-size:12px;color:#bdc9dc;margin:7px 0}\n.entries{display:grid;gap:10px;padding:10px}\n.entry{padding:13px;background:#1d2a3d;border:1px solid #35465f;border-radius:10px;min-width:0}\n.entry p{margin:8px 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}\n.checks{display:grid;gap:7px;border-top:1px solid #35465f;padding-top:10px}\n.checks label{display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d5e7}\ninput[type=checkbox]{width:18px;height:18px;accent-color:var(--gold)}\n.badge{display:inline-block;color:#10251b;background:#8ae4ad;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}\n.tag{color:var(--gold);font-size:12px}\n.idea-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:20px 0}\n.entry button{font-size:12px;padding:7px 9px}\n.entry .actions{margin:8px 0 0}\n.danger{color:#ffb1b1}\n.notice{min-height:28px;color:#9ce4b8}\nform{padding:20px;border:1px solid #354159;border-radius:12px;margin:26px 0;background:#172233;max-width:850px}\n.recent{margin-top:30px;border-top:1px solid #354159;padding-top:22px}\n.recent li{margin:10px 0}\nfooter{margin:25px 0;color:var(--muted);font-size:12px}\n[hidden]{display:none!important}\n@media(max-width:1500px){.board{grid-template-columns:repeat(6,minmax(0,1fr))}}\n@media(max-width:1150px){.board{grid-template-columns:repeat(4,minmax(0,1fr))}}\n@media(max-width:800px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:460px){.board{grid-template-columns:1fr}main{padding:18px 10px}}\n</style></head><body><main>\n<small>METIN2 · REJESTR ZMIAN</small>\n<h1>Zmiany i pomysły</h1>\n<div class="actions">\n<button id="changes-tab" type="button">Zmiany</button>\n<button id="ideas-tab" type="button">Pomysły / do zrobienia</button>\n<a class="link" href="/zmiany/eksport.json">Pobierz kopię JSON</a>\n<button id="unlock" type="button">Odblokuj edycję</button>\n<button id="lock" type="button" hidden>Zablokuj edycję</button>\n<button id="reset" type="button" hidden>Reset „Sprawdzone”</button>\n<button id="mark" type="button" hidden>Zaznacz wszystko</button>\n</div>\n<div id="message" class="notice" role="status" aria-live="polite"></div>\n<input id="search" type="search" aria-label="Szukaj" placeholder="Szukaj wpisu…">\n\n<section id="changes-panel">\n<div id="board" class="board"></div>\n<section class="recent"><h2>10 ostatnio dodanych zmian</h2>\n<ol id="recent"></ol></section>\n</section>\n\n<section id="ideas-panel" hidden style="margin-top:22px">\n<h2>Pomysły / do zrobienia</h2>\n<p class="muted">Pomysły zgłoszone przez odwiedzających, od najnowszych.</p>\n<div id="ideas" class="idea-grid"></div>\n<form id="idea-form">\n<h2>Dodaj swój pomysł</h2>\n<label for="idea-category">Kategoria</label>\n<select id="idea-category"></select>\n<label for="idea-text" style="display:block;margin-top:12px">Opis</label>\n<textarea id="idea-text" rows="4" maxlength="2000" required placeholder="Co chcesz zmienić lub dodać?"></textarea>\n<button type="submit">Dodaj pomysł</button>\n<small style="display:block;margin-top:8px">Bez hasła. Treść będzie publiczna — nie wpisuj danych prywatnych.</small>\n</form>\n</section>\n<p id="empty" hidden>Brak pasujących wpisów.</p>\n<footer>\nNowe zmiany są na górze swojej kategorii. Oznaczenie NOWOŚĆ pozostaje przez 7 dni.\nZaznaczanie pól, usuwanie i przenoszenie pomysłów wymaga hasła.\n</footer>\n</main><script>\nlet data={items:[]},password=\'\',tab=\'change\',busy=false;\nconst $=id=>document.getElementById(id);\nconst descriptions={"Walka i dungeony": "Moby, bossy, metiny, obrażenia, spawny i dungeony.", "Drop i skrzynki": "Przedmioty w dropie, szanse, ilości, skrzynki i Cory.", "Questy, Biolog i koń": "Polowanie, Metinologia, Bossologia, Biolog i nagrody konia.", "Bonusy, gildia i ranking": "Naliczanie bonusów, gildia, ranga i nagrody rankingu.", "Boty": "Podnoszenie, otwieranie skrzynek, nawigacja i zachowanie botów.", "Kolekcjoner i przedmioty": "Materiały, ulepszanie, stackowanie i handel.", "Klient i mapa": "Mapa TAB, okna, tooltipy, ikony, nazwy i opisy.", "Aktualizacje i pozostałe": "Kontrola aktualizacji, kopie awaryjne i pozostałe sprawy."};\nfunction el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e}\nfunction notice(text){$(\'message\').textContent=text}\nfunction categories(){return [...new Set([...Object.keys(descriptions),...data.items.map(x=>x.category)])].sort((a,b)=>a.localeCompare(b,\'pl\'))}\nfunction controls(){\n $(\'unlock\').hidden=!!password;\n for(const id of [\'lock\',\'reset\',\'mark\'])$(id).hidden=!password;\n document.querySelectorAll(\'button\').forEach(x=>x.disabled=busy);\n document.querySelectorAll(\'input[type=checkbox]\').forEach(x=>x.disabled=busy||!password);\n $(\'idea-text\').disabled=busy;$(\'idea-category\').disabled=busy;\n}\nfunction newest(a,b){\n const at=Date.parse(a.registered_at||\'\')||0,bt=Date.parse(b.registered_at||\'\')||0;\n return bt-at||(b.entry_order||0)-(a.entry_order||0);\n}\nfunction isNew(item){\n const t=Date.parse(item.registered_at||\'\');\n return Number.isFinite(t)&&Date.now()>=t&&Date.now()-t<7*86400000;\n}\nfunction card(item){\n const e=el(\'article\',undefined,\'entry\');\n if(item.kind===\'change\'&&isNew(item))e.append(el(\'span\',\'NOWOŚĆ\',\'badge\'));\n if(item.kind===\'idea\')e.append(el(\'span\',item.category,\'tag\'));\n e.append(el(\'p\',item.text));\n if(item.kind===\'change\'){\n  const checks=el(\'div\',undefined,\'checks\');\n  for(const field of [\'introduced\',\'checked\']){\n   const label=el(\'label\'),box=el(\'input\');box.type=\'checkbox\';box.checked=!!item[field];\n   box.onchange=()=>mutate({\n    action:\'status\',id:item.id,version:item.version,\n    introduced:field===\'introduced\'?box.checked:item.introduced,\n    checked:field===\'checked\'?box.checked:item.checked\n   },\'Zapisano oznaczenia.\');\n   label.append(box,el(\'span\',field===\'introduced\'?\'Wprowadzone\':\'Sprawdzone\'));checks.append(label);\n  }\n  e.append(checks);\n }else if(password){\n  const actions=el(\'div\',undefined,\'actions\');\n  const move=el(\'button\',\'Przenieś do zmian\');move.type=\'button\';\n  move.onclick=()=>{\n   const answer=prompt(\'Kategoria zmiany:\',item.category);\n   if(answer===null)return;\n   const category=answer.trim();\n   if(!category||category.length>60){notice(\'Kategoria: od 1 do 60 znaków.\');return}\n   if(confirm(\'Przenieść do zmian? Oba oznaczenia pozostaną puste.\'))\n    mutate({action:\'promote\',id:item.id,version:item.version,category},\'Przeniesiono do zmian.\');\n  };\n  const remove=el(\'button\',\'Usuń\',\'danger\');remove.type=\'button\';\n  remove.onclick=()=>{if(confirm(\'Usunąć ten pomysł?\'))mutate({action:\'delete\',id:item.id,version:item.version},\'Usunięto pomysł.\')};\n  actions.append(move,remove);e.append(actions);\n }\n return e;\n}\nfunction render(){\n $(\'changes-tab\').textContent=\'Zmiany · \'+data.items.filter(x=>x.kind===\'change\').length;\n $(\'ideas-tab\').textContent=\'Pomysły / do zrobienia · \'+data.items.filter(x=>x.kind===\'idea\').length;\n $(\'changes-tab\').classList.toggle(\'active\',tab===\'change\');\n $(\'ideas-tab\').classList.toggle(\'active\',tab===\'idea\');\n $(\'changes-panel\').hidden=tab!==\'change\';$(\'ideas-panel\').hidden=tab!==\'idea\';\n const query=$(\'search\').value.trim().toLocaleLowerCase(\'pl\');\n const items=data.items.filter(x=>x.kind===tab&&(x.text+\' \'+x.category).toLocaleLowerCase(\'pl\').includes(query));\n $(\'empty\').hidden=items.length>0;\n $(\'board\').replaceChildren();$(\'ideas\').replaceChildren();\n if(tab===\'change\'){\n  for(const name of categories()){\n   const group=items.filter(x=>x.category===name).sort(newest);\n   if(!group.length)continue;\n   const column=el(\'section\',undefined,\'column\'),head=el(\'header\',undefined,\'column-head\');\n   head.append(el(\'h2\',name),el(\'p\',descriptions[name]||\'Zmiany w tej kategorii.\'),el(\'small\',\'Wpisy: \'+group.length));\n   const entries=el(\'div\',undefined,\'entries\');\n   for(const item of group)entries.append(card(item));\n   column.append(head,entries);$(\'board\').append(column);\n  }\n }else{\n  items.sort((a,b)=>(b.entry_order||0)-(a.entry_order||0));\n  for(const item of items)$(\'ideas\').append(card(item));\n }\n $(\'recent\').replaceChildren();\n const latest=data.items.filter(x=>x.kind===\'change\').sort(newest).slice(0,10);\n for(const item of latest){\n  const li=el(\'li\');\n  if(isNew(item))li.append(el(\'span\',\'NOWOŚĆ\',\'badge\'),document.createTextNode(\' \'));\n  li.append(document.createTextNode(item.category+\' · \'+item.text));$(\'recent\').append(li);\n }\n const old=$(\'idea-category\').value;$(\'idea-category\').replaceChildren();\n for(const name of categories()){const o=el(\'option\',name);o.value=name;$(\'idea-category\').append(o)}\n $(\'idea-category\').value=categories().includes(old)?old:\'Aktualizacje i pozostałe\';\n controls();\n}\nasync function load(){\n const r=await fetch(\'/zmiany/api\',{cache:\'no-store\'});\n if(!r.ok)throw Error(\'Nie udało się odczytać listy.\');\n data=await r.json();render();\n}\nasync function mutate(payload,text){\n if(busy||(!password&&payload.action!==\'add\'))return false;\n busy=true;controls();let ok=false;\n try{\n  const r=await fetch(\'/zmiany/zapisz\',{method:\'POST\',\n   headers:{\'Content-Type\':\'application/json\',\'X-Changes-Key\':password},\n   body:JSON.stringify(payload)});\n  if(!r.ok){\n   if(r.status===403)password=\'\';\n   throw Error(r.status===409?\'Wpis zmieniono w innej karcie. Spróbuj ponownie.\':\'Nie zapisano. Sprawdź hasło lub połączenie.\');\n  }\n  ok=true;notice(text);\n }catch(e){notice(e.message)}\n try{await load()}catch(e){password=\'\';notice((ok?\'Zapis przyjęty. \':\'\')+\'Odśwież stronę przed kolejną próbą.\')}\n busy=false;controls();return ok;\n}\n$(\'changes-tab\').onclick=()=>{tab=\'change\';render()};\n$(\'ideas-tab\').onclick=()=>{tab=\'idea\';render()};\n$(\'search\').oninput=()=>render();\n$(\'unlock\').onclick=async()=>{\n const value=prompt(\'Hasło do edycji:\');if(!value)return;\n busy=true;controls();\n try{\n  const r=await fetch(\'/zmiany/odblokuj\',{method:\'POST\',headers:{\'X-Changes-Key\':value}});\n  if(!r.ok)throw Error(\'Nieprawidłowe hasło lub panel jest niedostępny.\');\n  password=value;await load();notice(\'Edycja odblokowana.\');\n }catch(e){password=\'\';notice(e.message)}\n busy=false;render();\n};\n$(\'lock\').onclick=()=>{password=\'\';notice(\'Edycja zablokowana.\');render()};\n$(\'reset\').onclick=()=>{if(confirm(\'Wyczyścić „Sprawdzone” przy wszystkich zmianach?\'))mutate({action:\'reset_checks\'},\'Wyczyszczono „Sprawdzone”.\')};\n$(\'mark\').onclick=()=>{if(confirm(\'Oznaczyć wszystkie zmiany jako wprowadzone i sprawdzone?\'))mutate({action:\'mark_all\'},\'Zaznaczono wszystkie zmiany.\')};\n$(\'idea-form\').onsubmit=async event=>{\n event.preventDefault();const text=$(\'idea-text\').value.trim();if(!text)return;\n if(await mutate({action:\'add\',text,category:$(\'idea-category\').value},\'Dodano pomysł.\'))$(\'idea-text\').value=\'\';\n};\nload().catch(e=>notice(e.message));\n</script></body></html>'
+
+def _register_custom_changes_v3(app, seed, html):
+    import hashlib
+    import hmac
+    import json
+    import sqlite3
+    import uuid
+    from pathlib import Path
+    from datetime import datetime, timezone
+    from flask import request, jsonify, Response
+
+    directory = Path("/opt/m2spool/custom-changes")
+    database = directory / "register-v3.sqlite3"
+    authfile = directory / "auth-v3.json"
+
+    def now():
+        return datetime.now(timezone.utc).isoformat()
+
+    def connect():
+        con = sqlite3.connect(str(database), timeout=10)
+        con.row_factory = sqlite3.Row
+        return con
+
+    def initialize():
+        con = connect()
+        try:
+            con.execute("""
+                CREATE TABLE IF NOT EXISTS items(
+                    id TEXT PRIMARY KEY,
+                    kind TEXT NOT NULL,
+                    category TEXT NOT NULL,
+                    text TEXT NOT NULL,
+                    introduced INTEGER NOT NULL DEFAULT 0,
+                    checked INTEGER NOT NULL DEFAULT 0,
+                    version INTEGER NOT NULL DEFAULT 0,
+                    deleted INTEGER NOT NULL DEFAULT 0,
+                    updated TEXT NOT NULL
+                )
+            """)
+            con.execute("CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY,value TEXT NOT NULL)")
+            con.commit()
+            con.execute("BEGIN IMMEDIATE")
+            done = con.execute("SELECT value FROM meta WHERE key='seeded'").fetchone()
+            if not done:
+                old_states = {}
+                old_ideas = []
+                oldpath = directory / "state.sqlite3"
+                if oldpath.exists():
+                    old = sqlite3.connect(oldpath.as_uri() + "?mode=ro", uri=True, timeout=10)
+                    old.row_factory = sqlite3.Row
+                    try:
+                        tables = {r[0] for r in old.execute(
+                            "SELECT name FROM sqlite_master WHERE type='table'"
+                        )}
+                        if "states" in tables:
+                            old_states = {r["id"]:dict(r) for r in old.execute("SELECT * FROM states")}
+                        if "ideas" in tables:
+                            old_ideas = [r["text"] for r in old.execute("SELECT text FROM ideas ORDER BY id")]
+                    finally:
+                        old.close()
+                for item in seed["changes"]:
+                    category = item["category"]
+                    text = item["text"]
+                    original_id = hashlib.sha256(
+                        (category + "\0" + text).encode("utf-8")
+                    ).hexdigest()[:24]
+                    state = old_states.get(original_id)
+                    if not state and category == "Walka":
+                        alternate = hashlib.sha256(
+                            ("Moby\0" + text).encode("utf-8")
+                        ).hexdigest()[:24]
+                        state = old_states.get(alternate)
+                    if category == "Walka":
+                        category = "Moby"
+                    con.execute("""
+                        INSERT INTO items(id,kind,category,text,introduced,checked,updated)
+                        VALUES(?,?,?,?,?,?,?)
+                    """, (
+                        original_id, "change", category, text,
+                        int(bool(state["introduced"] if state else item.get("introduced",False))),
+                        int(bool(state["checked"] if state else item.get("checked",False))),
+                        now()
+                    ))
+                for text in list(seed.get("ideas", [])) + old_ideas:
+                    con.execute("""
+                        INSERT INTO items(id,kind,category,text,updated)
+                        VALUES(?,?,?,?,?)
+                    """, (uuid.uuid4().hex, "idea", "Inne", text, now()))
+                con.execute("INSERT INTO meta(key,value) VALUES('seeded',?)", (now(),))
+            con.commit()
+        finally:
+            con.close()
+
+
+    # CUSTOM_CHANGES_CATEGORIES8_V1
+    _category_aliases_v1 = {'Walka': 'Walka i dungeony', 'Moby': 'Walka i dungeony', 'Bossy': 'Walka i dungeony', 'Metiny': 'Walka i dungeony', 'Dungeon': 'Walka i dungeony', 'Dungi': 'Walka i dungeony', 'Drop': 'Drop i skrzynki', 'Skrzynki': 'Drop i skrzynki', 'Misje': 'Questy, Biolog i koń', 'Questy': 'Questy, Biolog i koń', 'Biolog': 'Questy, Biolog i koń', 'Koń': 'Questy, Biolog i koń', 'Kon': 'Questy, Biolog i koń', 'Bonusy': 'Bonusy, gildia i ranking', 'Gildia': 'Bonusy, gildia i ranking', 'Ranking': 'Bonusy, gildia i ranking', 'Ranga': 'Bonusy, gildia i ranking', 'Kolekcjoner': 'Kolekcjoner i przedmioty', 'Przedmioty': 'Kolekcjoner i przedmioty', 'Klient': 'Klient i mapa', 'Mapa': 'Klient i mapa', 'Aktualizacje': 'Aktualizacje i pozostałe', 'Kopia': 'Aktualizacje i pozostałe', 'Inne': 'Aktualizacje i pozostałe', 'Walka i dungeony': 'Walka i dungeony', 'Drop i skrzynki': 'Drop i skrzynki', 'Questy, Biolog i koń': 'Questy, Biolog i koń', 'Bonusy, gildia i ranking': 'Bonusy, gildia i ranking', 'Boty': 'Boty', 'Kolekcjoner i przedmioty': 'Kolekcjoner i przedmioty', 'Klient i mapa': 'Klient i mapa', 'Aktualizacje i pozostałe': 'Aktualizacje i pozostałe'}
+
+    def custom_category_v1(value):
+        lookup = {k.casefold(): v for k, v in _category_aliases_v1.items()}
+        return lookup.get(value.strip().casefold(), "Aktualizacje i pozostałe")
+
+    initialize()
+
+    con = connect()
+    try:
+        con.execute("BEGIN IMMEDIATE")
+        rows = con.execute("SELECT id,category FROM items").fetchall()
+        for row in rows:
+            category = custom_category_v1(row["category"])
+            if category != row["category"]:
+                con.execute(
+                    "UPDATE items SET category=?,version=version+1 WHERE id=?",
+                    (category, row["id"])
+                )
+        con.commit()
+    finally:
+        con.close()
+
+    # CUSTOM_CHANGES_NEW_BADGE_V1
+    con = connect()
+    try:
+        con.execute("BEGIN IMMEDIATE")
+        columns = {r["name"] for r in con.execute("PRAGMA table_info(items)")}
+        if "registered_at" not in columns:
+            con.execute("ALTER TABLE items ADD COLUMN registered_at TEXT NOT NULL DEFAULT ''")
+        con.commit()
+    finally:
+        con.close()
+
+    def authorized():
+        supplied = request.headers.get("X-Changes-Key", "")
+        if not supplied or len(supplied) > 256:
+            return False
+        try:
+            auth = json.loads(authfile.read_text(encoding="utf-8"))
+            calculated = hashlib.pbkdf2_hmac(
+                "sha256", supplied.encode("utf-8"),
+                bytes.fromhex(auth["salt"]), auth["iterations"]
+            ).hex()
+            return hmac.compare_digest(calculated, auth["hash"])
+        except (OSError, ValueError, KeyError, TypeError):
+            return False
+
+    def read_data():
+        con = connect()
+        try:
+            rows = con.execute("""
+                SELECT rowid AS entry_order,id,kind,category,text,introduced,checked,version,updated,registered_at
+                FROM items WHERE deleted=0 ORDER BY rowid
+            """).fetchall()
+            items = []
+            for row in rows:
+                item = dict(row)
+                item["introduced"] = bool(item["introduced"])
+                item["checked"] = bool(item["checked"])
+                items.append(item)
+            return {"items":items, "exported":now()}
+        finally:
+            con.close()
+
+    @app.after_request
+    def custom_changes_headers_v3(response):
+        if request.path == "/zmiany" or request.path.startswith("/zmiany/"):
+            response.headers["Cache-Control"] = "no-store"
+            response.headers["X-Content-Type-Options"] = "nosniff"
+            response.headers["Referrer-Policy"] = "no-referrer"
+        return response
+
+    @app.get("/zmiany")
+    def custom_changes_page_v3():
+        return Response(html, content_type="text/html; charset=utf-8")
+
+    @app.get("/zmiany/api")
+    def custom_changes_api_v3():
+        return jsonify(read_data())
+
+    @app.get("/zmiany/eksport.json")
+    def custom_changes_export_v3():
+        return Response(
+            json.dumps(read_data(), ensure_ascii=False, indent=2),
+            content_type="application/json; charset=utf-8",
+            headers={"Content-Disposition":
+                "attachment; filename=metin2-zmiany-i-pomysly.json"}
+        )
+
+    @app.post("/zmiany/odblokuj")
+    def custom_changes_unlock_v3():
+        if not authorized():
+            return jsonify(error="Nieprawidlowe haslo"), 403
+        return jsonify(ok=True)
+
+    @app.post("/zmiany/zapisz")
+    def custom_changes_save_v3():
+        # CUSTOM_PUBLIC_IDEAS_V1
+        if request.content_length is not None and request.content_length > 16384:
+            return jsonify(error="Zbyt duze zadanie"), 413
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            return jsonify(error="Nieprawidlowe dane"), 400
+
+        action = payload.get("action")
+        if action != "add" and not authorized():
+            return jsonify(error="Nieprawidlowe haslo"), 403
+        if action not in ("add", "status", "delete", "promote", "reset_checks", "mark_all"):
+            return jsonify(error="Nieznana operacja"), 400
+
+
+        # CUSTOM_CHANGES_BULK_V1
+        if action in ("reset_checks", "mark_all"):
+            if not authorized():
+                return jsonify(error="Nieprawidlowe haslo"), 403
+            con = connect()
+            try:
+                con.execute("BEGIN IMMEDIATE")
+                if action == "reset_checks":
+                    con.execute("""
+                        UPDATE items SET checked=0,version=version+1,updated=?
+                        WHERE kind='change' AND deleted=0
+                    """, (now(),))
+                else:
+                    con.execute("""
+                        UPDATE items SET introduced=1,checked=1,
+                        version=version+1,updated=?
+                        WHERE kind='change' AND deleted=0
+                    """, (now(),))
+                con.commit()
+                return jsonify(ok=True)
+            finally:
+                con.close()
+
+        if action in ("add", "promote"):
+            category = payload.get("category")
+            if not isinstance(category,str) or not 1 <= len(category.strip()) <= 60:
+                return jsonify(error="Nieprawidlowa kategoria"), 400
+            category = custom_category_v1(category.strip())
+
+        if action == "add":
+            text = payload.get("text")
+            if not isinstance(text,str) or not 1 <= len(text.strip()) <= 2000:
+                return jsonify(error="Pomysl musi miec od 1 do 2000 znakow"), 400
+            con = connect()
+            try:
+                con.execute("""
+                    INSERT INTO items(id,kind,category,text,updated)
+                    VALUES(?,?,?,?,?)
+                """, (uuid.uuid4().hex,"idea",category,text.strip(),now()))
+                con.commit()
+                return jsonify(ok=True), 201
+            finally:
+                con.close()
+
+        ident = payload.get("id")
+        version = payload.get("version")
+        if not isinstance(ident,str) or type(version) is not int or version < 0:
+            return jsonify(error="Nieprawidlowy wpis"), 400
+        if action == "status" and (
+            type(payload.get("introduced")) is not bool
+            or type(payload.get("checked")) is not bool
+        ):
+            return jsonify(error="Nieprawidlowe oznaczenia"), 400
+
+        con = connect()
+        try:
+            con.execute("BEGIN IMMEDIATE")
+            row = con.execute(
+                "SELECT * FROM items WHERE id=? AND deleted=0", (ident,)
+            ).fetchone()
+            if row is None:
+                con.rollback()
+                return jsonify(error="Brak wpisu"), 404
+            if row["version"] != version:
+                con.rollback()
+                return jsonify(error="Wpis zmieniono w innej karcie"), 409
+            if action == "status":
+                if row["kind"] != "change":
+                    con.rollback()
+                    return jsonify(error="To nie jest zmiana"), 400
+                con.execute("""
+                    UPDATE items SET introduced=?,checked=?,version=version+1,updated=?
+                    WHERE id=?
+                """, (int(payload["introduced"]),int(payload["checked"]),now(),ident))
+            else:
+                if row["kind"] != "idea":
+                    con.rollback()
+                    return jsonify(error="Operacja dotyczy tylko pomyslow"), 400
+                if action == "delete":
+                    con.execute("""
+                        UPDATE items SET deleted=1,version=version+1,updated=? WHERE id=?
+                    """, (now(),ident))
+                else:
+                    con.execute("""
+                        UPDATE items SET kind='change',category=?,introduced=0,checked=0,
+                        registered_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'),
+                        version=version+1,updated=? WHERE id=?
+                    """, (category,now(),ident))
+            con.commit()
+            return jsonify(ok=True)
+        finally:
+            con.close()
+
+_register_custom_changes_v3(app, _custom_changes_seed_v3, _custom_changes_html_v3)
+
+# END_CUSTOM_CHANGES_PAGE_V3
+
 app.secret_key = os.environ.get("SEBAN_SESSION_SECRET", "change-this-before-public-use")
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax",
@@ -200,12 +508,20 @@ GAME_HOST = os.environ.get("PLAYERBOTS_GAME_HOST", "metin2-game")
 GAME_LOGIN_PORT = int(os.environ.get("PLAYERBOTS_LOGIN_PORT", "11000"))
 GAME_WORLD_PORT = int(os.environ.get("PLAYERBOTS_WORLD_PORT", "13000"))
 RATE_NAMES = ("exp", "drop", "yang")
-REGEN_DELAY_FLAGS = {"boss": "fastBossSpawn", "mob": "fastMobSpawn"}
-REGEN_COUNT_FLAGS = {"boss": "m2_boss_count", "mob": "m2_mob_count"}
+# MT2009_PLUS_REGEN_METIN_SPLIT_V1 (server-patches/regenmetin): Metin stones
+# apart from bosses - the core reads fastMetinSpawn/m2_metin_count for a line
+# that puts down a Metin stone and fastBossSpawn/m2_boss_count for a boss. The
+# migration (apply.sh) copies the old "Metiny i bossy" rows into the Metin rows
+# once; a world without the Metin row yet shows the bosses' value for them.
+REGEN_DELAY_FLAGS = {"metin": "fastMetinSpawn", "boss": "fastBossSpawn", "mob": "fastMobSpawn"}
+REGEN_COUNT_FLAGS = {"metin": "m2_metin_count", "boss": "m2_boss_count", "mob": "m2_mob_count"}
+REGEN_METIN_FALLBACK = {"fastMetinSpawn": "fastBossSpawn", "m2_metin_count": "m2_boss_count"}
 REGEN_DELAY_MIN = 10
 REGEN_COUNT_CHOICES = (100, 150, 200, 250, 300, 400)
 QUEUE_FINAL_STATUSES = frozenset((
     "done", "bad_args", "failed", "unknown_cmd", "cancelled", "no_gm",
+    # MT2009_PLUS_BOT_EXP_UNLOCK_V1: EXPUNLOCK/EXPLOCK for a character that is no bot.
+    "not_allowed",
 ))
 AI_WEIGHTS_FILE = RATES_SPOOL / "playerbot_weights.tsv"
 CHEST_SWITCH_FILE = RATES_SPOOL / "playerbot_chest_switch.tsv"
@@ -264,7 +580,7 @@ AI_LIVE_DEFAULTS = {"CHAT": 1, "BOOKS": 1, "NIGHT": 1, "LIFE": 0,
                      # MT2009_PLUS_LEGENDS_V1: the bots' legends (playerbot_legends.h).
                      "LEGENDS": 1,
                      # MT2009_PLUS_BOT_HAGGLE_V1: bots haggle at people's shops.
-                     "HAGGLE": 1, "SCRAP": 0, "REST": 100, "KINGDOMPVP": 0, "SCROLL_FROM": 1,
+                     "HAGGLE": 1, "MATERIAL_MARKET": 0, "SCRAP": 0, "REST": 100, "KINGDOMPVP": 0, "SCROLL_FROM": 1,
                      # The three wills (playerbot_config.h): percent of what the
                      # build does, 100 = as before, 0 = none of it.
                      "BATTLEPASS": 100, "SASH": 100, "ALCHEMY": 100,
@@ -632,14 +948,22 @@ def read_regen_settings():
               "count": {kind: 100 for kind in REGEN_COUNT_FLAGS}}
     try:
         with db() as con, con.cursor() as cur:
-            for kind, flag in REGEN_DELAY_FLAGS.items():
+            def flag_row(flag):
                 cur.execute("SELECT lValue FROM player.quest WHERE dwPID=0 AND szName=%s LIMIT 1", (flag,))
                 row = cur.fetchone()
+                if row is None and flag in REGEN_METIN_FALLBACK:
+                    # MT2009_PLUS_REGEN_METIN_SPLIT_V1: not split yet - the Metins
+                    # respawn as the bosses do.
+                    cur.execute("SELECT lValue FROM player.quest WHERE dwPID=0 AND szName=%s LIMIT 1",
+                                (REGEN_METIN_FALLBACK[flag],))
+                    row = cur.fetchone()
+                return row
+            for kind, flag in REGEN_DELAY_FLAGS.items():
+                row = flag_row(flag)
                 if row and REGEN_DELAY_MIN <= int(row["lValue"]) < 100:
                     result["delay"][kind] = int(row["lValue"])
             for kind, flag in REGEN_COUNT_FLAGS.items():
-                cur.execute("SELECT lValue FROM player.quest WHERE dwPID=0 AND szName=%s LIMIT 1", (flag,))
-                row = cur.fetchone()
+                row = flag_row(flag)
                 if row and 100 < int(row["lValue"]) <= max(REGEN_COUNT_CHOICES):
                     result["count"][kind] = int(row["lValue"])
     except (KeyError, TypeError, ValueError, pymysql.MySQLError):
@@ -1563,7 +1887,8 @@ def news_feed_history(before=None, limit=40, days=14):
 PLAYERBOT_STATUS_LEGACY_COLUMNS = ("pid", "personality", "ambition", "role", "in_party", "goal",
                                     "action", "updated_ms", "map_index", "x", "y", "hp", "max_hp", "status")
 _LIVE_STATUS_INT_FIELDS = ("personality", "ambition", "role", "goal", "action", "updated_ms",
-                            "map_index", "x", "y", "hp", "max_hp", "persona", "mood", "mood_lock", "lock_level")
+                            "map_index", "x", "y", "hp", "max_hp", "persona", "mood", "mood_lock", "lock_level",
+                            "exp_block", "exp_unlock")
 
 
 def live_statuses():
@@ -3092,7 +3417,7 @@ def read_ai_weights():
             if len(fields) >= 2 and fields[0].upper() in values:
                 try:
                     key, raw_value = fields[0].upper(), fields[1]
-                    if key in ("CHAT", "BOOKS", "NIGHT", "LIFE", "WARS", "TOWER", "CATACOMB", "DUNGEONS", "ISHOP", "SHOP_M2", "PERSONA", "SHOUTERS", "HAGGLE", "LEGENDS"):
+                    if key in ("CHAT", "BOOKS", "NIGHT", "LIFE", "WARS", "TOWER", "CATACOMB", "DUNGEONS", "ISHOP", "SHOP_M2", "PERSONA", "SHOUTERS", "HAGGLE", "LEGENDS", "MATERIAL_MARKET"):
                         values[key] = 0 if raw_value.lower() in ("0", "off", "no") else 1
                     elif key in ("SCRAP", "REST", "KINGDOMPVP"):
                         values[key] = max(0, min(100, int(raw_value)))
@@ -3168,6 +3493,8 @@ def write_ai_weights(values):
     # MT2009_PLUS_LEGENDS_V1: the bots' legends, 1 = on.
     content.append(f"LEGENDS\t{1 if values.get('LEGENDS', 1) else 0}")
     content.append(f"HAGGLE\t{1 if values.get('HAGGLE', 1) else 0}")
+    # MT2009_PLUS_MARKET_LIFE_V1: the material market's test option, 0 = off.
+    content.append(f"MATERIAL_MARKET\t{1 if values.get('MATERIAL_MARKET', 0) else 0}")
     content.append(f"SCRAP\t{max(0, min(100, int(values.get('SCRAP', 0))))}")
     content.append(f"REST\t{max(0, min(100, int(values.get('REST', 100))))}")
     content.append(f"KINGDOMPVP\t{max(0, min(100, int(values.get('KINGDOMPVP', 0))))}")
@@ -3229,6 +3556,20 @@ def read_difficulty():
     return {"level": DIFFICULTY_LEVELS[level_index], "biologist": values["m2_biologist_wait"] / 3600,
             "horse": values["m2_horse_buy_wait"] / 3600, "book_player": values["m2_book_wait"] / 3600,
             "book_bot": values["m2_bot_book_wait"] / 3600}
+
+
+# MT2009_PLUS_DROP_BONUS_PCT_V1 (server-patches/dropbonus): the chance of bonus
+# lines on dropped weapons and armour, a percent of the game's own chance in the
+# event flag m2_drop_bonus_pct (100, 0 or no row = as the game has it). The row
+# is what a restart keeps; web_admin.quest's DROP_BONUS makes it live.
+DROP_BONUS_FLAG = "m2_drop_bonus_pct"
+DROP_BONUS_MIN, DROP_BONUS_MAX = 10, 1000
+
+
+def read_drop_bonus():
+    value = read_global_quest_flags((DROP_BONUS_FLAG,)).get(DROP_BONUS_FLAG, 0)
+    pct = 100 if value <= 0 else max(DROP_BONUS_MIN, min(DROP_BONUS_MAX, value))
+    return {"pct": pct, "min": DROP_BONUS_MIN, "max": DROP_BONUS_MAX}
 
 
 def read_autohunt():
@@ -6451,7 +6792,12 @@ def player(pid):
         character["persona"] = BOT_PERSONAS.get(live.get("persona")) if live.get("persona") is not None else None
         character["mood"] = BOT_MOODS.get(live.get("mood")) if live.get("mood") is not None else None
         character["mood_lock"] = BOT_MOOD_LOCKS.get(live.get("mood_lock") or 0)
-        character["hold"] = f"blokada expa na {live['lock_level']} lvl" if live.get("persona") is not None and live.get("lock_level") else ""
+        if live.get("exp_unlock"):
+            # MT2009_PLUS_BOT_EXP_UNLOCK_V1: the operator's override is over
+            # whatever level the bot would be held at.
+            character["hold"] = "exp odblokowany przez operatora"
+        else:
+            character["hold"] = f"blokada expa na {live['lock_level']} lvl" if live.get("persona") is not None and live.get("lock_level") else ""
     else:
         character.update({"personality": "Bot offline", "ambition": "—", "goal": "—", "action": "—"})
         character["channel_live"] = False
@@ -6529,7 +6875,8 @@ def player(pid):
                             dragon_soul_inventory=dragon_soul_inventory, dragon_soul_decks=dragon_soul_decks,
                             gear_history=gear_history, offline_shop=offline_shop, character_stats=character_stats,
                             mission_progress=mission_progress, gm_ranks=GM_RANK_OPTIONS,
-                            admin_warps=PLAYER_ADMIN_WARPS, dungeon_reset_choices=DUNGEON_RESET_CHOICES)
+                            admin_warps=PLAYER_ADMIN_WARPS, dungeon_reset_choices=DUNGEON_RESET_CHOICES,
+                            exp_lock=bot_exp_lock_view(character, live))
 
 
 @app.get("/api/admin/item-search")
@@ -6557,6 +6904,96 @@ def api_admin_item_search():
                  " ORDER BY vnum LIMIT 80", params)
     return jsonify({"items": [{"vnum": int(item["vnum"]), "name": game_text(item.get("locale_name")) or f"VNUM {item['vnum']}"}
                               for item in found]})
+
+
+# MT2009_PLUS_BOT_EXP_UNLOCK_V1: a bot's EXP lock and the operator's override
+# of it ("Odblokuj exp" on the bot's page). The lock is the engine's
+# AFFECT_EXP_BLOCK (310), which the bots' cores put on a dropper in its band, a
+# Grinder at its tier's level, a farmer on its ground, a bot at a progression
+# gate, a shouter, a test squad and so on (ManagePlayerBotExpLock). The
+# override is the bot's quest flag playerbot.exp_unlocked, which the lock pass
+# honours over all of them. A bot in the game takes EXPUNLOCK/EXPLOCK through
+# web_admin.quest (its own player timer); for a bot out of the game the panel
+# writes the flag and drops the saved lock itself - the core reads both when
+# the bot loads.
+AFFECT_EXP_BLOCK_MT2009 = 310
+EXP_OVERRIDE_COMMANDS = {"unlock": "EXPUNLOCK", "restore": "EXPLOCK"}
+
+
+def bot_exp_lock_view(character, live):
+    """The EXP card of /player: whether the lock holds now (the live status
+    file for a bot in the game, its saved affect otherwise), the level it is
+    held at, and the operator's override. None for any character but a bot."""
+    if not ENGINE_MT2009 or not character:
+        return None
+    pid = int(character["id"])
+    try:
+        if not one("SELECT " + BOT_IS + " AS bot FROM player.player p WHERE p.id=%s", (pid,)).get("bot"):
+            return None
+        saved_blocked = bool(one("SELECT 1 AS n FROM player.affect WHERE dwPID=%s AND bType=%s LIMIT 1",
+                                 (pid, AFFECT_EXP_BLOCK_MT2009)))
+        saved_unlocked = bool(one("SELECT 1 AS n FROM player.quest WHERE dwPID=%s AND szName='playerbot' "
+                                  "AND szState='exp_unlocked' AND lValue>0 LIMIT 1", (pid,)))
+    except pymysql.MySQLError:
+        return None
+    view = {"online": live is not None}
+    if live is not None:
+        # A core from before the two columns says nothing of either.
+        view["unlocked"] = bool(live["exp_unlock"]) if "exp_unlock" in live else saved_unlocked
+        view["blocked"] = bool(live["exp_block"]) if "exp_block" in live else saved_blocked
+        view["lock_level"] = int(live.get("lock_level") or 0) or None
+    else:
+        view.update(blocked=saved_blocked and not saved_unlocked, unlocked=saved_unlocked, lock_level=None)
+    return view
+
+
+def write_bot_exp_override_offline(pid, unlocked):
+    """For a bot out of the game: the quest flag the core reads at its load,
+    and, when unlocking, its saved lock gone (the core would lift it anyway on
+    its first pass)."""
+    with db() as con, con.cursor() as cur:
+        cur.execute("REPLACE INTO player.quest (dwPID, szName, szState, lValue) VALUES (%s, 'playerbot', 'exp_unlocked', %s)",
+                    (pid, 1 if unlocked else 0))
+        if unlocked:
+            cur.execute("DELETE FROM player.affect WHERE dwPID=%s AND bType=%s", (pid, AFFECT_EXP_BLOCK_MT2009))
+
+
+@app.post("/player/<int:pid>/action/exp-lock")
+@login_required
+def player_action_exp_lock(pid):
+    """MT2009_PLUS_BOT_EXP_UNLOCK_V1: the "Odblokuj exp" / "Przywróć blokadę"
+    button of a bot's page (bot_exp_lock_view)."""
+    character = one("SELECT id,name,level FROM player.player WHERE id=%s", (pid,))
+    if not character:
+        abort(404)
+    command = EXP_OVERRIDE_COMMANDS.get(request.form.get("mode", ""))
+    if not command:
+        flash("Nieobsługiwana akcja.", "error")
+        return redirect(url_for("player", pid=pid))
+    live = live_statuses().get(pid)
+    if bot_exp_lock_view(character, live) is None:
+        flash("Blokadę exp zmienia się tylko botom.", "error")
+        return redirect(url_for("player", pid=pid))
+    name, unlock = character["name"], command == "EXPUNLOCK"
+    status = "player_offline"
+    if live is not None:
+        status, _queue_id = queue_player_admin_command(name, command)
+    if status == "done":
+        flash(f"{name}: exp odblokowany, bot zdobywa doświadczenie." if unlock else
+              f"{name}: blokada przywrócona, o blokadzie znów decydują zasady bota.", "success")
+    elif status == "not_allowed":
+        flash("Blokadę exp zmienia się tylko botom.", "error")
+    elif live is None:
+        try:
+            write_bot_exp_override_offline(pid, unlock)
+        except pymysql.MySQLError:
+            flash("Nie udało się zapisać zmiany (baza danych).", "error")
+        else:
+            flash(f"{name} nie jest teraz w grze — zmiana zapisana, bot dostanie ją przy wejściu do gry.", "success")
+    else:
+        flash(f"Nie udało się zmienić blokady exp ({status}). Bot jest w grze, ale nie odpowiedział — spróbuj za chwilę.",
+              "error")
+    return redirect(url_for("player", pid=pid))
 
 
 @app.post("/player/<int:pid>/action/game")
@@ -8976,7 +9413,8 @@ def respawns_delay():
         if any(not REGEN_DELAY_MIN <= value <= 100 for value in values.values()):
             raise ValueError(f"Szybkość odrodzenia musi mieścić się w zakresie {REGEN_DELAY_MIN}–100%.")
         persist_regen_settings("delay", values)
-        status, queue_id = queue_game_admin_command("REGEN", f"{0 if values['boss'] == 100 else values['boss']},{0 if values['mob'] == 100 else values['mob']}")
+        status, queue_id = queue_game_admin_command(
+            "REGEN", ",".join(str(0 if values[k] == 100 else values[k]) for k in ("metin", "boss", "mob")))
         if status != "done":
             if status == "timeout": cancel_pending_admin_command(queue_id)
             raise RuntimeError("Ustawienie zapisano na następny start, ale rdzeń nie potwierdził zmiany na żywo.")
@@ -8997,7 +9435,8 @@ def respawns_count():
         if any(value not in REGEN_COUNT_CHOICES for value in values.values()):
             raise ValueError("Wybierz jeden z dostępnych mnożników liczby potworów.")
         persist_regen_settings("count", values)
-        status, queue_id = queue_game_admin_command("REGEN_COUNT", f"{values['boss']},{values['mob']}")
+        status, queue_id = queue_game_admin_command(
+            "REGEN_COUNT", ",".join(str(values[k]) for k in ("metin", "boss", "mob")))
         if status != "done":
             if status == "timeout": cancel_pending_admin_command(queue_id)
             raise RuntimeError("Ustawienie zapisano na następny start, ale rdzeń nie potwierdził zmiany na żywo.")
@@ -9628,7 +10067,7 @@ def manage():
     bot_channels = sorted(per_channel.items()) if len(per_channel) > 1 else []
     updater = update_status()
     updater["protected"] = current_settings.get("auth_enabled") == "1" and bool(session.get("seban_admin"))
-    return render_template("manage.html", rates=read_rates(), rate_presets=RATE_PRESETS, ai_weights=read_ai_weights(), sale_tax_max=SALE_TAX_MAX, chest_switch=read_chest_switch(), ai_weight_keys=[k for k in AI_WEIGHT_KEYS if not (ENGINE_MT2009 and k[0] == "HUNTING") and not (not ENGINE_MT2009 and k[0] == "HERB")], ai_weight_capped=AI_WEIGHT_CAPPED, ai_weight_hints=AI_WEIGHT_HINTS, engine_mt2009=ENGINE_MT2009, restart=restart_progress(), settings=current_settings, map_counts=map_counts, bot_count=len(bots), bot_channels=bot_channels, map_respawn_options=MAP_RESPAWN_OPTIONS, map_stone_respawn_ids=MAP_STONE_RESPAWN_IDS, map_respawn_status=read_map_regen_status(), server_settings=server_settings_status(), updater=updater, playerbots_release=playerbots_release_status(), update_csrf=update_csrf_token(), bot_count_wanted=read_bot_count() if panel_feature_enabled("bot_count", current_settings) else len(live_bots()) or 350, spawn_plan=read_spawn_plan(), student_chest_disabled=read_student_chest_disabled() if panel_feature_enabled("student_chest", current_settings) else False, custom_patches_enabled=CUSTOM_PATCHES_ENABLED, include_real_players=include_real_players_in_rankings(), announce_plus9=read_announce_plus9_refines() if panel_feature_enabled("plus9_announcements", current_settings) else False, bots_held=read_bot_hold(), item_policy=read_ai_item_policy(), difficulty=read_difficulty(), autohunt=read_autohunt(), channels=read_channel_settings(), channel_shares=CH2_SHARE_CHOICES, vouchers=read_vouchers())
+    return render_template("manage.html", rates=read_rates(), rate_presets=RATE_PRESETS, ai_weights=read_ai_weights(), sale_tax_max=SALE_TAX_MAX, chest_switch=read_chest_switch(), ai_weight_keys=[k for k in AI_WEIGHT_KEYS if not (ENGINE_MT2009 and k[0] == "HUNTING") and not (not ENGINE_MT2009 and k[0] == "HERB")], ai_weight_capped=AI_WEIGHT_CAPPED, ai_weight_hints=AI_WEIGHT_HINTS, engine_mt2009=ENGINE_MT2009, restart=restart_progress(), settings=current_settings, map_counts=map_counts, bot_count=len(bots), bot_channels=bot_channels, map_respawn_options=MAP_RESPAWN_OPTIONS, map_stone_respawn_ids=MAP_STONE_RESPAWN_IDS, map_respawn_status=read_map_regen_status(), server_settings=server_settings_status(), updater=updater, playerbots_release=playerbots_release_status(), update_csrf=update_csrf_token(), bot_count_wanted=read_bot_count() if panel_feature_enabled("bot_count", current_settings) else len(live_bots()) or 350, spawn_plan=read_spawn_plan(), student_chest_disabled=read_student_chest_disabled() if panel_feature_enabled("student_chest", current_settings) else False, custom_patches_enabled=CUSTOM_PATCHES_ENABLED, include_real_players=include_real_players_in_rankings(), announce_plus9=read_announce_plus9_refines() if panel_feature_enabled("plus9_announcements", current_settings) else False, bots_held=read_bot_hold(), item_policy=read_ai_item_policy(), difficulty=read_difficulty(), drop_bonus=read_drop_bonus(), autohunt=read_autohunt(), channels=read_channel_settings(), channel_shares=CH2_SHARE_CHOICES, vouchers=read_vouchers())
 
 
 @app.post("/manage/difficulty")
@@ -9658,6 +10097,32 @@ def manage_difficulty():
     except (TypeError, ValueError, pymysql.MySQLError):
         flash("Wpisz poprawne liczby godzin (0–720).", "error")
     return redirect(url_for("manage"))
+
+
+@app.post("/manage/drop-bonus")
+@login_required
+def manage_drop_bonus():
+    """MT2009_PLUS_DROP_BONUS_PCT_V1: the difficulty's chance of bonuses on
+    dropped weapons and armour, live through web_admin.quest's DROP_BONUS."""
+    try:
+        pct = int(request.form.get("pct", ""))
+        if not DROP_BONUS_MIN <= pct <= DROP_BONUS_MAX:
+            raise ValueError
+    except (TypeError, ValueError):
+        flash(f"Wpisz procent od {DROP_BONUS_MIN} do {DROP_BONUS_MAX}. Nic nie zmieniono.", "error")
+        return redirect(url_for("manage") + "#trudnosc")
+    try:
+        rows("REPLACE INTO player.quest (dwPID,szName,szState,lValue) VALUES (0,%s,'',%s)", (DROP_BONUS_FLAG, pct))
+        status, queue_id = queue_game_admin_command("DROP_BONUS", pct)
+        if status == "timeout":
+            cancel_pending_admin_command(queue_id)
+    except pymysql.MySQLError:
+        flash("Nie udało się zapisać ustawienia (baza danych).", "error")
+        return redirect(url_for("manage") + "#trudnosc")
+    flash(f"Szansa na bonusy w dropie: {pct}% — działa już w grze, od następnego dropu." if status == "done" else
+          f"Szansa na bonusy w dropie: {pct}% zapisana. Gra nie odpowiedziała — zadziała przy następnym starcie serwera.",
+          "success")
+    return redirect(url_for("manage") + "#trudnosc")
 
 
 @app.post("/manage/autohunt")
@@ -9691,6 +10156,48 @@ def manage_channels():
     except (ValueError, OSError):
         flash("Nie udało się zapisać ustawień kanałów.", "error")
     return redirect(url_for("manage"))
+
+
+def public_channels(effective):
+    """MT2009_PLUS_CH34_AUTO_V1: the channels players can reach now, from
+    channels.effective (the entrypoint writes it at every start): CH1 always,
+    CH2..CH4 in a row while each is on and the published range reaches its
+    last port (BASE+10*(N-1)+2). A server from before CH3/CH4 writes no
+    CH3/CH4 lines (off)."""
+    base = effective.get("BASE", "")
+    if not base.isdigit():
+        match = re.match(r"\s*(\d+)", effective.get("PORTS", ""))
+        base = match.group(1) if match else "13000"
+    base = int(base)
+    last = re.search(r"(\d+)\s*$", effective.get("PORTS", ""))
+    top = int(last.group(1)) if last else base + 2
+    count = 1
+    for number in (2, 3, 4):
+        if effective.get(f"CH{number}") != "1" or top < base + 10 * (number - 1) + 2:
+            break
+        count = number
+    return {"format": "MT2009_PLUS_CH34_AUTO_V1", "channels": count,
+            "ports": [base + 10 * index for index in range(count)]}
+
+
+def public_channels_view():
+    """GET /klient/channels.json (and /klient/dbdata/channels.json, so a gate
+    that forwards only /klient/dbdata/ passes it too), no login. What the
+    game's channel list already shows to everybody: how many channels run
+    and their first ports inside the container (a NAT block publishes them
+    under other numbers - the patcher takes only "channels"). No file yet
+    (the game never started): 503, and the patcher keeps its two channels."""
+    effective = read_key_value_file(CHANNELS_EFFECTIVE_FILE)
+    if not effective:
+        return app.response_class('{"error": "unavailable"}\n', status=503, mimetype="application/json",
+                                  headers={"Cache-Control": "no-store", "Retry-After": "60"})
+    response = jsonify(public_channels(effective))
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+app.add_url_rule("/klient/channels.json", "public_channels_json", public_channels_view, methods=["GET"])
+app.add_url_rule("/klient/dbdata/channels.json", "public_channels_json_dbdata", public_channels_view, methods=["GET"])
 
 
 @app.route("/manage/panel")
@@ -10094,7 +10601,7 @@ def manage_behavior():
     values["CHAT"] = 1 if "1" in request.form.getlist("CHAT") else 0
     values["BOOKS"] = values.get("BOOKS", 1) if "BOOKS" not in request.form else (1 if "1" in request.form.getlist("BOOKS") else 0)
     for key, default in (("NIGHT", 1), ("LIFE", 0), ("WARS", 1), ("TOWER", 1), ("ISHOP", 1), ("SHOP_M2", 0), ("PERSONA", 1),
-                         ("SHOUTERS", 1), ("HAGGLE", 1), ("LEGENDS", 1)):
+                         ("SHOUTERS", 1), ("HAGGLE", 1), ("LEGENDS", 1), ("MATERIAL_MARKET", 0)):
         values[key] = values.get(key, default) if key not in request.form else (1 if "1" in request.form.getlist(key) else 0)
     # MT2009_PLUS_BOTLIFE_V1: the hours of play a day under LIFE.
     try:
@@ -11528,5 +12035,39 @@ import env_editor
 env_editor.install(app, login_required, update_csrf_token, lambda: UPDATE_SPOOL, db_connect=lambda: db())
 
 
+# MT2009_PLUS_MARKET_PREVIEW_V1: "Podgląd rynku" (wersja eksperymentalna) - every
+# offline shop offer of all kingdoms, filters, bargains, teleport to a stall
+# through /api/admin/teleport-me (market_preview/__init__.py).
+import market_preview
+
+market_preview.install(app, {"db": db, "login_required": login_required, "item_icon_url": item_icon_url,
+                             "apply_labels": APPLY_LABELS, "point_to_apply": POINT_TO_APPLY,
+                             "engine_mt2009": ENGINE_MT2009, "read_rates": read_rates, "spool": RATES_SPOOL,
+                             "item_name": resolve_item_display_name})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=7789)
+
+
+# CUSTOM_CLIENT_PACK_DOWNLOADS_V1
+def _register_custom_client_pack_downloads(app):
+    from pathlib import Path
+    from flask import send_file, abort
+    folder = Path('/opt/m2spool/custom-ui-work/downloads')
+    allowed = {'root.index', 'root.data', 'gamedata.index', 'gamedata.data', 'dbdata.index', 'dbdata.data', 'klient-komplet.zip'}
+
+    @app.get('/paczki-klienta')
+    def custom_client_pack_downloads_page():
+        links = ''.join(('<li><a href="/paczki-klienta/' + name + '">' + name + '</a></li>' for name in ('root.index', 'root.data', 'gamedata.index', 'gamedata.data', 'dbdata.index', 'dbdata.data') if (folder / name).is_file()))
+        return '<!doctype html><html lang="pl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paczki klienta</title><style>body{background:#141b27;color:#eeddbb;font:16px Arial;max-width:760px;margin:60px auto;padding:20px}a{color:#edbf67}li{margin:14px 0}</style><h1>Przygotowany zestaw klienta</h1><p>Zamknij grę, zachowaj kopię obecnych plików i pobierz obie części każdej paczki do folderu pack.</p><p><a href="/paczki-klienta/klient-komplet.zip">Pobierz cały zestaw klienta (ZIP)</a></p><ul>' + links + '</ul><p>Kolejne eksporty danych przedmiotów są dostępne również w dotychczasowym generatorze panelu.</p><a href="/">Panel</a></html>'
+
+    @app.get('/paczki-klienta/<filename>')
+    def custom_client_pack_download(filename):
+        if filename not in allowed or not (folder / filename).is_file():
+            abort(404)
+        response = send_file(folder / filename, as_attachment=True, download_name=filename, conditional=True, max_age=0)
+        response.headers['Cache-Control'] = 'no-store'
+        return response
+
+_register_custom_client_pack_downloads(app)

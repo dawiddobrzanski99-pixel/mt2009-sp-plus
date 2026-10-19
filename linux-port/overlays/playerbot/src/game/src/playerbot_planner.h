@@ -228,8 +228,11 @@ namespace
 		// Two thirds of the population takes the Biologist ahead of the level-up
 		// hunt and a third the other way round, so that neither errand ever
 		// empties the maps of the other.
+		// MT2009_PLUS_BOT_BIOLOGIST_EAGER_V1: seven in eight now ("boty duzo
+		// chetniej robia Biologa", the owner, 9 October); the rows' places
+		// (PLAYERBOT_BIOLOGIST_*_TRIP_PER_MILLE) still keep the maps apart.
 		OfferPlayerBotGoal(candidates, rank, count,
-				hasBiologistMission && ch->GetPlayerID() % 3 != 0,
+				hasBiologistMission && ch->GetPlayerID() % 8 != 0,
 				BOT_GOAL_BIOLOGIST, PLAYERBOT_WEIGHT_BIOLOG);
 		OfferPlayerBotGoal(candidates, rank, count, hasHuntingMission,
 				BOT_GOAL_HUNTING, PLAYERBOT_WEIGHT_HUNTING);

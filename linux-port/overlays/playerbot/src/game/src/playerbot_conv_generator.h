@@ -1403,6 +1403,16 @@ namespace playerbot_conv
 		std::string name;
 		long long price = 0;
 		unsigned int count = 0;
+		// MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: an answer to the bot's own "S>"
+		// post is a sale by hand - the price and the place, the bot comes and
+		// trades - even for a piece on its counter (the owner, 9 October).
+		if (const TPublicLine* post = PostOf(g))
+			if (post->kind == PL_SELL)
+			{
+				const std::string deal = OpenSellDeal(g, obj);
+				if (!deal.empty())
+					return deal;
+			}
 		if (g.world && g.world->FindShopItem(obj, name, price, count))
 			return ShopLineAnswer(g, name, price, count);
 		// MT2009_PLUS_BOT_CHAT_V2 (deals): in the bag, not on the counter -
@@ -4052,6 +4062,16 @@ namespace playerbot_conv
 		const bool known = g.world && g.world->QuoteItem(obj, post ? post->vnum : 0, post ? post->skill : 0, q);
 		if (q.needSkill)
 			return AskWhichBook(g, true, q.booksHad);
+		// MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: nothing in the bag, but the
+		// post's piece on its counter: sold by hand at the counter's price.
+		const bool fromStall = known && q.found && q.botHas <= 0 && q.stallHas > 0 && q.stallUnit > 0 &&
+				post && post->kind == PL_SELL;
+		if (fromStall)
+		{
+			q.botHas = q.stallHas;
+			q.sellUnit = q.stallUnit;
+			q.minSellUnit = q.stallUnit * 90 / 100;
+		}
 		if (!known || !q.found || q.botHas <= 0 || q.sellUnit <= 0)
 			return std::string();
 		{

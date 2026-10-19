@@ -108,30 +108,42 @@ namespace
 	// monster that was not there. Now the first bot to find him standing calls
 	// its own guild, and it is that guild's business until there are enough
 	// bodies on him; everybody else goes on hunting.
+	// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4: and through its kingdom - the
+	// call goes out on the kingdom's shout as well (ShoutPlayerBotBossSighting,
+	// playerbot_boss_raid.h, which comes later and words both), and the bots
+	// of the kingdom on the map take it as their guild's.
 	struct TPlayerBotRaidCall
 	{
 		DWORD dwGuild;
 		DWORD dwStamp;
-		TPlayerBotRaidCall() : dwGuild(0), dwStamp(0) {}
+		BYTE bEmpire;
+		TPlayerBotRaidCall() : dwGuild(0), dwStamp(0), bEmpire(0) {}
 	};
 	std::map<WORD, TPlayerBotRaidCall> s_mapPlayerBotRaidCalls;
+
+	bool ShoutPlayerBotBossSighting(LPCHARACTER ch, long lMap, WORD wRace, const char* bossName, DWORD dwNow);
 
 	void NotePlayerBotRaidSighting(LPCHARACTER ch, WORD wRace, const char* bossName,
 			DWORD dwNow)
 	{
-		if (!ch || !ch->GetGuild())
+		if (!ch)
 			return;
 		TPlayerBotRaidCall& call = s_mapPlayerBotRaidCalls[wRace];
 		if (call.dwStamp != 0 && dwNow - call.dwStamp < PLAYERBOT_RAID_CALL_TIME)
 			return;
-		call.dwGuild = ch->GetGuild()->GetID();
+		call.dwGuild = ch->GetGuild() ? ch->GetGuild()->GetID() : 0;
 		call.dwStamp = dwNow;
-		char msg[128];
-		snprintf(msg, sizeof(msg), "%s stoi! Zbieramy sie na niego.",
-				bossName && *bossName ? bossName : "Boss");
-		ch->GetGuild()->Chat(msg);
-		sys_log(0, "PLAYERBOT_RAID: called pid=%u name=%s guild=%u race=%u boss=%s",
-				ch->GetPlayerID(), ch->GetName(), (unsigned int)call.dwGuild,
+		call.bEmpire = ch->GetEmpire();
+		// The guild's chat line is the shout's own (one wording for both).
+		if (!ShoutPlayerBotBossSighting(ch, ch->GetMapIndex(), wRace, bossName, dwNow) && ch->GetGuild())
+		{
+			char msg[128];
+			snprintf(msg, sizeof(msg), "%s stoi! Zbieramy sie na niego.",
+					bossName && *bossName ? bossName : "Boss");
+			ch->GetGuild()->Chat(msg);
+		}
+		sys_log(0, "PLAYERBOT_RAID: called pid=%u name=%s guild=%u empire=%u race=%u boss=%s",
+				ch->GetPlayerID(), ch->GetName(), (unsigned int)call.dwGuild, (unsigned int)call.bEmpire,
 				(unsigned int)wRace, bossName ? bossName : "?");
 	}
 
@@ -162,14 +174,15 @@ namespace
 
 	bool IsPlayerBotRaidCalled(LPCHARACTER ch, WORD wRace, DWORD dwNow)
 	{
-		if (!ch || !ch->GetGuild())
+		if (!ch)
 			return false;
 		std::map<WORD, TPlayerBotRaidCall>::const_iterator it =
 				s_mapPlayerBotRaidCalls.find(wRace);
 		return it != s_mapPlayerBotRaidCalls.end() &&
 				it->second.dwStamp != 0 &&
 				dwNow - it->second.dwStamp < PLAYERBOT_RAID_CALL_TIME &&
-				it->second.dwGuild == ch->GetGuild()->GetID();
+				((ch->GetGuild() && it->second.dwGuild == ch->GetGuild()->GetID()) ||
+					(it->second.bEmpire != 0 && it->second.bEmpire == ch->GetEmpire())); // MT2009_PLUS_BOT_BOSS_CALL_V1
 	}
 
 	// MT2009_PLUS_PROGRESSION_V1: a frontier the operator opened below its

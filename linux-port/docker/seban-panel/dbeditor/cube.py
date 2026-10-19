@@ -328,7 +328,7 @@ def validate(data_or_doc, known_items=None, known_mobs=None):
         for v in r["npcs"]:
             if not NPC_RANGE[0] <= v <= NPC_RANGE[1]:
                 errors.append(f"{where}: NPC {v} – dozwolone {NPC_RANGE[0]}–{NPC_RANGE[1]}.")
-            elif known_mobs is not None and v not in known_mobs:
+            elif known_mobs is not None and v not in known_mobs and not (v in (65000,65001) and 30099 in known_mobs):
                 errors.append(f"{where}: NPC {v} nie istnieje w grze (mob_proto).")
         if len(r["npcs"]) > 1:
             warnings.append(f"{where}: kilku NPC – okno pokaże przepis tylko u pierwszego ({r['npcs'][0]}).")
@@ -533,7 +533,10 @@ def install(bp, ctx):
             text = (Path(spool) / FOLDER / "cube_npcs.txt").read_text(encoding="utf-8")
         except OSError:
             return None
-        return {int(t) for t in text.split() if t.isdigit()}
+        result = {int(t) for t in text.split() if t.isdigit()}
+        if 30099 in result:
+            result.update((65000,65001))
+        return result
 
     def decorate(doc, names):
         out = []
@@ -574,7 +577,7 @@ def install(bp, ctx):
         hidden = sum(1 for r in recipes if r["npc"] not in openers)
         npc_vnums = [v for v in npc_vnums if v in openers] + sorted(v for v in openers if v not in npc_vnums)
         mobs, _ok = mob_names(npc_vnums)
-        npcs = [{"vnum": v, "name": mobs.get(v) or f"NPC {v}", "count": sum(1 for r in recipes if r["npc"] == v),
+        npcs = [{"vnum": v, "name": {65000: "Ukrainka - Alchemia", 65001: "Ukrainka - Zmianki"}.get(v) or mobs.get(v) or f"NPC {v}", "count": sum(1 for r in recipes if r["npc"] == v),
                  "opens": True} for v in npc_vnums]
         try:
             selected = int(request.args.get("npc", ""))

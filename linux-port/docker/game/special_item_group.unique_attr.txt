@@ -1,13 +1,17 @@
 # MT2009_PLUS_UNIQUE_RING_BONUS_V1: the bonuses of the ItemShop rings, the lollipop and the amulets
 # (special_item_group's "special" group 10050 names attr groups 100000-100005 that the package never
 # had, so these items gave nothing). Values as the Metin2 wiki (Przedmioty Specjalne, 4 October 2026);
-# a line is <n><TAB><POINT_* number><TAB><value>: 83 exp, 17 attack speed, 21 casting speed,
+# a line is <n><TAB><POINT_* number><TAB><value>: 127 exp, 17 attack speed, 21 casting speed,
 # 93 attack %, 53 strong vs monsters, 59/60/61/62 defence vs warrior/ninja/sura/shaman, 119/120 max HP/SP %.
+# MT2009_PLUS_NS_SPECIAL_EXP_V1 (Autor: Digi Rasta, nowy-system 0.28.1; server-patches/specialexp): the
+# experience is a fixed +30% / +50% as the wiki says - point 127 (POINT_RAMADAN_CANDY_BONUS_EXP, outside the
+# 100% cap of the MALL bonuses), which the engine now adds up and takes off (char.cpp PointChange) - instead
+# of 83 (POINT_EXP_DOUBLE_BONUS: a 30-50% chance of +30%, on average +9..15%).
 Group	MT2009_ring_sila_woli
 {
 	Vnum	100000
 	type	attr
-	1	83	30
+	1	127	30
 	2	59	20
 	3	60	20
 	4	53	30
@@ -18,7 +22,7 @@ Group	MT2009_ring_smiercionosnej_mocy
 {
 	Vnum	100001
 	type	attr
-	1	83	30
+	1	127	30
 	2	61	20
 	3	62	20
 	4	53	30
@@ -29,7 +33,7 @@ Group	MT2009_medal_bohatera
 {
 	Vnum	100002
 	type	attr
-	1	83	50
+	1	127	50
 	2	17	20
 	3	21	20
 	4	93	30
@@ -40,7 +44,7 @@ Group	MT2009_ring_polksiezyca_lizak
 {
 	Vnum	100003
 	type	attr
-	1	83	50
+	1	127	50
 	2	17	20
 	3	21	20
 	4	93	30
@@ -51,7 +55,7 @@ Group	MT2009_ring_radosci
 {
 	Vnum	100004
 	type	attr
-	1	83	50
+	1	127	50
 	2	53	30
 	3	17	20
 	4	21	20
@@ -62,7 +66,7 @@ Group	MT2009_amulet_wiecznej_milosci
 {
 	Vnum	100005
 	type	attr
-	1	83	30
+	1	127	30
 	2	17	10
 	3	21	10
 	4	53	10

@@ -569,17 +569,51 @@ namespace
 
 	// Walking to (x, y): true there. A walk that stalls is finished by putting
 	// it there, as the companion is put beside its owner.
+	// MT2009_PLUS_SIDEKICK_SHOP_ARRIVE_V1 (the owner, 10 October: "towarzysz
+	// wyslany po mikstury poddaje sie tuz przed sklepikarzem"): the merchant is
+	// walked to the way every bot walks to a counter - to its own place in the
+	// fan in front of it, done from 650 units out (MovePlayerBotTownStand, as
+	// the town visit's merchant phase) - where a leg of 300 units to the fan's
+	// point, which a counter or another body often stands on, went round the
+	// route's rescue until the errand's clock ran out. A walk that stalls
+	// within PLAYERBOT_SIDEKICK_SHOP_NEAR of the place is there (the merchant
+	// serves it from the street), and the put-there is the arrival itself,
+	// not one more leg that may again fall short.
+	const int PLAYERBOT_SIDEKICK_SHOP_NEAR = 1500;
+	const int PLAYERBOT_SIDEKICK_SHOP_MERCHANT_ARRIVAL = 650;
+
 	bool WalkPlayerBotSidekickShop(LPCHARACTER sk, TPlayerBotAIState& state, TPlayerBotSidekickShopErrand& shop,
-			long x, long y, int arrival, DWORD dwNow)
+			long x, long y, int arrival, DWORD dwNow, bool counter = false)
 	{
 		SetPlayerBotAction(state, BOT_ACTION_TRAVEL, dwNow);
-		if (MovePlayerBotTownLeg(sk, state, dwNow, x, y, arrival))
+		if (counter ? MovePlayerBotTownStand(sk, state, dwNow, x, y, arrival)
+				: MovePlayerBotTownLeg(sk, state, dwNow, x, y, arrival))
 			return true;
 		if (dwNow - shop.dwStageSince < PLAYERBOT_SIDEKICK_SHOP_WALK_MS)
 			return false;
 		shop.dwStageSince = dwNow;
-		return PlacePlayerBotSidekickAt(sk, state, sk->GetMapIndex(), x, y, dwNow, "sidekick_shop_walk") &&
-				MovePlayerBotTownLeg(sk, state, dwNow, x, y, arrival);
+		const long away = DISTANCE_APPROX(sk->GetX() - x, sk->GetY() - y);
+		if (away <= PLAYERBOT_SIDEKICK_SHOP_NEAR)
+		{
+			sk->Stop();
+			ClearPlayerBotRoute(state, true);
+			sys_log(0, "PLAYERBOT_SIDEKICK: shop walk stalled near, served from here pid=%u away=%ld",
+					sk->GetPlayerID(), away);
+			return true;
+		}
+		long px = x, py = y;
+		CPlayerBotNavigation& navigation = CPlayerBotNavigation::instance(sk->GetMapIndex());
+		PIXEL_POSITION safe;
+		if (navigation.Init(sk->GetMapIndex()) &&
+				navigation.FindNearestWalkableWorld(x, y, 16, safe, sk->GetPlayerID()))
+		{
+			px = safe.x;
+			py = safe.y;
+		}
+		const bool placed = PlacePlayerBotSidekickAt(sk, state, sk->GetMapIndex(), px, py, dwNow, "sidekick_shop_walk");
+		sys_log(0, "PLAYERBOT_SIDEKICK: shop walk stalled, put there pid=%u away=%ld placed=%d",
+				sk->GetPlayerID(), away, placed ? 1 : 0);
+		return placed;
 	}
 
 	// A stand's answer: the piece in its bag, held for the owner. True when it
@@ -746,6 +780,15 @@ namespace
 		const DWORD elapsed = dwNow >= shop.dwSince ? dwNow - shop.dwSince : 0;
 		if (elapsed >= PLAYERBOT_SIDEKICK_SHOP_MAX_MS)
 		{
+			// MT2009_PLUS_SIDEKICK_SHOP_ARRIVE_V1: still on its way to the
+			// merchant in the merchant's town - it buys rather than come back
+			// with nothing; the merchant asks no walk of a purchase.
+			if (shop.bStage == PLAYERBOT_SIDEKICK_SHOP_TO_MERCHANT && ch->GetMapIndex() == shop.lMap)
+			{
+				BuyPlayerBotSidekickShopAtMerchant(ch, rec, rt);
+				SettlePlayerBotSidekickShopErrand(ch, state, rec, rt, dwNow, shop.szWhy, true);
+				return true;
+			}
 			SettlePlayerBotSidekickShopErrand(ch, state, rec, rt, dwNow, "timeout", true);
 			return true;
 		}
@@ -761,7 +804,8 @@ namespace
 		switch (shop.bStage)
 		{
 			case PLAYERBOT_SIDEKICK_SHOP_TO_MERCHANT:
-				if (!WalkPlayerBotSidekickShop(ch, state, shop, shop.lX, shop.lY, 300, dwNow))
+				if (!WalkPlayerBotSidekickShop(ch, state, shop, shop.lX, shop.lY,
+						PLAYERBOT_SIDEKICK_SHOP_MERCHANT_ARRIVAL, dwNow, true))	// MT2009_PLUS_SIDEKICK_SHOP_ARRIVE_V1
 					return true;
 				SetPlayerBotAction(state, BOT_ACTION_SHOP, dwNow);
 				BuyPlayerBotSidekickShopAtMerchant(ch, rec, rt);

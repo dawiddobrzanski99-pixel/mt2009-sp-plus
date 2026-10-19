@@ -85,7 +85,8 @@ quest konie begin
 			if l > 30 then
 				l = 30
 			end
-			return t[l - 20]
+			local b = t[l - 20]
+			return {0, 0, 0} -- HORSE_TRAINING_ZERO_V7
 		end
 
 		-- Dopasowuje sta³y bonus do poziomu konia: dopisuje ró¿nicê wzglêdem tego, co

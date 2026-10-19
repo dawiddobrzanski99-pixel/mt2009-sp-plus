@@ -546,6 +546,22 @@ namespace
 				affect->lDuration <= PLAYERBOT_SADDLE_BUFF_REFRESH_SECONDS;
 	}
 
+	// MT2009_PLUS_BOT_DOCTRINE_ANY_SEX_V1: the doctrine a bot takes at the
+	// trainer. It was the PID's parity, and the seed hands out the races in
+	// PID order (0,4,1,5,...: even PIDs the races 0-3, odd ones 4-7), so the
+	// parity was the sex - every female Ninja went Blades, every male one
+	// Archery, and so on for each class. A hash of the PID keeps the choice
+	// stable for one bot (the trainer walk, the arrow keep and the choice
+	// agree) and independent of the sex.
+	BYTE GetPlayerBotPlannedSkillGroup(LPCHARACTER ch)
+	{
+		if (!ch)
+			return 1;
+		if (ch->GetSkillGroup() != 0)
+			return ch->GetSkillGroup();
+		return (PlayerBotNavHash(ch->GetPlayerID() ^ 0x444f4354U) % 2U) == 0 ? 1 : 2;
+	}
+
 	bool ChoosePlayerBotSkillGroup(LPCHARACTER ch)
 	{
 		if (!ch || ch->GetLevel() < 5)
@@ -553,7 +569,7 @@ namespace
 		if (ch->GetSkillGroup() != 0)
 			return true;
 
-		const BYTE bGroup = (ch->GetPlayerID() % 2 == 0) ? 1 : 2;
+		const BYTE bGroup = GetPlayerBotPlannedSkillGroup(ch);
 		ch->SetSkillGroup(bGroup);
 		ch->ClearSkill();
 		sys_log(0, "PLAYERBOT_AI: chosen skill group at trainer pid=%u name=%s job=%u group=%u points=%d",

@@ -220,6 +220,13 @@ namespace
 	// playerbot_haggle.h). On by default; off forgets every deal.
 	bool s_bPlayerBotHaggle = true;
 	bool s_bPlayerBotHaggleReported = true;
+	// MT2009_PLUS_MARKET_LIFE_V1, point 7: the material market's test option
+	// (the MATERIAL_MARKET key, or the event flag bot_material_market) - a
+	// material the world lacks comes out of the boxes sooner, and a full
+	// counter sells its cheapest stack of materials or books bit by bit
+	// (playerbot_market_life.h). Off by default.
+	bool s_bPlayerBotMaterialMarket = false;
+	bool s_bPlayerBotMaterialMarketReported = false;
 	// MT2009_PLUS_SHOUTERS_V1: the three shouters of the first villages (the
 	// SHOUTERS key, playerbot_shouters.h). On by default; off logs them out.
 	bool s_bPlayerBotShouters = true;
@@ -325,6 +332,7 @@ namespace
 		s_bPlayerBotLegends = true; // MT2009_PLUS_LEGENDS_V1
 		s_bPlayerBotPersona = true;
 		s_bPlayerBotHaggle = true;
+		s_bPlayerBotMaterialMarket = false;
 		if (s_iPlayerBotChestConfigPermille < 0)
 		{
 			s_iPlayerBotChestConfigPermille = g_iMoonlightChestPermille;
@@ -560,6 +568,17 @@ if (PlayerBotWeightNameEquals(szKey, "ISHOP"))
 				s_bPlayerBotPersonaReported = enabled;
 			}
 			s_bPlayerBotPersona = enabled;
+			return;
+		}
+		if (PlayerBotWeightNameEquals(szKey, "MATERIAL_MARKET"))
+		{
+			const bool enabled = value != 0;
+			if (enabled != s_bPlayerBotMaterialMarketReported)
+			{
+				sys_log(0, "PLAYERBOT_CONFIG: material market test option %s", enabled ? "on" : "off");
+				s_bPlayerBotMaterialMarketReported = enabled;
+			}
+			s_bPlayerBotMaterialMarket = enabled;
 			return;
 		}
 		if (PlayerBotWeightNameEquals(szKey, "HAGGLE"))
@@ -814,6 +833,8 @@ if (PlayerBotWeightNameEquals(szKey, "ISHOP"))
 			return s_bPlayerBotPersona ? 1 : 0;
 		if (PlayerBotWeightNameEquals(szKey, "HAGGLE"))
 			return s_bPlayerBotHaggle ? 1 : 0;
+		if (PlayerBotWeightNameEquals(szKey, "MATERIAL_MARKET"))
+			return s_bPlayerBotMaterialMarket ? 1 : 0;
 		if (PlayerBotWeightNameEquals(szKey, "SHOUTERS"))
 			return s_bPlayerBotShouters ? 1 : 0;
 		// MT2009_PLUS_BOT_CHAT_V2
@@ -1452,6 +1473,16 @@ if (PlayerBotWeightNameEquals(szKey, "ISHOP"))
 		if (!s_bPlayerBotWeightsInitialised)
 			ResetPlayerBotWeights();
 		return s_bPlayerBotHaggle;
+	}
+
+	// MT2009_PLUS_MARKET_LIFE_V1, point 7: the MATERIAL_MARKET switch, or the
+	// event flag bot_material_market (a GM's "/eventflag bot_material_market 1").
+	bool IsPlayerBotMaterialMarketTestOn()
+	{
+		if (!s_bPlayerBotWeightsInitialised)
+			ResetPlayerBotWeights();
+		return s_bPlayerBotMaterialMarket ||
+				quest::CQuestManager::instance().GetEventFlag("bot_material_market") > 0;
 	}
 
 	// MT2009_PLUS_SHOUTERS_V1: the SHOUTERS switch (playerbot_shouters.h).

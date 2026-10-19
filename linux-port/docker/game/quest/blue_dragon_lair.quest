@@ -56,8 +56,8 @@ quest blue_dragon_lair begin
 				limit_min = 60,
 				-- MT2009_PLUS_DUNGEON_FEE_V1: the price of a new expedition (each player, paid on entering it) and
 				-- how many new expeditions a player may start a day (Polish midnight).
-				fee = 7500000, fee_text = "7 500 000", -- MT2009_PLUS_AREZZO_BALANCE_V1: half of 15 000 000 (the owner, 5 October)
-				daily = 5,
+				fee = 15000000, fee_text = "15 000 000", -- Shared fix: entry fee x2.
+				daily = 10,
 				path = "data/dungeon/bluedragon_mt/",
 				stone_back = 0, -- a stone returns this many seconds after the last one fell (0 = never)
 				end_sec = 10, -- the countdown after the dragon (MT2009_PLUS_DUNGEON_BOSS_EXIT_10S_V1; was 180)
@@ -81,8 +81,7 @@ quest blue_dragon_lair begin
 		end
 
 		function over_limit()
-			local c = blue_dragon_lair.cfg()
-			return not pc.is_gm() and blue_dragon_lair.runs_today() >= c.daily
+			return false -- No daily entry limit.
 		end
 
 		function too_poor()
@@ -120,7 +119,7 @@ quest blue_dragon_lair begin
 				pc.setf("blue_dragon_lair", "runs", 0)
 			end
 			pc.setf("blue_dragon_lair", "runs", pc.getf("blue_dragon_lair", "runs") + 1)
-			syschat("Op³ata za wejœcie: "..c.fee_text.." Yang. Dzisiejsza wyprawa "..pc.getf("blue_dragon_lair", "runs").."/"..c.daily..".")
+			syschat("Oplata za wejscie: "..c.fee_text.." Yang. Bez limitu dobowego.")
 			return true
 		end
 
@@ -264,7 +263,7 @@ quest blue_dragon_lair begin
 			say("")
 			say_reward("Wymagany poziom: "..c.min_level..". Bez czekania miêdzy wyprawami.") -- MT2009_PLUS_DUNGEON_NO_PLAYER_COOLDOWN_V1
 			say_reward("Boty z Twojej dru¿yny wejd¹ do lochu razem z Tob¹.")
-			say_reward("Wejœcie: "..c.fee_text.." Yang. Najwy¿ej "..c.daily.." wypraw dziennie (dziœ: "..blue_dragon_lair.runs_today().."/"..c.daily..").") -- MT2009_PLUS_DUNGEON_FEE_V1
+			say_reward("Wejscie: "..c.fee_text.." Yang. Bez limitu wypraw dziennie.")
 			say_reward("P³acisz tylko za siebie - boty z dru¿yny i towarzysz wchodz¹ bez op³aty.") -- MT2009_PLUS_DUNGEON_FEE_LEADER_V1
 			if select("PrzejdŸ do Le¿a Smoka", "Nie teraz") ~= 1 then
 				return

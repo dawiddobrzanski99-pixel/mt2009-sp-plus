@@ -2566,6 +2566,92 @@ namespace
 		return call.called.count(ch->GetPlayerID()) != 0;
 	}
 
+	// MT2009_PLUS_GUILD_WAR_CHANNEL_V1: the bots of a guild at war that play
+	// on another channel. The war is fought on channel 1 only, and a bot of
+	// channel 2 went on with its day there all war long - the owner, 12
+	// October: "boty, jesli obecnie sa na innym kanale, nie zmieniaja go i nie
+	// dolaczaja do wojny". So the war's side is filled up to its twenty from
+	// here: as many as channel 1 lacks of the guild's bots, drawn as the war
+	// draws its sides, change channel; channel 1's war pass calls them there.
+	// Not a bot in a person's party, a person's companion, a shouter, a bot
+	// the Arezzo test holds or one in a dungeon (an instance) - the same as
+	// the war itself leaves alone.
+	struct TPlayerBotWarChannelCall
+	{
+		DWORD dwWarAt = 0;
+		DWORD dwNextDraw = 0;
+		std::set<DWORD> called;
+		std::set<DWORD> sent; // asked for once a war
+	};
+	std::map<DWORD, TPlayerBotWarChannelCall> s_mapPlayerBotWarChannelCalls;
+
+	bool IsPlayerBotFreeForWarChannel(LPCHARACTER c)
+	{
+		if (!c || c->IsDead() || c->GetMapIndex() >= 10000)
+			return false;
+		if (c->GetParty() && IsPlayerBotHumanLedParty(c->GetParty()))
+			return false;
+		if (IsPlayerBotArezzoHeld(c) || IsPlayerBotSidekickPID(c->GetPlayerID()) ||
+				IsPlayerBotShouterPID(c->GetPlayerID()))
+			return false;
+		return true;
+	}
+
+	void ManagePlayerBotWarChannelMove(LPCHARACTER ch, CGuild* mine, DWORD dwNow)
+	{
+		if (g_bChannel == 1 || !mine || !IsPlayerBotGuildWarsEnabled() ||
+				!CPlayerBotManager::instance().IsChannelTableMode())
+			return;
+		const DWORD opp = mine->UnderAnyWar(GUILD_WAR_TYPE_FIELD);
+		CGuild* enemy = opp ? CGuildManager::instance().FindGuild(opp) : NULL;
+		if (!enemy || (!IsPlayerBotGuild(mine) && !IsPlayerBotGuild(enemy)))
+			return;
+		if (!IsPlayerBotFreeForWarChannel(ch))
+			return;
+		TPlayerBotWarChannelCall& call = s_mapPlayerBotWarChannelCalls[mine->GetID()];
+		const DWORD warAt = mine->GetWarStartTime(enemy->GetID());
+		if (call.dwWarAt != warAt || dwNow >= call.dwNextDraw)
+		{
+			if (call.dwWarAt != warAt)
+				call.sent.clear();
+			call.dwWarAt = warAt;
+			call.dwNextDraw = dwNow + PLAYERBOT_GUILD_WAR_SIDE_REDRAW_MS;
+			call.called.clear();
+			// Those sent that are on their way - out of here, not on channel 1
+			// yet - count as there already.
+			int onTheWay = 0;
+			for (std::set<DWORD>::const_iterator s = call.sent.begin(); s != call.sent.end(); ++s)
+			{
+				if (CHARACTER_MANAGER::instance().FindByPID(*s))
+					continue;
+				const CCI* cci = P2P_MANAGER::instance().FindByPID(*s);
+				if (!cci || cci->bChannel != 1)
+					++onTheWay;
+			}
+			const int need = PLAYERBOT_GUILD_WAR_SIDE_MAX - onTheWay -
+					CPlayerBotManager::instance().CountGuildBotsOnChannel(mine, 1);
+			if (need > 0)
+			{
+				std::vector<unsigned int> roster;
+				for (TPlayerBotAIStateMap::const_iterator it = s_mapPlayerBotAIStates.begin();
+						it != s_mapPlayerBotAIStates.end(); ++it)
+				{
+					LPCHARACTER c = CHARACTER_MANAGER::instance().FindByPID(it->first);
+					if (c && c->GetGuild() == mine && IsPlayerBotFreeForWarChannel(c))
+						roster.push_back(it->first);
+				}
+				playerbot_war_rules::CallSide(roster, mine->GetID(), warAt, need);
+				call.called.insert(roster.begin(), roster.end());
+				if (!roster.empty())
+					sys_log(0, "PLAYERBOT_GUILD: war channel guild=%s enemy=%s channel=%u sends=%u need=%d",
+							mine->GetName(), enemy->GetName(), (unsigned int)g_bChannel,
+							(unsigned int)roster.size(), need);
+			}
+		}
+		if (call.called.count(ch->GetPlayerID()) != 0 && call.sent.insert(ch->GetPlayerID()).second)
+			CPlayerBotManager::instance().RequestWarChannel(ch->GetPlayerID());
+	}
+
 	bool ManagePlayerBotGuildWar(LPCHARACTER ch, TPlayerBotAIState& state, DWORD dwNow)
 	{
 		if (!ch || ch->IsDead())
@@ -2575,6 +2661,9 @@ namespace
 		if (!enemy)
 		{
 			LeavePlayerBotGuildWar(ch, state, dwNow);
+			// MT2009_PLUS_GUILD_WAR_CHANNEL_V1: on another channel, to channel 1.
+			if (mine && g_bChannel != 1)
+				ManagePlayerBotWarChannelMove(ch, mine, dwNow);
 			return false;
 		}
 		if (ch->GetParty() && IsPlayerBotHumanLedParty(ch->GetParty()))

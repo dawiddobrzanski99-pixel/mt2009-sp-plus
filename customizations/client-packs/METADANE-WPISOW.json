@@ -1,0 +1,103 @@
+{
+  "packs": {
+    "root": {
+      "index_entries": 1079,
+      "name_groups": 1070,
+      "written_files": 1070
+    },
+    "gamedata": {
+      "index_entries": 128,
+      "name_groups": 128,
+      "written_files": 128
+    },
+    "dbdata": {
+      "index_entries": 35,
+      "name_groups": 35,
+      "written_files": 35
+    }
+  },
+  "duplicates_identical": [
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/expeditions_v4.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/expeditions_v4.tga",
+      "ordinals": [
+        1024,
+        1025
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/expeditions_v5.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/expeditions_v5.tga",
+      "ordinals": [
+        1026,
+        1027
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_entry.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_entry.tga",
+      "ordinals": [
+        1028,
+        1029
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_bonus.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_bonus.tga",
+      "ordinals": [
+        1030,
+        1031
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_results.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_results.tga",
+      "ordinals": [
+        1032,
+        1033
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_actions.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_actions.tga",
+      "ordinals": [
+        1034,
+        1035
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_list_up.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_list_up.tga",
+      "ordinals": [
+        1036,
+        1037
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_list_over.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_list_over.tga",
+      "ordinals": [
+        1038,
+        1039
+      ]
+    },
+    {
+      "pack": "root",
+      "name": "ymir work/ui/game/custom_windows/v5_list_down.tga",
+      "saved": "root/ymir work/ui/game/custom_windows/v5_list_down.tga",
+      "ordinals": [
+        1040,
+        1041
+      ]
+    }
+  ],
+  "conflicts": []
+}

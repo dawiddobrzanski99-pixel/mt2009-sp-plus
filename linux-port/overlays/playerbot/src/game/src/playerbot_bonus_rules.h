@@ -66,6 +66,11 @@ struct TBag
 	bool plainAdd;
 	bool plainChange;
 	bool marble;
+	// MT2009_PLUS_BOT_SMITHY_V1, point 10: the bag holds more of the ordinary
+	// add, or change, stones than the reserve the bot keeps for its own gear
+	// (PLAYERBOT_BONUS_GOODS_STONE_RESERVE) - the surplus goods may take.
+	bool plainAddSurplus;
+	bool plainChangeSurplus;
 };
 
 // The engine's numbers: the add stone stops at four lines (USE_ADD_ATTRIBUTE,
@@ -103,6 +108,12 @@ struct TPiece
 	bool goods;
 	// Its place in the green round: 0 the armour, 1 the weapon, -1 none.
 	int greenRank;
+	// MT2009_PLUS_BOT_L30_AVG_MIX_V2: a level-30 weapon from +6 whose average
+	// is short of the target - worn, or in the bag for sale. Its change stones
+	// are not the goods' surplus, and a change goes on it before its lines are
+	// full: the change rolls the average again whatever the count
+	// (CItem::ChangeAttribute re-applies the damage addon).
+	bool mixAverage;
 };
 
 // What one stone would do to a piece now, and which stone.
@@ -114,10 +125,17 @@ inline TStepChoice StepFor(const TPiece& p, const TBag& bag, const TLimits& limi
 	const TStepChoice none = { STEP_NONE, STONE_NONE };
 	// Whether the ordinary pass would put an ordinary stone on it now, asked
 	// even of the green round: its add is what a green change waits for.
+	// MT2009_PLUS_BOT_SMITHY_V1, point 10: a piece kept for sale takes an
+	// ordinary stone only out of the surplus, and only of a kind no piece the
+	// bot wears can take now (the rest gate, which RestOpen opens by kind once
+	// no category piece can use it): "najpierw bonuja wlasny ekwipunek, a
+	// przedmioty na sprzedaz dostaja tylko nadwyzke" (sosen).
 	const bool plainAdd = p.plain != PLAIN_NONE && bag.plainAdd &&
-			(p.plain == PLAIN_CATEGORY || (restOpen & REST_ADD) != 0);
+			(p.goods ? (bag.plainAddSurplus && (restOpen & REST_ADD) != 0)
+				: (p.plain == PLAIN_CATEGORY || (restOpen & REST_ADD) != 0));
 	const bool plainChange = !greenStonesOnly && p.plain != PLAIN_NONE && bag.plainChange &&
-			(p.plain == PLAIN_CATEGORY || (restOpen & REST_CHANGE) != 0);
+			((p.goods && !p.mixAverage) ? (bag.plainChangeSurplus && (restOpen & REST_CHANGE) != 0)
+				: (p.plain == PLAIN_CATEGORY || (restOpen & REST_CHANGE) != 0));
 
 	// An empty line is free power: add before anything else, a green stone
 	// first where the piece takes one, since it is good for nothing else. The
@@ -144,7 +162,7 @@ inline TStepChoice StepFor(const TPiece& p, const TBag& bag, const TLimits& limi
 	// the full piece.
 	if (p.greenFits && bag.greenChange && p.wantsGreenChange)
 		return TStepChoice{ STEP_CHANGE, STONE_GREEN };
-	if (plainChange && p.wantsPlainChange && p.lines >= limits.plainChangeMinLines)
+	if (plainChange && p.wantsPlainChange && (p.lines >= limits.plainChangeMinLines || p.mixAverage))
 		return TStepChoice{ STEP_CHANGE, STONE_PLAIN };
 	return none;
 }
@@ -211,7 +229,9 @@ inline int Pick(const TPiece* pieces, int count, const TBag& bag, const TLimits&
 			}
 			break;
 		}
-	if (focus >= 0 && focus < count)
+	// MT2009_PLUS_BOT_SMITHY_V1, point 10: a piece kept for sale is never the
+	// focus the stones come back to - the worn gear is asked first every pass.
+	if (focus >= 0 && focus < count && !pieces[focus].goods)
 	{
 		const TStepChoice c = StepFor(pieces[focus], bag, limits, restOpen, false);
 		if (c.step != STEP_NONE)

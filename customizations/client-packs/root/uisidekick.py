@@ -1,0 +1,2220 @@
+# The companion's window ("Towarzysz", playerbot_sidekick.h on the server), on
+# the P key and from the Towarzysz letter: the player's own character window
+# with the companion in it - "tak jak w oryginale nasza glowna postac" (upstream,
+# on Piciu713's and prodnathin's requests of 28 September: "jaki zakres ataku
+# ma moj towarzysz i ile ma obrony ... ile ma punktow inteligencji czy zycia z
+# uwzglednieniem ekwipunku ... wykorzystac taby 'Emocje' i 'Zadania' do
+# przyciskow takich jak 'polecenia'").
+#
+# The window is the stock uiscript of the player's character window
+# (UIScript/CharacterWindow.py, the one uicharacter.py loads) in a window of its
+# own - the board, the pages and the tab strip are the player's, pixel for
+# pixel - with the companion's numbers where the player's stand:
+#
+#   Status        the player's status page: the face and the name (the path
+#                 where the guild stands), level and experience, the four
+#                 stats with the gear counted (the spent points and the gear's
+#                 share over the value), a "+" while it has points - Ctrl +
+#                 click for several, as the player's -, HP and SP, the attack
+#                 range and defence, magic attack and defence, the three speeds
+#                 and evasion. The client works the battle numbers out as it
+#                 does for the player (sidekickskilltip.CharacterNumbers); what
+#                 it cannot know the server sends. The player's "Bonusy" opens
+#                 the companion's bag here, its tooltip lists what it wears.
+#   Umiejetnosci  the player's skill page: the path's six skills on the skill
+#                 board, a column per grade, the points, a "+" where one can go
+#                 and the player's own skill tooltip (sidekickskilltip.py).
+#                 Under it, where the player's support skills stand: who spends
+#                 the points, the chosen skill with "Zeruj" (a right click on a
+#                 skill asks at once), and the server's answers.
+#   Polecenia     the Emotions tab of the player's window: what the companion
+#                 does and where, the orders, the stance, the loot, its bag.
+#   Opcje         the Quests tab: guard, buffs, lure, "Gra beze mnie", chests,
+#                 party, its Dragon Coins, the equipment lock, who spends the
+#                 stat and skill points, and the one free reset of its stats.
+#
+# The tab strip is one picture per pressed tab with the four names painted in
+# (locale/<lang>/ui/windows/tab_1..4.sub), and two of them are the player's
+# ("Emocje", "Zadania"); the client has no other. Each painted name is covered
+# with the stone's own colour and the tab's name written over it, so the strip
+# reads Status / Umiejetn. / Polecenia / Opcje, with the stock picture's
+# pressed tab.
+#
+# The server answers "/towarzysz okno" (and "okno 1" for the whole gear, which
+# the window asks for when it opens) with three commands, each far under the
+# 512 bytes CHARACTER::ChatPacket formats into:
+#
+#   SidekickInfo <protocol> 0                       - no companion
+#   SidekickInfo <protocol> 2                       - companions switched off
+#                                                     in this world (M2_SIDEKICK)
+#   SidekickInfo <protocol> 1 <race> <group> <level> <exp%> <hp> <maxhp> <sp>
+#                <maxsp> <where> <dist> <mode> <stance> <loot> <protect>
+#                <buffs> <gold> <red> <blue> <dead> [<lure> <luring> [<solo> [<chests>
+#                [<lead> <role> <leadership> [<party> [<rank> [<coins> <balance>
+#                [<equipment_lock> [<keep_loot>]]]]]]]]]
+#   SidekickNames <name> <place> <doing>            - hex of the CP1250 bytes
+#   SidekickGear <slot 0-7> <name>                  - hex, only when changed
+#
+# where: 0 not in the game, 1 on the owner's map, 2 elsewhere; mode: 0 at the
+# owner's side, 1 free, 2 waiting, 3 shopping; stance: 0 attacks everything,
+# 1 attacks nobody first, 2 does not fight; loot: 0 nothing, 1 the owner's,
+# 2 everything. The orders are the letter's own commands, so the window adds
+# nothing the server did not already take from the quest: przywolaj, wolny,
+# czekaj, zakupy, stan, walka N, zbieraj N, ochrona N, buffy N, luruj N, sam N,
+# skrzynki N, grupa N, lider N, rola N, monety N, blokada N, ryby, kup <towar> <ile> [tak], odprawa tak. lure (server 2.2.19): the companion wakes packs round
+# the owner and brings them over; luring: 0 no course, 1 out to a pack, 2 back
+# with them. solo (server 2.2.30, "Gra beze mnie"): with its owner out of the
+# game it plays on alone, up to thirty levels over the owner's. chests (server
+# 2.2.31, "Skrzynki"): 1 it opens the chests in its bag, 0 it leaves them closed.
+# lead, role, leadership (server 2.12.0, "Lider grupy"): 1 the companion makes
+# the party and invites its owner; the bonus its Leadership gives the owner
+# (ROLES) and that skill's level. party (server 2.13.0, "Grupa"): 1 it joins
+# its owner's party whoever leads it, while a place stays free after it for
+# one more person; 0 a party somebody else leads only on that leader's
+# invitation. coins (MT2009_PLUS_SIDEKICK_COINS_V1, "Smocze Monety"): 1 it
+# spends the Dragon Coins of its own account in the Item Shop on what it uses,
+# cashing the vouchers in its bag; 0 it keeps both untouched (order: monety N).
+# balance: the coins its account holds as the server last read them, -1
+# before it has. equipment_lock (MT2009_PLUS_SIDEKICK_EQUIP_LOCK_V1,
+# "Zablokuj ekwipunek"): 1 the AI neither refines, reworks, takes off, sells
+# nor throws away what it wears and what its owner gave it; the owner's own
+# hand in the bag window still moves anything (order: blokada N). keep_loot
+# (MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1, "Pelne EQ", on by default): 1 with
+# the owner's bag too full for a drop of the owner's, the companion picks it up
+# into its own bag and holds it for the owner (order: przechowuj N). notify
+# (MT2009_PLUS_SIDEKICK_NOTIFY_MUTE_V1, "Szepty"): which of the companion's
+# own whispers reach the owner - 0 none, 1 important only, 2 all (order:
+# powiadomienia N); its answers to orders always do. share_loot
+# (MT2009_PLUS_SIDEKICK_NO_LOOT_V1, "Drop: dzielony / tylko dla mnie", on the
+# Orders page's Drop bar): 1 a Metin's or a boss's drop is split with the
+# companion as in any party (the default), 0 its share is the owner's and it
+# takes nothing for itself (order: podzial N). An older
+# server sends no such word, and the window shows no row for it.
+# emotions (MT2009_PLUS_SIDEKICK_EMOTIONS_V1, "Emocje: tak / nie" on the Orders
+# page's Walka bar): 1 the companion consents to its owner's emotions for two
+# and sometimes answers them (the default), 0 it is asked like anybody (order:
+# emocje N). An older server sends no such word, and the button stays hidden.
+# ranged (MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1, "Dystans: tak / nie" on the
+# Orders page's Walka bar, "Najpierw dystans"): 1 the archers and casters
+# hitting the owner, the companion or the party go before the owner's target
+# (the stone they came out of) and every other monster (the default), 0 the
+# old order (order: dystans N). An older server sends no such word.
+#
+# The status and skill pages read the answer to "/towarzysz umiejetnosci"
+# (SidekickSkillBegin with the stats, the skills, SidekickSkillEnd), which the
+# window asks for every SKILL_POLL_INTERVAL; uisidekickinventory.py parses it
+# (with the bag's answers, and the answer to every order of the pages,
+# SidekickEqResult), and says so to RefreshSkills. The bag is its own window
+# (uisidekickinventory.py). Every command of the companion's windows leaves
+# through the one queue below, because the server's limit is per character.
+#
+# Python 2.7 as the client has it; the Polish letters are CP1250 escapes.
+# What the server writes into the window - the companion's place, what it is
+# doing, its gear - may name an item or a monster "{i<vnum>}" or "{m<vnum>}",
+# the placeholders of the bots' status line, and the window writes the
+# client's own name in (ExpandNames).
+
+import clientclock
+import net
+import ui
+
+PROTOCOL = 1
+POLL_INTERVAL = 1.5
+# The status and skill pages' numbers come with the skill list.
+SKILL_POLL_INTERVAL = 3.0
+# The server drops a sixth command in half a second (ENABLE_ANTI_CMD_FLOOD)
+# without a word, so a burst of clicks is spaced.
+COMMAND_SPACING = 0.3
+HEX_DIGITS = '0123456789abcdefABCDEF'
+MAX_TEXT_BYTES = 64
+STATUS_SECONDS = 8.0
+
+COLOR_NORMAL = 0xffc2c2c2
+COLOR_BAD = 0xffe57975
+COLOR_HINT = 0xffd8c9a0
+
+JOBS = (('Wojownik', 'Ninja', 'Sura', 'Szaman'))
+PATHS = ((
+	('Cia\xb3o', 'Umys\xb3'),
+	('Skrytob\xf3jca', '\xa3ucznik'),
+	('Bro\xf1', 'Czarna magia'),
+	('Smok', 'Leczenie'),
+))
+MODES = (('przy tobie', 'wolna r\xeaka', 'czeka w miejscu', 'robi zakupy'))
+STANCES = (('Atakuj', 'Nie 1. atak', 'Nie walcz'))
+STANCE_HINTS = (('bije wszystko w pobli\xbfu', 'nie zaczyna, broni ciebie i siebie', 'nie walczy wcale'))
+LOOTS = (('Nic', 'Tw\xf3j drop', 'Wszystko'))
+GEAR_LABELS = (('Bro\xf1', 'Zbroja', 'He\xb3m', 'Tarcza', 'Buty', 'Bransoleta', 'Naszyjnik', 'Kolczyki'))
+YES_NO = (('nie', 'tak'))
+
+# ---------------------------------------------------------------- the pages
+
+SCRIPT = 'UIScript/CharacterWindow.py'
+
+PAGE_STATUS = 'STATUS'
+PAGE_SKILL = 'SKILL'
+PAGE_ORDERS = 'ORDERS'
+PAGE_OPTIONS = 'OPTIONS'
+PAGES = (PAGE_STATUS, PAGE_SKILL, PAGE_ORDERS, PAGE_OPTIONS)
+# The script's tab picture, tab button and title bar of each page, in the
+# order of the strip: the Emotions and the Quests are the orders and options.
+TAB_IMAGES = ('Tab_01', 'Tab_02', 'Tab_03', 'Tab_04')
+TAB_BUTTONS = ('Tab_Button_01', 'Tab_Button_02', 'Tab_Button_03', 'Tab_Button_04')
+TITLE_BARS = ('Character_TitleBar', 'Skill_TitleBar', 'Emoticon_TitleBar', 'Quest_TitleBar')
+PAGE_TITLES = (('Towarzysz', 'Umiej\xeatno\x9cci towarzysza', 'Polecenia', 'Opcje towarzysza'))
+TAB_LABELS = (('Status', 'Umiej\xeatn.', 'Polecenia', 'Opcje'))
+
+# The painted name of a tab, measured on the four pictures: rows 14-26 of the
+# strip, inside the tab's frame. A cover of the stone's colour two pixels in
+# from the button's left and three from its right, rows 13-27, hides it whole,
+# and the tab's own name is written on its middle.
+TAB_COVER_LEFT = 2
+TAB_COVER_TRIM = 5
+TAB_COVER_TOP = 13
+TAB_COVER_HEIGHT = 15
+TAB_LABEL_Y = 20
+TAB_STONE_COLOR = 0xff1c1a18
+TAB_TEXT_COLOR = 0xff969696
+TAB_TEXT_COLOR_ACTIVE = 0xfff7e9c4
+
+# Where the Emotions and Quests pages stand in the script, which the orders and
+# options take: under the title bar, over the tab strip.
+PAGE_X = 0
+PAGE_Y = 24
+PAGE_WIDTH = 250
+PAGE_HEIGHT = 304
+# The script's section bars on those pages, and their titles' colour on the
+# skill page.
+SECTION_X = 12
+SECTION_WIDTH = 223
+SECTION_COLOR = 0xffffe3ad
+LINE_X = 18
+ROW_COLORS = (0x10ffffff, 0x40000000)
+
+BUTTON_IMAGE = 'd:/ymir work/ui/public/%s_button_%02d.sub'
+BUTTON_WIDTHS = {'small': 43, 'middle': 61, 'large': 88, 'xlarge': 180}
+TAB_BUTTON_IMAGE = 'd:/ymir work/ui/game/windows/skill_tab_button_%02d.sub'
+PLUS_IMAGE = 'd:/ymir work/ui/game/windows/btn_plus_%s.sub'
+SLOT_BASE_IMAGE = 'd:/ymir work/ui/public/slot_base.sub'
+# Three middle buttons a row, centred on the page.
+ORDER_COLUMNS = (23, 94, 165)
+
+# The faces of uicharacter.py, by race (playerSettingModule.RACE_*).
+FACE_IMAGES = ('icon/face/warrior_m.tga', 'icon/face/assassin_w.tga', 'icon/face/sura_m.tga',
+	'icon/face/shaman_w.tga', 'icon/face/warrior_w.tga', 'icon/face/assassin_m.tga', 'icon/face/sura_w.tga',
+	'icon/face/shaman_m.tga')
+
+# The status page: the script's name of a stat, and the server's.
+STAT_KEYS = (('HTH', 'ht'), ('INT', 'iq'), ('STR', 'st'), ('DEX', 'dx'))
+STATUS_VALUES = ('Level', 'Exp', 'RestExp', 'HP', 'SP', 'STR', 'DEX', 'HTH', 'INT', 'ATT', 'DEF', 'MATT', 'MDEF',
+	'ASPD', 'MSPD', 'CSPD', 'ER')
+STAT_NAMES = {
+	'ht': 'Witalno\x9c\xe6',
+	'iq': 'Inteligencja',
+	'st': 'Si\xb3a',
+	'dx': 'Zr\xeaczno\x9c\xe6',
+}
+STAT_HINTS = {
+	'ht': 'Podnosi P\xaf i obron\xea.',
+	'iq': 'Podnosi PE i magiczny atak.',
+	'st': 'Podnosi atak.',
+	'dx': 'Podnosi atak i uniki.',
+}
+
+# The skill board: the path's skills in slots 1-8, the Master's column twenty
+# further on and the Grand Master's forty (SKILL_GRADE_STEP_COUNT).
+SKILL_SLOTS = 8
+SKILL_GRADE_STEP = 20
+SKILL_GRADE_COLUMNS = 3
+
+# The options: the SidekickInfo word, the letter's order, what the switch is
+# when the server says nothing, the name and what it does.
+SWITCHES = (
+	('protect', 'ochrona', 1, 'Ochrona',
+		'Gdy masz ma\xb3o \xbfycia, bierze na siebie, co ci\xea bije.'),
+	('buffs', 'buffy', 1, 'Buffy',
+		'Rzuca na ciebie swoje buffy.'),
+	('lure', 'luruj', 0, 'Lurowanie',
+		'\x8cci\xb9ga do ciebie grupy potwor\xf3w z okolicy.'),
+	('solo', 'sam', 0, 'Gra beze mnie',
+		'Gra dalej, gdy wyjdziesz z gry - do twojego poziomu +30.'),
+	('chests', 'skrzynki', 1, 'Skrzynki',
+		'Sam otwiera skrzynie z plecaka. Wy\xb3\xb9czone: zostawia je tobie.'),
+	('party', 'grupa', 1, 'Do\xb3\xb9cza do grupy',
+		'Do\xb3\xb9cza do twojej grupy, tak\xbfe prowadzonej przez kogo\x9c innego.'),
+	# MT2009_PLUS_SIDEKICK_COINS_V1: "Smocze Monety: wydaje / nie wydaje".
+	('coins', 'monety', 1, 'Smocze Monety',
+		'Kupuje za nie w Item Shopie to, czego u\xbfywa (bez fryzur). Nie wydaje: nie rusza ich.'),
+	# MT2009_PLUS_SIDEKICK_EQUIP_LOCK_V1: "Zablokuj ekwipunek".
+	('equipment_lock', 'blokada', 0, 'Zablokuj ekwipunek',
+		'Nie ulepsza, nie zdejmuje ani nie sprzedaje tego, co nosi i dosta\xb3 od ciebie.'),
+	# MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1: "Pelne EQ" - shares the row of
+	# "Skrzynki" (SHARED_ROWS).
+	('keep_loot', 'przechowuj', 1, 'Pe\xb3ne EQ',
+		'Przy twoim pe\xb3nym EQ zbiera tw\xf3j drop i trzyma go dla ciebie.'),
+	# MT2009_PLUS_SIDEKICK_NOTIFY_MUTE_V1: "Szepty" - which of its own whispers
+	# reach you: 0 none, 1 the important ones (default), 2 all. Shares the row
+	# of "Lurowanie" (SHARED_ROWS); the button steps 2 -> 1 -> 0 -> 2.
+	('notify', 'powiadomienia', 1, 'Szepty',
+		'\xafadne: wy\xb3\xb9cza wiadomo\x9cci od Towarzysza. Wa\xbfne: pe\xb3ne EQ, plecak, cenne rzeczy.'),
+)
+# What a switch's button says where "tak" and "nie" would not do, off and on,
+# and the button it needs for that: "nie wydaje" is wider than a small one.
+SWITCH_STATES = {
+	'coins': ('nie wydaje', 'wydaje'),
+	'notify': ('\xbfadne', 'wa\xbfne', 'wszystkie'),
+}
+SWITCH_BUTTONS = {
+	'coins': 'middle',
+	'notify': 'middle',
+}
+# A switch of more than two states: its button steps through them.
+SWITCH_STEPS = {
+	'notify': (2, 1, 0),
+}
+# The coins' row names what the companion's account holds beside its name.
+TEXT_SWITCH_AMOUNT = '%s: %s'
+# "Lider grupy" (server 2.12.0): the companion makes the party and invites its
+# owner, and its Leadership (Dowodzenie) gives the owner the bonus chosen on
+# the same row.
+TEXT_LEAD = 'Lider grupy'
+TEXT_LEAD_HINT = 'Towarzysz zak\xb3ada grup\xea i ci\xea zaprasza.'
+TEXT_LEAD_LEADERSHIP = 'Lider (Dow. %s)'
+TEXT_ROLE_HINT = 'Bonus lidera: %s. Klik: nast\xeapny.'
+TEXT_ROLE_NOT_LEAD = 'Bonus dzia\xb3a, gdy liderem jest Towarzysz.'
+TEXT_ROLE_NEEDS = 'Bonus wymaga Dowodzenia %s - daj mu Ksi\xeag\xea Dowodzenia.'
+SWITCH_TOP = 28
+ROW_STEP = 22
+# The Options page's rows: with the eighth (the Dragon Coins) a step of
+# twenty keeps every line on the page. MT2009_PLUS_SIDEKICK_EQUIP_LOCK_V1:
+# with the ninth (the equipment lock) Guard and Buffs share the first row,
+# half of it each (SHARED_SWITCHES), so the page keeps its height.
+OPTION_STEP = 20
+SHARED_SWITCHES = 2
+# MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1: "Pelne EQ" shares the row of
+# "Skrzynki" the same way, half of it each, so the page keeps its height:
+# a switch named here goes to the right half of the row of the one it names.
+SHARED_ROWS = {'keep_loot': 'chests', 'notify': 'lure'}
+ROW_HEIGHT = 21
+
+TEXT_WAITING = 'Czekam na odpowied\x9f serwera...'
+TEXT_NO_COMPANION = (('Nie masz jeszcze towarzysza.', 'Wybierz go w li\x9ccie "Towarzysz".'))
+TEXT_SWITCHED_OFF = (('Towarzysze s\xb9 wy\xb3\xb9czeni na tym serwerze.', 'W\xb3\xb9cza je w\xb3a\x9cciciel serwera w launcherze.'))
+TEXT_COMING = 'Za chwil\xea b\xeadzie w grze.'
+TEXT_PLUS_LABEL = '|cffbc893adost\xeapne [|r%d|cffbc893a]|r'
+TEXT_STAT_PLUS_CTRL = 'Ctrl + klik: kilka punkt\xf3w naraz'
+TEXT_STAT_SPENT = 'Rozdane: %d'
+TEXT_STAT_GEAR = 'Z ekwipunku: %+d'
+TEXT_STAT_INPUT = '%s: ile punkt\xf3w?'
+TEXT_DEF_TIP = 'Bazowa obrona: %d (+%d%% wzmocnienia)'
+TEXT_BAG_SHORT = 'Plecak'
+TEXT_WEARING = 'Na sobie'
+TEXT_BAG_HINT = 'Klik: plecak towarzysza'
+TEXT_SKILL_POINTS_BAR = 'Punkty rozdaj\xea sam:'
+TEXT_CHOOSE_SKILL = 'Kliknij umiej\xeatno\x9c\xe6 powy\xbfej.'
+TEXT_RIGHT_CLICK_RESET = 'Prawy klik na niej: zeruj.'
+TEXT_SKILL_TIP_RESET = 'Prawy klik: zeruj'
+TEXT_SKILL_LEVEL = 'Poziom: %s'
+TEXT_NO_PATH = 'Towarzysz dostanie \x9ccie\xbfk\xea na 5 poziomie.'
+TEXT_AI_SPENDS = 'Punkty rozdaje SI towarzysza.'
+TEXT_SKILL_RESET = 'Zeruj'
+TEXT_SKILL_RESET_ASK = 'Wyzerowa\xe6 %s?'
+TEXT_SKILL_RESET_MASTER = ' Mistrz przepadnie.'
+TEXT_SKILL_RESET_HOW = 'Towarzysz zu\xbfyje KZ albo Zw\xf3j Powrotu Umiej\xeatno\x9cci.'
+TEXT_SECTION_DOING = 'Co robi'
+TEXT_SECTION_ORDERS = 'Polecenia'
+TEXT_SECTION_COMBAT = 'Walka'
+TEXT_SECTION_LOOT = 'Drop'
+# MT2009_PLUS_SIDEKICK_NO_LOOT_V1: "Drop: dzielony / tylko dla mnie" - a button
+# at the right end of the Drop bar (the Options page has no line left), off
+# and on, and its hint on the page's status line.
+TEXT_SHARE_LOOT_STATES = ('Tylko dla mnie', 'Dzielony')
+TEXT_SHARE_LOOT_HINT = 'Tylko dla mnie: ca\xb3y drop jest tw\xf3j.'
+# MT2009_PLUS_SIDEKICK_EMOTIONS_V1: "Emocje" - a button at the right end of the
+# Walka bar, off and on: on, the companion consents to its owner's emotions for
+# two (a kiss, a slap) without being asked, and sometimes answers them.
+TEXT_EMOTIONS_STATES = ('Emocje: nie', 'Emocje: tak')
+TEXT_EMOTIONS_HINT = 'Emocje we dwoje (poca\xb3unek, klepni\xeacie) bez pytania o zgod\xea.'
+# MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans" - a button on the
+# Walka bar, left of "Emocje" (the Options page has no line left), off and on.
+TEXT_RANGED_STATES = ('Dystans: nie', 'Dystans: tak')
+TEXT_RANGED_HINT = 'Najpierw dystans: \xb3ucznicy i magowie, kt\xf3rzy bij\xb9 ciebie, jego lub grup\xea.'
+TEXT_SECTION_BEHAVIOUR = 'Zachowanie'
+TEXT_SECTION_POINTS = 'Punkty'
+# MT2009_PLUS_SIDEKICK_PANELS_V1: the panels of its costumes and its Alchemy,
+# on the bar of the Options page's first section (uisidekickinventory.py).
+TEXT_COSTUMES = 'Kostiumy'
+TEXT_COSTUMES_HINT = 'Kostium, fryzura, sk\xf3rka broni, wierzchowiec i szarfa towarzysza.'
+TEXT_ALCHEMY = 'Alchemia'
+TEXT_ALCHEMY_HINT = 'Smocze kamienie towarzysza: daj, za\xb3\xf3\xbf, zdejmij, we\x9f.'
+PANEL_BUTTON_Y = 5
+TEXT_DOING = 'Teraz: %s'
+TEXT_DOWN = 'Teraz: le\xbfy, zaraz wstanie'
+TEXT_WHERE = 'Gdzie: %s'
+TEXT_POTIONS = 'Mikstury: %d czerw. / %d nieb.'
+TEXT_GOLD = 'Yang: %s'
+TEXT_MODE = 'Tryb: %s'
+ORDERS = (
+	('Przywo\xb3aj', 'przywolaj'),
+	('Czekaj tu', 'czekaj'),
+	('Wolna r\xeaka', 'wolny'),
+	('Na zakupy', 'zakupy'),
+	# MT2009_PLUS_SIDEKICK_SELL_BUTTON_V1: "Sprzedaj z\xb3om" - the town trip of
+	# "Na zakupy" that only sells the scrap (playerbot_sidekick.h, "sprzedaj");
+	# an older server answers an unknown order.
+	('Sprzedaj z\xb3om', 'sprzedaj'),
+	# "Na ryby": with the Fishing Card it carries, at the water until the
+	# card runs out ("Przywolaj" calls it back sooner).
+	('Na ryby', 'ryby'),
+)
+# MT2009_PLUS_SIDEKICK_SELL_BUTTON_V1: where the orders stand - the first row
+# three middle buttons, the second the errands with the long "Sprzedaj z\xb3om"
+# on a large one between them, both rows inside the section bar (12..235).
+ORDER_LAYOUT = (
+	('middle', 23, 108), ('middle', 94, 108), ('middle', 165, 108),
+	('middle', 12, 132), ('large', 79, 132), ('middle', 174, 132),
+)
+TEXT_REPORT = 'Raport'
+ORDER_REPORT = 'stan'
+TEXT_SELL_HINT = (
+	'Sprzedaj z\xb3om',
+	'Towarzysz idzie do miasta',
+	'i sprzedaje ca\xb3\xb9 bro\xf1 i zbroj\xea',
+	'od +0 do +7 (tak\xbfe z bonusami),',
+	'ryby i zapasowe narz\xeadzia.',
+	'Zostawia +8/+9, rzeczy za\xb3o\xbfone',
+	'i zablokowane. Niczego nie kupuje.',
+)
+TEXT_DISMISS = 'Odpraw'
+# MT2009_PLUS_SIDEKICK_SHOP_ERRAND_V1: "Kup..." sends the companion for one kind
+# of goods (playerbot_sidekick_shop.h): "kup <key> <count>" is answered with
+# "SidekickShopQuote <key> <count> <cost> <market>" - the most the owner pays
+# up front, the rest coming back - and "kup <key> <count> tak" sends it.
+TEXT_SHOP = 'Kup...'
+TEXT_SHOP_TITLE = 'Zakupy towarzysza'
+TEXT_SHOP_COUNT = 'Ile? %s'
+TEXT_SHOP_ASK = '%d x %s'
+TEXT_SHOP_ASK_COST = 'Zap\xb3acisz z g\xf3ry %s%s Yang - reszta wr\xf3ci.'
+TEXT_SHOP_ASK_MAX = 'najwy\xbfej '
+TEXT_SHOP_HINTS = (
+	'Czerwone, niebieskie: Handlarka (cena NPC).',
+	'Strza\xb3y: Handlarz Broni\xb9 (cena NPC).',
+	'Zielone, fioletowe, peleryny: z targu.',
+	'P\xb3acisz ty, reszta yang wraca do ciebie.',
+	'Zakupy w\xb3o\xbfy ci do torby albo do swojej.',
+)
+SHOP_POTIONS = (('Czerwona', 'czerwona'), ('Niebieska', 'niebieska'), ('Zielona', 'zielona'),
+	('Fioletowa', 'fioletowa'))
+SHOP_SIZES = (('M', '1'), ('\x8c', '2'), ('D', '3'))
+SHOP_OTHER = (('Strza\xb3y', 'strzaly'), ('Peleryny', 'peleryna'))
+SHOP_NAMES = {'strzaly': 'Drewniana Strza\xb3a', 'peleryna': 'Peleryna M\xeastwa'}
+for _label, _key in SHOP_POTIONS:
+	for _size, _digit in SHOP_SIZES:
+		SHOP_NAMES[_key + _digit] = '%s Mikstura (%s)' % (_label, _size)
+SHOP_MAX_DIGITS = 4
+TEXT_DISMISS_ASK = 'Odprawi\xe6 towarzysza na dobre? Tego nie da si\xea cofn\xb9\xe6.'
+TEXT_INVENTORY = 'Ekwipunek'
+TEXT_STAT_MANUAL = 'Statystyki rozdaj\xea sam'
+TEXT_SKILL_MANUAL = 'Umiej\xeatno\x9cci rozdaj\xea sam'
+TEXT_STAT_MANUAL_HINT = 'Pierwszy "+" na zak\xb3adce Status te\xbf ci je daje.'
+TEXT_SKILL_MANUAL_HINT = 'Pierwszy "+" na zak\xb3adce Umiej\xeatno\x9cci te\xbf ci je daje.'
+TEXT_STAT_RESET = 'Rozdaj od nowa (raz za darmo)'
+TEXT_STAT_RESET_HINT = 'Cofa wszystkie punkty statystyk - raz, za darmo.'
+TEXT_STAT_RESET_ASK = 'Cofn\xb9\xe6 wszystkie punkty statystyk towarzysza, \xbfeby rozda\xe6 je od nowa? Darmowy reset jest tylko jeden.'
+TEXT_STAT_OLD_SERVER = 'Zaktualizuj serwer, \xbfeby rozdawa\xe6 statystyki.'
+TEXT_STAT_AI_SPENDS = 'Punkty statystyk rozdaje SI towarzysza.'
+
+
+def DecodeText(value, limit=MAX_TEXT_BYTES):
+	"""The server's hex of CP1250 bytes; '' for '-', anything malformed or
+	longer than limit bytes."""
+	if not value or value == '-' or len(value) % 2 or len(value) > limit * 2:
+		return ''
+	chars = []
+	for i in range(0, len(value), 2):
+		pair = value[i:i + 2]
+		if pair[0] not in HEX_DIGITS or pair[1] not in HEX_DIGITS:
+			return ''
+		code = int(pair, 16)
+		chars.append(chr(code) if code >= 32 and code != 127 else '?')
+	return ''.join(chars)
+
+
+def ExpandNames(text):
+	"""Every {i<vnum>} and {m<vnum>} the server wrote replaced by the client's
+	own name for it (playerbot_status_tail.expand_names); the text as it came
+	when that cannot be done."""
+	try:
+		import playerbot_status_tail
+		return playerbot_status_tail.expand_names(text)
+	except Exception:
+		return text
+
+
+def DecodeNamedText(value, limit=MAX_TEXT_BYTES):
+	"""DecodeText, with the names the server left to the client written in."""
+	return ExpandNames(DecodeText(value, limit))
+
+
+def ParseInt(value, default=0):
+	try:
+		return int(value)
+	except (TypeError, ValueError):
+		return default
+
+
+# ---------------------------------------------------------------- the queue
+#
+# One queue for this window and the bag window: an order waits its turn and
+# keeps its place, a poll goes only when nothing waits, and nothing leaves
+# sooner than COMMAND_SPACING after the last. The windows pump it while shown
+# and the keeper while anything waits, so an order given just before a window
+# closed still goes.
+
+_queue = {'pending': [], 'next': 0.0}
+
+
+# MT2009_PLUS_SIDEKICK_WARP_SAFE_V1: nothing leaves outside the game phase
+# (warpsafe.py says why). With both windows open (the bag's 'eq' beside 'okno'
+# and 'umiejetnosci') a poll went out about every half second, so a teleport
+# with the bag open nearly always met the moment the new connection switches
+# its encryption. Orders given meanwhile wait in the queue, and the game
+# window's Close drops them with the windows (Destroy).
+def InGame():
+	import warpsafe
+	return warpsafe.InGame()
+
+
+def _Send(text, now):
+	_queue['next'] = now + COMMAND_SPACING
+	net.SendChatPacket('/towarzysz ' + text)
+
+
+def SendCommand(text):
+	"""An order: at once when the line is free, else after those before it."""
+	now = clientclock.Now()
+	if not _queue['pending'] and now >= _queue['next'] and InGame():
+		_Send(text, now)
+	else:
+		_queue['pending'].append(text)
+
+
+def PumpCommands():
+	"""Sends the next waiting order when its time has come; True when it did."""
+	if not _queue['pending']:
+		return False
+	if not InGame():
+		return False
+	now = clientclock.Now()
+	if now < _queue['next']:
+		return False
+	_Send(_queue['pending'].pop(0), now)
+	return True
+
+
+def TryPoll(text):
+	"""A poll, only when no order waits and the line is free; True when sent."""
+	if _queue['pending']:
+		return False
+	if not InGame():
+		return False
+	now = clientclock.Now()
+	if now < _queue['next']:
+		return False
+	_Send(text, now)
+	return True
+
+
+def HasPendingCommands():
+	return bool(_queue['pending'])
+
+
+def ResetCommands():
+	_queue['pending'] = []
+	_queue['next'] = 0.0
+
+
+def ParseInfo(args):
+	"""SidekickInfo's words after the command, as a dict; None when the
+	protocol is another one or the line is short. 'has' is False with no
+	companion."""
+	if len(args) < 2 or ParseInt(args[0], -1) != PROTOCOL:
+		return None
+	state = ParseInt(args[1])
+	if state == 0:
+		return {'has': False}
+	if state == 2:
+		return {'has': False, 'off': True}
+	names = ('race', 'group', 'level', 'exp', 'hp', 'maxhp', 'sp', 'maxsp', 'where', 'dist',
+			'mode', 'stance', 'loot', 'protect', 'buffs', 'gold', 'red', 'blue', 'dead')
+	values = args[2:]
+	if len(values) < len(names):
+		return None
+	info = {'has': True}
+	for i, name in enumerate(names):
+		info[name] = ParseInt(values[i])
+	# The lure came later: an older server sends no such words, and the window
+	# then shows no switch for it. The same for "Gra beze mnie" after it.
+	if len(values) >= len(names) + 2:
+		info['lure'] = ParseInt(values[len(names)])
+		info['luring'] = ParseInt(values[len(names) + 1])
+	if len(values) >= len(names) + 3:
+		info['solo'] = ParseInt(values[len(names) + 2])
+	if len(values) >= len(names) + 4:
+		info['chests'] = ParseInt(values[len(names) + 3])
+	# "Lider grupy", the owner's bonus and the companion's Leadership
+	# (server 2.12.0).
+	if len(values) >= len(names) + 7:
+		info['lead'] = ParseInt(values[len(names) + 4])
+		info['role'] = ParseInt(values[len(names) + 5])
+		info['leadership'] = ParseInt(values[len(names) + 6])
+	# "Grupa" (server 2.13.0): whether it joins its owner's party whoever
+	# leads it.
+	if len(values) >= len(names) + 8:
+		info['party'] = ParseInt(values[len(names) + 7])
+	# MT2009_PLUS_SIDEKICK_RANK_V1: the rank's points last; with an older
+	# server the name shows no rank.
+	if len(values) >= len(names) + 9:
+		info['align'] = ParseInt(values[len(names) + 8])
+	# MT2009_PLUS_SIDEKICK_COINS_V1: "Smocze Monety" and the account's coins;
+	# an older server sends neither, and the window shows no row for it.
+	if len(values) >= len(names) + 11:
+		info['coins'] = ParseInt(values[len(names) + 9])
+		info['balance'] = ParseInt(values[len(names) + 10], -1)
+	# MT2009_PLUS_SIDEKICK_EQUIP_LOCK_V1: "Zablokuj ekwipunek" after them.
+	if len(values) >= len(names) + 12:
+		info['equipment_lock'] = ParseInt(values[len(names) + 11])
+	# MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1: "Pelne EQ" after it.
+	if len(values) >= len(names) + 13:
+		info['keep_loot'] = ParseInt(values[len(names) + 12])
+	# MT2009_PLUS_SIDEKICK_NOTIFY_MUTE_V1: "Szepty" last (0 none, 1 important, 2 all).
+	if len(values) >= len(names) + 14:
+		info['notify'] = ParseInt(values[len(names) + 13], 1)
+	# MT2009_PLUS_SIDEKICK_NO_LOOT_V1: "Drop" last (1 split, 0 all yours).
+	if len(values) >= len(names) + 15:
+		info['share_loot'] = ParseInt(values[len(names) + 14], 1)
+	# MT2009_PLUS_SIDEKICK_EMOTIONS_V1: "Emocje" last (1 on, the default).
+	if len(values) >= len(names) + 16:
+		info['emotions'] = ParseInt(values[len(names) + 15], 1)
+	# MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans" last (1 on, the default).
+	if len(values) >= len(names) + 17:
+		info['ranged'] = ParseInt(values[len(names) + 16], 1)
+	return info
+
+
+# The owner's bonus from the companion's Leadership, as the party window
+# names the roles (localeInfo.PARTY_SET_*), with the level each wants
+# (CParty::Update) and the short name its button shows. The button steps
+# through them in this order.
+ROLES = (
+	(0, 'bez bonusu', 0, 'brak'),
+	(7, 'Obro\xf1ca (obrona)', 1, 'Obro\xf1ca'),
+	(2, 'Atakuj\xb9cy (atak)', 10, 'Atak'),
+	(4, 'Blokuj\xb9cy (czas trwania)', 10, 'Blok'),
+	(6, 'Berserker (szybko\x9c\xe6 ataku)', 15, 'Berserker'),
+	(3, 'Walcz\xb9cy w zwarciu (maks. P\xaf)', 20, 'Zwarcie'),
+	(5, 'Mistrz umiej\xeatno\x9cci', 20, 'Mistrz'),
+)
+
+
+def LeadershipText(level):
+	"""0-40 as the skill window writes it: 1-19, M1-M10, G1-G10, P."""
+	if level < 20:
+		return str(level)
+	if level < 30:
+		return 'M%d' % (level - 19)
+	if level < 40:
+		return 'G%d' % (level - 29)
+	return 'P'
+
+
+def RoleOf(info):
+	role = [r for r in ROLES if r[0] == info.get('role', 0)]
+	return role[0] if role else ROLES[0]
+
+
+def FormatGold(value):
+	"""1234567 -> '1.234.567', as the client writes yang."""
+	text = str(max(0, value))
+	parts = []
+	while len(text) > 3:
+		parts.insert(0, text[-3:])
+		text = text[:-3]
+	parts.insert(0, text)
+	return '.'.join(parts)
+
+
+# MT2009_PLUS_SIDEKICK_RANK_V1: the rank's grade from its points (the
+# alignment over ten, as the character packet carries them), as the client's
+# CInstanceBase::GetAlignmentGrade reads them, and the colorInfo name of each
+# grade's colour, as the player's own window paints its title
+# (uicharacter.RefreshAlignment).
+ALIGNMENT_GRADE_COLORS = ('TITLE_RGB_GOOD_4', 'TITLE_RGB_GOOD_3', 'TITLE_RGB_GOOD_2', 'TITLE_RGB_GOOD_1',
+	'TITLE_RGB_NORMAL', 'TITLE_RGB_EVIL_1', 'TITLE_RGB_EVIL_2', 'TITLE_RGB_EVIL_3', 'TITLE_RGB_EVIL_4')
+
+
+def AlignmentGrade(point):
+	for floor, grade in ((12000, 0), (8000, 1), (4000, 2), (1000, 3), (0, 4)):
+		if point >= floor:
+			return grade
+	for ceiling, grade in ((-4000, 5), (-8000, 6), (-12000, 7)):
+		if point > ceiling:
+			return grade
+	return 8
+
+
+def ClassText(race, group):
+	if race < 0:
+		return ''
+	job = race % 4
+	text = JOBS[job]
+	if group in (1, 2):
+		text += ' (%s)' % PATHS[job][group - 1]
+	return text
+
+
+def PathText(race, group):
+	"""What stands where the player's guild does: the path, or the class
+	before level five gives one."""
+	if race < 0:
+		return ''
+	job = race % 4
+	if group in (1, 2):
+		return PATHS[job][group - 1]
+	return JOBS[job]
+
+
+def FaceImage(race):
+	if 0 <= race < len(FACE_IMAGES):
+		return FACE_IMAGES[race]
+	return ''
+
+
+def PlaceText(info, place):
+	where = info.get('where', 0)
+	if where == 0:
+		return 'poza gr\xb9'
+	if where == 2:
+		return '%s (inna mapa)' % (place or 'inna mapa')
+	dist = info.get('dist', 0)
+	if dist < 1000:
+		near = 'obok ciebie'
+	else:
+		near = '%d m od ciebie' % (dist // 100)
+	return '%s, %s' % (place, near) if place else near
+
+
+def YesNo(value):
+	return YES_NO[1 if value else 0]
+
+
+def RangeText(low, high):
+	"""'min-max' as the character window writes a range, one number when the
+	two are one."""
+	if low == high:
+		return '%d' % low
+	return '%d-%d' % (low, high)
+
+
+def DefenceText(defence, boost):
+	"""The character window's defence: the boost in green after it."""
+	if boost > 0:
+		return '%d |cffd5eb4b(+%d)|r' % (defence, boost)
+	return '%d' % defence
+
+
+# ---------------------------------------------------------------- texts on lines
+
+def TextWidth(line, text):
+	line.SetText(text)
+	try:
+		return line.GetTextSize()[0]
+	except Exception:
+		return 0
+
+
+def FitText(line, text, maxWidth):
+	"""Sets text, cut with '...' until the line is no wider than maxWidth;
+	returns what is shown."""
+	if TextWidth(line, text) <= maxWidth:
+		return text
+	cut = text
+	while cut and TextWidth(line, cut + '...') > maxWidth:
+		cut = cut[:-1].rstrip()
+	return cut + '...'
+
+
+def WrapText(lines, text, maxWidth):
+	"""Lays text out over the lines word by word, the last one cut with '...'
+	when it must be; True when all of it is shown. The server's texts run to
+	some eighty characters, two lines of these windows."""
+	words = text.split()
+	for i, line in enumerate(lines):
+		if i == len(lines) - 1:
+			rest = ' '.join(words)
+			return FitText(line, rest, maxWidth) == rest
+		taken = []
+		while words and TextWidth(line, ' '.join(taken + words[:1])) <= maxWidth:
+			taken.append(words.pop(0))
+		if not taken and words:
+			# One word wider than the line: cut there, nothing after it.
+			FitText(line, ' '.join(words), maxWidth)
+			for other in lines[i + 1:]:
+				other.SetText('')
+			return False
+		line.SetText(' '.join(taken))
+	return not words
+
+
+class StatusLines(object):
+	"""A page's lines under its content: a server's answer for its seconds, a
+	switch's hint while the mouse is over it, and else the page's own word.
+	What does not fit is cut, and a server's text cut short goes to the chat
+	whole, so nothing it said is lost."""
+
+	def __init__(self, lines, width):
+		self.lines = lines
+		self.width = width
+		self.until = 0.0
+		self.answer = ('', COLOR_NORMAL)
+		self.idle = ('', COLOR_NORMAL)
+		self.hovering = False
+
+	def _Write(self, text, color):
+		for line in self.lines:
+			line.SetPackedFontColor(color)
+		return WrapText(self.lines, text, self.width)
+
+	def Set(self, text, color=COLOR_NORMAL, seconds=STATUS_SECONDS):
+		self.answer = (text, color)
+		self.until = clientclock.Now() + seconds
+		self.hovering = False
+		if not self._Write(text, color):
+			import chat
+			chat.AppendChat(chat.CHAT_TYPE_INFO, text)
+
+	def SetIdle(self, text, color=COLOR_NORMAL):
+		self.idle = (text, color)
+		if not self.until and not self.hovering:
+			self._Write(text, color)
+
+	def Hover(self, text):
+		self.hovering = True
+		self._Write(text, COLOR_HINT)
+
+	def EndHover(self):
+		self.hovering = False
+		self._Show()
+
+	def _Show(self):
+		self._Write(*(self.answer if self.until else self.idle))
+
+	def Update(self):
+		if self.until and clientclock.Now() >= self.until:
+			self.until = 0.0
+			if not self.hovering:
+				self._Show()
+
+	def Clear(self):
+		self.until = 0.0
+		self.hovering = False
+		self._Show()
+
+	def Text(self):
+		return ' '.join(line.GetText() for line in self.lines if line.GetText())
+
+
+class _Call(object):
+	"""A method with its arguments bound, for a stock hook that calls with
+	none - a button's ShowToolTip. The method is a ui.__mem_func__, which
+	holds the window by a weak proxy, so the button keeps no cycle through
+	it."""
+
+	def __init__(self, func, *args):
+		self.func = func
+		self.args = args
+
+	def __call__(self, *ignored):
+		return self.func(*self.args)
+
+
+def _Inv():
+	# uisidekickinventory imports this module at its top; importing it back
+	# here would make the two a cycle neither could load first.
+	import uisidekickinventory
+	return uisidekickinventory
+
+
+def _TitleText(titleBar):
+	"""The text line of a title bar of the script: all four are "TitleName",
+	so the dictionary keeps only the last - it is the bar's child."""
+	for child in getattr(titleBar, 'Children', ()):
+		if isinstance(child, ui.TextLine):
+			return child
+	return None
+
+
+# ---------------------------------------------------------------- the window
+
+class SidekickWindow(ui.ScriptWindow):
+	"""The player's character window with the companion in it."""
+
+	def __init__(self):
+		ui.ScriptWindow.__init__(self)
+		self.widgets = []
+		self.info = None
+		self.names = ('', '', '')
+		self.gear = [''] * len(GEAR_LABELS)
+		self.page = PAGE_STATUS
+		self.nextPoll = 0.0
+		self.nextSkillPoll = 0.0
+		self.question = None
+		self.statDialog = None
+		self.shopBoard = None
+		self.shopDialog = None
+		self.shopDialogKey = ''
+		self.shopQuote = None
+		self.statDialogKey = ''
+		self.resetVnum = 0
+		self.chosenSkill = 0
+		self.skillRows = []
+		self.toolTip = None
+		self.skillToolTip = None
+		self.faceShown = ''
+		self.Build()
+		self.SetPage(PAGE_STATUS)
+
+	# -------------------------------------------------------------- building
+
+	def Build(self):
+		ui.PythonScriptLoader().LoadScriptFile(self, SCRIPT)
+		child = self.GetChild
+		self.board = child('board')
+		self.tabImages = dict(zip(PAGES, [child(name) for name in TAB_IMAGES]))
+		self.tabButtons = dict(zip(PAGES, [child(name) for name in TAB_BUTTONS]))
+		self.titleBars = dict(zip(PAGES, [child(name) for name in TITLE_BARS]))
+		for page, title in zip(PAGES, PAGE_TITLES):
+			bar = self.titleBars[page]
+			bar.SetCloseEvent(ui.__mem_func__(self.Close))
+			text = _TitleText(bar)
+			if text:
+				text.SetText(title)
+		for page in PAGES:
+			self.tabButtons[page].SAFE_SetEvent(self.SetPage, page)
+		# The Emotions and the Quests are the player's: their pages stay shut
+		# and the orders and options have pages of their own in their place.
+		child('Emoticon_Page').Hide()
+		child('Quest_Page').Hide()
+		self.pages = {
+			PAGE_STATUS: child('Character_Page'),
+			PAGE_SKILL: child('Skill_Page'),
+			PAGE_ORDERS: self._Page(),
+			PAGE_OPTIONS: self._Page(),
+		}
+		self._BuildTabLabels()
+		self._BuildStatusPage()
+		self._BuildSkillPage()
+		self._BuildOrdersPage()
+		self._BuildOptionsPage()
+		self.noticeLines = []
+		for i in range(2):
+			line = self._Label(self.board, self.board.GetWidth() // 2, 150 + i * 16, '')
+			line.SetHorizontalAlignCenter()
+			self.noticeLines.append(line)
+
+	def _Page(self):
+		page = ui.Window()
+		page.SetParent(self.board)
+		page.SetPosition(PAGE_X, PAGE_Y)
+		page.SetSize(PAGE_WIDTH, PAGE_HEIGHT)
+		# Dragged by, as the script's pages are.
+		page.AddFlag('attach')
+		page.Hide()
+		self.widgets.append(page)
+		return page
+
+	def _Label(self, parent, x, y, text):
+		line = ui.TextLine()
+		line.SetParent(parent)
+		line.SetPosition(x, y)
+		line.SetText(text)
+		line.Show()
+		self.widgets.append(line)
+		return line
+
+	def _CenteredLabel(self, parent, y):
+		line = self._Label(parent, PAGE_WIDTH // 2, y, '')
+		line.SetHorizontalAlignCenter()
+		return line
+
+	def _Btn(self, parent, size, x, y, text, event, *args):
+		button = ui.Button()
+		button.SetParent(parent)
+		button.SetPosition(x, y)
+		button.SetUpVisual(BUTTON_IMAGE % (size, 1))
+		button.SetOverVisual(BUTTON_IMAGE % (size, 2))
+		button.SetDownVisual(BUTTON_IMAGE % (size, 3))
+		button.SetText(text)
+		button.SAFE_SetEvent(event, *args)
+		button.Show()
+		self.widgets.append(button)
+		return button
+
+	def _Section(self, parent, y, text):
+		"""A section of a page as the script's pages have one: its bar and the
+		title on it."""
+		bar = ui.HorizontalBar()
+		bar.SetParent(parent)
+		bar.Create(SECTION_WIDTH)
+		bar.SetPosition(SECTION_X, y)
+		bar.Show()
+		self.widgets.append(bar)
+		title = self._Label(parent, SECTION_X + 6, y + 2, text)
+		title.SetPackedFontColor(SECTION_COLOR)
+		return bar
+
+	def _Hover(self, button, text):
+		"""The page's hint while the mouse is over a button: the stock tooltip is
+		a child line over the button, which on these crowded pages the rows
+		after it would draw over."""
+		button.ShowToolTip = _Call(ui.__mem_func__(self.OnHover), text)
+		button.HideToolTip = ui.__mem_func__(self.OnHoverOut)
+
+	def _BuildTabLabels(self):
+		strip = self.GetChild('TabControl')
+		self.tabLabels = {}
+		for page, text in zip(PAGES, TAB_LABELS):
+			button = self.tabButtons[page]
+			(x, y) = button.GetLocalPosition()
+			width = button.GetWidth()
+			cover = ui.Bar()
+			cover.SetParent(strip)
+			cover.AddFlag('not_pick')
+			cover.SetPosition(x + TAB_COVER_LEFT, TAB_COVER_TOP)
+			cover.SetSize(width - TAB_COVER_TRIM, TAB_COVER_HEIGHT)
+			cover.SetColor(TAB_STONE_COLOR)
+			cover.Show()
+			self.widgets.append(cover)
+			label = self._Label(strip, x + width // 2, TAB_LABEL_Y, text)
+			label.SetHorizontalAlignCenter()
+			label.SetVerticalAlignCenter()
+			self.tabLabels[page] = label
+
+	def _BuildStatusPage(self):
+		child = self.GetChild
+		page = self.pages[PAGE_STATUS]
+		# Everything of the page but its title bar, which stays when there is
+		# nothing to show under it.
+		self.statusContent = [widget for widget in getattr(page, 'Children', ())
+			if hasattr(widget, 'Show') and widget is not self.titleBars[PAGE_STATUS]]
+		self.faceImage = child('Face_Image')
+		face = child('Face_Slot')
+		face.SAFE_SetStringEvent('MOUSE_OVER_IN', self.OnOverFace)
+		face.SAFE_SetStringEvent('MOUSE_OVER_OUT', self.HideToolTip)
+		self.nameValue = child('Character_Name')
+		# MT2009_PLUS_SIDEKICK_RANK_V1: the rank on the name, as the player's
+		# window shows the player's.
+		nameSlot = child('Character_Name_Slot')
+		nameSlot.SAFE_SetStringEvent('MOUSE_OVER_IN', self.OnOverName)
+		nameSlot.SAFE_SetStringEvent('MOUSE_OVER_OUT', self.HideToolTip)
+		self.pathValue = child('Guild_Name')
+		self.values = dict((name, child(name + '_Value')) for name in STATUS_VALUES)
+		self.statusPlusLabel = child('Status_Plus_Label')
+		self.statPlusButtons = {}
+		for name, key in STAT_KEYS:
+			plus = child(name + '_Plus')
+			plus.SAFE_SetEvent(self.OnStatPlus, key)
+			plus.ShowToolTip = _Call(ui.__mem_func__(self.OnOverStatPlus), key)
+			plus.HideToolTip = ui.__mem_func__(self.HideToolTip)
+			self.statPlusButtons[key] = plus
+			# The stock takes a point back with these for a stat reset item;
+			# the companion has its one free reset in the options.
+			child(name + '_Minus').Hide()
+			slot = child(name + '_Slot')
+			slot.SAFE_SetStringEvent('MOUSE_OVER_IN', self.OnOverStatValue, key)
+			slot.SAFE_SetStringEvent('MOUSE_OVER_OUT', self.HideToolTip)
+		defence = child('DEF_Slot')
+		defence.SAFE_SetStringEvent('MOUSE_OVER_IN', self.OnOverDefence)
+		defence.SAFE_SetStringEvent('MOUSE_OVER_OUT', self.HideToolTip)
+		# The player's "Bonusy" beside "Atrybuty" is the companion's bag.
+		self.bagButton = child('AttributeListButton')
+		self.bagButton.SetText(TEXT_BAG_SHORT)
+		self.bagButton.SAFE_SetEvent(self.OnInventory)
+		self.bagButton.ShowToolTip = ui.__mem_func__(self.OnOverBag)
+		self.bagButton.HideToolTip = ui.__mem_func__(self.HideToolTip)
+
+	def _BuildSkillPage(self):
+		import wndMgr
+		child = self.GetChild
+		page = self.pages[PAGE_SKILL]
+		# The path is the companion's for good, and the horse's skills and the
+		# support skills the server does not send.
+		for name in ('Skill_Group_Button_1', 'Skill_Group_Button_2', 'Skill_ETC_Slot', 'Support_Skill_Point_Label',
+				'SprintOnboardingTint'):
+			child(name).Hide()
+		self.skillPathName = child('Active_Skill_Group_Name')
+		self.skillPathName.Show()
+		self.skillPointValue = child('Active_Skill_Point_Value')
+		slots = child('Skill_Active_Slot')
+		slots.SetSlotStyle(wndMgr.SLOT_STYLE_NONE)
+		slots.SetSelectItemSlotEvent(ui.__mem_func__(self.OnSelectSkill))
+		slots.SetUseSlotEvent(ui.__mem_func__(self.OnSelectSkill))
+		slots.SetUnselectItemSlotEvent(ui.__mem_func__(self.OnRightClickSkill))
+		slots.SetOverInItemEvent(ui.__mem_func__(self.OnOverInSkill))
+		slots.SetOverOutItemEvent(ui.__mem_func__(self.HideSkillToolTip))
+		slots.SetPressedSlotButtonEvent(ui.__mem_func__(self.OnSkillPlus))
+		slots.AppendSlotButton(PLUS_IMAGE % 'up', PLUS_IMAGE % 'over', PLUS_IMAGE % 'down')
+		self.skillSlots = slots
+		# The support skills' bar: who spends the points, with a switch of the
+		# same picture as the path buttons on the bar above.
+		bar = child('Skill_ETC_Title_Bar')
+		child('Support_Skill_Group_Name').SetText(TEXT_SKILL_POINTS_BAR)
+		manual = ui.Button()
+		manual.SetParent(bar)
+		manual.SetPosition(SECTION_WIDTH - 43 - 4, 1)
+		manual.SetUpVisual(TAB_BUTTON_IMAGE % 1)
+		manual.SetOverVisual(TAB_BUTTON_IMAGE % 2)
+		manual.SetDownVisual(TAB_BUTTON_IMAGE % 3)
+		manual.SetText('')
+		manual.SAFE_SetEvent(self.OnSkillManual)
+		manual.Show()
+		self.widgets.append(manual)
+		self.skillManualButton = manual
+		# The chosen skill where the support skills' slots stood.
+		chosen = ui.SlotWindow()
+		chosen.SetParent(page)
+		chosen.SetPosition(18, 221)
+		chosen.SetSize(32, 32)
+		chosen.AppendSlot(0, 0, 0, 32, 32)
+		chosen.SetSlotBaseImage(SLOT_BASE_IMAGE, 1.0, 1.0, 1.0, 1.0)
+		chosen.Show()
+		self.widgets.append(chosen)
+		self.chosenSlot = chosen
+		self.chosenName = self._Label(page, 58, 222, '')
+		self.chosenLevel = self._Label(page, 58, 237, '')
+		self.resetButton = self._Btn(page, 'small', PAGE_WIDTH - 12 - BUTTON_WIDTHS['small'], 227, TEXT_SKILL_RESET,
+			self.OnResetChosenSkill)
+		self.skillStatus = StatusLines([self._CenteredLabel(page, 262), self._CenteredLabel(page, 276)],
+			PAGE_WIDTH - 20)
+
+	def _BuildOrdersPage(self):
+		page = self.pages[PAGE_ORDERS]
+		self._Section(page, 8, TEXT_SECTION_DOING)
+		self.doingLine = self._Label(page, LINE_X, 28, '')
+		self.placeLine = self._Label(page, LINE_X, 42, '')
+		self.potionLine = self._Label(page, LINE_X, 56, '')
+		self.goldLine = self._Label(page, LINE_X, 70, '')
+		self._Section(page, 88, TEXT_SECTION_ORDERS)
+		self.orderButtons = []
+		for (text, order), (size, x, y) in zip(ORDERS, ORDER_LAYOUT):
+			self.orderButtons.append(self._Btn(page, size, x, y, text, self.OnOrder, order))
+		(self.summonButton, self.holdButton, self.freeButton) = self.orderButtons[:3]
+		self.sellButton = self.orderButtons[4]
+		self.sellButton.ShowToolTip = _Call(ui.__mem_func__(self.ShowToolTipLines), TEXT_SELL_HINT)
+		self.sellButton.HideToolTip = ui.__mem_func__(self.HideToolTip)
+		self._Section(page, 158, TEXT_SECTION_COMBAT)
+		# MT2009_PLUS_SIDEKICK_EMOTIONS_V1: "Emocje: tak / nie" on the bar.
+		self.emotionsButton = self._Btn(page, 'large', SECTION_X + SECTION_WIDTH - BUTTON_WIDTHS['large'] - 2,
+			158 - 3, '', self.OnEmotions)
+		self._Hover(self.emotionsButton, TEXT_EMOTIONS_HINT)
+		self.emotionsButton.Hide()
+		# MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Dystans: tak / nie" beside it.
+		self.rangedButton = self._Btn(page, 'large', SECTION_X + SECTION_WIDTH - 2 * BUTTON_WIDTHS['large'] - 4,
+			158 - 3, '', self.OnRanged)
+		self._Hover(self.rangedButton, TEXT_RANGED_HINT)
+		self.rangedButton.Hide()
+		self.stanceButtons = []
+		for i, text in enumerate(STANCES):
+			self.stanceButtons.append(self._Btn(page, 'middle', ORDER_COLUMNS[i], 178, text, self.OnStance, i))
+		self.stanceHint = self._CenteredLabel(page, 202)
+		self._Section(page, 219, TEXT_SECTION_LOOT)
+		# MT2009_PLUS_SIDEKICK_NO_LOOT_V1: "Dzielony / Tylko dla mnie" on the bar.
+		self.shareLootButton = self._Btn(page, 'large', SECTION_X + SECTION_WIDTH - BUTTON_WIDTHS['large'] - 2,
+			219 - 3, '', self.OnShareLoot)
+		self._Hover(self.shareLootButton, TEXT_SHARE_LOOT_HINT)
+		self.shareLootButton.Hide()
+		self.lootButtons = []
+		for i, text in enumerate(LOOTS):
+			self.lootButtons.append(self._Btn(page, 'middle', ORDER_COLUMNS[i], 239, text, self.OnLoot, i))
+		# Six orders fill both rows: the bag, "Kup...", "Raport" and "Odpraw"
+		# stand under them (MT2009_PLUS_SIDEKICK_SHOP_ERRAND_V1; "Raport" moved
+		# here for "Sprzedaj z\xb3om", MT2009_PLUS_SIDEKICK_SELL_BUTTON_V1), the
+		# row as wide as the section bar: 61 + 43 + 43 + 61 and 5 between.
+		self.inventoryButton = self._Btn(page, 'middle', 12, 266, TEXT_INVENTORY, self.OnInventory)
+		self.shopButton = self._Btn(page, 'small', 78, 266, TEXT_SHOP, self.OnShop)
+		self.reportButton = self._Btn(page, 'small', 126, 266, TEXT_REPORT, self.OnOrder, ORDER_REPORT)
+		self.dismissButton = self._Btn(page, 'middle', 174, 266, TEXT_DISMISS, self.OnDismiss)
+		self.inventoryButton.ShowToolTip = ui.__mem_func__(self.OnOverBag)
+		self.inventoryButton.HideToolTip = ui.__mem_func__(self.HideToolTip)
+		self.ordersStatus = StatusLines([self._CenteredLabel(page, 291)], PAGE_WIDTH - 20)
+
+	def _Row(self, page, y, index, text):
+		bar = ui.Bar()
+		bar.SetParent(page)
+		bar.SetPosition(SECTION_X, y)
+		bar.SetSize(SECTION_WIDTH, ROW_HEIGHT - 1)
+		bar.SetColor(ROW_COLORS[index % 2])
+		bar.AddFlag('attach')
+		bar.Show()
+		self.widgets.append(bar)
+		label = self._Label(page, LINE_X + 2, y + 3, text)
+		return bar, label
+
+	def _Switch(self, page, y, index, text, hint, event, *args):
+		"""A row of the options: the name, and a button that says what the
+		switch is set to (created last, so its row's bar is under it)."""
+		bar, label = self._Row(page, y, index, text)
+		size = SWITCH_BUTTONS.get(args[0], 'small') if args and isinstance(args[0], str) else 'small'
+		button = self._Btn(page, size, SECTION_X + SECTION_WIDTH - BUTTON_WIDTHS[size] - 2, y - 1, '',
+			event, *args)
+		self._Hover(button, hint)
+		return (bar, label, button)
+
+	def _BuildOptionsPage(self):
+		page = self.pages[PAGE_OPTIONS]
+		self._Section(page, 8, TEXT_SECTION_BEHAVIOUR)
+		# MT2009_PLUS_SIDEKICK_PANELS_V1: the costumes and the Alchemy, at the
+		# right end of the section's bar - the page has no line left for them.
+		right = SECTION_X + SECTION_WIDTH - 2
+		self.alchemyButton = self._Btn(page, 'middle', right - BUTTON_WIDTHS['middle'], PANEL_BUTTON_Y,
+			TEXT_ALCHEMY, self.OnAlchemyPanel)
+		self.costumeButton = self._Btn(page, 'middle', right - 2 * BUTTON_WIDTHS['middle'] - 2, PANEL_BUTTON_Y,
+			TEXT_COSTUMES, self.OnCostumePanel)
+		self._Hover(self.alchemyButton, TEXT_ALCHEMY_HINT)
+		self._Hover(self.costumeButton, TEXT_COSTUMES_HINT)
+		self.switchRows = {}
+		half = SECTION_WIDTH // SHARED_SWITCHES
+		lines = {}
+		nextLine = 0
+		for i, (key, order, default, text, hint) in enumerate(SWITCHES):
+			# MT2009_PLUS_SIDEKICK_EQUIP_LOCK_V1: the first SHARED_SWITCHES
+			# share a row, half of it each, with the stock small button.
+			# MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1: and a switch of SHARED_ROWS
+			# takes the right half of the row of the switch it names.
+			partner = SHARED_ROWS.get(key)
+			if i < SHARED_SWITCHES:
+				switchLine, side = 0, i
+				nextLine = 1
+			elif partner in lines:
+				switchLine, side = lines[partner], 1
+			else:
+				switchLine, side = nextLine, (0 if key in SHARED_ROWS.values() else -1)
+				nextLine += 1
+			lines[key] = switchLine
+			y = SWITCH_TOP + switchLine * OPTION_STEP
+			row = self._Switch(page, y, switchLine, text, hint, self.OnSwitch, key)
+			if side >= 0:
+				x = SECTION_X + side * half
+				row[0].SetPosition(x, y)
+				row[0].SetSize(half - (1 if side == 0 else 0), ROW_HEIGHT - 1)
+				row[1].SetPosition(x + LINE_X - SECTION_X + 2, y + 3)
+				row[2].SetPosition(x + half - BUTTON_WIDTHS[SWITCH_BUTTONS.get(key, 'small')] - 2, y - 1)
+			self.switchRows[key] = row
+		# "Lider grupy": the switch and, beside it, the bonus its Leadership
+		# gives the owner.
+		rows = nextLine
+		leadY = SWITCH_TOP + rows * OPTION_STEP
+		self.leadRow = self._Switch(page, leadY, rows, TEXT_LEAD, TEXT_LEAD_HINT, self.OnLead)
+		self.roleButton = self._Btn(page, 'middle',
+			SECTION_X + SECTION_WIDTH - BUTTON_WIDTHS['small'] - BUTTON_WIDTHS['middle'] - 4, leadY - 1, '', self.OnRole)
+		self.roleButton.ShowToolTip = ui.__mem_func__(self.OnOverRole)
+		self.roleButton.HideToolTip = ui.__mem_func__(self.OnHoverOut)
+		points = leadY + OPTION_STEP
+		self._Section(page, points, TEXT_SECTION_POINTS)
+		self.statManualRow = self._Switch(page, points + 20, 0, TEXT_STAT_MANUAL, TEXT_STAT_MANUAL_HINT,
+			self.OnStatManual)
+		self.skillManualRow = self._Switch(page, points + 20 + OPTION_STEP, 1, TEXT_SKILL_MANUAL,
+			TEXT_SKILL_MANUAL_HINT, self.OnSkillManual)
+		reset = (PAGE_WIDTH - BUTTON_WIDTHS['xlarge']) // 2
+		self.statResetButton = self._Btn(page, 'xlarge', reset, points + 20 + 2 * OPTION_STEP + 2, TEXT_STAT_RESET,
+			self.OnStatReset)
+		self._Hover(self.statResetButton, TEXT_STAT_RESET_HINT)
+		# The tab strip starts where the page ends: the lines are packed.
+		top = points + 20 + 2 * OPTION_STEP + 29
+		self.optionsStatus = StatusLines([self._CenteredLabel(page, top), self._CenteredLabel(page, top + 13)],
+			PAGE_WIDTH - 20)
+
+	# -------------------------------------------------------------- the server
+
+	def OnServerInfo(self, args):
+		info = ParseInfo(args)
+		if info is None:
+			return
+		self.info = info
+		self.RefreshAll()
+
+	def OnServerNames(self, name='-', place='-', doing='-'):
+		self.names = (DecodeText(name), DecodeText(place), DecodeNamedText(doing))
+		self.RefreshAll()
+
+	def OnServerGear(self, slot='0', name='-'):
+		index = ParseInt(slot, -1)
+		if 0 <= index < len(self.gear):
+			self.gear[index] = DecodeNamedText(name)
+
+	# -------------------------------------------------------------- the pages
+
+	def SetPage(self, page):
+		if page not in PAGES:
+			return
+		self.page = page
+		self.HideToolTip()
+		self.HideSkillToolTip()
+		for key in PAGES:
+			shown = key == page
+			for widget in (self.tabImages[key], self.titleBars[key]):
+				if shown:
+					widget.Show()
+				else:
+					widget.Hide()
+			if shown:
+				self.tabButtons[key].Down()
+			else:
+				self.tabButtons[key].SetUp()
+			self.tabLabels[key].SetPackedFontColor(TAB_TEXT_COLOR_ACTIVE if shown else TAB_TEXT_COLOR)
+		self.RefreshAll()
+
+	def HasCompanion(self):
+		return bool(self.info) and bool(self.info.get('has'))
+
+	def ShowContent(self, shown):
+		"""The page on show, or with no companion to show only its title bar
+		and the notice under it."""
+		for key in PAGES:
+			page = self.pages[key]
+			if key == PAGE_STATUS:
+				# The status page holds its own title bar.
+				if key == self.page:
+					page.Show()
+				else:
+					page.Hide()
+				for widget in self.statusContent:
+					if shown:
+						widget.Show()
+					else:
+						widget.Hide()
+			elif shown and key == self.page:
+				page.Show()
+			else:
+				page.Hide()
+
+	def ShowNotice(self, lines):
+		for i, line in enumerate(self.noticeLines):
+			line.SetText(lines[i] if i < len(lines) else '')
+
+	def RefreshAll(self):
+		info = self.info
+		if not self.HasCompanion():
+			if info is None:
+				self.ShowNotice((TEXT_WAITING,))
+			elif info.get('off'):
+				self.ShowNotice(TEXT_SWITCHED_OFF)
+			else:
+				self.ShowNotice(TEXT_NO_COMPANION)
+			self.ShowContent(False)
+			self.CloseDialogs()
+			return
+		self.ShowNotice(())
+		self.ShowContent(True)
+		self.RefreshStatusPage()
+		self.RefreshSkillPage()
+		self.RefreshOrdersPage()
+		self.RefreshOptionsPage()
+
+	def SkillAnswer(self):
+		"""The last skill list and the numbers with it, or None."""
+		inv = _Inv()
+		model = inv.GetSkillModel()
+		return model if model.state == inv.STATE_OK else None
+
+	def RefreshStatusPage(self):
+		import sidekickskilltip
+		info = self.info
+		values = self.values
+		name = self.names[0]
+		race = info['race']
+		self.nameValue.SetText(name or '-')
+		self.pathValue.SetText(PathText(race, info['group']))
+		face = FaceImage(race)
+		if face:
+			# Loaded when it changes, not at every snapshot.
+			if face != self.faceShown:
+				self.faceImage.LoadImage(face)
+				self.faceShown = face
+			self.faceImage.Show()
+		else:
+			self.faceImage.Hide()
+		inWorld = race >= 0
+		values['Level'].SetText('%d' % info['level'] if inWorld else '-')
+		model = self.SkillAnswer()
+		stats = model.stats if model else None
+		statInfo = model.statInfo if model else None
+		extra = model.status if model else None
+		if extra and inWorld:
+			values['Exp'].SetText('%d' % extra['exp'])
+			values['RestExp'].SetText('%d' % max(0, extra['nextexp'] - extra['exp']))
+		else:
+			values['Exp'].SetText('%d%%' % info['exp'] if inWorld else '-')
+			values['RestExp'].SetText('')
+		for key, maximum in (('HP', 'maxhp'), ('SP', 'maxsp')):
+			current = key.lower()
+			values[key].SetText('%d/%d' % (max(0, info[current]), info[maximum]) if inWorld else '-')
+		for scriptName, key in STAT_KEYS:
+			values[scriptName].SetText('%d' % stats[key] if stats else '-')
+			if statInfo and _Inv().CanAddStatPoint(statInfo, key):
+				self.statPlusButtons[key].Show()
+			else:
+				self.statPlusButtons[key].Hide()
+		if statInfo and statInfo['points'] > 0:
+			self.statusPlusLabel.SetText(TEXT_PLUS_LABEL % statInfo['points'])
+			self.statusPlusLabel.Show()
+		else:
+			self.statusPlusLabel.Hide()
+		if stats:
+			numbers = sidekickskilltip.CharacterNumbers(stats, model.job,
+				sidekickskilltip.WeaponValues(stats.get('weapon', 0)),
+				extra['attbonus'] if extra else 0, extra['defbonus'] if extra else 0)
+			values['ATT'].SetText(RangeText(numbers['minatk'], numbers['maxatk']))
+			values['DEF'].SetText(DefenceText(numbers['def'], numbers['defboost']))
+			values['MATT'].SetText(RangeText(numbers['minmatk'], numbers['maxmatk']))
+			values['MDEF'].SetText('%d' % numbers['mdef'])
+			values['ASPD'].SetText('%d' % stats['atkspd'])
+			values['MSPD'].SetText('%d' % extra['movspeed'] if extra else '-')
+			values['CSPD'].SetText('%d' % stats['castingspeed'])
+			values['ER'].SetText('%d' % numbers['evade'])
+		else:
+			for key in ('ATT', 'DEF', 'MATT', 'MDEF', 'ASPD', 'MSPD', 'CSPD', 'ER'):
+				values[key].SetText('-')
+
+	def RefreshSkillPage(self):
+		inv = _Inv()
+		model = self.SkillAnswer()
+		info = self.info
+		self.skillRows = model.skills[:SKILL_SLOTS] if model else []
+		job = model.job if model else info['race'] % 4 if info['race'] >= 0 else 0
+		if not 0 <= job < len(JOBS):
+			job = 0
+		group = model.group if model else info['group']
+		self.skillPathName.SetText(PATHS[job][group - 1] if group in (1, 2) else JOBS[job])
+		self.skillPointValue.SetText('%d' % model.points if model else '-')
+		slots = self.skillSlots
+		slots.HideAllSlotButton()
+		for i in range(SKILL_SLOTS):
+			for grade in range(SKILL_GRADE_COLUMNS):
+				slots.ClearSlot(i + 1 + grade * SKILL_GRADE_STEP)
+			if i >= len(self.skillRows):
+				continue
+			vnum, level, grade = self.skillRows[i]
+			shown, step = inv.SkillGradeStep(level, grade)
+			# The player's page: the skill in each grade's column, the grade it
+			# stands at counted and live, the others dimmed.
+			for column in range(SKILL_GRADE_COLUMNS):
+				slot = i + 1 + column * SKILL_GRADE_STEP
+				slots.SetSkillSlotNew(slot, vnum, column, step)
+				slots.SetCoverButton(slot)
+				if shown == 3 and column == SKILL_GRADE_COLUMNS - 1:
+					slots.SetSlotCountNew(slot, shown, step)
+				elif shown != column:
+					slots.SetSlotCount(slot, 0)
+					slots.DisableCoverButton(slot)
+				else:
+					slots.SetSlotCountNew(slot, shown, step)
+			if model and inv.CanAddSkillPoint(model.points, level, grade):
+				slots.ShowSlotButton(i + 1)
+		slots.RefreshSlot()
+		if model:
+			self.skillManualButton.SetText(YesNo(model.manual))
+			self.skillManualButton.Show()
+		else:
+			self.skillManualButton.Hide()
+		self.RefreshChosenSkill()
+		if not model:
+			(text, color) = inv.IdleText(inv.GetSkillModel())
+			self.skillStatus.SetIdle(text or TEXT_WAITING, color)
+		elif not self.skillRows:
+			self.skillStatus.SetIdle(TEXT_NO_PATH)
+		else:
+			self.skillStatus.SetIdle('' if model.manual else TEXT_AI_SPENDS)
+
+	def ChosenRow(self):
+		for row in self.skillRows:
+			if row[0] == self.chosenSkill:
+				return row
+		return None
+
+	def RefreshChosenSkill(self):
+		inv = _Inv()
+		row = self.ChosenRow()
+		if row is None:
+			self.chosenSkill = 0
+			self.chosenSlot.ClearSlot(0)
+			self.chosenName.SetText(TEXT_CHOOSE_SKILL if self.skillRows else '')
+			self.chosenLevel.SetText(TEXT_RIGHT_CLICK_RESET if self.skillRows else '')
+			self.resetButton.Hide()
+		else:
+			vnum, level, grade = row
+			shown, step = inv.SkillGradeStep(level, grade)
+			self.chosenSlot.SetSkillSlotNew(0, vnum, min(shown, SKILL_GRADE_COLUMNS - 1), step)
+			self.chosenSlot.SetSlotCountNew(0, shown, step)
+			self.chosenName.SetText(inv.SkillName(vnum, shown))
+			self.chosenLevel.SetText(TEXT_SKILL_LEVEL % inv.SkillLevelText(level, grade))
+			if level > 0:
+				self.resetButton.Show()
+			else:
+				self.resetButton.Hide()
+		self.chosenSlot.RefreshSlot()
+
+	def RefreshOrdersPage(self):
+		info = self.info
+		name, place, doing = self.names
+		mode = info['mode'] if 0 <= info['mode'] < len(MODES) else 0
+		if info['race'] < 0:
+			self.doingLine.SetText(TEXT_DOING % (doing or TEXT_COMING))
+		elif info['dead']:
+			self.doingLine.SetText(TEXT_DOWN)
+		else:
+			self.doingLine.SetText(TEXT_DOING % (doing or MODES[mode]))
+		self.placeLine.SetText(TEXT_WHERE % PlaceText(info, place))
+		self.potionLine.SetText(TEXT_POTIONS % (info['red'], info['blue']))
+		self.goldLine.SetText(TEXT_GOLD % FormatGold(info['gold']))
+		# The summon, the free hand and the wait are the three states the
+		# companion is in outside an errand: the one it is in stays down.
+		self.SetPressed((self.summonButton, self.freeButton, self.holdButton), mode if mode < 3 else -1)
+		self.SetPressed(self.stanceButtons, info['stance'])
+		self.SetPressed(self.lootButtons, info['loot'])
+		# MT2009_PLUS_SIDEKICK_NO_LOOT_V1: shown by a server that sends it.
+		if 'share_loot' in info:
+			self.shareLootButton.SetText(TEXT_SHARE_LOOT_STATES[1 if info['share_loot'] else 0])
+			self.shareLootButton.Show()
+		else:
+			self.shareLootButton.Hide()
+		# MT2009_PLUS_SIDEKICK_EMOTIONS_V1: shown by a server that sends it.
+		if 'emotions' in info:
+			self.emotionsButton.SetText(TEXT_EMOTIONS_STATES[1 if info['emotions'] else 0])
+			self.emotionsButton.Show()
+		else:
+			self.emotionsButton.Hide()
+		# MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: shown by a server that sends it.
+		if 'ranged' in info:
+			self.rangedButton.SetText(TEXT_RANGED_STATES[1 if info['ranged'] else 0])
+			self.rangedButton.Show()
+		else:
+			self.rangedButton.Hide()
+		stance = info['stance'] if 0 <= info['stance'] < len(STANCE_HINTS) else 0
+		self.stanceHint.SetText(STANCE_HINTS[stance])
+		self.ordersStatus.SetIdle(TEXT_MODE % MODES[mode])
+
+	def RefreshOptionsPage(self):
+		info = self.info
+		for key, order, default, text, hint in SWITCHES:
+			bar, label, button = self.switchRows[key]
+			# An older server sends no word for a later switch, and has no
+			# such switch to set.
+			shown = key in info
+			for widget in (bar, label, button):
+				if shown:
+					widget.Show()
+				else:
+					widget.Hide()
+			value = info.get(key, default)
+			states = SWITCH_STATES.get(key)
+			if states and len(states) > 2:
+				button.SetText(states[value if 0 <= value < len(states) else default])
+			else:
+				button.SetText(states[1 if value else 0] if states else YesNo(value))
+			# MT2009_PLUS_SIDEKICK_COINS_V1: what its account holds beside the
+			# name, where it fits before the button (the report says it too).
+			if key == 'coins':
+				named = text
+				if info.get('balance', -1) >= 0:
+					named = TEXT_SWITCH_AMOUNT % (text, FormatGold(info['balance']))
+					room = SECTION_X + SECTION_WIDTH - BUTTON_WIDTHS[SWITCH_BUTTONS['coins']] - 2 - (LINE_X + 2) - 4
+					if TextWidth(label, named) > room:
+						named = text
+				label.SetText(named)
+		# "Lider grupy" and the bonus: shown by a server that sends them.
+		roleNote = ''
+		if 'lead' in info:
+			for widget in self.leadRow + (self.roleButton,):
+				widget.Show()
+			self.leadRow[1].SetText(TEXT_LEAD_LEADERSHIP % LeadershipText(info['leadership']))
+			self.leadRow[2].SetText(YesNo(info['lead']))
+			role = RoleOf(info)
+			self.roleButton.SetText(role[3])
+			if role[0] and not info['lead']:
+				roleNote = TEXT_ROLE_NOT_LEAD
+			elif role[2] > info['leadership']:
+				roleNote = TEXT_ROLE_NEEDS % LeadershipText(role[2])
+		else:
+			for widget in self.leadRow + (self.roleButton,):
+				widget.Hide()
+		model = self.SkillAnswer()
+		statInfo = model.statInfo if model else None
+		for row, value in ((self.statManualRow, statInfo['manual'] if statInfo else None),
+				(self.skillManualRow, model.manual if model else None)):
+			for widget in row:
+				if value is None:
+					widget.Hide()
+				else:
+					widget.Show()
+			row[2].SetText(YesNo(value))
+		if statInfo and statInfo['reset']:
+			self.statResetButton.Show()
+		else:
+			self.statResetButton.Hide()
+		if roleNote:
+			self.optionsStatus.SetIdle(roleNote, COLOR_HINT)
+		elif model and statInfo is None:
+			self.optionsStatus.SetIdle(TEXT_STAT_OLD_SERVER, COLOR_BAD)
+		elif statInfo and not statInfo['manual']:
+			self.optionsStatus.SetIdle(TEXT_STAT_AI_SPENDS)
+		else:
+			self.optionsStatus.SetIdle('')
+
+	def SetPressed(self, buttons, index):
+		# A button held down says which one is set, the way the game's own
+		# radio groups do it.
+		for i, button in enumerate(buttons):
+			if i == index:
+				button.Down()
+			else:
+				button.SetUp()
+
+	def ShowResult(self, origin, text, color):
+		"""A server's answer to an order of a page, on that page when it is the
+		one on show and has lines for it; False when it has not."""
+		inv = _Inv()
+		lines = {PAGE_SKILL: self.skillStatus, PAGE_OPTIONS: self.optionsStatus}.get(self.page)
+		if lines is None or not self.IsShow() or not self.HasCompanion():
+			return False
+		if origin is not None and {inv.ORIGIN_SKILL: PAGE_SKILL, inv.ORIGIN_OPTIONS: PAGE_OPTIONS}.get(origin) != self.page:
+			return False
+		lines.Set(text, color)
+		return True
+
+	# -------------------------------------------------------------- tooltips
+
+	def ShowToolTipLines(self, lines):
+		import uiToolTip
+		if self.toolTip is None:
+			self.toolTip = uiToolTip.ToolTip()
+		toolTip = self.toolTip
+		toolTip.ClearToolTip()
+		for i, text in enumerate(lines):
+			if i == 0:
+				toolTip.AppendTextLine(text, getattr(toolTip, 'TITLE_COLOR', COLOR_HINT))
+			else:
+				toolTip.AppendTextLine(text, getattr(toolTip, 'NORMAL_COLOR', COLOR_NORMAL))
+		toolTip.ShowToolTip()
+
+	def HideToolTip(self):
+		if self.toolTip:
+			self.toolTip.HideToolTip()
+
+	def OnOverName(self):
+		# MT2009_PLUS_SIDEKICK_RANK_V1: the title of the companion's rank in
+		# its colour and the points under it, as uicharacter.RefreshAlignment
+		# writes the player's; only while the companion is in the game, where
+		# the server can read its rank.
+		if not self.HasCompanion() or 'align' not in self.info or not self.info.get('where'):
+			return
+		import colorInfo
+		import localeInfo
+		import uiToolTip
+		point = self.info['align']
+		grade = AlignmentGrade(point)
+		if self.toolTip is None:
+			self.toolTip = uiToolTip.ToolTip()
+		toolTip = self.toolTip
+		toolTip.ClearToolTip()
+		titles = getattr(localeInfo, 'TITLE_NAME_LIST', ())
+		if grade < len(titles):
+			rgb = getattr(colorInfo, ALIGNMENT_GRADE_COLORS[grade], (255, 255, 255))
+			toolTip.AppendTextLine(titles[grade], ui.GenerateColor(rgb[0], rgb[1], rgb[2]))
+		label = getattr(localeInfo, 'ALIGNMENT_NAME', 'Punkty Rangi:')
+		toolTip.AppendTextLine(label + str(point), getattr(toolTip, 'NORMAL_COLOR', COLOR_NORMAL))
+		toolTip.ShowToolTip()
+
+	def HideSkillToolTip(self):
+		if self.skillToolTip:
+			self.skillToolTip.HideToolTip()
+
+	def OnOverFace(self):
+		if self.HasCompanion() and self.info['race'] >= 0:
+			self.ShowToolTipLines((self.names[0] or PAGE_TITLES[0], ClassText(self.info['race'], self.info['group'])))
+
+	def OnOverStatPlus(self, key):
+		self.ShowToolTipLines((STAT_NAMES[key], STAT_HINTS[key], TEXT_STAT_PLUS_CTRL))
+
+	def OnOverStatValue(self, key):
+		model = self.SkillAnswer()
+		lines = [STAT_NAMES[key]]
+		if model and model.stats and model.statInfo:
+			spent = model.statInfo[key]
+			lines.append(TEXT_STAT_SPENT % spent)
+			lines.append(TEXT_STAT_GEAR % (model.stats[key] - spent))
+		self.ShowToolTipLines(lines)
+
+	def OnOverDefence(self):
+		model = self.SkillAnswer()
+		if model and model.stats:
+			boost = model.status['defbonus'] if model.status else 0
+			self.ShowToolTipLines((TEXT_DEF_TIP % (model.stats.get('def', 0), boost),))
+
+	def OnOverBag(self):
+		lines = [TEXT_WEARING]
+		for label, name in zip(GEAR_LABELS, self.gear):
+			lines.append('%s: %s' % (label, name or '-'))
+		lines.append(TEXT_BAG_HINT)
+		self.ShowToolTipLines(lines)
+
+	def OnHover(self, text):
+		lines = {PAGE_OPTIONS: self.optionsStatus, PAGE_ORDERS: self.ordersStatus}.get(self.page)
+		if lines:
+			lines.Hover(text)
+
+	def OnHoverOut(self):
+		self.optionsStatus.EndHover()
+		self.ordersStatus.EndHover()
+
+	def OnOverInSkill(self, slotNumber):
+		"""The player's own skill tooltip, with the companion's skill and
+		numbers in it (sidekickskilltip.py); over a grade the skill is not at,
+		its name at that grade, as the player's page shows it."""
+		import sidekickskilltip
+		import uiToolTip
+		inv = _Inv()
+		index = slotNumber % SKILL_GRADE_STEP - 1
+		if not 0 <= index < len(self.skillRows) or inv.IsCursorBusy():
+			return
+		model = self.SkillAnswer()
+		if self.skillToolTip is None:
+			self.skillToolTip = uiToolTip.SkillToolTip()
+		toolTip = self.skillToolTip
+		vnum, level, grade = self.skillRows[index]
+		shown, step = inv.SkillGradeStep(level, grade)
+		column = slotNumber // SKILL_GRADE_STEP
+		stats = model.stats if model else None
+		job = model.job if model else 0
+		try:
+			if column == shown or (shown == 3 and column == SKILL_GRADE_COLUMNS - 1):
+				sidekickskilltip.Show(toolTip, vnum, level, shown, step, stats, job)
+			else:
+				sidekickskilltip.ShowName(toolTip, vnum, column, stats, job)
+			if level > 0:
+				toolTip.AppendSpace(5)
+				toolTip.AppendTextLine(TEXT_SKILL_TIP_RESET, COLOR_HINT)
+		except Exception:
+			# A tooltip that cannot be drawn is no reason to lose the window.
+			toolTip.HideToolTip()
+
+	# -------------------------------------------------------------- orders
+
+	def SendCommand(self, text):
+		SendCommand(text)
+
+	def OnInventory(self):
+		_Inv().ToggleEquipmentWindow(self)
+
+	# MT2009_PLUS_SIDEKICK_PANELS_V1
+	def OnCostumePanel(self):
+		_Inv().ToggleCostumeWindow(self)
+
+	def OnAlchemyPanel(self):
+		_Inv().ToggleAlchemyWindow(self)
+
+	def OnOrder(self, order):
+		self.SendCommand(order)
+		# The answer comes back at the next look; asked for at once, the
+		# window shows the new mode without waiting for the poll.
+		self.nextPoll = 0.0
+
+	def OnStance(self, stance):
+		self.SendCommand('walka %d' % stance)
+		self.nextPoll = 0.0
+
+	def OnLoot(self, loot):
+		self.SendCommand('zbieraj %d' % loot)
+		self.nextPoll = 0.0
+
+	def OnEmotions(self):
+		on = self.info.get('emotions', 1) if self.info else 1
+		self.SendCommand('emocje %d' % (0 if on else 1))
+		self.nextPoll = 0.0
+
+	# MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1
+	def OnRanged(self):
+		on = self.info.get('ranged', 1) if self.info else 1
+		self.SendCommand('dystans %d' % (0 if on else 1))
+		self.nextPoll = 0.0
+
+	def OnShareLoot(self):
+		share = self.info.get('share_loot', 1) if self.info else 1
+		self.SendCommand('podzial %d' % (0 if share else 1))
+		self.nextPoll = 0.0
+
+	def OnSwitch(self, key):
+		for name, order, default, text, hint in SWITCHES:
+			if name == key:
+				value = self.info.get(key, default) if self.info else default
+				steps = SWITCH_STEPS.get(key)
+				if steps:
+					nextValue = steps[(steps.index(value) + 1) % len(steps)] if value in steps else default
+					self.SendCommand('%s %d' % (order, nextValue))
+				else:
+					self.SendCommand('%s %d' % (order, 0 if value else 1))
+				self.nextPoll = 0.0
+				return
+
+	def OnLead(self):
+		lead = self.info.get('lead', 0) if self.info else 0
+		self.SendCommand('lider %d' % (0 if lead else 1))
+		self.nextPoll = 0.0
+
+	def OnRole(self):
+		current = self.info.get('role', 0) if self.info else 0
+		ids = [r[0] for r in ROLES]
+		nextRole = ids[(ids.index(current) + 1) % len(ids)] if current in ids else ids[0]
+		self.SendCommand('rola %d' % nextRole)
+		self.nextPoll = 0.0
+
+	def OnOverRole(self):
+		self.OnHover(TEXT_ROLE_HINT % RoleOf(self.info or {})[1])
+
+	def OnStatManual(self):
+		inv = _Inv()
+		model = self.SkillAnswer()
+		manual = model.statInfo['manual'] if model and model.statInfo else 0
+		inv.SendOrder(inv.ORIGIN_OPTIONS, 'statystyki reczne %d' % (0 if manual else 1))
+
+	def OnSkillManual(self):
+		inv = _Inv()
+		model = self.SkillAnswer()
+		manual = model.manual if model else 0
+		origin = inv.ORIGIN_OPTIONS if self.page == PAGE_OPTIONS else inv.ORIGIN_SKILL
+		inv.SendOrder(origin, 'umiejetnosci reczne %d' % (0 if manual else 1))
+
+	def OnStatPlus(self, key):
+		inv = _Inv()
+		# Ctrl + click: several at once, as the player's own "+" does.
+		if inv.IsCtrlPressed():
+			self.OpenStatDialog(key)
+			return
+		inv.SendOrder(inv.ORIGIN_STAT, 'statystyki dodaj %s 1' % key)
+
+	def OpenStatDialog(self, key):
+		import uiCommon
+		self.CloseStatDialog()
+		dialog = uiCommon.InputDialog()
+		dialog.SetTitle(TEXT_STAT_INPUT % STAT_NAMES[key])
+		dialog.SetNumberMode()
+		dialog.SetMaxLength(2)
+		dialog.SetAcceptEvent(ui.__mem_func__(self.OnStatDialogAccept))
+		dialog.SetCancelEvent(ui.__mem_func__(self.CloseStatDialog))
+		dialog.Open()
+		self.statDialog = dialog
+		self.statDialogKey = key
+
+	def OnStatDialogAccept(self):
+		inv = _Inv()
+		dialog = self.statDialog
+		key = self.statDialogKey
+		count = ParseInt(dialog.GetText(), 0) if dialog else 0
+		self.CloseStatDialog()
+		if key and count > 0:
+			inv.SendOrder(inv.ORIGIN_STAT, 'statystyki dodaj %s %d' % (key, count))
+
+	def CloseStatDialog(self):
+		dialog = self.statDialog
+		self.statDialog = None
+		self.statDialogKey = ''
+		if dialog:
+			dialog.Close()
+
+	def OnStatReset(self):
+		import uiCommon
+		self.CloseQuestion()
+		question = uiCommon.QuestionDialog()
+		question.SetText(TEXT_STAT_RESET_ASK)
+		question.SetAcceptEvent(ui.__mem_func__(self.OnStatResetAccept))
+		question.SetCancelEvent(ui.__mem_func__(self.CloseQuestion))
+		question.Open()
+		self.question = question
+
+	def OnStatResetAccept(self):
+		inv = _Inv()
+		inv.SendOrder(inv.ORIGIN_OPTIONS, 'statystyki odnow')
+		self.CloseQuestion()
+
+	def _SkillRowAt(self, slotNumber):
+		index = slotNumber % SKILL_GRADE_STEP - 1
+		return self.skillRows[index] if 0 <= index < len(self.skillRows) else None
+
+	def OnSelectSkill(self, slotNumber):
+		row = self._SkillRowAt(slotNumber)
+		if row:
+			self.chosenSkill = row[0]
+			self.RefreshChosenSkill()
+
+	def OnRightClickSkill(self, slotNumber):
+		row = self._SkillRowAt(slotNumber)
+		if not row:
+			return
+		self.chosenSkill = row[0]
+		self.RefreshChosenSkill()
+		if row[1] > 0:
+			self.AskResetSkill(row[0])
+
+	def OnSkillPlus(self, slotNumber):
+		inv = _Inv()
+		row = self._SkillRowAt(slotNumber)
+		if row:
+			inv.SendOrder(inv.ORIGIN_SKILL, 'umiejetnosci dodaj %d' % row[0])
+
+	def OnResetChosenSkill(self):
+		if self.ChosenRow():
+			self.AskResetSkill(self.chosenSkill)
+
+	def AskResetSkill(self, vnum):
+		"""Asked first: the companion takes the skill back to nothing with the
+		Forgetting Books or the skill reset scroll in its own bag (blasty, 28
+		September)."""
+		import uiCommon
+		inv = _Inv()
+		self.CloseQuestion()
+		for known, level, grade in self.skillRows:
+			if known != vnum:
+				continue
+			shown, _ = inv.SkillGradeStep(level, grade)
+			question = uiCommon.QuestionDialog2()
+			question.SetText1(TEXT_SKILL_RESET_ASK % inv.SkillName(vnum, shown) +
+				(TEXT_SKILL_RESET_MASTER if shown > 0 else ''))
+			question.SetText2(TEXT_SKILL_RESET_HOW)
+			question.SetAcceptEvent(ui.__mem_func__(self.OnResetAccept))
+			question.SetCancelEvent(ui.__mem_func__(self.CloseQuestion))
+			question.Open()
+			self.question = question
+			self.resetVnum = vnum
+			return
+
+	def OnResetAccept(self):
+		inv = _Inv()
+		if self.resetVnum:
+			inv.SendOrder(inv.ORIGIN_SKILL, 'umiejetnosci zeruj %d' % self.resetVnum)
+		self.CloseQuestion()
+
+	def OnDismiss(self):
+		import uiCommon
+		self.CloseQuestion()
+		question = uiCommon.QuestionDialog()
+		question.SetText(TEXT_DISMISS_ASK)
+		question.SetAcceptEvent(ui.__mem_func__(self.OnDismissAccept))
+		question.SetCancelEvent(ui.__mem_func__(self.OnDismissCancel))
+		question.Open()
+		self.question = question
+
+	def OnDismissAccept(self):
+		self.SendCommand('odprawa tak')
+		self.OnDismissCancel()
+		self.nextPoll = 0.0
+
+	def OnDismissCancel(self):
+		self.CloseQuestion()
+
+	# MT2009_PLUS_SIDEKICK_SHOP_ERRAND_V1: what to buy, how many, and yes to
+	# the price the server names.
+	def OnShop(self):
+		self.CloseShopDialogs()
+		board = ShopBoard(ui.__mem_func__(self.OnShopGood))
+		board.Open()
+		self.shopBoard = board
+
+	def OnShopGood(self, key):
+		import uiCommon
+		self.CloseShopDialogs()
+		dialog = uiCommon.InputDialog()
+		dialog.SetTitle(TEXT_SHOP_COUNT % SHOP_NAMES.get(key, key))
+		dialog.SetNumberMode()
+		dialog.SetMaxLength(SHOP_MAX_DIGITS)
+		dialog.SetAcceptEvent(ui.__mem_func__(self.OnShopCountAccept))
+		dialog.SetCancelEvent(ui.__mem_func__(self.CloseShopDialogs))
+		dialog.Open()
+		self.shopDialog = dialog
+		self.shopDialogKey = key
+
+	def OnShopCountAccept(self):
+		dialog = self.shopDialog
+		key = self.shopDialogKey
+		count = ParseInt(dialog.GetText(), 0) if dialog else 0
+		self.CloseShopDialogs()
+		if key in SHOP_NAMES and count > 0:
+			self.SendCommand('kup %s %d' % (key, count))
+
+	def AskShopQuote(self, key, count, cost, market):
+		import uiCommon
+		if key not in SHOP_NAMES or count <= 0 or cost <= 0:
+			return
+		self.CloseQuestion()
+		self.CloseShopDialogs()
+		question = uiCommon.QuestionDialog2()
+		question.SetText1(TEXT_SHOP_ASK % (count, SHOP_NAMES[key]))
+		question.SetText2(TEXT_SHOP_ASK_COST % (TEXT_SHOP_ASK_MAX if market else '', FormatGold(cost)))
+		question.SetAcceptEvent(ui.__mem_func__(self.OnShopQuoteAccept))
+		question.SetCancelEvent(ui.__mem_func__(self.CloseQuestion))
+		question.Open()
+		self.question = question
+		self.shopQuote = (key, count)
+
+	def OnShopQuoteAccept(self):
+		quote = self.shopQuote
+		self.CloseQuestion()
+		if quote:
+			self.SendCommand('kup %s %d tak' % quote)
+			self.nextPoll = 0.0
+
+	def CloseShopDialogs(self):
+		board = self.shopBoard
+		dialog = self.shopDialog
+		self.shopBoard = None
+		self.shopDialog = None
+		self.shopDialogKey = ''
+		if board:
+			board.Destroy()
+		if dialog:
+			dialog.Close()
+
+	def CloseQuestion(self):
+		question = self.question
+		self.question = None
+		self.resetVnum = 0
+		self.shopQuote = None
+		if question:
+			question.Close()
+
+	def CloseDialogs(self):
+		self.CloseQuestion()
+		self.CloseStatDialog()
+		self.CloseShopDialogs()
+
+	# -------------------------------------------------------------- the clock
+
+	def OnUpdate(self):
+		for lines in (self.skillStatus, self.optionsStatus, self.ordersStatus):
+			lines.Update()
+		# MT2009_PLUS_SIDEKICK_WARP_SAFE_V1: no polls on the way to another core.
+		if not InGame():
+			return
+		if PumpCommands():
+			return
+		now = clientclock.Now()
+		if now >= self.nextPoll and TryPoll('okno'):
+			self.nextPoll = now + POLL_INTERVAL
+			return
+		if now >= self.nextSkillPoll and TryPoll('umiejetnosci'):
+			self.nextSkillPoll = now + SKILL_POLL_INTERVAL
+
+	def Open(self):
+		self.Show()
+		self.SetTop()
+		now = clientclock.Now()
+		self.nextPoll = now + POLL_INTERVAL
+		self.nextSkillPoll = now + SKILL_POLL_INTERVAL
+		SendCommand('okno 1')
+		SendCommand('umiejetnosci')
+
+	def Close(self):
+		# The orders already given stay in the queue: the keeper sends them.
+		self.CloseDialogs()
+		self.HideToolTip()
+		self.HideSkillToolTip()
+		self.Hide()
+
+	def OnPressEscapeKey(self):
+		self.Close()
+		return True
+
+	def Destroy(self):
+		self.Close()
+		self.toolTip = None
+		self.skillToolTip = None
+		self.ClearDictionary()
+		self.widgets = []
+
+
+_window = {'window': None}
+
+
+def GetWindow():
+	if _window['window'] is None:
+		window = SidekickWindow()
+		# Not over the player's own character window, which the script puts
+		# at the screen's left edge.
+		window.SetCenterPosition()
+		_window['window'] = window
+	return _window['window']
+
+
+def ToggleWindow():
+	# P shuts whatever of the companion's is open - its bag stayed on the
+	# screen after it (prodnathin, 28 September) - and opens its window only
+	# when nothing of it is open.
+	inv = _Inv()
+	window = GetWindow()
+	if window.IsShow() or inv.AnyShown():
+		if window.IsShow():
+			window.Close()
+		inv.CloseAll()
+	else:
+		window.Open()
+
+
+def OpenWindow():
+	window = GetWindow()
+	if not window.IsShow():
+		window.Open()
+
+
+def OnServerInfo(*args):
+	# Answers that come while the window is closed are kept all the same, so
+	# it opens on what the server last said.
+	GetWindow().OnServerInfo(args)
+
+
+def OnServerNames(name='-', place='-', doing='-', *rest):
+	GetWindow().OnServerNames(name, place, doing)
+
+
+def OnServerGear(slot='0', name='-', *rest):
+	GetWindow().OnServerGear(slot, name)
+
+
+def OnServerShopQuote(key='', count='0', cost='0', market='0', *rest):
+	# MT2009_PLUS_SIDEKICK_SHOP_ERRAND_V1: the price of a "Kup" errand, asked
+	# of the owner before the companion goes.
+	GetWindow().AskShopQuote(key, ParseInt(count), ParseInt(cost), ParseInt(market) != 0)
+
+
+def RefreshSkills():
+	"""The skill list and the stats changed (uisidekickinventory.py)."""
+	window = _window['window']
+	if window is not None:
+		window.RefreshAll()
+
+
+def ShowResult(origin, text, color):
+	"""A server's answer to an order of the window's pages, shown on the page
+	that gave it (any page with lines for None); False when none can."""
+	window = _window['window']
+	return window is not None and window.ShowResult(origin, text, color)
+
+
+def Destroy():
+	window = _window['window']
+	if window is not None:
+		window.Destroy()
+	_window['window'] = None
+	# The bag window was opened from this one; it goes with it even where its
+	# own keeper never got registered.
+	import sys
+	if 'uisidekickinventory' in sys.modules:
+		sys.modules['uisidekickinventory'].Destroy()
+	ResetCommands()
+
+
+class ShopBoard(ui.BoardWithTitleBar):
+	"""MT2009_PLUS_SIDEKICK_SHOP_ERRAND_V1: the goods a "Kup" errand may be
+	for - a potion of each colour in three sizes, arrows and capes; a click
+	names one and closes the board."""
+
+	WIDTH = 236
+
+	def __init__(self, event):
+		ui.BoardWithTitleBar.__init__(self)
+		self.widgets = []
+		self.event = event
+		rows = len(SHOP_POTIONS) + 1
+		self.AddFlag('movable')
+		self.AddFlag('float')
+		self.SetSize(self.WIDTH, 36 + rows * 24 + 8 + len(TEXT_SHOP_HINTS) * 14 + 12)
+		self.SetTitleName(TEXT_SHOP_TITLE)
+		self.SetCloseEvent(ui.__mem_func__(self.Close))
+		self.Build()
+		self.SetCenterPosition()
+
+	def Build(self):
+		y = 36
+		for label, key in SHOP_POTIONS:
+			self._Label(16, y + 3, label)
+			for i, (size, digit) in enumerate(SHOP_SIZES):
+				self._Btn('small', 90 + i * 46, y, size, key + digit)
+			y += 24
+		for i, (label, key) in enumerate(SHOP_OTHER):
+			self._Btn('large', 16 + i * 104, y, label, key)
+		y += 32
+		for hint in TEXT_SHOP_HINTS:
+			line = self._Label(16, y, hint)
+			line.SetPackedFontColor(COLOR_HINT)
+			y += 14
+
+	def _Label(self, x, y, text):
+		line = ui.TextLine()
+		line.SetParent(self)
+		line.SetPosition(x, y)
+		line.SetText(text)
+		line.Show()
+		self.widgets.append(line)
+		return line
+
+	def _Btn(self, size, x, y, text, key):
+		button = ui.Button()
+		button.SetParent(self)
+		button.SetPosition(x, y)
+		button.SetUpVisual(BUTTON_IMAGE % (size, 1))
+		button.SetOverVisual(BUTTON_IMAGE % (size, 2))
+		button.SetDownVisual(BUTTON_IMAGE % (size, 3))
+		button.SetText(text)
+		button.SAFE_SetEvent(self.OnPick, key)
+		button.Show()
+		self.widgets.append(button)
+		return button
+
+	def OnPick(self, key):
+		event = self.event
+		if event:
+			event(key)
+
+	def Open(self):
+		self.Show()
+		self.SetTop()
+
+	def Close(self):
+		self.Hide()
+
+	def OnPressEscapeKey(self):
+		self.Close()
+		return True
+
+	def Destroy(self):
+		self.Hide()
+		self.event = None
+		self.widgets = []
+
+
+class Keeper(object):
+	"""One of the game's updateables: the game window's Close destroys every
+	updateable, and the companion's window goes with it rather than stand over
+	the character select. The window updates itself (its own OnUpdate while
+	shown); the keeper sends what is still queued when none is."""
+
+	def CanUpdate(self):
+		return HasPendingCommands()
+
+	def OnUpdate(self):
+		PumpCommands()
+
+	def Destroy(self):
+		Destroy()
+
+
+def GetKeeper():
+	return Keeper()

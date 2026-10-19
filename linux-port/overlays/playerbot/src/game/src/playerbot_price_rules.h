@@ -11,6 +11,7 @@
 // UpdatePlayerBotShortageMarkups (playerbot_world_memory.h).
 #include <cmath>
 #include <cstdint>
+#include <algorithm>
 
 namespace playerbot_price_rules {
 
@@ -537,6 +538,89 @@ inline bool BonusCountPricingOn(bool chestEventNow, long lastMoonlight, long now
 	if (lastMoonlight >= now)
 		return false;
 	return now - lastMoonlight >= quietSeconds;
+}
+
+
+// MT2009_PLUS_MARKET_LIFE_V1 (the owner's list of 9 October, the market's
+// group): the arithmetic of the new market rules. The engine side is
+// playerbot_market_life.h and its hooks in playerbot_town.h,
+// playerbot_market.h and playerbot_economy.h.
+
+// Point 3: a level-30 weapon at +0..+3 is cheaper in an older world and with
+// more of them on the counters. The age is the world's yang (the same purses
+// the inflation reads): at `zeroYang` and under nothing, at `fullYang` and over
+// `ageMinPercent`, straight between. The supply is the units of the six
+// families at +0..+3 on every counter: up to `normalUnits` nothing, at
+// `floodUnits` and over `supplyMinPercent`, on a log scale between. Both
+// multiply, and never under `floorPercent`. Hundredths.
+inline int Level30LowPlusPercent(long long worldYang, long long zeroYang, long long fullYang, int ageMinPercent,
+		long long supplyUnits, long long normalUnits, long long floodUnits, int supplyMinPercent, int floorPercent)
+{
+	double age = 100.0;
+	if (fullYang > zeroYang && worldYang > zeroYang)
+	{
+		const double t = worldYang >= fullYang ? 1.0
+				: (double)(worldYang - zeroYang) / (double)(fullYang - zeroYang);
+		age = 100.0 - (100.0 - (double)ageMinPercent) * t;
+	}
+	double supply = 100.0;
+	if (floodUnits > normalUnits && normalUnits > 0 && supplyUnits > normalUnits)
+	{
+		const double t = supplyUnits >= floodUnits ? 1.0
+				: std::log((double)supplyUnits / (double)normalUnits) / std::log((double)floodUnits / (double)normalUnits);
+		supply = 100.0 * std::pow((double)supplyMinPercent / 100.0, t);
+	}
+	const double pct = age * supply / 100.0;
+	if (pct < (double)floorPercent)
+		return floorPercent;
+	return pct > 100.0 ? 100 : (int)(pct + 0.5);
+}
+
+// Point 5: what a line of a rare kind asks, in hundredths of the asking
+// price - the premium on top, and the line's own markdown taken at
+// 1/`slowDivisor` of its pace: "z powolna obnizka". Never under the plain
+// listing's own floor, which the caller keeps.
+inline int RareListingPercent(int markdownPercent, int premiumPercent, int slowDivisor)
+{
+	if (slowDivisor < 1)
+		slowDivisor = 1;
+	const int slow = markdownPercent > 0 ? markdownPercent / slowDivisor : 0;
+	const long long pct = (long long)(100 + (premiumPercent > 0 ? premiumPercent : 0)) * (100 - std::min(99, slow)) / 100;
+	return pct < 1 ? 1 : (int)pct;
+}
+
+// Point 8: a keeper's spread that drifts. Two draws in [minPercent,
+// maxPercent], the window's and the next one's, and the spread is the way
+// between them at `fraction` (0..1) of the window - so a keeper's price walks
+// from one number to the next over hours instead of jumping, and no two
+// keepers stand on the same number.
+inline int DriftSpreadPercent(unsigned int drawNow, unsigned int drawNext, double fraction, int minPercent, int maxPercent)
+{
+	if (maxPercent <= minPercent)
+		return minPercent;
+	const unsigned int span = (unsigned int)(maxPercent - minPercent + 1);
+	const double a = (double)(minPercent + (int)(drawNow % span));
+	const double b = (double)(minPercent + (int)(drawNext % span));
+	if (fraction < 0.0) fraction = 0.0;
+	if (fraction > 1.0) fraction = 1.0;
+	return (int)(a + (b - a) * fraction + 0.5);
+}
+
+// Point 10: a barter's top-up. Both pieces are valued by one measure; the side
+// that gets the dearer piece pays the difference, and the barter is off when
+// the difference is over `maxPercent` of the cheaper piece or over what the
+// payer may spend (`purse`). -1 when it is off, else the top-up (0: even).
+inline long long BarterTopUp(long long valueGiven, long long valueTaken, int maxPercent, long long purse)
+{
+	if (valueGiven <= 0 || valueTaken <= 0)
+		return -1;
+	const long long diff = valueGiven > valueTaken ? valueGiven - valueTaken : valueTaken - valueGiven;
+	const long long cheaper = valueGiven < valueTaken ? valueGiven : valueTaken;
+	if (diff * 100 > cheaper * (long long)(maxPercent < 0 ? 0 : maxPercent))
+		return -1;
+	if (diff > (purse < 0 ? 0 : purse))
+		return -1;
+	return diff;
 }
 
 }  // namespace playerbot_price_rules

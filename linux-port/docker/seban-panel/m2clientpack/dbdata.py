@@ -32,7 +32,8 @@ PACK = 'dbdata'
 # one only when the edits produce it (dbsource.py: the extra bonus lines,
 # read by the client's uitooltip.py; a client without that code never opens
 # it). From the next client release on its base has the file itself.
-OPTIONAL_FILES = {'gamedata/item_extra_apply.txt': 2}
+OPTIONAL_FILES = {'gamedata/item_extra_apply.txt': 2, 'icon/item/71102.tga': 2, 'icon/item/mt2009_custom_71102.tga': 2}
+OPTIONAL_FILES.update({'icon/item/klepsydra_biologa_71102.tga': 2, 'icon/item/custom_chest_50122.tga': 2, 'icon/item/custom_chest_50035.tga': 2, 'icon/item/skrzynia_zielone_bonusy_50124.tga': 2, 'icon/item/custom_chest_50033.tga': 2})
 BASE_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'base')
 
 
@@ -247,3 +248,6 @@ def make_zip(base, index, data, server, changed, original=False, stamp_value=Non
         z.writestr(STAMP_FILE, stamp_text(stamp_value, index, data))
     label = 'oryginal' if original else safe
     return 'dbdata-%s-klient-%s-%s.zip' % (label, base.version, stamp), buf.getvalue()
+
+# CUSTOM_ICON_50122_SUPPORTED_V1
+OPTIONAL_FILES['icon/item/custom_chest_50122.tga']=2

@@ -1575,6 +1575,52 @@ namespace
 	// MT2009_PLUS_HORSE30_V1: five is exactly one paid training of levels 1-9
 	// (konie.quest, playerbot_horse30.h); what the bag lacks the stable sells.
 	const int PLAYERBOT_HAY_KEEP = 5;
+
+	// ---- MT2009_PLUS_MARKET_LIFE_V1: the owner's market list of 9 October ----
+	// Point 2: no scroll on a piece of PLAYERBOT_SCROLL_FREE_GEAR_MAX_LEVEL or
+	// under, but for the few steps that pay: from this plus, where the sheet's
+	// price of the next plus is over the present one by this share of the
+	// scroll's price or more (IsPlayerBotLowGearScrollWorthIt).
+	const int PLAYERBOT_LOW_GEAR_SCROLL_MIN_PLUS = 4;
+	const int PLAYERBOT_LOW_GEAR_SCROLL_GAIN_PERCENT = 150;
+	// Point 3: the level-30 weapons at +0..+3 (GetPlayerBotLevel30LowPlusPercent):
+	// from the world yang at which prices are the sheet's (PLAYERBOT_WORLD_YANG_ZERO)
+	// to this, the age takes them down to AGE_MIN percent; from NORMAL units of
+	// them on all the counters to FLOOD, the supply to SUPPLY_MIN; never under FLOOR.
+	const long long PLAYERBOT_L30_LOW_AGE_FULL_YANG = 60000000000LL;
+	const int PLAYERBOT_L30_LOW_AGE_MIN_PERCENT = 55;
+	const long long PLAYERBOT_L30_LOW_SUPPLY_NORMAL = 12;
+	const long long PLAYERBOT_L30_LOW_SUPPLY_FLOOD = 60;
+	const int PLAYERBOT_L30_LOW_SUPPLY_MIN_PERCENT = 60;
+	const int PLAYERBOT_L30_LOW_FLOOR_PERCENT = 35;
+	const int PLAYERBOT_L30_LOW_MAX_PLUS = 3;
+	// MT2009_PLUS_BOT_BOSS_CALL_V1, point 1 (the owner, 10 October): a level-30
+	// weapon whose average damage is over this many percent "zawsze ma duza
+	// wartosc" - never under the +0..+3 markdown above, on any path its price
+	// is read by (IsPlayerBotHighAverageLevel30Weapon).
+	const long PLAYERBOT_L30_LOW_KEEP_AVERAGE = 40;
+	// Point 4: Marchewka and Czerwony Zen-szen stand on a kingdom's counters
+	// up to this many units of a kind; past it the bots give them at the
+	// General Store for Red Potions (PLAYERBOT_HAY_POTION_VNUM), this many a
+	// piece, at most PLAYERBOT_HORSE_FEED_EXCHANGE_MAX pieces a visit.
+	const DWORD PLAYERBOT_HORSE_FEED_KINGDOM_CAP = 300;
+	const int PLAYERBOT_HORSE_FEED_CARROT_POTIONS = 10;
+	const int PLAYERBOT_HORSE_FEED_GINSENG_POTIONS = 15;
+	const int PLAYERBOT_HORSE_FEED_EXCHANGE_MAX = 40;
+	// Point 5: rare goods - fewer than this many units of the kind on all the
+	// counters besides the line (the market preview's "Rzadkie"); listed at
+	// PREMIUM percent over the asking price, the line's markdown taken at
+	// 1/SLOW_DIVISOR of its pace, and bought up to BUY percent of the usual cap.
+	const DWORD PLAYERBOT_RARE_MARKET_UNITS = 10;
+	const int PLAYERBOT_RARE_MARKET_PREMIUM = 40;
+	const int PLAYERBOT_RARE_MARKET_SLOW_DIVISOR = 2;
+	const int PLAYERBOT_RARE_MARKET_BUY_PERCENT = 140;
+	// Point 7 (the test option MATERIAL_MARKET): a refine material counts as
+	// missing from the world under this share of its usual supply (50 without it).
+	const int PLAYERBOT_MATERIAL_MARKET_MISSING_PERCENT = 80;
+	// Point 8: a material's keeper spread drifts from one draw to the next
+	// over this window (GetPlayerBotListingSpreadPercent).
+	const long PLAYERBOT_MATERIAL_SPREAD_WINDOW_SECONDS = 6L * 3600L;
 	// And an offline counter carries at most this share of its cells in lines
 	// of refine materials together - three fifths: 48 lines of the eighty cells
 	// a counter had, 96 of a bot's two pages since 28 September
@@ -1937,6 +1983,13 @@ namespace
 	const int PLAYERBOT_BOSS_RAID_REINFORCEMENTS = 4;
 	const int PLAYERBOT_BOSS_RAID_REINFORCE_ROUNDS = 3;
 	const int PLAYERBOT_BOSS_RAID_FINISH_PERCENT = 30;
+	// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4: a bot within this of a world boss,
+	// on his ground, has seen him and calls its kingdom (FindPlayerBotBossSpotter);
+	// a boss nobody has seen for UNSEEN_MS is called to as before; one call on
+	// the shout per boss and map in SHOUT_GAP_MS.
+	const int PLAYERBOT_BOSS_CALL_SIGHT = 4000;
+	const DWORD PLAYERBOT_BOSS_CALL_UNSEEN_MS = 3 * 60 * 1000;
+	const DWORD PLAYERBOT_BOSS_CALL_SHOUT_GAP_MS = 10 * 60 * 1000;
 	const int PLAYERBOT_BOSS_MAX_ATTACKERS = 8;
 	// The Demon Tower raid (playerbot_demon_tower.h): one bot guild at a
 	// time on this core, the first a few minutes after a start and the next
@@ -2405,6 +2458,13 @@ namespace
 	// PLAYERBOT_SEARCH_RANGE from the bot itself, and a bot that always had its
 	// next monster in reach never stood idle long enough to be walked back.
 	const int PLAYERBOT_PARTY_HUMAN_HUNT_RANGE = 2500;
+	// MT2009_PLUS_PARTY_SPREAD_V1 (FindPlayerBotPartySpreadFoe): how far from
+	// the person a bot beside it picks a monster of its own - the follow
+	// distance, so the pick never sets the follow pass walking it back - and
+	// the person's HP under which what hits the person comes first, the
+	// person's own target included.
+	const int PLAYERBOT_PARTY_SPREAD_RANGE = PLAYERBOT_PARTY_FOLLOW_DISTANCE;
+	const int PLAYERBOT_PARTY_SPREAD_DANGER_HP_PERCENT = 40;
 	const DWORD PLAYERBOT_PARTY_FOLLOW_INTERVAL = 2000;
 	// A bot that could not follow its player onto another map tries again this
 	// much later; TransitionPlayerBotMap already says why, once a minute.
@@ -2728,6 +2788,23 @@ namespace
 	// The market: it buys while it holds fewer than PLAYERBOT_CAPE_WANT, keeps
 	// PLAYERBOT_CAPE_KEEP off its own counter, pays near the market's price
 	// and out of a share of its spare gold, from PLAYERBOT_CAPE_MIN_SPARE_GOLD.
+	// MT2009_PLUS_BOT_CAPE_V3 (the owner, 9 October: "boty uzywaja ich takze
+	// solo na wybranych mapach, przy odpowiednim sprzecie, z ostroznym
+	// limitem sciagnietych potworow, ktory rosnie z doswiadczeniem"). A bot
+	// alone uses a cape only on these grinding grounds; in a party of bots
+	// (no person in it) the leader uses one on any hunting map, its members
+	// near it. The crowd it takes is the capacity above under a limit of its
+	// own: PLAYERBOT_CAPE_START_LIMIT for a first cape, PLAYERBOT_CAPE_XP_STEP
+	// more for every crowd beaten without dying, and a death under a cape's
+	// crowd halves the experience. A party adds PLAYERBOT_CAPE_PARTY_MEMBER
+	// a member near. The experience is a quest flag, so it lasts.
+	const long PLAYERBOT_CAPE_SOLO_MAPS[] = { 64, 63, 61, 104, 71, 67, 68, 62, 72, 73 };
+	const int PLAYERBOT_CAPE_START_LIMIT = 8;
+	const int PLAYERBOT_CAPE_XP_STEP = 2;
+	const int PLAYERBOT_CAPE_XP_MAX = 40;
+	const int PLAYERBOT_CAPE_PARTY_MEMBER = 5;
+	const int PLAYERBOT_CAPE_PARTY_RANGE = 2000;
+	const char* const PLAYERBOT_CAPE_XP_FLAG = "playerbot_cape.xp";
 	const int PLAYERBOT_CAPE_WANT = 5;
 	const int PLAYERBOT_CAPE_KEEP = 10;
 	const int PLAYERBOT_CAPE_FAIR_PERCENT = 150;
@@ -3089,7 +3166,9 @@ namespace
 	// 20 000 000 (the other earrings), 12 000 000 (bracelets, necklaces), geometric between (owner).
 	// 25: MT2009_PLUS_UNPRICED_GEAR_V1 - 37 wearable families of level 50+ (drops and chests)
 	// priced by level and kind, and the estimate for any other unpriced piece of 30+.
-	const DWORD PLAYERBOT_PRICE_TABLE_VERSION = 25;
+	// 26: MT2009_PLUS_NS_WIKI_ITEMS_V1 - the wiki families (Cyjanitowe weapons, Turmalin jewellery,
+	// Ogniste Buty, Buty Oceanu) and their 16 materials (wiki_nowe.sql; Autor: Digi Rasta).
+	const DWORD PLAYERBOT_PRICE_TABLE_VERSION = 26;
 	// Community patch 2, point 8: inflation. Every PLAYERBOT_INFLATION_STEP_YANG
 	// the world's characters hold between them lifts every price his sheet sets
 	// by PLAYERBOT_INFLATION_STEP_PERCENT, on top of the yang-rate curve and in
@@ -3286,25 +3365,74 @@ namespace
 	// at +7, shields from level 21 at +7 (and body armour and helmets with them,
 	// the operator's choice of 25 September), bracelets, necklaces and boots
 	// from +4, earrings from +7.
+	// MT2009_PLUS_BOT_SMITHY_V1, point 11 ("Bonowanie rusza od +6"): every
+	// piece that waited for +7 takes its stones from +6 now - the weapon from
+	// forty-five, the level-30 family, the armour, the helmet, the shield and
+	// the earrings. The bracelet, the necklace and the boots keep their +4.
 	const int PLAYERBOT_BONUS_WEAPON_MIN_LEVEL = 45;
-	const int PLAYERBOT_BONUS_WEAPON_MIN_PLUS = 7;
+	const int PLAYERBOT_BONUS_WEAPON_MIN_PLUS = 6;
 	// MT2009_PLUS_BOT_L30_AVG_MIX_V1: the level-30 weapons from +7, like every
 	// other weapon ("boty mieszaja zmiankami srednie na broni z poziomu 30 od
 	// +7, az do 30%", sosen): a +4 to +6 one is a step on the way to the
 	// blacksmith's +7 and took the stones its +7 then lacked.
-	const int PLAYERBOT_BONUS_L30_MIX_MIN_PLUS = 7;
+	const int PLAYERBOT_BONUS_L30_MIX_MIN_PLUS = 6;
 	const int PLAYERBOT_BONUS_ARMOUR_MIN_LEVEL = 21;
-	const int PLAYERBOT_BONUS_ARMOUR_MIN_PLUS = 7;
+	const int PLAYERBOT_BONUS_ARMOUR_MIN_PLUS = 6;
 	// Body armour from the level-18 plates up, at +7 (Iwakura, 26 September:
 	// a +7 armour is "odpowiednio wysoki stopien ulepszenia"). A bot of 25 to
 	// 34 wears the level-18 plate, and at 21 its +7 and +9 were refused, so
 	// the stones of 264 bots on m2zip had nowhere to go but the jewellery.
 	const int PLAYERBOT_BONUS_BODY_MIN_LEVEL = 18;
 	const int PLAYERBOT_BONUS_JEWEL_MIN_PLUS = 4;
-	const int PLAYERBOT_BONUS_EAR_MIN_PLUS = 7;
+	const int PLAYERBOT_BONUS_EAR_MIN_PLUS = 6;
 	// Point 6, "obowiazek natychmiastowego bonowania": a pass that spent stones
 	// comes back this soon, in town or out of it, while a piece is being worked.
 	const DWORD PLAYERBOT_BONUS_WORKING_INTERVAL = 30000;
+	// MT2009_PLUS_BOT_SMITHY_V1 (the owner's list for the update after 2.29.0):
+	//
+	// Point 11: the bonus maker ("Bonowacz") - this many bots in a hundred, by
+	// pid, put their stones on the gear they keep for sale as well, from +6
+	// (PLAYERBOT_BONUS_GOODS_MIN_PLUS), at most PLAYERBOT_BONUS_GOODS_PIECES
+	// pieces a pass. Point 10: only from PLAYERBOT_BONUS_GOODS_MIN_LEVEL, and
+	// only from the surplus - a kind of ordinary stone goes on goods only while
+	// the bag holds more than PLAYERBOT_BONUS_GOODS_STONE_RESERVE of it and no
+	// piece the bot wears or is about to wear can take one now. The level-30
+	// weapons kept in the bag for sale are goods by the same rule: the stones
+	// go on the worn gear first.
+	const int PLAYERBOT_BONUS_GOODS_SELLER_PERCENT = 20;
+	const int PLAYERBOT_BONUS_GOODS_MIN_LEVEL = 30;
+	const int PLAYERBOT_BONUS_GOODS_MIN_PLUS = 6;
+	const int PLAYERBOT_BONUS_GOODS_PIECES = 2;
+	const int PLAYERBOT_BONUS_GOODS_STONE_RESERVE = 10;
+	// Point 10: a line worth keeping for itself is never mixed off by an
+	// ordinary change stone (the level-30 weapons' average mix and the young
+	// bot's jewellery excepted): a top roll (IsPlayerBotTopBonusLine), or a
+	// line of the PvP tier PLAYERBOT_BONUS_PROTECT_PVP_TIER or better rolled
+	// at least PLAYERBOT_BONUS_PROTECT_ROLL_PERCENT of its top.
+	const int PLAYERBOT_BONUS_PROTECT_PVP_TIER = 6;
+	const int PLAYERBOT_BONUS_PROTECT_ROLL_PERCENT = 70;
+	// Points 6-8: the plain anvil burns what it fails, so a worn piece goes to
+	// it only with a spare for its slot in the bag; without one its step
+	// waits for a scroll. A young bot (under PLAYERBOT_SAFE_ANVIL_YOUNG_LEVEL)
+	// and gear no scroll goes on still take the plain steps to
+	// PLAYERBOT_SAFE_ANVIL_YOUNG_MAX_PLUS. A piece of
+	// PLAYERBOT_SAFE_ANVIL_LINES bonus lines or more never goes to the plain
+	// anvil, worn or not (point 7) - the Demon Tower's smith included.
+	const int PLAYERBOT_SAFE_ANVIL_YOUNG_LEVEL = 30;
+	const int PLAYERBOT_SAFE_ANVIL_YOUNG_MAX_PLUS = 4;
+	const int PLAYERBOT_SAFE_ANVIL_LINES = 4;
+	// Point 2: from this level a helmet or a shield under the level of the
+	// best one the village merchants sell the bot gives way to one that is
+	// not (IsPlayerBotOutdatedGear), and the bag keeps
+	// PLAYERBOT_HELM_SHIELD_FAMILY_KEEP pieces of one helmet or shield family
+	// - the rest is the merchant's (helmets) or the counter's first (shields).
+	const int PLAYERBOT_HELM_SHIELD_LADDER_MIN_LEVEL = 21;
+	const int PLAYERBOT_HELM_SHIELD_FAMILY_KEEP = 2;
+	// Point 1: the Ebonitowe Kolczyki are the first choice of the Warriors and
+	// the Ninjas that go by the jewel list: this much more on top of the
+	// list's own preference.
+	const DWORD PLAYERBOT_EBONY_EARRINGS_VNUM = 17100;
+	const long long PLAYERBOT_EBONY_EARRINGS_FIRST_PERCENT = 60;
 	// Point 11: a hundred of the Alchemist's dust make a Marmur Blogoslawienstwa.
 	const int PLAYERBOT_DUST_PER_MARBLE = 100;
 	const DWORD PLAYERBOT_BLESSING_MARBLE_VNUM = 70024;
@@ -3757,6 +3885,26 @@ namespace
 	// the Infected.
 	const BYTE PLAYERBOT_SOHAN_ICE_MIN_LEVEL = 58;
 	const BYTE PLAYERBOT_SPIDER_MIN_LEVEL = 48;
+	// MT2009_PLUS_BOT_SPIDER_GROUND_V1 (the owner, 9 October: "boty 48-75 lvl
+	// realnie tam expia - losuja mape przy kazdym wejsciu do gry i powrocie z
+	// miasta, ida tylko z odpowiednim sprzetem, a w V2 chetniej lacza sie w
+	// druzyny"). The share of the session draws that takes a Spider Dungeon,
+	// the top of the band, and the gear each dungeon asks for: weapon and
+	// body armour at these grades, a helmet on, a weapon of its level and a
+	// stock of red potions.
+	const int PLAYERBOT_SPIDER_SESSION_PERCENT = 35;
+	const int PLAYERBOT_SPIDER_SESSION_MAX_LEVEL = 75;
+	const int PLAYERBOT_SPIDER_V1_WEAPON_PLUS = 4;
+	const int PLAYERBOT_SPIDER_V1_ARMOUR_PLUS = 4;
+	const int PLAYERBOT_SPIDER_V2_WEAPON_PLUS = 6;
+	const int PLAYERBOT_SPIDER_V2_ARMOUR_PLUS = 5;
+	const int PLAYERBOT_SPIDER_MIN_RED_POTIONS = 40;
+	// In V2 a bot is seldom alone: the solo stretch is this rare there, the
+	// party cohort twice the frontier's, and a partner up to this many levels
+	// apart and this far off.
+	const int PLAYERBOT_PARTY_SOLO_PERCENT_SPIDER_V2 = 3;
+	const int PLAYERBOT_SPIDER_V2_PARTY_LEVEL_DELTA = 5;
+	const int PLAYERBOT_SPIDER_V2_PARTY_FIND_RANGE = 3000;
 	// The arrival is the temple's own Town.txt cell (161,938); the exit is five
 	// hundred units south of it. Both were checked against milgyo's server_attr
 	// and stand on open ground - eighty-one of eighty-one free cells within two
@@ -3924,11 +4072,21 @@ namespace
 	// and comes out with it (playerbot_party_dungeon.h). The Demon Tower (66)
 	// and the Catacomb (216) jump the whole party themselves
 	// (CDungeon::JumpParty through CPlayerBotManager::WarpBot).
+	// MT2009_PLUS_ZODIAC_NAV_V1: the Swiatynia Zodiaku (358) is 6x6 - a 3072x3072 grid of 50-unit cells is
+	// some 200 MB, which the 32-bit core could not give (std::bad_alloc in CPlayerBotNavigation::Init, the
+	// test server's game1 twice on 8/9 October). Its floors are open arenas: no grid, a straight walk
+	// (MovePlayerBot) and a map change without one (TransitionPlayerBotMap).
+	bool IsPlayerBotOpenArenaMap(long mapIndex)
+	{
+		const long base = mapIndex >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN ? mapIndex / 10000 : mapIndex;
+		return base == 358;
+	}
 	bool IsPlayerBotPartyDungeonMap(long mapIndex)
 	{
 		const long base = mapIndex >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN ? mapIndex / 10000 : mapIndex;
 		return base == 208 || base == 351 || base == 352 || (base >= 363 && base <= 366) ||
-				base == 158;	// MT2009_PLUS_ATLANTYDA_V1: Ruiny Atlantydy
+				base == 158 ||	// MT2009_PLUS_ATLANTYDA_V1: Ruiny Atlantydy
+				base == 358;	// MT2009_PLUS_ZODIAC_BOTS_V1: Swiatynia Zodiaku (its floors, playerbot_zodiac_bots.h)
 	}
 	// MT2009_PLUS_BOT_DUNGEONS_ALL_V1: both defined in playerbot_party_dungeon.h.
 	// A person (not a bot) of the bot's party online on this core - standing on
@@ -6125,7 +6283,10 @@ namespace
 	// the live population, which is what 2.0.60 was missing - so this is 70-80
 	// bots in the first villages at a time on a world of eleven hundred, not
 	// the 580 that filled them then.
-	const int PLAYERBOT_BIOLOGIST_HERB_TRIP_PER_MILLE = 70;
+	// MT2009_PLUS_BOT_BIOLOGIST_EAGER_V1 (the owner, 9 October: "boty duzo
+	// chetniej robia Biologa"): 120 per mille, and 180 for the collect rows
+	// below, with half the cooldown between two trips.
+	const int PLAYERBOT_BIOLOGIST_HERB_TRIP_PER_MILLE = 120;
 	const DWORD PLAYERBOT_BIOLOGIST_HERB_ERRAND_MAX_MS = 2 * 60 * 60 * 1000;
 	// A trip that has already collected something finishes: the hour used to
 	// run out with specimens in the bag and the place went back before the
@@ -6150,8 +6311,8 @@ namespace
 	// keyed by pid with no waiting list, so without this the same bots reclaim
 	// a place the moment the sweep frees one and everyone else starves
 	// ("Ryzyko glodzenia pozostalych", audit of 17 September, A.4/A.6).
-	const DWORD PLAYERBOT_BIOLOGIST_ERRAND_COOLDOWN_MS = 30 * 60 * 1000;
-	const int PLAYERBOT_BIOLOGIST_COLLECT_TRIP_PER_MILLE = 100;
+	const DWORD PLAYERBOT_BIOLOGIST_ERRAND_COOLDOWN_MS = 15 * 60 * 1000;	// MT2009_PLUS_BOT_BIOLOGIST_EAGER_V1: was 30 min
+	const int PLAYERBOT_BIOLOGIST_COLLECT_TRIP_PER_MILLE = 180;	// MT2009_PLUS_BOT_BIOLOGIST_EAGER_V1: was 100
 	const DWORD PLAYERBOT_BIOLOGIST_COLLECT_ERRAND_MAX_MS = 2 * 60 * 60 * 1000;
 	// From this row up a specimen is a refine material too - the Orc Tooth,
 	// the Curse Book, the Demon Souvenir - and a bot of any level may carry
@@ -7469,6 +7630,38 @@ namespace
 		return false;
 	}
 
+	// MT2009_PLUS_COR_GRADE_PRICE_V1 (the owner, 10 October: "boty nie rozrozniaja
+	// cor draconis i nawet drogocenne wystawiaja za taka sama cene jak
+	// zwyczajne"): a Cor is worth the Dragon Stones it opens into - each grade
+	// of stone twice the one below (rough 1, cut 2, rare 4, antique 8,
+	// legendary 16), averaged over its group's weights in special_item_group.
+	// Percent of PLAYERBOT_COR_DRACONIS_PRICE (a rough Cor's price).
+	int GetPlayerBotCorDraconisGradePercent(DWORD vnum)
+	{
+		switch (vnum)
+		{
+			case 50256: case 51507: return 200;		// szlifowane
+			case 50257: case 51508: return 400;		// rzadkie
+			case 50258: case 51509: return 800;		// antyczne
+			case 50259: case 51510: return 1600;	// legendarne
+			case 51503: case 51576: return 130;		// zwyczajne
+			case 51504: case 51583: return 160;		// szlachetne
+			case 51505: case 51590: return 210;		// drogocenne
+			case 51506: case 51618: return 420;		// mityczne
+			case 51541: case 51604: return 260;		// rozzarzone
+			case 51548: case 51597: return 270;		// nieskazitelne
+			case 51549: case 51611: return 320;		// wieczne
+			case 51562: case 51625: return 520;		// epickie
+			case 51569: case 51632: return 640;		// boskie
+			default: return 100;					// surowe / Rough / plain
+		}
+	}
+
+	DWORD GetPlayerBotCorDraconisPrice(DWORD vnum)
+	{
+		return (DWORD)((unsigned long long)PLAYERBOT_COR_DRACONIS_PRICE * GetPlayerBotCorDraconisGradePercent(vnum) / 100ULL);
+	}
+
 	// The sashes of the item table: four grades each of five classic kinds
 	// (85001..85024 less the unused 85009, 85010, 85019, 85020), Death Ruler
 	// (85101..85104) and the Herzband (86061..86064).  Death Ruler no longer
@@ -7563,6 +7756,25 @@ namespace
 	// clock keeps at most this many pieces before it drops the stale ones.
 	const DWORD PLAYERBOT_GEAR_JUNK_STALL_WAIT_MS = 2 * PLAYERBOT_OFFLINE_UNSOLD_STEP_MS;
 	const size_t PLAYERBOT_GEAR_JUNK_SINCE_MAX = 200000;
+	// MT2009_PLUS_BOT_BAG_HOARD_FIX_V1 (zgloszenie 4af9ac48, 2.30.0, 11 October:
+	// "boty zbierajac eq wszystko ulepszaja do +4 i zostawiaja sobie w eq"): of
+	// that gear only this many pieces of a sale kind (GetPlayerBotSaleGearKind)
+	// wait in the bag for the counter - the first in its cells; the rest are
+	// the merchant's at once, and so is every one of them while the bag is
+	// full. The six-hour clock is not kept over a restart and a full counter
+	// took none, so 933 bots of the test world carried 21 pieces and more.
+	const int PLAYERBOT_GEAR_JUNK_WAIT_PER_KIND = 1;
+	// MT2009_PLUS_BOT_BAG_HOARD_FIX_V2 (the owner, 12 October: "To moze niech
+	// chetniej je wystawiaja na sprzedaz?" - 19 000 pieces at +5..+9 in the
+	// test world's bags, 16 454 of them with 1 409 bots whose counters had no
+	// free cell). A full counter takes such a spare in place of its cheapest
+	// line (BotOfflineSpareGearSwap, playerbot_offline_shop.h): a line asking
+	// at most 1/PLAYERBOT_SPARE_SWAP_PRICE_RATIO of the spare's price, standing
+	// PLAYERBOT_SPARE_SWAP_MIN_STAND_MS at least, while the counter shows
+	// fewer than PLAYERBOT_SPARE_SWAP_COUNTER_LINES lines of such spares.
+	const int PLAYERBOT_SPARE_SWAP_PRICE_RATIO = 4;
+	const DWORD PLAYERBOT_SPARE_SWAP_MIN_STAND_MS = 30 * 60 * 1000;
+	const int PLAYERBOT_SPARE_SWAP_COUNTER_LINES = 24;
 	void NotePlayerBotCorBought(LPCHARACTER ch, DWORD vnum, long long price, DWORD count);
 	const DWORD PLAYERBOT_CRAFT_UNSOLD_RECALL_MS_PRE = 12 * 60 * 60 * 1000;
 	bool IsPlayerBotSaddlebagKeeperPID(DWORD pid);
@@ -7601,7 +7813,7 @@ namespace
 	{
 		switch (GetPlayerBotRareGoodsKind(vnum))
 		{
-			case PLAYERBOT_RARE_GOODS_COR: return PLAYERBOT_COR_DRACONIS_PRICE;
+			case PLAYERBOT_RARE_GOODS_COR: return GetPlayerBotCorDraconisPrice(vnum);	// MT2009_PLUS_COR_GRADE_PRICE_V1
 			case PLAYERBOT_RARE_GOODS_SASH: return PLAYERBOT_SASH_PRICE;
 			default: return 0;
 		}
@@ -8873,6 +9085,13 @@ namespace
 		// MT2009_PLUS_BOT_CAPE_V1: when the cape is next asked about
 		// (HandlePlayerBotValourCape).
 		DWORD dwNextCapeCheck = 0;
+		// MT2009_PLUS_BOT_SPIDER_GROUND_V1: the Spider Dungeons' draw of this
+		// session - 0 until it is drawn, drawn again at every login (a fresh
+		// state) and at the end of every town visit (playerbot_travel.h,
+		// GetPlayerBotSpiderSessionMap).
+		DWORD dwSpiderSessionRoll = 0;
+		// MT2009_PLUS_BOT_DAY_GOAL_V1: the Cel Dnia the status line last carried.
+		DWORD dwLastStatusDayGoalKey = 0;
 		BYTE bMultiPullGroups;
 		BYTE bMultiPullDesiredGroups;
 		bool bLootThreatNearby;

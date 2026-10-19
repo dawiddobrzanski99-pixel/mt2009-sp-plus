@@ -661,11 +661,14 @@ def read_flags(rows):
     """The event flags the respawn code reads (regen.cpp): fastBossSpawn,
     fastMobSpawn (world-wide, the /respawns page), fastBossSpawn<map> and
     fastMobSpawn<map> (per map, the GM command map_spawn_delay), and the
-    count multipliers m2_boss_count / m2_mob_count."""
+    count multipliers m2_boss_count / m2_mob_count; a Metin stone's line reads
+    fastMetinSpawn(<map>) and m2_metin_count (MT2009_PLUS_REGEN_METIN_SPLIT_V1)."""
     flags = {}
     try:
         for row in rows("SELECT szName, lValue FROM player.quest WHERE dwPID=0 AND (szName LIKE %s OR szName LIKE %s "
-                        "OR szName IN (%s, %s))", ("fastBossSpawn%", "fastMobSpawn%", "m2_boss_count", "m2_mob_count")):
+                        "OR szName LIKE %s OR szName IN (%s, %s, %s))",
+                        ("fastBossSpawn%", "fastMobSpawn%", "fastMetinSpawn%", "m2_boss_count", "m2_mob_count",
+                         "m2_metin_count")):
             name = row.get("szName")
             if isinstance(name, bytes):
                 name = name.decode("latin-1")
@@ -678,11 +681,11 @@ def read_flags(rows):
     return flags
 
 
-def delay_percent(flags, boss_or_stone, map_index):
+def delay_percent(flags, boss_or_stone, map_index, stone=False):
     """(percent, source) the core uses for a respawn line's time - 100 = the
     file's time. regen_event: the map's own flag, else the world-wide one;
     0 (or >= 100) = untouched; never below 3 seconds."""
-    prefix = "fastBossSpawn" if boss_or_stone else "fastMobSpawn"
+    prefix = "fastMetinSpawn" if stone else "fastBossSpawn" if boss_or_stone else "fastMobSpawn"
     value = max(0, min(100, int(flags.get(f"{prefix}{int(map_index)}", 0) or 0)))
     source = "map"
     if value == 0:
@@ -699,11 +702,11 @@ def effective_seconds(seconds, percent):
     return max(3, seconds * percent // 100)
 
 
-def count_percent(flags, boss_or_stone, map_index, all_fighters):
+def count_percent(flags, boss_or_stone, map_index, all_fighters, stone=False):
     """regen_target_count: a line of monsters/stones only, not in dungeons."""
     if int(map_index) >= 10000 or not all_fighters:
         return 100
-    value = int(flags.get("m2_boss_count" if boss_or_stone else "m2_mob_count", 0) or 0)
+    value = int(flags.get("m2_metin_count" if stone else "m2_boss_count" if boss_or_stone else "m2_mob_count", 0) or 0)
     return min(value, 400) if value > 100 else 100
 
 

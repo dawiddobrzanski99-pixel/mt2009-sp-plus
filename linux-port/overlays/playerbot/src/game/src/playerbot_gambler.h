@@ -976,6 +976,21 @@ namespace
 			scrollValue = (long long)GetPlayerBotMaterialAskingBase(PLAYERBOT_BLESSING_SCROLL_VNUM);
 		}
 
+		// MT2009_PLUS_BOT_SMITHY_V1, point 7: a piece of four lines or more
+		// never goes to the plain anvil - under a scroll, or the session ends.
+		if (scrollCell < 0 && recipe->prob < 100 && IsPlayerBotFourLinePiece(item))
+		{
+			scrollCell = FindPlayerBotGambleScrollCell(ch);
+			if (scrollCell < 0)
+			{
+				plan->bDone = true;
+				sys_log(0, "PLAYERBOT_PERSONA: gambler keeps a four-line piece off the plain anvil pid=%u name=%s vnum=%u plus=%u",
+						ch->GetPlayerID(), ch->GetName(), item->GetVnum(), (unsigned int)plus);
+				return false;
+			}
+			scrollValue = (long long)GetPlayerBotMaterialAskingBase(PLAYERBOT_BLESSING_SCROLL_VNUM);
+		}
+
 		// The stake: the fee, the materials, the scroll, and what a failure
 		// takes - the whole piece at the plain anvil, a grade under a scroll.
 		// It has to fit in what is left of the forty percent ("nigdy nie

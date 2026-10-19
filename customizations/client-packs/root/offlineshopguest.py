@@ -1,0 +1,686 @@
+import ui
+import offlineShopUi
+import ikashop
+import shop
+import wndMgr
+import app
+import uiCommon
+import localeInfo
+import item
+import eventManager
+import player
+import net
+import chr
+import constInfo
+
+# A bot's offline shop is a person's grid twice over, side by side: one
+# grid twenty columns wide, cells 80-159 its right half row for row
+# (playerbot_offline::BOT_SHOP_PAGES on the server). A person's shop is the
+# stock grid.
+SHOP_BLOCKS_MAX = 2
+
+def IsPressingCTRL():
+	return app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL)
+
+def _IsCheapOffer(data):
+	try:
+		import uiopcjedodatkowe
+		if uiopcjedodatkowe.Settings().get("shopcheap_off", False):
+			return False
+		count = max(1, int(data.get("count", 1)))
+		unit = long(data.get("price", 0)) / count
+		if unit <= 0:
+			return False
+		if unit < 500:
+			return True
+		item.SelectItem(data["vnum"])
+		npc = item.GetIBuyItemPrice()
+		return npc > 0 and unit < npc
+	except Exception:
+		return False
+
+class OfflineShopGuest(ui.ScriptWindow):
+	def __init__(self):
+		ui.ScriptWindow.__init__(self)
+		self.__Initialize()
+		self.LoadScript()
+		ikashop.SetSearchShopBoard(self)
+
+	def __del__(self):
+		ui.ScriptWindow.__del__(self)
+
+	def __Initialize(self):
+		self.tooltip = None
+		self.tooltipItem = None
+		self.questionDialog = None
+		self.popupDialog = None
+		self.isNormalShop = False
+		self.shopInfo = None
+		self.xShopStart = 0
+		self.yShopStart = 0
+		self.activeCells = []
+		self.wideSlot = None
+		self.shopWide = False
+
+	@ui.WindowDestroy
+	def Destroy(self):
+		self.__Initialize()
+		ikashop.SetSearchShopBoard(None)
+
+	def SetToolTip(self, tooltip, tooltipItem):
+		self.tooltip = tooltip
+		self.tooltipItem = tooltipItem
+
+	def LoadScript(self):
+		try:
+			PythonScriptLoader = ui.PythonScriptLoader()
+			PythonScriptLoader.LoadScriptFile(self, "UIScript/PrivateShopGuest.py")
+
+			self.board = self.GetChild("board")
+			self.titleLabel = self.GetChild("TitleName")
+			self.titleBar = self.GetChild("TitleBar")
+			self.timeBar = self.GetChild("TimeBar")
+			self.timeLeftLabel = self.GetChild("TimeLeftLabel")
+			self.whisperButton = self.GetChild("WhisperButton")
+			self.offlineOwner = self.GetChild("OfflineOwner")
+			self.closeNormalShopButton = self.GetChild("CloseNormalShopButton")
+
+			self.titleBar.SetCloseEvent(ui.__mem_func__(self.Close))
+
+			self.myShopSlotRenderer = offlineShopUi.ShopSlotRenderer(itemSlotParent=self.board)
+			self.itemSlot = self.myShopSlotRenderer.itemSlot
+			self.itemSlot.SetWindowHorizontalAlignCenter()
+			self.itemSlot.SetPosition(0, 30)
+
+			self.itemSlot.SetSlotStyle(wndMgr.SLOT_STYLE_NONE)
+			self.itemSlot.SAFE_SetButtonEvent("LEFT", "EXIST", self.__SelectItemSlot)
+			self.itemSlot.SAFE_SetButtonEvent("RIGHT", "EXIST", self.__SelectItemSlot)
+
+			self.itemSlot.SetOverInItemEvent(ui.__mem_func__(self.__OverInItem))
+			self.itemSlot.SetOverOutItemEvent(ui.__mem_func__(self.__OverOutItem))
+
+			self.whisperButton.SAFE_SetEvent(self.__SendOwnerWhisper)
+			self.closeNormalShopButton.SAFE_SetEvent(self.__AskCloseNormalShop)
+
+			self.timeBar.SAFE_SetEvent("MOUSE_OVER_IN", self.__ShowTimeToolTip)
+			self.timeBar.SAFE_SetEvent("MOUSE_OVER_OUT", self.__HideNormalToolTip)
+
+		except:
+			import exception
+			exception.Abort("OfflineShopManage.LoadDialog.BindObject")
+
+		self.__CreateWideSlot()
+
+	# A shop's cell and the grid it is drawn in: the first block's cells in
+	# the stock grid, the second block's in the one beside it (wideSlot),
+	# which shows while a line stands past the first block.
+	def __BlockCells(self):
+		return shop.SHOP_PLAYER_WIDTH * shop.SHOP_PLAYER_HEIGHT
+
+	def __SlotOf(self, cell):
+		block = cell // self.__BlockCells()
+		if block == 0:
+			return (self.itemSlot, cell)
+		if block < SHOP_BLOCKS_MAX and getattr(self, "shopWide", False) and getattr(self, "wideSlot", None):
+			return (self.wideSlot, cell - block * self.__BlockCells())
+		return (None, -1)
+
+	def __RefreshGrids(self):
+		self.itemSlot.RefreshSlot()
+		if getattr(self, "wideSlot", None):
+			self.wideSlot.RefreshSlot()
+
+	# Read from the cells: a classic stall's and a person's all lie in the
+	# first block.
+	def __WantsWide(self):
+		if not self.shopInfo or not self.shopInfo.get("items"):
+			return False
+		return max(self.shopInfo["items"].keys()) >= self.__BlockCells()
+
+	# Made after the stock script's try: a failure here costs the second
+	# block, never the window - an error inside that try aborts the client.
+	def __CreateWideSlot(self):
+		self.wideSlot = None
+		self.shopWide = False
+		try:
+			self.narrowSize = (self.GetWidth(), self.GetHeight())
+			slot = ui.GridSlotWindow()
+			slot.SetParent(self.board)
+			slot.ArrangeSlot(0, shop.SHOP_PLAYER_WIDTH, shop.SHOP_PLAYER_HEIGHT, 32, 32, 0, 0)
+			slot.SetSlotBaseImage("d:/ymir work/ui/public/Slot_Base.sub")
+			slot.SetSlotStyle(wndMgr.SLOT_STYLE_NONE)
+			slot.SAFE_SetButtonEvent("LEFT", "EXIST", self.__SelectWideSlot)
+			slot.SAFE_SetButtonEvent("RIGHT", "EXIST", self.__SelectWideSlot)
+			slot.SetOverInItemEvent(ui.__mem_func__(self.__OverInWideItem))
+			slot.SetOverOutItemEvent(ui.__mem_func__(self.__OverOutItem))
+			slot.Hide()
+			self.wideSlot = slot
+		except Exception as e:
+			import dbg
+			dbg.TraceError("offlineshopguest: no second block: %s" % e)
+			self.wideSlot = None
+
+	def __SelectWideSlot(self, slot):
+		self.__SelectItemSlot(slot + self.__BlockCells())
+
+	def __OverInWideItem(self, slot):
+		self.__OverInItem(slot + self.__BlockCells())
+
+	# The window a grid wider for the second block beside the first, or the
+	# stock one; kept on the screen.
+	def __SetWide(self, wide):
+		wide = bool(wide) and getattr(self, "wideSlot", None) is not None
+		if wide == getattr(self, "shopWide", False):
+			return
+		self.shopWide = wide
+		try:
+			(width, height) = self.narrowSize
+			gridWidth = shop.SHOP_PLAYER_WIDTH * 32
+			if wide:
+				width += gridWidth
+			self.SetSize(width, height)
+			self.board.SetSize(width, height)
+			self.titleBar.SetWidth(width - 15)
+			if wide:
+				left = (self.narrowSize[0] - gridWidth) // 2
+				self.itemSlot.SetWindowHorizontalAlignLeft()
+				self.itemSlot.SetPosition(left, 30)
+				self.wideSlot.SetPosition(left + gridWidth, 30)
+				self.wideSlot.Show()
+			else:
+				self.wideSlot.Hide()
+				self.itemSlot.SetWindowHorizontalAlignCenter()
+				self.itemSlot.SetPosition(0, 30)
+			(x, y) = self.GetGlobalPosition()
+			self.SetPosition(max(0, min(x, wndMgr.GetScreenWidth() - width)), y)
+			self.UpdateRect()
+		except Exception as e:
+			import dbg
+			dbg.TraceError("offlineshopguest: second block: %s" % e)
+
+	def __ShowTimeToolTip(self):
+		if self.tooltip:
+			self.tooltip.ClearToolTip()
+			self.tooltip.AppendTextLine(offlineShopUi.GetDurationTooltipText(self.shopInfo["duration"]))
+			self.tooltip.ShowToolTip()
+
+	def __HideNormalToolTip(self):
+		if self.tooltip:
+			self.tooltip.HideToolTip()
+
+	def __SendOwnerWhisper(self):
+		eventManager.EventManager().send_event(eventManager.OPEN_WHISPER_EVENT, self.shopInfo["ownerName"])
+
+	def __GetItemData(self, slot):
+		if slot in self.shopInfo['items']:
+			return self.shopInfo['items'][slot]
+		return None
+
+	def __SelectItemSlot(self, slot):
+		data = self.__GetItemData(slot)
+		if data is None:
+			return
+
+		if IsPressingCTRL():
+			self.__AskBuyAllItem(slot)
+		else:
+			self.__AskBuyItem(slot)
+
+	def __GetSimilarItemData(self, itemData):
+		itemSlotList = []
+		totalCount = 0
+		totalPrice = 0
+		itemTuple = (itemData["vnum"], itemData["count"], itemData["price"])
+		for slotIdx, data in self.shopInfo["items"].items():
+			compareTuple = (data["vnum"], data["count"], data["price"])
+			if itemTuple == compareTuple:
+				itemSlotList.append(slotIdx)
+				totalCount += data["count"]
+				totalPrice += data["price"]
+
+		return itemSlotList, totalCount, totalPrice
+
+	def __AskCloseNormalShop(self):
+		if self.questionDialog:
+			self.questionDialog.Close()
+
+		dialog = uiCommon.QuestionDialog()
+		dialog.SetText(localeInfo.PRIVATE_SHOP_CLOSE_QUESTION)
+		dialog.acceptButton.SAFE_SetEvent(self.__CloseNormalShop)
+		dialog.SetDefaultCancelEvent()
+		dialog.Open()
+		self.questionDialog = dialog
+
+	def __AskBuyItem(self, slot):
+		data = self.__GetItemData(slot)
+		if data is None:
+			return
+
+		if self.questionDialog:
+			self.questionDialog.Close()
+
+		item.SelectItem(data["vnum"])
+
+		dialog = uiCommon.QuestionDialog()
+		dialog.SetText(localeInfo.DO_YOU_BUY_ITEM2 % (str(data["count"]) + "x", item.GetItemName(), localeInfo.NumberToMoneyString(data["price"])))
+		dialog.acceptButton.SAFE_SetEvent(self.__SendBuyItem, slot, False)
+		dialog.closeEvent = lambda arg1=[slot]: self.DeactivateItems(arg1)
+		dialog.SetDefaultCancelEvent()
+		dialog.Open()
+		self.questionDialog = dialog
+		self.ActivateItems([slot])
+
+	def __AskBuyAllItem(self, slot):
+		data = self.__GetItemData(slot)
+		if data is None:
+			return
+
+		if self.questionDialog:
+			self.questionDialog.Close()
+
+		itemSlotList, totalCount, totalPrice = self.__GetSimilarItemData(data)
+		item.SelectItem(data["vnum"])
+
+		dialog = uiCommon.QuestionDialog2()
+		countString = "%dx (po %d)" % (totalCount, data["count"])
+		dialog.SetText1(localeInfo.DO_YOU_BUY_ITEM2 % (countString, item.GetItemName(), localeInfo.NumberToMoneyString(totalPrice)))
+		dialog.SetText2(localeInfo.DO_YOU_BUY_ITEM_ALL_SIMILAR)
+		dialog.acceptButton.SAFE_SetEvent(self.__SendBuyItem, slot, True)
+		dialog.closeEvent = lambda arg1=itemSlotList: self.DeactivateItems(arg1)
+		dialog.SetDefaultCancelEvent()
+		dialog.Open()
+		self.questionDialog = dialog
+		self.ActivateItems(itemSlotList)
+
+	def __SendBuyItem(self, slot, all_similar=False):
+		if self.questionDialog:
+			self.questionDialog.Close()
+			self.questionDialog = None
+
+			data = self.__GetItemData(slot)
+			if data is None:
+				return
+
+			if all_similar:
+				for check_slot, check_item in self.shopInfo['items'].items():
+					item1 = (data['vnum'], data['count'], data['price'])
+					item2 = (check_item['vnum'], check_item['count'], check_item['price'])
+					if item1 == item2:
+						self.__SendBuyItemPacket(check_slot)
+			else:
+				self.__SendBuyItemPacket(slot)
+
+	def __SendBuyItemPacket(self, slotPos):
+		if not self.isNormalShop:
+			itemData = self.__GetItemData(slotPos)
+			ikashop.SendBuyItem(self.shopInfo['id'], itemData["id"], itemData["price"])
+		else:
+			net.SendShopBuyPacket(slotPos)
+
+	def __OverInItem(self, slot):
+		data = self.__GetItemData(slot)
+		if data is None:
+			return
+
+		if self.tooltipItem:
+			self.tooltipItem.ClearToolTip()
+			self.tooltipItem.SetMyShopItem(data["vnum"], data["count"], data["sockets"], data["attrs"], data["price"])
+			self.tooltipItem.AppendSpace(5)
+			self.tooltipItem.AppendTextLine(localeInfo.QUICK_BUY_SHOP)
+			self.tooltipItem.AppendTextLine(localeInfo.QUICK_BUY_ALL_SIMILAR)
+			self.tooltipItem.ShowToolTip()
+
+	def __OverOutItem(self):
+		if self.tooltipItem:
+			self.tooltipItem.HideToolTip()
+
+	def __OpenPopup(self, message):
+		if self.popupDialog:
+			self.popupDialog.Close()
+
+		dialog = uiCommon.PopupDialog()
+		dialog.SetText(message)
+		dialog.SetAutoClose(3)
+		dialog.Open()
+		self.popupDialog = dialog
+
+	def RefreshItemDeposit(self):
+		self.__SetWide(self.__WantsWide())
+		self.ClearItemStock()
+		activeCells = getattr(self, "activeCells", [])
+		for slotIdx,data in self.shopInfo["items"].items():
+			(grid, local) = self.__SlotOf(slotIdx)
+			if grid is None:
+				continue
+
+			count = data["count"]
+			if count < 2:
+				count = 0
+
+			socket = tuple(data["sockets"])
+			grid.SetItemSlot(local, data["vnum"], count, socket=socket)
+			if slotIdx in activeCells:
+				grid.ActivateSlot(local)
+			# MT2009_PLUS_SHOP_CHEAP_MARK_V1: a cheap offer lit up green - under 500 Yang
+			# a piece or under the item's own shop price (the owner, 4 October: in the
+			# offline shops, not at the NPC merchants); "Opcje dodatkowe" switches it off.
+			elif _IsCheapOffer(data):
+				grid.ActivateSlot(local, 0.25, 0.95, 0.25, 1.0)
+
+		self.__RefreshGrids()
+
+	def ClearItemStock(self):
+		wideSlot = getattr(self, "wideSlot", None)
+		for x in range(shop.SHOP_PLAYER_WIDTH):
+			for y in range(shop.SHOP_PLAYER_HEIGHT):
+				self.itemSlot.ClearSlot(x + shop.SHOP_PLAYER_WIDTH * y)
+				if wideSlot:
+					wideSlot.ClearSlot(x + shop.SHOP_PLAYER_WIDTH * y)
+
+	def SetTitle(self, ownerName):
+		self.titleLabel.SetText(localeInfo.PLAYER_SHOP_TITLE % ownerName)
+
+	def SetTime(self, timeIndex):
+		if timeIndex < 0:
+			self.timeBar.Hide()
+		else:
+			self.timeBar.Show()
+			offlineShopUi.SetDuration(timeIndex, self.timeLeftLabel)
+
+	def RefreshOwnerMessageButton(self, isOnline):
+		if isOnline:
+			self.offlineOwner.Hide()
+			self.whisperButton.Show()
+		else:
+			self.offlineOwner.Show()
+			self.whisperButton.Hide()
+
+	def ActivateItems(self, itemSlots):
+		if not hasattr(self, "activeCells"):
+			self.activeCells = []
+		for slot in itemSlots:
+			if slot in self.shopInfo["items"]:
+				if slot not in self.activeCells:
+					self.activeCells.append(slot)
+				(grid, local) = self.__SlotOf(slot)
+				if grid is not None:
+					grid.ActivateSlot(local)
+		self.__RefreshGrids()
+
+	def DeactivateItems(self, itemSlots):
+		for slot in itemSlots:
+			if slot in getattr(self, "activeCells", []):
+				self.activeCells.remove(slot)
+		if self.shopInfo and "items" in self.shopInfo:
+			for slot in itemSlots:
+				if slot in self.shopInfo["items"]:
+					(grid, local) = self.__SlotOf(slot)
+					if grid is not None:
+						grid.DeactivateSlot(local)
+			self.__RefreshGrids()
+
+	def OnPressEscapeKey(self):
+		self.Close()
+		return True
+
+	def Open(self):
+		self.Show()
+		self.SetTop()
+		(self.xShopStart, self.yShopStart, z) = player.GetMainCharacterPosition()
+
+	def Close(self):
+		eventManager.EventManager().send_event(eventManager.EVENT_MARK_SHOP_VIEWED, self.shopInfo["vid"], not self.isNormalShop)
+		if self.isNormalShop:
+			shop.Close()
+			net.SendShopEndPacket()
+		else:
+			ikashop.SendCloseShopGuestBoard()
+
+		self.shopInfo = None
+		self.Hide()
+		self.isNormalShop = False
+
+		if self.questionDialog:
+			self.questionDialog.Close()
+			self.questionDialog = None
+
+	def __CloseNormalShop(self):
+		if self.questionDialog:
+			self.questionDialog.Close()
+			self.questionDialog = None
+
+		net.SendChatPacket("/close_shop")
+		self.Close()
+		return True
+
+	def CloseNormal(self):
+		if self.IsShow() and self.isNormalShop:
+			self.Close()
+
+	def RefreshNormal(self):
+		if self.IsShow() and self.isNormalShop:
+			self.__PrepareNormalShopInfo()
+			self.RefreshItemDeposit()
+
+	def __PrepareNormalShopInfo(self, vid=0):
+		data = {"items": {}}
+
+		if self.shopInfo and self.shopInfo.has_key("ownerName") and vid == 0:
+			data["ownerName"] = self.shopInfo["ownerName"]
+			data["vid"] = self.shopInfo["vid"]
+		elif vid > 0:
+			data["ownerName"] = chr.GetNameByVID(vid)
+			data["vid"] = vid
+
+		for slotPos in range(shop.SHOP_SLOT_COUNT):
+			itemVnum = shop.GetItemID(slotPos)
+			if itemVnum > 0:
+				itemPrice = shop.GetItemPrice(slotPos)
+				itemCount = shop.GetItemCount(slotPos)
+				sockets = tuple(shop.GetItemMetinSocket(slotPos, i) for i in xrange(player.METIN_SOCKET_MAX_NUM))
+				attrs = tuple(shop.GetItemAttribute(slotPos, i) for i in xrange(player.ATTRIBUTE_SLOT_MAX_NUM))
+				data["items"][slotPos] = {	"vnum": itemVnum,
+												"price": itemPrice,
+												"count": itemCount,
+												"sockets": sockets,
+												"attrs": attrs,
+												}
+		self.shopInfo = data
+
+	def SetShopHeight(self, isNormalShop, isOwner):
+		if isNormalShop and not isOwner:
+			self.SetHeight(298)
+			self.board.SetHeight(298)
+		else:
+			self.SetHeight(328)
+			self.board.SetHeight(328)
+
+		self.RefreshPosition()
+
+	def SetView(self, isNormalShop, isOwner=False):
+		if not isNormalShop:
+			self.whisperButton.Show()
+			self.offlineOwner.Show()
+			self.timeBar.Show()
+			self.closeNormalShopButton.Hide()
+		else:
+			self.whisperButton.Hide()
+			self.offlineOwner.Hide()
+			self.timeBar.Hide()
+			if isOwner:
+				self.closeNormalShopButton.Show()
+			else:
+				self.closeNormalShopButton.Hide()
+
+		self.SetShopHeight(isNormalShop, isOwner)
+
+	def IsShowNormal(self):
+		return self.isNormalShop and self.IsShow()
+
+	def OpenNormal(self, vid, unlockCount, isPremium):
+		isOwner = player.IsMainCharacterIndex(vid)
+		shop.Open(True, isOwner)
+		self.isNormalShop = True
+		self.activeCells = []
+		self.__PrepareNormalShopInfo(vid)
+		self.SetTitle(self.shopInfo["ownerName"])
+		self.RefreshItemDeposit()
+		self.SetView(True, isOwner)
+		self.myShopSlotRenderer.UpdateSlotCurtain(unlockCount, isPremium)
+		self.Open()
+		eventManager.EventManager().send_event(eventManager.EVENT_MARK_SHOP_CURRENT, self.shopInfo["vid"], False)
+
+	def OnUpdate(self):
+		USE_SHOP_LIMIT_RANGE = 1000
+		(x, y, z) = player.GetMainCharacterPosition()
+		if abs(x - self.xShopStart) > USE_SHOP_LIMIT_RANGE or abs(y - self.yShopStart) > USE_SHOP_LIMIT_RANGE:
+			self.Close()
+
+
+	def HighlightFoundItems(self):
+		slotList = []
+		import offlineShopSearch
+		plusWhole = (constInfo.OFFLINESHOP_LAST_SEARCHED_CATEGORY == offlineShopSearch.SHOP_SEARCH_CATEGORY_PLUS and
+			len(constInfo.OFFLINESHOP_LAST_SEARCHED_ITEMS) != 1)
+		for slotIdx, data in self.shopInfo["items"].items():
+			# The MT2009 Plus category: a whole grade, whatever the look.
+			if plusWhole:
+				if offlineShopSearch.MatchPlus(constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY, data["vnum"]):
+					slotList.append(slotIdx)
+				continue
+			if constInfo.OFFLINESHOP_LAST_SEARCHED_CATEGORY == ikashop.SHOP_SEARCH_CATEGORY_ARMOR:
+				if constInfo.OFFLINESHOP_LAST_SEARCH_IS_ATTR and len(data["attrs"]) > 0 and data["attrs"][0][0] == 0:
+					continue
+
+				item.SelectItem(data["vnum"])
+				if item.GetItemType() == item.ITEM_TYPE_ARMOR:
+					if constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_ARMOR_BODY:
+						if item.GetItemSubType() == item.ARMOR_BODY:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_ARMOR_SHIELD:
+						if item.GetItemSubType() == item.ARMOR_SHIELD:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_ARMOR_HEAD:
+						if item.GetItemSubType() == item.ARMOR_HEAD:
+							slotList.append(slotIdx)
+
+			elif constInfo.OFFLINESHOP_LAST_SEARCHED_CATEGORY == ikashop.SHOP_SEARCH_CATEGORY_JEWELRY:
+				if constInfo.OFFLINESHOP_LAST_SEARCH_IS_ATTR and len(data["attrs"]) > 0 and data["attrs"][0][0] == 0:
+					continue
+
+				item.SelectItem(data["vnum"])
+				if item.GetItemType() == item.ITEM_TYPE_ARMOR:
+					if constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_JEWELRY_EAR:
+						if item.GetItemSubType() == item.ARMOR_EAR:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_JEWELRY_NECK:
+						if item.GetItemSubType() == item.ARMOR_NECK:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_JEWELRY_WRIST:
+						if item.GetItemSubType() == item.ARMOR_WRIST:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_JEWELRY_BOOTS:
+						if item.GetItemSubType() == item.ARMOR_FOOTS:
+							slotList.append(slotIdx)
+
+			elif constInfo.OFFLINESHOP_LAST_SEARCHED_CATEGORY == ikashop.SHOP_SEARCH_CATEGORY_WEAPON:
+				if constInfo.OFFLINESHOP_LAST_SEARCH_IS_ATTR and len(data["attrs"]) > 0 and data["attrs"][0][0] == 0:
+					continue
+
+				item.SelectItem(data["vnum"])
+				if item.GetItemType() == item.ITEM_TYPE_WEAPON:
+					if constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_WEAPON_ONEHAND:
+						if item.GetItemSubType() == item.WEAPON_SWORD:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_WEAPON_TWOHAND:
+						if item.GetItemSubType() == item.WEAPON_TWO_HANDED:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_WEAPON_DAGGER:
+						if item.GetItemSubType() == item.WEAPON_DAGGER:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_WEAPON_BOW:
+						if item.GetItemSubType() == item.WEAPON_BOW:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_WEAPON_BELL:
+						if item.GetItemSubType() == item.WEAPON_BELL:
+							slotList.append(slotIdx)
+					elif constInfo.OFFLINESHOP_LAST_SEARCHED_SUBCATEGORY == ikashop.SHOP_SEARCH_SUB_WEAPON_FAN:
+						if item.GetItemSubType() == item.WEAPON_FAN:
+							slotList.append(slotIdx)
+			else:
+				for searchData in constInfo.OFFLINESHOP_LAST_SEARCHED_ITEMS:
+					searchItemVnum = searchData[0]
+					searchSocket0 = searchData[1]
+					if data["vnum"] != searchItemVnum:
+						continue
+
+					if searchSocket0 > 0 and data["sockets"][0] != searchSocket0:
+						continue
+
+					slotList.append(slotIdx)
+
+		# What a search found, lit in whichever grid it stands.
+		self.ActivateItems(slotList)
+
+	def SetWholeOwnerName(self, pid, name):
+		try:
+			pid = int(pid)
+		except ValueError:
+			return
+		if not hasattr(self, "wholeOwnerNames"):
+			self.wholeOwnerNames = {}
+		self.wholeOwnerNames[pid] = name
+
+	def __WholeOwnerName(self, data):
+		shortName = data.get("ownerName", "")
+		name = getattr(self, "wholeOwnerNames", {}).get(data.get("id", 0), "")
+		if shortName and name.startswith(shortName):
+			return name
+		return shortName
+
+	## BINARY CALLS
+	def OpenShopGuest(self, data):
+		data["ownerName"] = self.__WholeOwnerName(data)
+		data['items'] = {item['cell']: item for item in data['items']}
+		previous = getattr(self, "shopInfo", None)
+		sameShop = bool(previous) and previous.get("id") == data.get("id")
+		self.shopInfo = data
+		if not sameShop:
+			self.activeCells = []
+		self.SetView(False)
+		self.SetTitle(data["ownerName"])
+		self.SetTime(data["duration"])
+		self.RefreshOwnerMessageButton(data["isOwnerOnline"])
+		self.RefreshItemDeposit()
+		self.Open()
+		self.myShopSlotRenderer.UpdateSlotCurtain(data["unlockCount"], data["isPremium"])
+		eventManager.EventManager().send_event(eventManager.EVENT_MARK_SHOP_CURRENT, self.shopInfo["vid"], True)
+
+		if ikashop.IsFoundShopFromSearchItem(self.shopInfo["vid"]):
+			self.HighlightFoundItems()
+
+	def ShopExpiredGuesting(self, id):
+		self.__OpenPopup(localeInfo.SHOP_EXPIRE_NOTIFY_GUEST)
+		self.Close()
+
+	def ShopGuestRemoveItem(self, itemid):
+		for i, v in self.shopInfo["items"].items():
+			if v["id"] == itemid:
+				(grid, local) = self.__SlotOf(i)
+				if grid is not None:
+					grid.ClearSlot(local)
+				self.shopInfo["items"].pop(i)
+				break
+
+	def ShopGuestEditItem(self, itemid, price):
+		for i, v in self.shopInfo["items"].iteritems():
+			if v["id"] == itemid:
+				self.shopInfo["items"][i]["price"] = price
+
+				if self.questionDialog:
+					self.questionDialog.Close()
+					self.questionDialog = None
+
+				self.__OpenPopup(localeInfo.SHOP_HAS_BEEN_EDITED)
+				self.Close()
+				break

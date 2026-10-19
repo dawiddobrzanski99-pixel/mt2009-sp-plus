@@ -810,15 +810,19 @@ def install(bp, ctx):
                 return True
         return False
 
+    def is_stone_row(row):
+        """MT2009_PLUS_REGEN_METIN_SPLIT_V1: a line with a Metin stone."""
+        return any((mobs().get(vnum) or {}).get("type") == 2 for vnum in member_vnums(row))
+
     def counts_multiplied(row):
         """regen_target_count: only lines of monsters and stones only."""
         members = member_vnums(row)
         return bool(members) and all(mobs().get(v) and mobs()[v]["type"] in (0, 2) for v in members)
 
     def server_flags(index):
-        names = ["fastMobSpawn", "fastBossSpawn", "m2_mob_count", "m2_boss_count"]
+        names = ["fastMobSpawn", "fastBossSpawn", "fastMetinSpawn", "m2_mob_count", "m2_boss_count", "m2_metin_count"]
         if index:
-            names += [f"fastMobSpawn{index}", f"fastBossSpawn{index}"]
+            names += [f"fastMobSpawn{index}", f"fastBossSpawn{index}", f"fastMetinSpawn{index}"]
         values = {}
         try:
             marks = ",".join(["%s"] * len(names))
@@ -832,18 +836,20 @@ def install(bp, ctx):
             return (per_map, "tej mapy") if per_map else (max(0, min(100, values.get(kind, 0))), "całego serwera")
 
         return {"mob_delay": delay("fastMobSpawn"), "boss_delay": delay("fastBossSpawn"),
+                "metin_delay": delay("fastMetinSpawn"), "metin_count": values.get("m2_metin_count", 0),
                 "mob_count": values.get("m2_mob_count", 0), "boss_count": values.get("m2_boss_count", 0),
                 "error": "_error" in values}
 
     def effective(row, flags, index):
         boss = is_boss_row(row)
-        percent, _where = flags["boss_delay" if boss else "mob_delay"]
+        kind = "metin" if is_stone_row(row) else "boss" if boss else "mob"
+        percent, _where = flags[kind + "_delay"]
         start, end = row["time"], row["time_to"]
         if percent and start > 0:
             start = max(3, start * percent // 100)
             end = max(3, end * percent // 100) if end else 0
         count = row["count"]
-        count_pct = flags["boss_count" if boss else "mob_count"]
+        count_pct = flags[kind + "_count"]
         if count_pct > 100 and index < 10000 and counts_multiplied(row):
             count = count * min(count_pct, 400) // 100
         return {"time": start, "time_to": end, "count": count, "boss": boss,

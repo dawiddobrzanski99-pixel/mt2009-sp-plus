@@ -4,7 +4,7 @@
 -- w M2 ka¿dego królestwa (obok Teleportera; do 30 wrzeœnia w Dolinie Orków) tworzy instancjê mapy 363 na game2
 -- (d.new_jump_pids) i od razu przenosi do niej gracza albo przywódcê z ludŸmi jego
 -- dru¿yny stoj¹cymi obok (jedno ³adowanie, boty z dru¿yny wchodz¹ za nim). Etapy:
---   1: zabij 60 paj¹ków (9703) - zabójca dostaje Pieczêæ Biblioteki (30765); u¿ycie
+--   1: zabij 40 paj¹ków (9703) - zabójca dostaje Pieczêæ Biblioteki (30765); u¿ycie
 --      pieczêci wzywa nastêpn¹ falê; trzy pieczêcie koñcz¹ etap (Arezzo: 150 x 5),
 --   2: zniszcz 5 Metinów (8006, Metin Ciemnoœci, jak Metiny u Arezzo; do 1 paŸdziernika Pajêcze Jaja
 --      9704 z modelem spider_spawn, nie Metiny - "Dung 30 lvl nie ma metinów"),
@@ -54,9 +54,9 @@ quest biblioteka_wiedzy begin
 				limit_min = 30,
 				-- MT2009_PLUS_DUNGEON_FEE_V1: the price of a new expedition (each player, paid on entering it) and
 				-- how many new expeditions a player may start a day (Polish midnight).
-				fee = 1000000, fee_text = "1 000 000", -- MT2009_PLUS_AREZZO_BALANCE_V1: half of 2 000 000 (the owner, 5 October)
-				daily = 5,
-				wave_kills = 60,
+				fee = 2000000, fee_text = "2 000 000", -- Shared fix: entry fee x2.
+				daily = 10,
+				wave_kills = 40,
 				seals = 3,
 				chests_min = 1, chests_max = 3,
 				path = "data/dungeon/biblioteka_wiedzy/",
@@ -79,8 +79,7 @@ quest biblioteka_wiedzy begin
 		end
 
 		function over_limit()
-			local c = biblioteka_wiedzy.cfg()
-			return not pc.is_gm() and biblioteka_wiedzy.runs_today() >= c.daily
+			return false -- No daily entry limit.
 		end
 
 		function too_poor()
@@ -118,7 +117,7 @@ quest biblioteka_wiedzy begin
 				pc.setf("biblioteka_wiedzy", "runs", 0)
 			end
 			pc.setf("biblioteka_wiedzy", "runs", pc.getf("biblioteka_wiedzy", "runs") + 1)
-			syschat("Op³ata za wejœcie: "..c.fee_text.." Yang. Dzisiejsza wyprawa "..pc.getf("biblioteka_wiedzy", "runs").."/"..c.daily..".")
+			syschat("Oplata za wejscie: "..c.fee_text.." Yang. Bez limitu dobowego.")
 			return true
 		end
 
@@ -430,7 +429,7 @@ quest biblioteka_wiedzy begin
 			say("")
 			say_reward("Wymagany poziom: "..c.min_level..". Limit "..c.limit_min.." minut, bez czekania miêdzy wyprawami.") -- MT2009_PLUS_DUNGEON_NO_PLAYER_COOLDOWN_V1
 			say_reward("Boty z Twojej dru¿yny wejd¹ do lochu razem z Tob¹.")
-			say_reward("Wejœcie: "..c.fee_text.." Yang. Najwy¿ej "..c.daily.." wypraw dziennie (dziœ: "..biblioteka_wiedzy.runs_today().."/"..c.daily..").") -- MT2009_PLUS_DUNGEON_FEE_V1
+			say_reward("Wejscie: "..c.fee_text.." Yang. Bez limitu wypraw dziennie.")
 			say_reward("P³acisz tylko za siebie - boty z dru¿yny i towarzysz wchodz¹ bez op³aty.") -- MT2009_PLUS_DUNGEON_FEE_LEADER_V1
 			if select("WejdŸ do Biblioteki Wiedzy", "Nie teraz") ~= 1 then
 				return

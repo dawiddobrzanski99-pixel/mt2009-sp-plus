@@ -1492,6 +1492,91 @@ namespace
 	// a weapon of the anvil table past its ceiling, whatever the operator's
 	// item policy keeps. A burn costs the bot nothing it fights with, so no
 	// backup is asked for any more.
+	// MT2009_PLUS_BOT_SMITHY_V1, point 9: whether this bag piece is one a smith
+	// of that race could take from the bot at all, the purse aside - the
+	// piece's kind, his refine sets, nothing a rule keeps for the bot itself,
+	// from +4 (sosen: "Kowal w Wiezy ulepsza przedmioty botow dopiero od +4"),
+	// and never one of four bonus lines, which no blacksmith burns (point 7).
+	bool IsPlayerBotTowerSmithCandidate(LPCHARACTER ch, DWORD smithRace, LPITEM item, bool* spareOut = NULL)
+	{
+		// Nor the Stalki kept for the level ahead (playerbot_stalki.h): that is
+		// the bot's next armour or weapon, not goods to try a step on. Nor
+		// what a companion's owner gave it or put on it.
+		if (!IsPlayerBotTowerSmithPiece(smithRace, item) || item->isLocked() || item->IsExchanging() ||
+				item->IsEquipped() || !IsPlayerBotTowerSmithRefineSet(item->GetRefineSet()) ||
+				GetPlayerBotItemPolicy(item) == PLAYERBOT_ITEM_POLICY_KEEP ||
+				IsPlayerBotKeptStalki(ch, item) || IsPlayerBotFourLinePiece(item) ||
+				IsPlayerBotSidekickGift(ch, item) || IsPlayerBotSidekickPinned(ch, item))
+			return false;
+		const BYTE plus = item->GetRefineLevel();
+		const bool spareGear = IsPlayerBotHigherTierSpare(ch, item);
+		if (spareOut)
+			*spareOut = spareGear;
+		if ((int)plus < PLAYERBOT_TOWER_SMITH_GOODS_MIN_PLUS || plus >= 9 ||
+				(spareGear && plus >= GetPlayerBotRefineTarget(ch, item)))
+			return false;
+		if (IsPlayerBotScrollOnlyWeapon(item))
+			return false;
+		const TRefineTable* recipe = CRefineManager::instance().GetRefineRecipe(item->GetRefineSet());
+		if (!recipe)
+			return false;
+		if (IsPlayerBotAnvilTableWeapon(item))
+			return (int)plus < GetPlayerBotWeaponAnvilCeiling(ch, item);
+		return IsPlayerBotScrollFreeGear(item) || !IsPlayerBotPrizeItem(item) ||
+				recipe->prob >= PLAYERBOT_PRIZE_SAFE_REFINE_PROB;
+	}
+
+	// MT2009_PLUS_BOT_SMITHY_V1, point 9 ("boty z rajdu przynosza przedmioty
+	// dla kazdego z trzech kowali", Frelik): which smith stands is the quest's
+	// roll, so a bot of the tower's levels keeps in its bag one piece for each
+	// of the three - a weapon for 20074, a body armour, shield or helmet for
+	// 20075, jewellery or boots for 20076 - the highest grade of each it holds
+	// that the smith would take (IsPlayerBotTowerSmithCandidate). The junk rule
+	// and the counters leave those three alone. Read once a minute a bot.
+	struct TPlayerBotTowerSmithReserve
+	{
+		DWORD dwAt;
+		DWORD adwItem[3];
+	};
+	std::map<DWORD, TPlayerBotTowerSmithReserve> s_mapPlayerBotTowerSmithReserve;
+
+	bool IsPlayerBotTowerSmithReserve(LPCHARACTER ch, LPITEM item)
+	{
+		if (!ch || !item || item->IsEquipped() || item->GetID() == 0 ||
+				(item->GetType() != ITEM_WEAPON && item->GetType() != ITEM_ARMOR) ||
+				(int)ch->GetLevel() < PLAYERBOT_TOWER_MIN_LEVEL || !ch->GetGuild() ||
+				!IsPlayerBotTowerRaidsEnabled() || IsPlayerBotSidekickPID(ch->GetPlayerID()))
+			return false;
+		const DWORD now = get_dword_time();
+		TPlayerBotTowerSmithReserve& r = s_mapPlayerBotTowerSmithReserve[ch->GetPlayerID()];
+		if (r.dwAt == 0 || now - r.dwAt >= 60000)
+		{
+			r.dwAt = now != 0 ? now : 1;
+			static const DWORD smiths[3] = { 20074, 20075, 20076 };
+			int bestPlus[3] = { -1, -1, -1 };
+			r.adwItem[0] = r.adwItem[1] = r.adwItem[2] = 0;
+			for (WORD cell = 0; cell < PLAYERBOT_BAG_CELLS; ++cell)
+			{
+				LPITEM piece = ch->GetInventoryItem(cell);
+				if (!piece || piece->GetCell() != cell || piece->GetRefinedVnum() == 0)
+					continue;
+				for (int i = 0; i < 3; ++i)
+				{
+					if (!IsPlayerBotTowerSmithCandidate(ch, smiths[i], piece))
+						continue;
+					if ((int)piece->GetRefineLevel() > bestPlus[i])
+					{
+						bestPlus[i] = (int)piece->GetRefineLevel();
+						r.adwItem[i] = piece->GetID();
+					}
+					break;
+				}
+			}
+		}
+		const DWORD id = item->GetID();
+		return id == r.adwItem[0] || id == r.adwItem[1] || id == r.adwItem[2];
+	}
+
 	LPITEM PickPlayerBotTowerSmithPiece(LPCHARACTER ch, DWORD smithRace)
 	{
 		LPITEM best = NULL;
@@ -1500,30 +1585,12 @@ namespace
 		for (WORD cell = 0; cell < PLAYERBOT_BAG_CELLS; ++cell)
 		{
 			LPITEM item = ch->GetInventoryItem(cell);
-			// Nor the Stalki kept for the level ahead (playerbot_stalki.h): that is
-			// the bot's next armour or weapon, not goods to try a step on.
-			if (!IsPlayerBotTowerSmithPiece(smithRace, item) || item->isLocked() || item->IsExchanging() ||
-					!IsPlayerBotTowerSmithRefineSet(item->GetRefineSet()) ||
-					GetPlayerBotItemPolicy(item) == PLAYERBOT_ITEM_POLICY_KEEP ||
-					IsPlayerBotKeptStalki(ch, item))
+			bool spareGear = false;
+			if (!item || !IsPlayerBotTowerSmithCandidate(ch, smithRace, item, &spareGear))
 				continue;
 			const BYTE plus = item->GetRefineLevel();
-			const bool spareGear = IsPlayerBotHigherTierSpare(ch, item);
-			if (spareGear ? plus >= GetPlayerBotRefineTarget(ch, item)
-					: (int)plus < PLAYERBOT_TOWER_SMITH_GOODS_MIN_PLUS)
-				continue;
 			const TRefineTable* recipe = CRefineManager::instance().GetRefineRecipe(item->GetRefineSet());
 			if (!recipe || purse < (long long)ch->ComputeRefineFee(recipe->cost))
-				continue;
-			if (IsPlayerBotScrollOnlyWeapon(item))
-				continue;
-			if (IsPlayerBotAnvilTableWeapon(item))
-			{
-				if ((int)plus >= GetPlayerBotWeaponAnvilCeiling(ch, item))
-					continue;
-			}
-			else if (!IsPlayerBotScrollFreeGear(item) && IsPlayerBotPrizeItem(item) &&
-					recipe->prob < PLAYERBOT_PRIZE_SAFE_REFINE_PROB)
 				continue;
 			const int rank = (int)plus * 2 + (spareGear ? 1 : 0);
 			if (rank > bestRank)
@@ -1662,6 +1729,61 @@ namespace
 		FPlayerBotTowerSmithWaiting f(run);
 		pMap->for_each(f);
 		return f.m_waiting;
+	}
+
+	// MT2009_PLUS_BOT_SMITHY_V1, point 9 (Frelik: "Towarzysz tez ma swoja
+	// kolejke"): the Companion takes its turn at the sixth floor's smith like
+	// every bot of the run - the quest gave it the flag with everybody
+	// (d.setqf2 can_refine) - from playerbot_sidekick.h, where its tick is,
+	// with nothing to fight. Into the bots' run when there is one and the
+	// smith has not been passed yet (their wait counts it among the bots), or
+	// a turn of its own beside a person who runs the tower without bots.
+	struct TPlayerBotSidekickTowerTurn
+	{
+		long lMap;
+		TPlayerBotTowerRun run;
+		TPlayerBotSidekickTowerTurn() : lMap(0) {}
+	};
+	std::map<DWORD, TPlayerBotSidekickTowerTurn> s_mapPlayerBotSidekickTowerTurn;
+
+	bool ManagePlayerBotSidekickTowerSmith(LPCHARACTER ch, TPlayerBotAIState& state, DWORD dwNow)
+	{
+		if (!ch || ch->IsDead() || !IsPlayerBotDemonTowerInstance(ch->GetMapIndex()) ||
+				ch->GetQuestFlag("deviltower_zone.can_refine") <= 0)
+			return false;
+		const long map = ch->GetMapIndex();
+		LPDUNGEON d = ch->GetDungeon();
+		if (!d)
+			d = CDungeonManager::instance().FindByMapIndex(map);
+		if (!d || GetPlayerBotDungeonLevel(d) != 4)
+			return false;
+		const TPlayerBotTowerScan* scan = ScanPlayerBotTowerMap(map, dwNow);
+		LPCHARACTER smith = FindPlayerBotTowerNpc(scan, PLAYERBOT_TOWER_NPC_SMITH_FIRST,
+				PLAYERBOT_TOWER_NPC_SMITH_LAST, ch->GetX(), ch->GetY());
+		if (!smith)
+			return false;
+		TPlayerBotTowerRun* run = NULL;
+		std::map<long, TPlayerBotTowerRun>::iterator bots = s_mapPlayerBotTowerRuns.find(map);
+		if (bots != s_mapPlayerBotTowerRuns.end())
+		{
+			if (bots->second.bSmithDone)
+				return false;
+			run = &bots->second;
+		}
+		else
+		{
+			TPlayerBotSidekickTowerTurn& own = s_mapPlayerBotSidekickTowerTurn[ch->GetPlayerID()];
+			if (own.lMap != map)
+			{
+				own.lMap = map;
+				own.run = TPlayerBotTowerRun();
+			}
+			run = &own.run;
+		}
+		const bool claimed = UsePlayerBotTowerSmith(ch, state, smith, *run, dwNow);
+		if (claimed)
+			state.dwLastMeaningfulActivityTime = dwNow;
+		return claimed;
 	}
 
 	// ------------------------------------------------------------ the floors

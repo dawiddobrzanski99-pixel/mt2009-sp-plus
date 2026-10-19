@@ -20,6 +20,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # for the same reason as VERSION.
 COPY app.py collector.py item_grants.py decisions.py decision_tables.py event_autogen.py env_schema.py env_editor.py gm_commands.txt CHANGELOG.md VERSION* special_item_group.snapshot*.txt ./
 COPY dbeditor ./dbeditor
+# MT2009_PLUS_MARKET_PREVIEW_V1: "Podgląd rynku" (market_preview/__init__.py).
+COPY market_preview ./market_preview
 # MT2009_PLUS_DB_EDITOR_V1: the client data builder (pure Python), with the
 # released client's base files in m2clientpack/base/<client version>/.
 COPY m2clientpack ./m2clientpack
@@ -28,3 +30,11 @@ COPY static ./static
 ENV PYTHONUNBUFFERED=1
 EXPOSE 7789
 CMD ["gunicorn", "--bind", "0.0.0.0:7789", "--workers", "2", "--threads", "4", "app:app"]
+
+# CUSTOM_UKRAINKA_EXPORT_ASSETS_V1
+COPY m2clientpack/custom_ukrainka_client.py /app/m2clientpack/custom_ukrainka_client.py
+COPY m2clientpack/custom_ukrainka_assets/ /app/m2clientpack/custom_ukrainka_assets/
+
+# CUSTOM_WINDOWS_PANEL_SOURCE_V1
+COPY app.py /app/app.py
+COPY m2clientpack/custom_windows_source/ /app/m2clientpack/custom_windows_source/

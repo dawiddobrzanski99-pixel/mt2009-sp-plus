@@ -252,8 +252,18 @@ namespace {
             (PLAYERBOT_PROGRESSION_TRIP_RETRY_MAX_MS - PLAYERBOT_PROGRESSION_TRIP_RETRY_MIN_MS);
         if ((long long)ch->GetGold() <= GetPlayerBotReservedGold(ch) + PLAYERBOT_SHOPPING_GOLD_FLOOR ||
                 !PlayerBotNeedsProgressionShopping(ch) || !PlayerBotProgressionSupplyExists(ch)) return false;
+        // MT2009_PLUS_BOT_BIOLOGIST_EAGER_V1: a Biologist's specimen a counter
+        // holds for it is a trip with twice the places - the market is the
+        // quick way through a row ("kupuja potrzebne przedmioty na rynku albo
+        // je dropia", the owner, 9 October).
+        bool biologistSupply = false;
+        for (size_t i = 0; i < PLAYERBOT_BIOLOGIST_MISSION_COUNT && !biologistSupply; ++i) {
+            const DWORD vnum = PLAYERBOT_BIOLOGIST_MISSIONS[i].itemVnum;
+            const TPlayerBotMarketLedgerEntry* supply = GetPlayerBotMarketLedgerEntry(vnum);
+            biologistSupply = supply && supply->dwSupplyUnits > 0 && GetPlayerBotBiologistPurchaseNeed(ch, vnum) > 0;
+        }
         const size_t cap = std::max<size_t>(1,
-            (size_t)GetPlayerBotsAlive() * PLAYERBOT_PROGRESSION_TRIP_PER_MILLE / 1000);
+            (size_t)GetPlayerBotsAlive() * PLAYERBOT_PROGRESSION_TRIP_PER_MILLE / 1000) * (biologistSupply ? 2 : 1);
         if (CountPlayerBotProgressionTrips(now) >= cap) return false;
         state.dwProgressionTripUntil = now + PLAYERBOT_PROGRESSION_TRIP_MS;
         s_mapPlayerBotProgressionTrip[ch->GetPlayerID()] = state.dwProgressionTripUntil;

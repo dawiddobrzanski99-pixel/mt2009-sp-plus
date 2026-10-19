@@ -72,3 +72,11 @@ drop	smok	71129	1	100
 dungeon	dzungla	366	1	town	209	0	0	95	0	1	8	9714	starozytna_dzungla.entry	3600	0	0	Staro¿ytna_D¿ungla	Œwi¹tynia_Ochao
 cost	dzungla	7500000
 drop	dzungla	30776	5	100
+drop	biblioteka	59001	5	75
+drop	biblioteka	59002	5	75
+drop	wukong	59003	5	75
+drop	wukong	59004	5	75
+drop	wukong	59005	5	75
+drop	razador	59006	5	75
+drop	razador	59007	5	75
+drop	razador	59008	5	75

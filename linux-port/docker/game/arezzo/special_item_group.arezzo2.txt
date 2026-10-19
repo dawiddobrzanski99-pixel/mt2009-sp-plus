@@ -295,6 +295,7 @@ Group	MT2009_chest_30776
 	7	s950767	1	70 -- cenny przedmiot
 	8	s951103	1	100 -- kamienie pasow (MT2009_PLUS_BELT_MATS_V1, special_item_group.dungeons.txt)
 	9	s951103	1	40 -- drugie kamienie pasow
+	10	s951311	1	20 -- Dwutlenek Tytanu / Agat, 20% (MT2009_PLUS_ZODIAC_ITEMS_V1, wlasciciel 9.10; grupa w zodiak/special_item_group.zodiak.txt)
 }
 Group	MT2009_chest_30776_gear
 {

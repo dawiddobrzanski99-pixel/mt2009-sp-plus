@@ -105,6 +105,13 @@ inline bool EndCall(uint32_t pid) {
 }
 struct State {
     uint32_t nextService = 0, visitUntil = 0, nextStep = 0;
+    // MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: a line sold by hand to a person who
+    // answered the bot's post - the next service visit takes it off the
+    // counter first (BotOfflineUnwantedLine), until this time.
+    uint32_t dealPullVnum = 0, dealPullSkill = 0, dealPullUntil = 0;
+    // The line is off: no visit until the deal is over, or the restock would
+    // put the piece back up (playerbot_offline_shop.h).
+    bool dealPulled = false;
     uint32_t nextReprice = 0, repriceItem = 0;
     uint32_t nextBrowse = 0, buyOwner = 0, buyItem = 0, buyUntil = 0;
     uint32_t observedShop = 0;

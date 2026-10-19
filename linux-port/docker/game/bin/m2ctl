@@ -89,7 +89,7 @@ cmd_logsize() {
 }
 
 cmd_prune_logs() {
-  local days="${1:-${M2_LOG_KEEP_DAYS:-7}}"
+  local days="${1:-${M2_LOG_KEEP_DAYS:-2}}"
   echo "removing rotated log directories older than ${days} day(s)"
   while IFS='|' read -r name dir _bin _port _kind; do
     [ -n "$name" ] || continue

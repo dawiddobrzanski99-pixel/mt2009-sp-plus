@@ -701,6 +701,84 @@ namespace
 	// MT2009_PLUS_FARMER_LINK_V1: a spot farmer's map (playerbot_farmer_link.h).
 	long GetPlayerBotFarmerSpotMap(LPCHARACTER ch);
 
+	// MT2009_PLUS_BOT_SPIDER_GROUND_V1: geared for this Spider Dungeon -
+	// weapon and body armour at the dungeon's grades, a helmet on, a weapon of
+	// its level, and red potions for the poison and the packs.
+	bool IsPlayerBotSpiderGearReady(LPCHARACTER ch, long map)
+	{
+		if (!ch || !ch->IsItemLoaded())
+			return false;
+		LPITEM weapon = ch->GetWear(WEAR_WEAPON);
+		LPITEM armor = ch->GetWear(WEAR_BODY);
+		if (!weapon || weapon->GetType() != ITEM_WEAPON || !armor || !ch->GetWear(WEAR_HEAD) ||
+				NeedsPlayerBotProperWeapon(ch))
+			return false;
+		const bool v2 = map == PLAYERBOT_MAP_SPIDER_V2;
+		if ((int)weapon->GetRefineLevel() < (v2 ? PLAYERBOT_SPIDER_V2_WEAPON_PLUS : PLAYERBOT_SPIDER_V1_WEAPON_PLUS) ||
+				(int)armor->GetRefineLevel() < (v2 ? PLAYERBOT_SPIDER_V2_ARMOUR_PLUS : PLAYERBOT_SPIDER_V1_ARMOUR_PLUS))
+			return false;
+		size_t red = 0, blue = 0;
+		CountPlayerBotPotions(ch, red, blue);
+		return (int)red >= PLAYERBOT_SPIDER_MIN_RED_POTIONS;
+	}
+
+	// The session's Spider Dungeon, or 0. A bot of 48-75 draws again at every
+	// login and every return from town (TPlayerBotAIState::dwSpiderSessionRoll):
+	// PLAYERBOT_SPIDER_SESSION_PERCENT of the draws go to a Spider Dungeon its
+	// level opens and its gear is ready for - V1 to its ceiling, V2 from its
+	// floor, either one by the draw where both are open - and the rest to the
+	// ordinary draw below, which is the session's too in this band. A stone
+	// hunter never goes (no stone there), nor a bot whose gear is short: it
+	// keeps the ordinary ground until the blacksmith has done his part.
+	long GetPlayerBotSpiderSessionMap(LPCHARACTER ch, bool stoneHunter)
+	{
+		if (!ch || stoneHunter)
+			return 0;
+		const int level = (int)ch->GetLevel();
+		if (level < (int)PLAYERBOT_SPIDER_MIN_LEVEL || level > PLAYERBOT_SPIDER_SESSION_MAX_LEVEL)
+			return 0;
+		TPlayerBotAIStateMap::iterator st = s_mapPlayerBotAIStates.find(ch->GetPlayerID());
+		if (st == s_mapPlayerBotAIStates.end())
+			return 0;
+		DWORD& roll = st->second.dwSpiderSessionRoll;
+		if (roll == 0)
+		{
+			roll = (DWORD)number(1, 0x7ffffffe);
+			sys_log(0, "PLAYERBOT_SPIDER: session draw pid=%u name=%s level=%d roll=%u spider=%d",
+					ch->GetPlayerID(), ch->GetName(), level, roll,
+					(int)(roll % 100U) < PLAYERBOT_SPIDER_SESSION_PERCENT ? 1 : 0);
+		}
+		if ((int)(roll % 100U) >= PLAYERBOT_SPIDER_SESSION_PERCENT)
+			return 0;
+		using namespace playerbot_progression;
+		const bool v1Open = level >= (int)MapFrom(MAP_SPIDER1) && !IsPlayerBotMapOverCeiling(PLAYERBOT_MAP_SPIDER_V1, level) &&
+				IsPlayerBotMapHostedHere(PLAYERBOT_MAP_SPIDER_V1);
+		const bool v2Open = level >= (int)MapFrom(MAP_SPIDER2) && !IsPlayerBotMapOverCeiling(PLAYERBOT_MAP_SPIDER_V2, level) &&
+				IsPlayerBotMapHostedHere(PLAYERBOT_MAP_SPIDER_V2);
+		long first = 0, second = 0;
+		if (v1Open && v2Open)
+		{
+			// The higher ground for the better half of the draw.
+			first = ((roll >> 8) & 1U) ? PLAYERBOT_MAP_SPIDER_V2 : PLAYERBOT_MAP_SPIDER_V1;
+			second = first == PLAYERBOT_MAP_SPIDER_V2 ? PLAYERBOT_MAP_SPIDER_V1 : PLAYERBOT_MAP_SPIDER_V2;
+		}
+		else if (v2Open)
+			first = PLAYERBOT_MAP_SPIDER_V2;
+		else if (v1Open)
+			first = PLAYERBOT_MAP_SPIDER_V1;
+		if (first && IsPlayerBotSpiderGearReady(ch, first))
+			return first;
+		if (second && IsPlayerBotSpiderGearReady(ch, second))
+			return second;
+		return 0;
+	}
+
+	// A new draw after the town: the bot is in a village and has not set off.
+	void RedrawPlayerBotSpiderSession(TPlayerBotAIState& state)
+	{
+		state.dwSpiderSessionRoll = 0;
+	}
+
 	long GetPlayerBotFrontierMapForLevelRaw(LPCHARACTER ch)
 	{
 		if (!ch)
@@ -784,7 +862,7 @@ namespace
 		// defaults are the constants this used before.
 		using namespace playerbot_progression;
 		const BYTE level = ch->GetLevel();
-		const DWORD draw = PlayerBotNavHash(ch->GetPlayerID() ^ 0x45534f54U);
+		DWORD draw = PlayerBotNavHash(ch->GetPlayerID() ^ 0x45534f54U);
 		// Forty-eight and up: the Spider Dungeon for half, Mount Sohan for the
 		// other half, decided once per character so the answer does not change
 		// under a bot halfway there. The valley is for those still short of it.
@@ -830,6 +908,17 @@ namespace
 		// draws in three; the Grotto keeps the third and every stone hunter.
 		if (WantsPlayerBotOchao(ch, draw, stoneHunter))
 			return PLAYERBOT_MAP_OCHAO;
+		// MT2009_PLUS_BOT_SPIDER_GROUND_V1: 48-75 draw per session - the Spider
+		// Dungeons first, then the rows below with a draw of this session
+		// rather than one for life.
+		if ((int)level >= (int)PLAYERBOT_SPIDER_MIN_LEVEL && (int)level <= PLAYERBOT_SPIDER_SESSION_MAX_LEVEL)
+		{
+			const long spider = GetPlayerBotSpiderSessionMap(ch, stoneHunter);
+			if (spider != 0)
+				return spider;
+			if (role != s_mapPlayerBotAIStates.end() && role->second.dwSpiderSessionRoll != 0)
+				draw = PlayerBotNavHash(ch->GetPlayerID() ^ role->second.dwSpiderSessionRoll ^ 0x45534f54U);
+		}
 		if (level >= MapFrom(MAP_FIRE_LAND) && level <= MapTo(MAP_FIRE_LAND) &&
 				PlayerBotNavHash(ch->GetPlayerID() ^ 0x464c414dU) % 3U == 0)
 			return PLAYERBOT_MAP_FIRE_LAND;
@@ -996,6 +1085,14 @@ namespace
 		// map the draw above gives a stone hunter in their place.
 		if (IsPlayerBotSpiderMap(map) && IsPlayerBotMetinologNow(ch))
 			map = PLAYERBOT_MAP_SOHAN;
+		// MT2009_PLUS_BOT_SPIDER_GROUND_V1: only with the dungeon's gear - a
+		// bot short of it hunts Sohan (or the Hwang Temple past Sohan's
+		// stones) until the blacksmith has done his part. A Biologist's row,
+		// a guild's errand or a raid that names the dungeon is not asked.
+		if (IsPlayerBotSpiderMap(map) && !IsPlayerBotSpiderGearReady(ch, map) &&
+				map != GetPlayerBotHuntingMobHome(GetPlayerBotBiologistHuntMob(ch)) &&
+				map != GetPlayerBotGuildErrandMap(ch))
+			map = PlayerBotMapUnderCeiling(PLAYERBOT_MAP_SOHAN, (int)ch->GetLevel(), false);
 		// MT2009_PLUS_SIDEKICK_TRIP_V1: a companion that could not get there
 		// takes the next ground down for a while.
 		if (map != 0 && IsPlayerBotSidekickTripBlocked(ch, map))
@@ -1073,6 +1170,9 @@ namespace
 
 	bool ShouldPlayerBotLeaveForFrontier(LPCHARACTER ch)
 	{
+		// MT2009_PLUS_SIDEKICK_FISHING_STAY_V1: a companion sent fishing stays on its bank.
+		if (ch && IsPlayerBotSidekickFishing(ch->GetPlayerID()))
+			return false;
 		if (!ch || GetPlayerBotFrontierMapForLevel(ch) == 0)
 			return false;
 		// MT2009_PLUS_AREZZO_BOTS_V1 (test): the operator's send is no roll.
@@ -1556,11 +1656,49 @@ namespace
 		return reason && strncmp(reason, "boss_raid", 9) == 0;
 	}
 
+	// MT2009_PLUS_BOT_GUILD_SHAMAN_V1: an exp trip onto a strong map, noted on
+	// arrival for the guild's free Shaman to be brought along
+	// (playerbot_guild_shaman.h, which comes later).
+	void NotePlayerBotExpTrip(LPCHARACTER ch, long targetMap, const char* reason, DWORD dwNow);
+	bool IsPlayerBotDuoShaman(DWORD pid);
+	bool GetPlayerBotDuoShamanLeaderSpot(DWORD shamanPid, long& map, long& x, long& y);
+	// MT2009_PLUS_BOT_GUILD_SHAMAN_V1 (night test 10 October: a brought Shaman
+	// left the leader's map seconds later - "frontier_level_graduated",
+	// "m1_direct_to_*" - and the duo ended "maps_apart"): a Shaman in a duo
+	// takes none of its own map choices; a way to the services (town, shop,
+	// alchemist) ends the duo as before.
+	bool IsPlayerBotOwnMapChoiceReason(const char* reason)
+	{
+		if (!reason)
+			return false;
+		static const char* prefixes[] = { "frontier_level_graduated", "frontier_visit_complete", "m1_direct_to_",
+				"level_to_", "horse_to_m", "monkey_horse" };	// not desert_* - the V1 crossing re-enters here with them
+		for (size_t i = 0; i < sizeof(prefixes) / sizeof(prefixes[0]); ++i)
+			if (strncmp(reason, prefixes[i], strlen(prefixes[i])) == 0)
+				return true;
+		return false;
+	}
+
+	// MT2009_PLUS_SIDEKICK_ZODIAC_V1: playerbot_zodiac_bots.h, later.
+	void SyncPlayerBotZodiac(LPCHARACTER bot, long mapIndex);
+
 	bool TransitionPlayerBotMap(LPCHARACTER ch, TPlayerBotAIState& state,
 			long targetMap, long targetX, long targetY, DWORD dwNow, const char* reason)
 	{
 		if (!ch)
 			return false;
+		if (IsPlayerBotOwnMapChoiceReason(reason) && IsPlayerBotDuoShaman(ch->GetPlayerID()))
+		{
+			// MT2009_PLUS_BOT_GUILD_SHAMAN_V2 (10 October: a Shaman back from the
+			// town's services picked its own map and the duo ended): its own
+			// map choice becomes the way back to its leader.
+			long lm = 0, lx = 0, ly = 0;
+			if (GetPlayerBotDuoShamanLeaderSpot(ch->GetPlayerID(), lm, lx, ly) && lm != ch->GetMapIndex())
+				return TransitionPlayerBotMap(ch, state, lm, lx, ly, dwNow, "guild_shaman_return");
+			if (!s_szPlayerBotTransitionRefusal)
+				s_szPlayerBotTransitionRefusal = "shaman_duo";
+			return false;
+		}
 		// MT2009_PLUS_OCHAO_BOTS_V1 (route): the Temple of Ochao is entered from
 		// level 95 through Straznik Swiatyni in Orc Valley, and every way out is
 		// written down (playerbot_ochao_bots.h).
@@ -1595,7 +1733,10 @@ namespace
 		// their spots as it does on every other boss's map. The way out is the
 		// crossing as ever. V1's queen is the bots' already down there (the
 		// recruit's "far"), so her map keeps its crossing both ways.
-		const bool raidIntoV2 = targetMap == PLAYERBOT_MAP_SPIDER_V2 && IsPlayerBotBossRaidMove(reason);
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 3: and V1's queen as well - the
+		// bots of her window from outside the Spider Dungeon come to her too.
+		const bool raidIntoV2 = (targetMap == PLAYERBOT_MAP_SPIDER_V2 || targetMap == PLAYERBOT_MAP_SPIDER_V1) &&
+				IsPlayerBotBossRaidMove(reason);
 		if (IsPlayerBotSpiderMap(targetMap) && ch->GetMapIndex() != PLAYERBOT_MAP_DESERT &&
 				!IsPlayerBotSpiderMap(ch->GetMapIndex()) && !raidIntoV2)
 		{
@@ -1619,7 +1760,8 @@ namespace
 					PLAYERBOT_DESERT_FROM_V1_X, PLAYERBOT_DESERT_FROM_V1_Y, dwNow, "desert_crossing_from_v1");
 		}
 		CPlayerBotNavigation& navigation = CPlayerBotNavigation::instance(targetMap);
-		if (!navigation.Init(targetMap))
+		// MT2009_PLUS_ZODIAC_NAV_V1: an open arena map has no grid and needs none.
+		if (!IsPlayerBotOpenArenaMap(targetMap) && !navigation.Init(targetMap))
 		{
 			// Tagged by the reason, so a reason nobody has seen before still
 			// speaks up inside the minute instead of hiding behind an old one.
@@ -1692,6 +1834,12 @@ namespace
 		}
 		ch->Stop();
 		ch->SendMovePacket(FUNC_MOVE, 0, targetX, targetY, 0, dwNow);
+		// MT2009_PLUS_SIDEKICK_ZODIAC_V1: the temple of the floor it stands on
+		// now (playerbot_zodiac_bots.h) - a party bot walked out of a temple
+		// floor after its person ("party_dungeon_out") kept its membership and
+		// its death flags; WarpBot was the only map change that set them.
+		if (oldMap != targetMap)
+			SyncPlayerBotZodiac(ch, targetMap);
 		if (wasRiding && ch->GetHorseHealth() > 0 && ch->GetHorseStamina() > 0)
 			ch->StartRiding();
 		ch->Save();
@@ -1735,6 +1883,8 @@ namespace
 		// MT2009_PLUS_FRONTIER_BAG_LOOP_V1: the town-service exits, counted.
 		if (IsPlayerBotServicesExitReason(reason))
 			NotePlayerBotServicesExit(ch, dwNow);
+		// MT2009_PLUS_BOT_GUILD_SHAMAN_V1.
+		NotePlayerBotExpTrip(ch, targetMap, reason, dwNow);
 		// How long the bot stayed in town after its errand was done. Asked for
 		// by name: "sam spadek liczby atakow nie dowodzi naprawy".
 		if (IsPlayerBotM2Map(oldMap) && state.dwErrandDoneTime != 0 &&

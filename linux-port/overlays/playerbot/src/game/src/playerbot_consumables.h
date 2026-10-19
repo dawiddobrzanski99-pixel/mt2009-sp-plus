@@ -587,10 +587,10 @@ namespace
 		static std::map<DWORD, DWORD> s_mapPlayerBotAutoPotionNext;
 		if (!ch || !ch->IsItemLoaded() || ch->IsDead() || ch->GetShop() || ch->GetExchange())
 			return false;
-		// Not in a duel: SwitchOffPlayerBotAutoPotionsForDuel takes them off for
-		// it, and this pass puts them back on after it.
-		if (playerbot_pvp::IsInDuel(ch->GetPlayerID(), dwNow))
-			return false;
+		// Duels suppress only HP recovery. SP recovery and guild wars keep their normal rules.
+		const auto ai = s_mapPlayerBotAIStates.find(ch->GetPlayerID());
+		const bool noHP = playerbot_duel::BlockHP(playerbot_pvp::IsInDuel(ch->GetPlayerID(), dwNow),
+				ch->GetWarMap() != NULL || (ai != s_mapPlayerBotAIStates.end() && ai->second.dwGuildWarEnemyGID != 0));
 		DWORD& next = s_mapPlayerBotAutoPotionNext[ch->GetPlayerID()];
 		if (dwNow < next)
 			return false;
@@ -602,6 +602,7 @@ namespace
 			if (!item || IsPlayerBotSidekickHeld(ch, item))	// MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1
 				continue;
 			const DWORD affect = GetPlayerBotAutoPotionAffect(item->GetVnum());
+			if (noHP && affect == AFFECT_AUTO_HP_RECOVERY) continue;
 			if (affect == 0 || ch->FindAffect(affect) || IsPlayerBotAutoPotionEmpty(item))
 				continue;
 			const DWORD vnum = item->GetVnum();
@@ -616,7 +617,7 @@ namespace
 	}
 
 	// A duel is fought on the health the bot walks into it with. The potion pass
-	// drinks nothing during one, but an auto potion switched on before the
+	// drinks no HP potion during one, but an auto potion switched on before the
 	// challenge heals by itself inside the engine (AutoRecoveryItemProcess), and
 	// a bot topping itself up mid-duel was what "boty w PvP uzywaja potki
 	// czerwonej, moze maja wlaczona autopote?" was (Tieru, 15 September). The
@@ -633,8 +634,8 @@ namespace
 		if (dwNow < next)
 			return;
 		next = dwNow + 1100;
-		const DWORD affects[2] = { AFFECT_AUTO_HP_RECOVERY, AFFECT_AUTO_SP_RECOVERY };
-		for (int i = 0; i < 2; ++i)
+		const DWORD affects[1] = { AFFECT_AUTO_HP_RECOVERY };
+		for (int i = 0; i < 1; ++i)
 		{
 			const CAffect* running = ch->FindAffect(affects[i]);
 			if (!running)

@@ -82,6 +82,10 @@ publish_openers() {
         case "$_n" in *[!0-9]*|'') continue ;; esac
         grep -rqs 'cube open' "$_d" && printf '%s\n' "$_n"
     done > "$WORK/openers.txt" 2>/dev/null
+    # CUSTOM_UKRAINKA_CUBE_GROUPS_V1
+    if grep -qx '30099' "$WORK/openers.txt"; then
+        printf '%s\n' 65000 65001 >> "$WORK/openers.txt"
+    fi
     publish "$WORK/openers.txt" cube_npcs.txt
 }
 
@@ -198,7 +202,7 @@ cmd_apply() {
     [ -n "$_recipes" ] || { reject "$_sha" "the file could not be checked"; return 0; }
 
     _items=$(sed -n 's/^I //p' "$WORK/custom.check" | sort -un | tr '\n' ',' | sed 's/,$//')
-    _npcs=$(sed -n 's/^N //p' "$WORK/custom.check" | sort -un | tr '\n' ',' | sed 's/,$//')
+    _npcs=$(sed -n 's/^N //p' "$WORK/custom.check" | awk '{ if ($1 == 65000 || $1 == 65001) print 30099; else print $1 }' | sort -un | tr '\n' ',' | sed 's/,$//')
     if _m=$(missing item_proto "$_items"); then
         [ -n "$(printf '%s' "$_m" | tr -d ' ')" ] && { reject "$_sha" "no such item: $_m"; return 0; }
         if _m=$(missing mob_proto "$_npcs"); then

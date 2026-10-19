@@ -305,6 +305,18 @@ namespace
 		{ 20250, 0x000, { 3338200, 3338200, 3338200, 3338200, 5934500, 13996400, 33012300, 77859500, 183634100, 441600000 } },	// Szata Smoczego Jezdzca (lv 90, MT2009_PLUS_UNPRICED_GEAR_V1: interpolated)
 		{ 20500, 0x000, { 3338200, 3338200, 3338200, 3338200, 5934500, 13996400, 33012300, 77859500, 183634100, 441600000 } },	// Pancerz Koscioplytowy (lv 90, MT2009_PLUS_UNPRICED_GEAR_V1: interpolated)
 		{ 20750, 0x000, { 3338200, 3338200, 3338200, 3338200, 5934500, 13996400, 33012300, 77859500, 183634100, 441600000 } },	// Zlote Ubranie (lv 90, MT2009_PLUS_UNPRICED_GEAR_V1: interpolated)
+		// MT2009_PLUS_NS_WIKI_ITEMS_V1 (Autor: Digi Rasta, nowy-system 0.33.0): the wiki families of wiki_nowe.sql,
+		// made at Seon-Pyeong (cube.wiki_nowe.txt) - each +0 at least what its recipe eats, a geometric climb to +9.
+		{   500, 0x000, { 169920000, 191981000, 216906000, 245067000, 276884000, 312832000, 353448000, 399336000, 451183000, 509760000 } },	// Cyjanitowy Miecz (lv 105; +0 = 1.2 x Klinga Smoczego Kla+9, +9 = 3 x +0)
+		{  1500, 0x000, { 147830000, 167023000, 188708000, 213208000, 240889000, 272164000, 307499000, 347422000, 392528000, 443490000 } },	// Cyjanitowy Sztylet (lv 105; +0 = 1.2 x Kolec Pieciu Elementow+9, +9 = 3 x +0)
+		{  2500, 0x000, { 137243000, 155061000, 175193000, 197939000, 223637000, 252672000, 285477000, 322541000, 364416000, 411729000 } },	// Cyjanitowy Luk (lv 105; +0 = 1.2 x Luk Feniksa+9, +9 = 3 x +0)
+		{  3500, 0x000, { 158026000, 178543000, 201723000, 227913000, 257503000, 290935000, 328707000, 371384000, 419601000, 474078000 } },	// Cyjanitowe Ostrze (lv 105; +0 = 1.2 x Ostrze Slonca+9, +9 = 3 x +0)
+		{  5500, 0x000, { 137975000, 155888000, 176128000, 198994000, 224830000, 254020000, 287000000, 324261000, 366360000, 413925000 } },	// Cyjanitowy Dzwon (lv 105; +0 = 1.2 x Dzwon Smoczego Ducha+9, +9 = 3 x +0)
+		{  7500, 0x000, { 134033000, 151435000, 171096000, 193309000, 218407000, 246762000, 278800000, 314997000, 355893000, 402099000 } },	// Cyjanitowy Wachlarz (lv 105; +0 = 1.2 x Wachlarz Lezac. Smoka+9, +9 = 3 x +0)
+		{ 14570, 0x000, { 10000000, 11665000, 13608000, 15874000, 18517000, 21601000, 25198000, 29395000, 34290000, 40000000 } },	// Bransoleta z Turmalinu (lv 90; +0 = what its recipe costs, +9 = 4 x +0)
+		{ 15440, 0x000, { 5000000, 6458000, 8341000, 10772000, 13913000, 17969000, 23208000, 29974000, 38713000, 50000000 } },	// Ogniste Buty (lv 80; +0 = its recipe on Buty Zimorodka+5, +9 = 10 x +0)
+		{ 15450, 0x000, { 5000000, 6458000, 8341000, 10772000, 13913000, 17969000, 23208000, 29974000, 38713000, 50000000 } },	// Buty Oceanu (lv 90; +0 = its recipe on Buty Euforii+5, +9 = 10 x +0)
+		{ 16570, 0x000, { 10000000, 11665000, 13608000, 15874000, 18517000, 21601000, 25198000, 29395000, 34290000, 40000000 } },	// Naszyjnik z Turmalinu (lv 95; as the bracelet)
 	};
 
 	// Upgrade materials ("ULEPSZACZE"), and then everything else he prices by
@@ -412,6 +424,28 @@ namespace
 		{ 30359,    71400 },	// Piasek Pustyni
 		{ 30367,   151300 },	// Luski Smoka
 		{ 35002,   104302 },	// Nieznane Lekarstwo
+		// MT2009_PLUS_NS_WIKI_ITEMS_V1: the wiki materials (wiki_nowe.sql; the Razador / Nemere chests and the
+		// Blacksmith steps 22310-22338) - suggested, through the curve, inflation and markdown like the rest.
+		{ 30602,   150000 },	// Niebieski Barwnik (suggested)
+		{ 30603,   150000 },	// Czerwony Barwnik (suggested)
+		{ 30604,   150000 },	// Szary Barwnik (suggested)
+		{ 30610,   200000 },	// Mithril (suggested)
+		{ 30616,   600000 },	// Dwutlenek Tytanu (suggested)
+		{ 30617,   800000 },	// Agat (suggested)
+		{ 30618,  1000000 },	// Kamien Ksiezycowy (suggested)
+		{ 30623,  3000000 },	// Ksiega Prawdy (suggested)
+		{ 30624,  3500000 },	// Dusza Prawdy (suggested)
+		{ 30626,  1500000 },	// Cyjanit (suggested)
+		{ 30627,  2000000 },	// Owoc Bogow (suggested)
+		{ 30629,  1500000 },	// Eliksir Bogow (suggested)
+		{ 50639,   900000 },	// Turmalin (as Rubin / Granat / Szmaragd / Szafir) (suggested)
+		{ 95601,   250000 },	// Stabilne Sznury (suggested)
+		{ 95602,  1000000 },	// Wzor Kroju (suggested)
+		{ 95603,   400000 },	// Ciezkie Pasy (suggested)
+		// MT2009_PLUS_ZODIAC_ITEMS_V1: the Zodiac weapons' / armours' boxes (1, 2, 4 .. 200 a step, refine_proto
+		// 22401-22418; 10 Insygnia at Mnich Milbon each) - suggested.
+		{ 33029,   200000 },	// Czerwone Pudlo Zodiaku (suggested)
+		{ 33030,   200000 },	// Niebieskie Pudlo Zodiaku (suggested)
 	};
 	// MT2009_PLUS_SIDEKICK_ZEN_BEAN_TRAINING_V1: a Fasolka Zen is a third of a
 	// Kamien Duchowy (owner, 5 October), so the two rows move together.
@@ -853,6 +887,9 @@ namespace
 		{ 79508,    60000 },	// Plansza do Yutnori (suggested)
 		{ 79603,    10000 },	// Karta Krolewska (operator)
 		{ 79604,   250000 },	// Talia Krolewska (operator)
+		{ 80014,  2000000 },	// Kupon SM (100) (MT2009_PLUS_MARKET_LIFE_V1: the 50's 20 000 yang a coin)
+		{ 80015, 10000000 },	// Kupon SM (500) (MT2009_PLUS_MARKET_LIFE_V1)
+		{ 80016, 20000000 },	// Kupon SM (1000) (MT2009_PLUS_MARKET_LIFE_V1)
 		{ 80017,  1000000 },	// Kupon SM (50) (suggested)
 		{ 80018,  5000000 },	// Kupon SM (250) (suggested)
 		{ 80030,   500000 },	// Bilet Kola Fortuny (suggested)

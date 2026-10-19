@@ -222,6 +222,10 @@ if [ -n "${M2_DB_ROOT_PASSWORD:-}" ]; then
     fi
 fi
 
+
+# FOCUSED_EGZO_RADA_STACK_TRADE_V1
+db -e "UPDATE world.item_proto SET stack=200, flag=flag | 4, antiflag=antiflag & ~106752 WHERE vnum IN (39008,39030,71001,71094,71201) AND type=3 AND subtype=8;"
+
 # MT2009_PLUS_FAST_START_V1: a start with nothing new skips the rest. The
 # fingerprint is every file this step reads (/opt/playerbot), this script and
 # the M2_/PLAYERBOT_ settings; it is written at the very end of a full run and
@@ -350,6 +354,15 @@ db -e "
        SET antiflag = antiflag & ~$trade_mask
      WHERE vnum BETWEEN 110000 AND 175499
        AND (antiflag & $trade_mask) <> 0;
+    -- MT2009_PLUS_DS_TRADE_HIGH_GRADES_V1 (the owner, 12 October): an Ancient, Legendary or
+    -- Myth stone (grade 3-5) is dropped by the same rule as the lower grades - not at all
+    -- (DROP|PKDROP, 128 + 16384), while it trades and goes on a shop like them (the client's
+    -- exe lifts GIVE|MYSHOP for these grades: client-patches/exe/GameLib/ItemManager.cpp).
+    UPDATE world.item_proto
+       SET antiflag = antiflag | 16512
+     WHERE vnum BETWEEN 110000 AND 175499 AND type = 29
+       AND (vnum DIV 1000) % 10 BETWEEN 3 AND 5
+       AND (antiflag & 16512) <> 16512;
     UPDATE world.item_proto SET gold = 5000000 WHERE vnum = 100002 AND gold <> 5000000;
 " && echo "[playerbot-migrate] alchemy: Dragon Stones tradeable, Time Elixir (D) 5 000 000" \
   || fail_step "alchemy item_proto changes failed" >&2
@@ -2217,6 +2230,13 @@ UPDATE world.mob_proto SET skill_level1 = 9 WHERE vnum IN (3791, 3391) AND skill
 UPDATE world.mob_proto SET skill_level0 = 10, gold_min = 25000, gold_max = 35000 WHERE vnum = 9683;
 UPDATE world.mob_proto SET skill_level0 = 6, gold_min = 60000, gold_max = 90000 WHERE vnum = 9684;
 UPDATE world.mob_proto SET gold_min = 150000, gold_max = 220000 WHERE vnum = 9682;
+-- MT2009_PLUS_WUKONG_HARDER_V1 (owner, 12 October): the Wzgorze Wukonga bosses and its half-boss hit 50%
+-- harder - dam_multiply x1.5 over the values above (WuKong 2.4, Obronca Chmur 2.0, Plomienny Feniks 2.2,
+-- Czarodziej Stylu Malp 1.8); set absolutely, so every start gives the same.
+UPDATE world.mob_proto SET dam_multiply = 3.6 WHERE vnum = 9682;
+UPDATE world.mob_proto SET dam_multiply = 3.0 WHERE vnum = 9683;
+UPDATE world.mob_proto SET dam_multiply = 3.3 WHERE vnum = 9684;
+UPDATE world.mob_proto SET dam_multiply = 2.7 WHERE vnum = 9693;
 UPDATE world.mob_proto SET gold_min = 60000, gold_max = 90000 WHERE vnum = 9606;
 UPDATE world.mob_proto SET gold_min = 150000, gold_max = 250000 WHERE vnum = 9607;
 UPDATE world.mob_proto SET gold_min = 90000, gold_max = 135000 WHERE vnum = 9675;
@@ -3445,6 +3465,48 @@ WHERE vnum % 10 < 9 AND refine_set = 316 + vnum % 10
     OR vnum BETWEEN 17500 AND 17509 OR vnum BETWEEN 17540 AND 17549 OR vnum BETWEEN 17560 AND 17569);" \
   || fail_step "could not move the Rubin / Szmaragd / Szafir jewellery to level 75 or add the jewellery recipes and gems (MT2009_PLUS_JEWELS75_V1)" >&2
 
+# MT2009_PLUS_ZODIAC_V1: Swiatynia Zodiaku (Autor: Digi Rasta, nowy-system 0.35.0;
+# server-patches/zodiak/README.md). zodiak.sql is idempotent (INSERT IGNORE, ADD COLUMN IF
+# NOT EXISTS): player.player.bead (Kule Animy) and player_deleted.bead, the merchant's
+# purchase tables player.zodiac_npc / zodiac_npc_sold, 166 items (weapons and armours
+# +0..+9, insignia 33001-33024, prisms, chests, 72327-72329), 201 monsters and NPCs
+# (2600-2937, 20438-20464), the recipes refine_proto 22401-22418, the bosses' skills
+# 270-271 and the Zodiac Merchant's shop 41 (NPC 20451). Before the elements' files: their
+# owner's rules (zywioly_moby.sql) then hold for the temple's monsters too.
+if [ -s /opt/playerbot/zodiak.sql ]; then
+    if db < /opt/playerbot/zodiak.sql; then
+        echo "[playerbot-migrate] zodiac: zodiak.sql applied"
+    else
+        fail_step "zodiac: zodiak.sql failed" >&2
+    fi
+fi
+
+# MT2009_PLUS_PLAY_COUNT_V1 (Autor: Vekirion): the Wheel of Fortune's "spin N times" keeps all n
+# rewards of one spin in player.wheel_spin.rewards ("vnum|count|rare#...") and n in spins
+# (playerbot_wheel.h). The core adds them itself on its first wheel start, but only if its
+# account may ALTER TABLE - here once for every install. The table is the core's own
+# (CREATE TABLE as in playerbot_wheel.h), made here when the wheel never ran. Idempotent.
+db -e "CREATE TABLE IF NOT EXISTS player.wheel_spin (id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, pid INT UNSIGNED NOT NULL, created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, items VARCHAR(255) NOT NULL DEFAULT '', slot TINYINT UNSIGNED NOT NULL DEFAULT 0, vnum INT UNSIGNED NOT NULL, count INT UNSIGNED NOT NULL DEFAULT 1, rare TINYINT UNSIGNED NOT NULL DEFAULT 0, cost_vnum INT UNSIGNED NOT NULL DEFAULT 0, cost_count INT UNSIGNED NOT NULL DEFAULT 0, state TINYINT UNSIGNED NOT NULL DEFAULT 0, given DATETIME NULL DEFAULT NULL, KEY pid_state (pid, state), KEY state_created (state, created)) ENGINE=InnoDB;" \
+    && db -e "ALTER TABLE player.wheel_spin ADD COLUMN IF NOT EXISTS rewards TEXT NULL, ADD COLUMN IF NOT EXISTS spins INT UNSIGNED NOT NULL DEFAULT 1;" \
+    || fail_step "wheel: could not add rewards/spins to player.wheel_spin"
+
+# MT2009_PLUS_NS_WIKI_ITEMS_V1: the item families and upgrade materials of the official PL
+# wiki the world did not have (Autor: Digi Rasta, nowy-system 0.33.0 - his 95_wiki_nowe.sql
+# in the fixed 0.35.0 form; generated by tools/wikinowe/gen_wikinowe_sql.py from
+# tools/wikinowe/wiki_nowe.json, the data the client's records come from too): Cyjanitowe
+# weapons 500/1500/2500/3500/5500/7500, Turmalin bracelet 14570 and necklace 16570, Ogniste
+# Buty 15440 and Buty Oceanu 15450 (+0..+9), 16 materials (30602-30629, 50639, 95601-95603)
+# and the Blacksmith's steps refine_proto 22310-22338. Only its own rows (vnum and name) are
+# rewritten. Made at Seon-Pyeong (cube.wiki_nowe.txt) and found in the Razador / Nemere
+# chests (special_item_group.wiki_nowe.txt, groups 951201 / 951202).
+if [ -s /opt/playerbot/wiki_nowe.sql ]; then
+    if db < /opt/playerbot/wiki_nowe.sql; then
+        echo "[playerbot-migrate] wiki items: wiki_nowe.sql applied"
+    else
+        fail_step "wiki items: wiki_nowe.sql failed" >&2
+    fi
+fi
+
 # MT2009_PLUS_ELEMENTS_V1: Elements and talismans (Autor: Digi Rasta, "Zywioly i talizmany",
 # nowy-system 0.28.0; server-patches/zywioly/README.md). Both files are generated
 # (tools/zywioly/) and idempotent, and run last, after every step above that writes
@@ -3464,6 +3526,27 @@ for zyw_sql in zywioly_talizmany.sql zywioly_moby.sql; do
         fail_step "elements: $zyw_sql failed" >&2
     fi
 done
+
+# MT2009_PLUS_REGEN_METIN_SPLIT_V1 (server-patches/regenmetin): Metins apart from bosses in the
+# respawn settings. The panels' "Metiny i bossowie" time (fastBossSpawn, a map's own
+# fastBossSpawn<map>) and count (m2_boss_count) are the bosses' alone now; the Metin stones read
+# fastMetinSpawn(<map>) and m2_metin_count. Once, every boss row is copied into its Metin row -
+# a row already written is kept (INSERT IGNORE) - so the world respawns as it did until the
+# operator moves one of them; m2_regen_metin_split says it is done.
+regen_split=$(db -N -e "SELECT lValue FROM player.quest WHERE dwPID = 0 AND szName = 'm2_regen_metin_split' LIMIT 1;" 2>/dev/null | tr -d ' \r')
+if [ "$regen_split" != "1" ]; then
+    if db -e "INSERT IGNORE INTO player.quest (dwPID, szName, szState, lValue)
+                SELECT 0, CONCAT('fastMetinSpawn', SUBSTRING(szName, 14)), szState, lValue FROM player.quest
+                 WHERE dwPID = 0 AND szName LIKE 'fastBossSpawn%';
+            INSERT IGNORE INTO player.quest (dwPID, szName, szState, lValue)
+                SELECT 0, 'm2_metin_count', szState, lValue FROM player.quest
+                 WHERE dwPID = 0 AND szName = 'm2_boss_count';
+            REPLACE INTO player.quest (dwPID, szName, szState, lValue) VALUES (0, 'm2_regen_metin_split', '', 1);"; then
+        echo "[playerbot-migrate] Metins and bosses: the respawn time and count of 'Metiny i bossowie' copied to the Metins' own rows"
+    else
+        fail_step "could not copy the respawn settings to the Metins' rows" >&2
+    fi
+fi
 
 # MT2009_PLUS_FRESH_INSTALL_FIX_V1: every row this script makes as a copy of another
 # (CREATE TEMPORARY TABLE ... AS SELECT * FROM world.<item|mob>_proto WHERE vnum = <source>, then
@@ -3497,6 +3580,23 @@ for migrate_kind in item mob; do
     done
 done
 
+# OUR_PRESERVED_ITEMS_V1: apply after release migrations, before fingerprint.
+db <<'OUR_ITEMS_SQL'
+-- OUR_PRESERVED_ITEMS_V1: only explicitly agreed fields.
+UPDATE world.item_proto SET stack=2000 WHERE vnum IN (27003,27006);
+UPDATE world.item_proto SET stack=200 WHERE vnum IN (71102,27999,50035,71151,71152);
+UPDATE world.item_proto SET antiflag=antiflag & ~73728 WHERE type=29;
+UPDATE world.item_proto SET antiflag=antiflag & ~8192 WHERE vnum=50124;
+UPDATE world.item_proto SET applytype0=40,applyvalue0=15,applytype1=21,applyvalue1=30 WHERE vnum=28531;
+UPDATE world.item_proto SET applytype0=54,applyvalue0=30,applytype1=55,applyvalue1=30 WHERE vnum=28533;
+UPDATE world.item_proto SET applytype0=56,applyvalue0=30,applytype1=57,applyvalue1=30 WHERE vnum=28535;
+UPDATE world.item_proto SET applytype0=53,applyvalue0=10,applytype1=41,applyvalue1=10 WHERE vnum=28537;
+UPDATE world.item_proto SET applytype0=95,applyvalue0=100,applytype1=68,applyvalue1=15 WHERE vnum=28540;
+-- OUR_KD_28500_WEAPON_V1: add weapon support, retain armor and other flags.
+UPDATE world.item_proto SET wearflag=wearflag | 16 WHERE vnum=28500 AND type=10;
+
+OUR_ITEMS_SQL
+
 # MT2009_PLUS_FAST_START_V1: the full run is done - its fingerprint for the next start.
 # MT2009_PLUS_FRESH_INSTALL_FIX_V1: ...only when every step went through. A run with a failed step
 # is not recorded (and a record left by an older run is dropped), so the next start runs it all
@@ -3511,3 +3611,24 @@ else
         || echo "[playerbot-migrate] WARNING: could not record the run's fingerprint (the next start runs it all again)" >&2
     echo "[playerbot-migrate] all steps done (fingerprint $(printf %s "$migrate_fp" | cut -c1-12) recorded)"
 fi
+
+# CUSTOM_MAP_MATERIAL_CHESTS_V1_STARTUP
+db <<'CUSTOM_MATERIAL_SQL'
+START TRANSACTION;
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59001,'Skrzynia Ulep. - M1','Skrzynia Ulep. - M1',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59002,'Skrzynia Ulep. - M2','Skrzynia Ulep. - M2',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59003,'Skrzynia Ulep. - Dolina','Skrzynia Ulep. - Dolina',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59004,'Skrzynia Ulep. - Pustynia','Skrzynia Ulep. - Pustynia',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59005,'Skrzynia Ulep. - Malpy (Tr.)','Skrzynia Ulep. - Malpy (Tr.)',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59006,'Skrzynia Ulep. - Sohan','Skrzynia Ulep. - Sohan',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59007,'Skrzynia Ulep. - Las Duchow','Skrzynia Ulep. - Las Duchow',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59008,'Skrzynia Ulep. - Ognista Kraina','Skrzynia Ulep. - Ognista Kraina',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+INSERT INTO world.item_proto (`vnum`,`name`,`locale_name`,`type`,`subtype`,`stack`,`weight`,`size`,`antiflag`,`flag`,`wearflag`,`immuneflag`,`gold`,`shop_buy_price`,`refined_vnum`,`refine_set`,`magic_pct`,`specular`,`socket_pct`,`addon_type`,`limittype0`,`limitvalue0`,`limittype1`,`limitvalue1`,`applytype0`,`applyvalue0`,`applytype1`,`applyvalue1`,`applytype2`,`applyvalue2`,`value0`,`value1`,`value2`,`value3`,`value4`,`value5`,`socket0`,`socket1`,`socket2`,`socket3`,`socket4`,`socket5`) VALUES (59009,'Skrzynia Skladnikow Mikstur','Skrzynia Skladnikow Mikstur',23,0,200,0,1,0,4,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`),`locale_name`=VALUES(`locale_name`),`type`=VALUES(`type`),`subtype`=VALUES(`subtype`),`stack`=VALUES(`stack`),`weight`=VALUES(`weight`),`size`=VALUES(`size`),`antiflag`=VALUES(`antiflag`),`flag`=VALUES(`flag`),`wearflag`=VALUES(`wearflag`),`immuneflag`=VALUES(`immuneflag`),`gold`=VALUES(`gold`),`shop_buy_price`=VALUES(`shop_buy_price`),`refined_vnum`=VALUES(`refined_vnum`),`refine_set`=VALUES(`refine_set`),`magic_pct`=VALUES(`magic_pct`),`specular`=VALUES(`specular`),`socket_pct`=VALUES(`socket_pct`),`addon_type`=VALUES(`addon_type`),`limittype0`=VALUES(`limittype0`),`limitvalue0`=VALUES(`limitvalue0`),`limittype1`=VALUES(`limittype1`),`limitvalue1`=VALUES(`limitvalue1`),`applytype0`=VALUES(`applytype0`),`applyvalue0`=VALUES(`applyvalue0`),`applytype1`=VALUES(`applytype1`),`applyvalue1`=VALUES(`applyvalue1`),`applytype2`=VALUES(`applytype2`),`applyvalue2`=VALUES(`applyvalue2`),`value0`=VALUES(`value0`),`value1`=VALUES(`value1`),`value2`=VALUES(`value2`),`value3`=VALUES(`value3`),`value4`=VALUES(`value4`),`value5`=VALUES(`value5`),`socket0`=VALUES(`socket0`),`socket1`=VALUES(`socket1`),`socket2`=VALUES(`socket2`),`socket3`=VALUES(`socket3`),`socket4`=VALUES(`socket4`),`socket5`=VALUES(`socket5`);
+COMMIT;
+CUSTOM_MATERIAL_SQL
+
+# FOCUSED_EGZO_RADA_STACK_TRADE_V1
+db -e "UPDATE world.item_proto SET stack=200, flag=flag | 4, antiflag=antiflag & ~106752 WHERE vnum IN (39008,39030,71001,71094,71201) AND type=3 AND subtype=8;"
+
+# OUR_KD_28543_AND_MEDALS_RESTORE_20261013
+db -e "UPDATE world.item_proto SET applytype0=8,applyvalue0=30,applytype1=6,applyvalue1=2000 WHERE vnum=28543; UPDATE world.item_proto SET stack=1000,flag=flag|4,antiflag=antiflag & ~32768 WHERE vnum=50050;"

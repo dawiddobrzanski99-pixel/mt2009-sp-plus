@@ -89,11 +89,16 @@ namespace
 				playerID, ch->GetName(), level, ch->GetExp(), (long long)ch->GetGold());
 	}
 
+	// MT2009_PLUS_BOT_GUILD_SHAMAN_V1: a death or a retreat on a strong map
+	// (playerbot_guild_shaman.h, which comes later).
+	void NotePlayerBotStrongMapHardship(LPCHARACTER ch, int kind);
+
 	void StartPlayerBotTacticalRetreat(LPCHARACTER ch, TPlayerBotAIState& state,
 			LPCHARACTER threat, DWORD dwNow)
 	{
 		if (!ch || state.bRecoveringAfterDeath || state.bTacticalRetreat)
 			return;
+		NotePlayerBotStrongMapHardship(ch, 1); // MT2009_PLUS_BOT_GUILD_SHAMAN_V1
 		// MT2009_PLUS_BOT_LOOT_PACE_V1: its drops here, to come back for.
 		NotePlayerBotLootLeftBehind(ch, state, dwNow);
 		state.bTacticalRetreat = true;
@@ -293,10 +298,45 @@ namespace
 		return true;
 	}
 
+	// MT2009_PLUS_SIDEKICK_ZODIAC_V1: defined in playerbot_sidekick.h.
+	bool HoldPlayerBotSidekickInZodiac(LPCHARACTER ch, DWORD dwNow);
+
+	// MT2009_PLUS_SIDEKICK_ZODIAC_V1: how long a bot out of the Swiatynia
+	// Zodiaku may lie, after its first restart_here, before it stands up on its
+	// own (HandleDeath).
+	const DWORD PLAYERBOT_REVIVE_STUCK_MS = 30000;
+
+	// MT2009_PLUS_SIDEKICK_ZODIAC_V1: a dead bot stood up where it lies, as
+	// do_restart's restart_here does it (and RevivePlayerBotInZodiac's own
+	// stand-up). HandleDeath goes on with the recovery.
+	void StandPlayerBotUpHere(LPCHARACTER ch)
+	{
+		if (!ch || !ch->IsDead())
+			return;
+		ch->ChatPacket(CHAT_TYPE_COMMAND, "CloseRestartWindow");
+		if (ch->GetDesc())
+			ch->GetDesc()->SetPhase(PHASE_GAME);
+		ch->SetPosition(POS_STANDING);
+		ch->StartRecoveryEvent();
+		ch->RestartAtSamePos();
+		ch->PointChange(POINT_HP, 50 - ch->GetHP());
+		ch->ReviveInvisible(5);
+	}
+
 	bool HandleDeath(LPCHARACTER ch, TPlayerBotAIState& state, DWORD dwNow)
 	{
 		if (!ch->IsDead())
 		{
+			// Lethal damage first enters Stun, then Dead after three seconds.
+			// Do not drink, select targets or move while waiting for StunEvent.
+			// Repair an orphaned zero-HP state left by an earlier battle_end.
+			if (ch->GetHP() <= 0)
+			{
+				if (!ch->IsStun()) ch->Stun();
+				ch->Stop();
+				ClearPlayerBotRoute(state, true);
+				return true;
+			}
 			state.dwDeathDetectedTime = 0;
 			state.dwNextReviveAttemptTime = 0;
 			return false;
@@ -323,6 +363,7 @@ namespace
 			state.lDeathX = ch->GetX();
 			state.lDeathY = ch->GetY();
 			++state.bDeathCount;
+			NotePlayerBotStrongMapHardship(ch, 0); // MT2009_PLUS_BOT_GUILD_SHAMAN_V1
 			// A companion's fight goes on with its owner (playerbot_sidekick.h).
 			NotePlayerBotSidekickDown(ch, dwNow);
 			// A Conqueror dying to monsters too often has outgrown its gear
@@ -349,7 +390,33 @@ namespace
 		if (dwNow >= state.dwNextReviveAttemptTime)
 		{
 			state.dwNextReviveAttemptTime = dwNow + 2000;
-			interpret_command(ch, "restart_here", strlen("restart_here"));
+			// MT2009_PLUS_SIDEKICK_ZODIAC_V1: the companion fallen on a temple floor
+			// its owner stands on keeps the temple's rule - its own Prisms, the
+			// owner's revive, or the floor left by the owner (playerbot_sidekick.h).
+			if (HoldPlayerBotSidekickInZodiac(ch, dwNow))
+				return true;
+			// MT2009_PLUS_ZODIAC_BOTS_V1: on a temple floor restart_here only opens the
+			// temple's revive window - the bot's prisms, or its own stand-up.
+			if (!RevivePlayerBotInZodiac(ch))
+			{
+				// MT2009_PLUS_SIDEKICK_ZODIAC_V1: out of the temple its death
+				// flags are of no use any more (a bot taken off a floor that
+				// was closed under it came back with them).
+				ClearPlayerBotZodiacFlagsOutside(ch);
+				interpret_command(ch, "restart_here", strlen("restart_here"));
+				// restart_here does nothing for a character the engine holds
+				// back (no death event left, "busy" after a trade or a shop):
+				// a bot lying that long stands up where it is, as
+				// restart_here would have done.
+				if (ch->IsDead() && state.dwDeathDetectedTime != 0 &&
+						dwNow - state.dwDeathDetectedTime >= PLAYERBOT_REVIVE_DELAY + PLAYERBOT_REVIVE_STUCK_MS)
+				{
+					sys_log(0, "PLAYERBOT_AI: restart_here refused, standing up pid=%u name=%s map=%ld dead_ms=%u dead_event=%d",
+							ch->GetPlayerID(), ch->GetName(), ch->GetMapIndex(), dwNow - state.dwDeathDetectedTime,
+							ch->m_pkDeadEvent ? 1 : 0);
+					StandPlayerBotUpHere(ch);
+				}
+			}
 
 			if (!ch->IsDead())
 			{

@@ -34,8 +34,8 @@ quest ruiny_skorpiona begin
 				limit_min = 45,
 				-- MT2009_PLUS_DUNGEON_FEE_V1: the price of a new expedition (each player, paid on entering it) and
 				-- how many new expeditions a player may start a day (Polish midnight).
-				fee = 5000000, fee_text = "5 000 000", -- MT2009_PLUS_AREZZO_BALANCE_V1: half of 10 000 000 (the owner, 5 October)
-				daily = 5,
+				fee = 10000000, fee_text = "10 000 000", -- Shared fix: entry fee x2.
+				daily = 10,
 				-- 1 October: 40 (was 50) - the waves (wave.txt: 8 groups every 30 s, was 16 every 15 s) for a
 				-- party at the entry level 65.
 				wave_kills = 40,
@@ -61,8 +61,7 @@ quest ruiny_skorpiona begin
 		end
 
 		function over_limit()
-			local c = ruiny_skorpiona.cfg()
-			return not pc.is_gm() and ruiny_skorpiona.runs_today() >= c.daily
+			return false -- No daily entry limit.
 		end
 
 		function too_poor()
@@ -100,7 +99,7 @@ quest ruiny_skorpiona begin
 				pc.setf("ruiny_skorpiona", "runs", 0)
 			end
 			pc.setf("ruiny_skorpiona", "runs", pc.getf("ruiny_skorpiona", "runs") + 1)
-			syschat("Op³ata za wejœcie: "..c.fee_text.." Yang. Dzisiejsza wyprawa "..pc.getf("ruiny_skorpiona", "runs").."/"..c.daily..".")
+			syschat("Oplata za wejscie: "..c.fee_text.." Yang. Bez limitu dobowego.")
 			return true
 		end
 
@@ -362,7 +361,7 @@ quest ruiny_skorpiona begin
 			say("")
 			say_reward("Wymagany poziom: "..c.min_level..". Limit "..c.limit_min.." minut, bez czekania miêdzy wyprawami.") -- MT2009_PLUS_DUNGEON_NO_PLAYER_COOLDOWN_V1
 			say_reward("Boty z Twojej dru¿yny wejd¹ do lochu razem z Tob¹.")
-			say_reward("Wejœcie: "..c.fee_text.." Yang. Najwy¿ej "..c.daily.." wypraw dziennie (dziœ: "..ruiny_skorpiona.runs_today().."/"..c.daily..").") -- MT2009_PLUS_DUNGEON_FEE_V1
+			say_reward("Wejscie: "..c.fee_text.." Yang. Bez limitu wypraw dziennie.")
 			say_reward("P³acisz tylko za siebie - boty z dru¿yny i towarzysz wchodz¹ bez op³aty.") -- MT2009_PLUS_DUNGEON_FEE_LEADER_V1
 			if select("WejdŸ do lochu", "Nie teraz") ~= 1 then
 				return

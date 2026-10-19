@@ -312,14 +312,6 @@ PLAYERBOT_STATUS_PATHS = (
     "/opt/metin2/var/channel2/first/playerbot_status.tsv",
     "/opt/metin2/var/channel2/game1/playerbot_status.tsv",
     "/opt/metin2/var/channel2/game2/playerbot_status.tsv",
-    # MT2009_PLUS_CH34_V1: the third and fourth channel's, when switched on
-    # (the entrypoint clears a switched-off channel's files at start).
-    "/opt/metin2/var/channel3/first/playerbot_status.tsv",
-    "/opt/metin2/var/channel3/game1/playerbot_status.tsv",
-    "/opt/metin2/var/channel3/game2/playerbot_status.tsv",
-    "/opt/metin2/var/channel4/first/playerbot_status.tsv",
-    "/opt/metin2/var/channel4/game1/playerbot_status.tsv",
-    "/opt/metin2/var/channel4/game2/playerbot_status.tsv",
 )
 _PLAYERBOT_STATUS_LOCK = threading.Lock()
 _PLAYERBOT_STATUS_CACHE_KEY = None
@@ -339,8 +331,6 @@ BOT_PERSONALITY_LABELS = {
         9: "Dropek z M2", 10: "Dropek medali", 11: "Dropek surowców",
         # MT2009_PLUS_L30_WEAPON_DROPPER_V1
         12: "Dropek broni 30 lv",
-        # MT2009_PLUS_ORNAMENT_FARMERS_V1
-        13: "Dropek ornamentów",
     },
     "en": {
         0: "Steady adventurer", 1: "Metin breaker", 2: "Team companion",
@@ -348,7 +338,6 @@ BOT_PERSONALITY_LABELS = {
         6: "Wanderer", 7: "Metin dropper", 8: "M3 weapon dropper",
         9: "M2 Bestial dropper", 10: "Medal dropper",
         11: "Guild materials dropper", 12: "Level-30 weapon dropper",
-        13: "Ornament farmer",
     },
 }
 # The status file's columns before Iwakura's personalities (2.0.85): a core of
@@ -1244,14 +1233,6 @@ def read_ai_weights():
     vals["REST"] = 100
     # Percent of bots that pick fights with bots of another kingdom; 0 is off.
     vals["KINGDOMPVP"] = 0
-    # MT2009_PLUS_BOT_CHAT_V2 (playerbot_config.h): a bot's whispers at a
-    # person on its spot, the bots' '@' trade chat (seconds between two lines
-    # on a core, 0 off; minutes between one bot's lines) and the share of the
-    # shout channel's questions they answer.
-    vals["SPOT"] = 1
-    vals["TRADECHAT"] = 75
-    vals["TRADECHAT_BOT"] = 20
-    vals["SHOUT_ANSWER"] = 100
     # The three wills (playerbot_config.h): percent of what the build does -
     # the Battle Pass errands, the sash keepers, the Dragon Soul users.
     vals["BATTLEPASS"] = 100
@@ -1264,10 +1245,10 @@ def read_ai_weights():
     # start of one to the next in a kingdom (1-4). DUDU's ask; the defaults are
     # what the core did before there was a choice.
     vals["WAR_MINUTES"] = 30
-    vals["WAR_HOURS"] = 1
+    vals["WAR_HOURS"] = 2
     # And the kills that win a war with a bot guild on a side before its clock
     # runs out (0: the clock alone; MT2009_PLUS_GUILD_WAR_KILLS_V1).
-    vals["WAR_KILLS"] = 200
+    vals["WAR_KILLS"] = 100
     # The chest event's two figures. None until the file says: the panel does
     # not know what CONFIG holds, and must not write a guess over it.
     vals["CHEST"] = None
@@ -1352,29 +1333,6 @@ def read_ai_weights():
                 if name == "KINGDOMPVP":
                     try:
                         vals["KINGDOMPVP"] = max(0, min(100, int(parts[1])))
-                    except ValueError:
-                        pass
-                    continue
-                # MT2009_PLUS_BOT_CHAT_V2
-                if name == "SPOT":
-                    vals["SPOT"] = 0 if parts[1].strip() in ("0", "off", "no") else 1
-                    continue
-                if name == "TRADECHAT":
-                    try:
-                        v = int(parts[1])
-                        vals["TRADECHAT"] = 0 if v <= 0 else max(15, min(3600, v))
-                    except ValueError:
-                        pass
-                    continue
-                if name == "TRADECHAT_BOT":
-                    try:
-                        vals["TRADECHAT_BOT"] = max(1, min(240, int(parts[1])))
-                    except ValueError:
-                        pass
-                    continue
-                if name == "SHOUT_ANSWER":
-                    try:
-                        vals["SHOUT_ANSWER"] = max(0, min(100, int(parts[1])))
                     except ValueError:
                         pass
                     continue
@@ -1490,14 +1448,6 @@ def write_ai_weights(vals):
     # Percent of bots hostile to the other kingdoms; 0 means the world is at
     # peace with itself, which is the default the core also starts from.
     body.append("KINGDOMPVP\t%d" % max(0, min(100, int(vals.get("KINGDOMPVP", 0)))))
-    # MT2009_PLUS_BOT_CHAT_V2: the bots' chat - the spot's whispers (1 on),
-    # the '@' trade chat (seconds between two lines on a core, 0 off; minutes
-    # between one bot's lines) and the percent of shout questions answered.
-    body.append("SPOT\t%d" % (1 if vals.get("SPOT", 1) else 0))
-    tc = int(vals.get("TRADECHAT", 75))
-    body.append("TRADECHAT\t%d" % (0 if tc <= 0 else max(15, min(3600, tc))))
-    body.append("TRADECHAT_BOT\t%d" % max(1, min(240, int(vals.get("TRADECHAT_BOT", 20)))))
-    body.append("SHOUT_ANSWER\t%d" % max(0, min(100, int(vals.get("SHOUT_ANSWER", 100)))))
     # The three wills, percent of the build's: 100 is the world as it was.
     for key in ("BATTLEPASS", "SASH", "ALCHEMY"):
         body.append("%s\t%d" % (key, max(0, min(250, int(vals.get(key, 100))))))
@@ -1507,8 +1457,8 @@ def write_ai_weights(vals):
     # The bots' guild wars: how long (15 or 30 minutes) and how often (every
     # 1-4 hours in each kingdom).
     body.append("WAR_MINUTES\t%d" % (15 if int(vals.get("WAR_MINUTES", 30)) <= 15 else 30))
-    body.append("WAR_HOURS\t%d" % max(1, min(4, int(vals.get("WAR_HOURS", 1)))))
-    body.append("WAR_KILLS\t%d" % max(0, min(1000, int(vals.get("WAR_KILLS", 200)))))
+    body.append("WAR_HOURS\t%d" % max(1, min(4, int(vals.get("WAR_HOURS", 2)))))
+    body.append("WAR_KILLS\t%d" % max(0, min(1000, int(vals.get("WAR_KILLS", 100)))))
     # The Moonlight chest: thousandths per kill and per Metin. Written only once
     # the operator has set them, so an untouched install keeps its CONFIG.
     for key in ("CHEST", "CHEST_STONE"):
@@ -1606,18 +1556,7 @@ GUILD_STATUS_FILES = [
 ]
 GUILD_TIER_KEYS = ("gl_tier_elite", "gl_tier_strong", "gl_tier_medium", "gl_tier_ordinary")
 GUILD_EMPIRE_KEYS = {1: "gl_empire_shinsoo", 2: "gl_empire_chunjo", 3: "gl_empire_jinno"}
-EVENT_NOW_MINUTES = (15, 30, 60, 120, 180, 360, 720, 1440, 2880, 4320, 7200, 10080)  # MT2009_PLUS_EVENTS_7_DAYS_V1: up to 7 days
-
-def event_minutes_label(minutes):
-    """MT2009_PLUS_EVENTS_7_DAYS_V1: "45 min", "6 h", "3 dni" for the "now" lists."""
-    minutes = int(minutes)
-    if minutes < 60:
-        return "%d min" % minutes
-    if minutes < 1440 or minutes % 1440:
-        return "%d h" % (minutes // 60) if minutes % 60 == 0 else "%d min" % minutes
-    days = minutes // 1440
-    return "1 dzie\u0144" if days == 1 else "%d dni" % days
-
+EVENT_NOW_MINUTES = (15, 30, 60, 120, 180, 360)
 _EVENT_HHMM = re.compile(r"^([01]?\d|2[0-4]):([0-5]\d)$")
 
 
@@ -2064,12 +2003,6 @@ def read_legend_tiers(cur, pids):
     return out
 
 
-# MT2009_PLUS_LEGEND_NAMES_V1: the 27 Legends, the most legendary first (the
-# game core's PLAYERBOT_LEGEND_NAMES, playerbot_legend_tier.h); the ranking
-# lists them in this order.
-LEGEND_NAME_ORDER_SQL = "IF(l.tier >= 3 AND FIELD(p.name, 'FuBu', 'Wallander4ever', 'SirMamutPOL', 'Zwierz', 'IsAmU', 'GoToSleep', 'Kasanga', 'Loth', 'SQRCZYBYKU', 'KAPRAL', 'BumBum', 'NinjaxesPL', 'Xuminnek', 'ShiveR', 'Scoobany', 'Schenk', 'Kosikredki', 'Tream', 'Sabal', 'Gimper', 'BuenaCosta', 'Uzurpator', 'DIIIM2', 'TNT', 'Asfen', 'LifeIsDeath', 'ZAXEP') > 0, FIELD(p.name, 'FuBu', 'Wallander4ever', 'SirMamutPOL', 'Zwierz', 'IsAmU', 'GoToSleep', 'Kasanga', 'Loth', 'SQRCZYBYKU', 'KAPRAL', 'BumBum', 'NinjaxesPL', 'Xuminnek', 'ShiveR', 'Scoobany', 'Schenk', 'Kosikredki', 'Tream', 'Sabal', 'Gimper', 'BuenaCosta', 'Uzurpator', 'DIIIM2', 'TNT', 'Asfen', 'LifeIsDeath', 'ZAXEP'), 99)"
-
-
 def read_legends(empire=0, tier=0):
     """(rows, events, missing): every tiered bot, the best first, with name,
     level, guild and counters, and the last fifty events."""
@@ -2092,7 +2025,7 @@ def read_legends(empire=0, tier=0):
                 "LEFT JOIN player.guild_member gm ON gm.pid = l.pid "
                 "LEFT JOIN player.guild g ON g.id = gm.guild_id "
                 "WHERE " + " AND ".join(where) + " "
-                "ORDER BY (l.tier >= 3) DESC, " + LEGEND_NAME_ORDER_SQL + ", l.tier DESC, l.reputation DESC, p.level DESC LIMIT 2000", args)
+                "ORDER BY l.tier DESC, l.reputation DESC, p.level DESC LIMIT 2000", args)
             rows = cur.fetchall()
     except Exception:
         return [], [], True
@@ -2185,11 +2118,6 @@ def weekly_tidy(r):
     return r
 
 
-# MT2009_PLUS_RANKING_NO_SIDEKICK_V1: companions (Towarzysze) take no part in the
-# weekly ranking - not in its lists, not among its title holders.
-WEEKLY_NOT_SIDEKICK = "NOT EXISTS (SELECT 1 FROM player.playerbot_sidekick wsk WHERE wsk.sidekick_pid = {})"
-
-
 def read_weekly_ranking(cat=1):
     """(state, holders, ranking, missing): the state row (defaults when it is
     not there yet), the title holders of the current season by category, and
@@ -2205,8 +2133,7 @@ def read_weekly_ranking(cat=1):
                 state.update({k: int(row[k] or 0) for k in state})
             season = state["season"]
             cur.execute("SELECT t.cat, t.place, t.pid, t.name, t.level, t.empire, t.value, t.is_bot "
-                        "FROM player.weekly_rank_title t WHERE t.season = %s AND " + WEEKLY_NOT_SIDEKICK.format("t.pid") + " "
-                        "ORDER BY t.cat, t.place", (season,))
+                        "FROM player.weekly_rank_title t WHERE t.season = %s ORDER BY t.cat, t.place", (season,))
             for r in cur.fetchall():
                 r = weekly_tidy(r)
                 r["title"] = weekly_title_text(r["cat"], r["place"])
@@ -2218,14 +2145,14 @@ def read_weekly_ranking(cat=1):
                             "FROM player.player p "
                             "LEFT JOIN account.account a ON a.id = p.account_id "
                             "LEFT JOIN player.player_index pi ON pi.id = p.account_id "
-                            "WHERE LEFT(p.name, 1) <> '[' AND " + WEEKLY_NOT_SIDEKICK.format("p.id") + " "
+                            "WHERE LEFT(p.name, 1) <> '[' "
                             "ORDER BY p.level DESC, p.exp DESC LIMIT 50")
             else:
                 cur.execute("SELECT s.pid, s.value, s.is_bot, p.name, p.level, pi.empire "
                             "FROM player.weekly_rank_score s "
                             "LEFT JOIN player.player p ON p.id = s.pid "
                             "LEFT JOIN player.player_index pi ON pi.id = p.account_id "
-                            "WHERE s.season = %s AND s.cat = %s AND " + WEEKLY_NOT_SIDEKICK.format("s.pid") + " "
+                            "WHERE s.season = %s AND s.cat = %s "
                             "ORDER BY s.value DESC LIMIT 50", (season, cat))
             ranking = [weekly_tidy(r) for r in cur.fetchall()]
     except Exception:
@@ -3853,19 +3780,12 @@ T = {
  "az_dash_hint": {"pl":"Czy na tym świecie są dostępne mapy i lochy z Arezzo (moduł dobrowolny).","en":"Whether the Arezzo maps and dungeons are open in this world (an optional module)."},
  "az_intro":     {"pl":"Moduł dobrowolny: Dolina Cyklopów, Pustkowie Faraona, Zaczarowany Las oraz lochy Biblioteka Wiedzy, Wzgórze Wukonga, Ruiny Skorpiona i Starożytna Dżungla. Klient (2.0.30 i nowszy) ma wszystkie pliki zawsze — ten przełącznik decyduje tylko, czy serwer do nich prowadzi. Zapis działa od razu, bez restartu. Ustawienie z panelu zostaje po restarcie, dopóki ktoś nie zmieni M2_AREZZO w .env.","en":"An optional module: Dolina Cyklopow, Pustkowie Faraona, Zaczarowany Las and the dungeons Biblioteka Wiedzy, Wzgorze Wukonga, Ruiny Skorpiona and Starozytna Dzungla. The client (2.0.30 and newer) always has the files - this switch only decides whether the server leads there. Saving takes effect immediately, no restart. The panel's setting survives restarts until M2_AREZZO in .env is changed."},
  "az_enable":    {"pl":"Moduł Arezzo włączony","en":"Arezzo module on"},
- "az_help":      {"pl":"Włączony: strony w Teleporterze i Pierścieniu, portal do Zaczarowanego Lasu po Strażniku En-Tai, strażnicy wejść do lochów i lochy Arezzo w oknie „Wyprawy” (X). Wyłączony: nic z tego nie jest widoczne, a gracz, który stoi na mapie Arezzo albo jest w jej lochu, w ciągu kilku sekund wraca do miasta (GM może zostać).","en":"On: the Teleporter and ring pages, the Enchanted Forest portal after the En-Tai Guardian, the dungeon entrance guards and the Arezzo lines in the dungeon window (X). Off: none of it is visible, and a player standing on an Arezzo map or in one of its dungeons is sent to the town within seconds (a GM may stay)."},
+ "az_help":      {"pl":"Włączony: strony w Teleporterze i Pierścieniu, portal do Zaczarowanego Lasu po Strażniku En-Tai, strażnicy wejść do lochów i lochy Arezzo w oknie „Wyprawy” (X), zestawy kostiumów z Arezzo w ItemShopie (w grze i na stronie). Wyłączony: nic z tego nie jest widoczne, a gracz, który stoi na mapie Arezzo albo jest w jej lochu, w ciągu kilku sekund wraca do miasta (GM może zostać).","en":"On: the Teleporter and ring pages, the Enchanted Forest portal after the En-Tai Guardian, the dungeon entrance guards and the Arezzo lines in the dungeon window (X), the Arezzo costume sets in the ItemShop (in game and on the web). Off: none of it is visible, and a player standing on an Arezzo map or in one of its dungeons is sent to the town within seconds (a GM may stay)."},
  "az_saved_live":{"pl":"Zapisano i przełączono na żywo, przez pomocnika w grze. 🗺️","en":"Saved and switched live, through the in-game helper. 🗺️"},
  "seon_nav":     {"pl":"💎 Seon-Hae: 6. i 7. bonus","en":"💎 Seon-Hae: 6th and 7th bonus"},
  "seon_open":    {"pl":"💎 Otwórz Seon-Hae","en":"💎 Open Seon-Hae"},
  "tip_seon":     {"pl":"Włącz albo wyłącz dodawanie 6. i 7. bonusu u Seon-Hae i ustaw czas, przez jaki trzyma przedmiot. Działa od razu, bez restartu serwera.","en":"Switch Seon-Hae's 6th and 7th bonus on or off and set how long he keeps an item. Takes effect immediately, no server restart."},
  "seon_dash_hint":{"pl":"Czy Seon-Hae (NPC 20095) dodaje graczom 6. i 7. bonus (system dobrowolny).","en":"Whether Seon-Hae (NPC 20095) adds the 6th and 7th bonus for players (an optional system)."},
- "tpm_nav":      {"pl":"🧭 Mapa teleportacji (TAB) – autor: Mur4s","en":"🧭 Teleport map (TAB) – author: Mur4s"},
- "tpm_open":     {"pl":"🧭 Otwórz mapę teleportacji","en":"🧭 Open the teleport map"},
- "tip_tpm":      {"pl":"Włącz albo wyłącz mapę teleportacji pod klawiszem TAB. Działa od razu, bez restartu serwera.","en":"Switch the teleport map under the TAB key on or off. Takes effect immediately, no restart."},
- "tpm_dash_hint":{"pl":"Czy TAB otwiera graczom mapę świata z 18 punktami i darmowym teleportem (moduł dobrowolny).","en":"Whether TAB opens the world map with 18 points and a free teleport for players (an optional module)."},
- "tpm_intro":    {"pl":"Moduł dobrowolny (autor: Mur4s): klawisz TAB otwiera mapę świata z 18 punktami (miasta królestw, Dolina, Pustynia, Góra Sohan, Świątynia, Wieża Demonów, Las Duchów, Czerwony Las, Kraina Gigantów, Piekło, Loch Pająków V1, Dolina Cyklopów i Pustkowie Faraona przy włączonym Arezzo). Kliknięcie teleportuje za darmo, bez pierścienia. Wymaga klienta z mapą. Zapis działa od razu, bez restartu. Ustawienie z panelu zostaje po restarcie, dopóki ktoś nie zmieni M2_TELEPORT_MAP w .env.","en":"An optional module (author: Mur4s): the TAB key opens a world map with 18 points (the kingdoms' towns, Orc Valley, Desert, Mount Sohan, Temple, Demon Tower, Ghost Forest, Red Forest, Land of Giants, Hell, Spider Dungeon V1, and the Cyclops Valley and Pharaoh's Wasteland with Arezzo on). A click teleports for free, no ring. Needs the client with the map. Saving takes effect immediately, no restart. The panel's setting survives restarts until M2_TELEPORT_MAP in .env is changed."},
- "tpm_enable":   {"pl":"Mapa teleportacji (TAB) włączona","en":"Teleport map (TAB) on"},
- "tpm_help":     {"pl":"Włączona: TAB (bez Ctrl) otwiera mapę, Ctrl+TAB dalej ukrywa interfejs; nie działa w trakcie handlu, pojedynku, na arenie wojny gildii, OX i mapach wojny. Wyłączona: TAB działa jak dawniej (Slot 6 paska), a serwer ignoruje teleporty z mapy. Gracze w grze dostają zmianę w ciągu kilku sekund.","en":"On: TAB (without Ctrl) opens the map, Ctrl+TAB still hides the interface; not during a trade or a duel, nor from the guild war arena, OX or the war maps. Off: TAB works as before (quick slot 6) and the server ignores the map's teleports. Players in game get the change within seconds."},
  "seon_intro":   {"pl":"System dobrowolny (z Owsapa): gracz oddaje Seon-Hae (NPC 20095 w pierwszych wioskach) broń albo zbroję/biżuterię z pięcioma bonusami, Odłamki poziomu przedmiotu (39070–39077, 39081; 2% szansy za każdy, do 10) i Suplementy (72064–72067; do 5, do +50%). Seon-Hae trzyma przedmiot przez ustawiony czas i oddaje go z nowym bonusem albo bez. Wymaga klienta z oknem Seon-Hae. Zapis działa od razu, bez restartu. Włączenie z panelu zostaje po restarcie, dopóki ktoś nie zmieni M2_SEONHAE w .env.","en":"An optional system (from Owsap): a player hands Seon-Hae (NPC 20095 in the first villages) a weapon or an armour/jewel with five bonuses, Powershards of the item's level (39070-39077, 39081; 2% chance each, up to 10) and Additives (72064-72067; up to 5, up to +50%). Seon-Hae keeps the item for the set time and gives it back with a new bonus or without. Needs the client with the Seon-Hae window. Saving takes effect immediately, no restart. Switching on here survives restarts until M2_SEONHAE in .env is changed."},
  "seon_enable":  {"pl":"Seon-Hae przyjmuje przedmioty","en":"Seon-Hae takes items"},
  "seon_help":    {"pl":"Wyłączenie zatrzymuje tylko nowe zlecenia — przedmiot, który Seon-Hae już trzyma, zawsze można odebrać. Suplementy wypadają z Metinów i bossów, a Odłamki ze zwykłych potworów w Grocie Wygnańców, Świątyni Ochao i Zaczarowanym Lesie (reguły niżej).","en":"Switching off stops new hand-ins only - an item Seon-Hae already keeps can always be collected. The Additives drop from Metins and bosses, the Powershards from ordinary monsters, in the Grotto of Exile, the Temple of Ochao and the Enchanted Forest (the rules below)."},
@@ -4010,7 +3930,7 @@ T = {
  "ch2_help":    {"pl":"Drugi kanał gry. Część botów gra na CH2, więc serwer rozkłada je na dwa rdzenie procesora i udźwignie więcej botów naraz. Wszystkie sklepy (botów i graczy) stoją tylko na CH1: bot z CH2, który chce otworzyć albo obsłużyć swój sklep albo coś kupić, przechodzi na CH1, a wolny bot z CH1 przechodzi na jego miejsce na CH2. Ustawiony udział to najmniej tyle botów na CH2; gdy nikt nie czeka na przejście, CH2 może przejąć do 10 punktów więcej. Domyślnie wyłączony.",
                  "en":"A second game channel. Some of the bots play on CH2, so the server spreads them over two CPU cores and carries more bots at once. Every shop, bots' and players', stands on CH1: a bot on CH2 that wants to open or serve its shop or to buy something moves to CH1, and a free bot of CH1 moves to CH2 in its place. The share set here is the least CH2 carries; with nobody waiting to move, CH2 may take up to ten points more. Off by default."},
  "ch2_enable":  {"pl":"Włącz drugi kanał (CH2)", "en":"Switch the second channel on (CH2)"},
- "ch2_share":   {"pl":"Botów poza CH1 (na CH2, a z CH3/CH4 po równo)", "en":"Bots off CH1 (on CH2, evenly over CH2-CH4 with CH3/CH4)"},
+ "ch2_share":   {"pl":"Botów na CH2", "en":"Bots on CH2"},
  "ch2_save":    {"pl":"Zapisz (zadziała po restarcie serwera)", "en":"Save (applies after a server restart)"},
  "ch2_now_off": {"pl":"Teraz: CH2 wyłączony - wszystkie boty grają na CH1.", "en":"Now: CH2 is off - every bot plays on CH1."},
  "ch2_now_on":  {"pl":"Teraz: CH2 włączony, na CH2 gra {share}% botów.", "en":"Now: CH2 is on, {share}% of the bots play on it."},
@@ -4023,19 +3943,6 @@ T = {
                  "en":"✅ Saved. The channel change applies after a server restart (GRAJ in the launcher or a restart of the game container)."},
  "ch2_bad":     {"pl":"Udział botów na CH2 musi być liczbą od 10 do 90. Nic nie zmieniono.", "en":"The share of bots on CH2 has to be between 10 and 90. Nothing was changed."},
  "ch2_failed":  {"pl":"Nie udało się zapisać ustawienia kanałów w katalogu wymiany z serwerem.", "en":"Could not write the channel setting into the spool shared with the server."},
- # MT2009_PLUS_CH34_V1: the third and fourth channel.
- "ch34_title":  {"pl":"Trzeci i czwarty kanał (CH3, CH4)", "en":"Third and fourth channel (CH3, CH4)"},
- "ch34_help":   {"pl":"Na tej samej zasadzie co CH2: boty i gracze grają też na CH3/CH4, ale sklepy i stragany stoją tylko na CH1 - bot, który ma coś do zrobienia przy straganach, przelogowuje się na CH1. CH3 działa tylko z włączonym CH2, CH4 tylko z CH3. Ustawiony wyżej udział botów to wtedy udział poza CH1, dzielony po równo między CH2-CH4. Domyślnie wyłączone.",
-                 "en":"On the same principle as CH2: bots and players play on CH3/CH4 too, but every shop and stall stands on CH1 only - a bot with business at the stalls relogs to CH1. CH3 works only with CH2 on, CH4 only with CH3. The bot share above then is the share off CH1, split evenly between CH2-CH4. Off by default."},
- "ch34_warn":   {"pl":"⚠️ Każdy kanał to trzy osobne rdzenie gry: ok. 2,5-3 GB RAM więcej i od pół do jednego rdzenia CPU pod obciążeniem (CH1-CH4 razem ok. 11 GB RAM na same rdzenie gry). Porty: CH3 {p3}, CH4 {p4}.",
-                 "en":"⚠️ Every channel is three game cores of its own: about 2.5-3 GB of RAM more and half to one CPU core under load (CH1-CH4 together ~11 GB of RAM for the game cores alone). Ports: CH3 {p3}, CH4 {p4}."},
- "ch3_enable":  {"pl":"Włącz trzeci kanał (CH3)", "en":"Switch the third channel on (CH3)"},
- "ch4_enable":  {"pl":"Włącz czwarty kanał (CH4)", "en":"Switch the fourth channel on (CH4)"},
- "ch34_now":    {"pl":"Teraz: CH3 {ch3}, CH4 {ch4}.", "en":"Now: CH3 {ch3}, CH4 {ch4}."},
- "ch34_on":     {"pl":"włączony", "en":"on"},
- "ch34_off":    {"pl":"wyłączony", "en":"off"},
- "ch34_ports":  {"pl":"Gracze wejdą na CH{n} po najbliższym uruchomieniu serwera z launchera (GRAJ) albo aktualizacji na VPS - otworzą się wtedy porty {ports}.",
-                 "en":"Players reach CH{n} after the next start from the launcher (GRAJ) or an update on a VPS, which opens ports {ports}."},
  "rates_yang_range": {"pl":"Yang może być najwyżej 1000%. Nic nie zmieniono. 🙂","en":"Yang can be at most 1000%. Nothing was changed. 🙂",
                   "de":"Yang darf höchstens 1000% sein. Es wurde nichts geändert. 🙂",
                   "tr":"Yang en fazla %1000 olabilir. Hiçbir şey değiştirilmedi. 🙂"},
@@ -4589,15 +4496,6 @@ T.update({
                   "tr":"Ortak arazide - Ork Vadisi, çöl, Sohan Dağı, zindanlar - başka krallıktan bir botla karşılaştığında düello başlatacak botların oranı. Asla köyde, asla bir oyuncuya karşı ve asla yaralı ya da zaten dövüşen bir bota karşı değil. Hangi botların saldırgan olduğu karaktere sabittir, yani her yeniden başlatmadan sonra aynıları kavga eder. Varsayılan olarak kapalı. Yalnızca ortak dünya düzeninde çalışır (unified, 1500 bota kadar varsayılan): split'te her çekirdek tek krallığın botlarını tutar, dövüşecek kimse yoktur."},
  "ai_kpvp_off":  {"en":"peace","pl":"pokój","de":"Frieden","tr":"barış"},
  "ai_kpvp_all":  {"en":"every bot","pl":"każdy bot","de":"jeder Bot","tr":"her bot"},
- # MT2009_PLUS_BOT_CHAT_V2
- "ai_botchat":   {"en":"Bots' chat","pl":"Czat botów"},
- "ai_botchat_help": {"en":"A bot whispers at a person who hits it or takes the monsters it is fighting (a warning first, then \"to moj spot\", \"spadaj\", \"SPIEEEEEEEE STAD\"; gentle bots leave the spot instead, hot-headed ones call a friend). The bots of every kingdom write on the '@' trade chat when they really sell or buy something (\"S> ... - price\", \"K> ... place .../szt\"); a person's '@ K> ...' is answered by whisper. On the shout channel a bot answers questions like \"gdzie metki na 30?\" or \"ile stoi fms?\".",
-                     "pl":"Bot pisze na priv do gracza, który go bije albo zabiera mu moby (najpierw ostrzeżenie, potem „to mój spot”, „spadaj”, „SPIEEEEEEEE STĄD”; łagodne boty zamiast tego zmieniają spot, porywcze wołają kolegę). Boty wszystkich królestw piszą na czacie handlowym „@”, kiedy naprawdę coś sprzedają albo kupują („S> … – cena”, „K> … płacę …/szt”); na „@ K> …” gracza odpisują na priv. Na wołaj bot odpowiada na pytania typu „gdzie metki na 30?” albo „ile stoi fms?”."},
- "ai_spot_on":   {"en":"Bots defend their spot (whispers)","pl":"Boty bronią swojego spota (priv)"},
- "ai_tradechat": {"en":"Bots' trade chat '@' - one line every","pl":"Czat handlowy botów „@” – jedna linia co"},
- "ai_tradechat_off": {"en":"off","pl":"wyłączony"},
- "ai_tradechat_bot": {"en":"One bot's next trade line after","pl":"Ten sam bot znowu po"},
- "ai_shout_answer": {"en":"Shout questions the bots answer","pl":"Pytania na wołaj, na które boty odpowiadają"},
  "ai_scroll":    {"en":"Blessing and Dragon God Scrolls","pl":"Zwoje Błogosławieństwa i Boga Smoków","de":"Segens- und Drachengott-Schriftrollen","tr":"Kutsama ve Ejderha Tanrısı parşömenleri"},
  "ai_scroll_help":{"en":"The lowest plus a bot upgrades to under a Blessing Scroll or a Dragon God Scroll. At +7 a scroll goes only on the upgrades to +7, +8 and +9, and every lower one is done at the blacksmith without a scroll, like a player who has none - so the item can burn. At +1 nothing is restricted and the bots use scrolls as before: from +7, and earlier on a worn item that could burn and on an item with valuable bonuses. Applies within five seconds.",
                   "pl":"Najniższy plus, na jaki bot ulepsza pod Zwojem Błogosławieństwa albo Zwojem Boga Smoków. Przy +7 zwój idzie tylko na ulepszenia na +7, +8 i +9, a każde niższe bot robi u kowala bez zwoju, jak gracz, który zwojów nie ma - więc przedmiot może spłonąć. Przy +1 nie ma ograniczenia i boty używają zwojów tak jak dotąd: od +7, a wcześniej na założonym przedmiocie, który mógłby spłonąć, i na przedmiocie z cennymi bonusami. Działa w pięć sekund.",
@@ -5206,7 +5104,6 @@ app = Flask(__name__)
 app.jinja_env.globals["DISCORD"] = DISCORD_URL
 app.jinja_env.globals["WEBSITE"] = WEBSITE_URL
 app.jinja_env.globals["COFFEE"] = COFFEE_URL
-app.jinja_env.globals["minutes_label"] = event_minutes_label  # MT2009_PLUS_EVENTS_7_DAYS_V1
 app.secret_key = CONF["flask_secret"]
 
 
@@ -5855,24 +5752,6 @@ def persist_arezzo(cur, on):
     """The event-flag row the db core reads at its next start."""
     cur.execute("REPLACE INTO player.quest (dwPID, szName, szState, lValue) "
                 "VALUES (0, 'mt2009_arezzo_closed', '', %s)", (0 if on else 1,))
-
-# MT2009_PLUS_TELEPORT_MAP_V1 (Autor: Mur4s): the teleport map under TAB, the
-# event flag m2_teleport_map_on (1 = on; no row = off, apply.sh writes it from
-# M2_TELEPORT_MAP, default 0). Quest mapa_tab reads it.
-def read_teleport_map():
-    with db() as c, c.cursor() as cur:
-        cur.execute("SELECT lValue FROM player.quest WHERE dwPID = 0 "
-                    "AND szName = 'm2_teleport_map_on' LIMIT 1")
-        row = cur.fetchone()
-    try:
-        return {"on": 1 if (row is not None and int(row["lValue"]) == 1) else 0}
-    except (TypeError, ValueError, KeyError):
-        return {"on": 0}
-
-def persist_teleport_map(cur, on):
-    """The event-flag row the db core reads at its next start."""
-    cur.execute("REPLACE INTO player.quest (dwPID, szName, szState, lValue) "
-                "VALUES (0, 'm2_teleport_map_on', '', %s)", (1 if on else 0,))
 
 # MT2009_PLUS_SEONHAE_V1: Seon-Hae's 6th/7th bonus (playerbot_seonhae.h), the
 # event flags m2_seonhae_on (1 = on; no row = off, apply.sh writes it from
@@ -7207,11 +7086,6 @@ TPL_DASH = BASE.replace("__BODY__", """
 <a class="btn" href="{{url_for('seonhae')}}" title="{{t('tip_seon')}}">{{t('seon_open')}}</a>
 </div>
 <div class="card">
-<h3 class="help" title="{{t('tip_tpm')}}">{{t('tpm_nav')}}</h3>
-<p class="muted">{{t('tpm_dash_hint')}}</p>
-<a class="btn" href="{{url_for('teleport_map')}}" title="{{t('tip_tpm')}}">{{t('tpm_open')}}</a>
-</div>
-<div class="card">
 <h3 class="help" title="{{t('tip_fl')}}">{{t('fl_nav')}}</h3>
 <p class="muted">{{t('fl_dash_hint')}}</p>
 <a class="btn" href="{{url_for('flower_event')}}" title="{{t('tip_fl')}}">{{t('fl_open')}}</a>
@@ -7679,14 +7553,6 @@ regenLabel("regen_boss");regenLabel("regen_mob");
 {% if channels.on and not channels.ports_open %}<p class="muted">⚠️ {{t('ch2_ports').replace('{ports}', channels.ch2_ports)}}</p>{% endif %}
 {% if channels.pending %}<p class="muted">🕓 {{ t('ch2_pending').replace('{what}', channels.pending) }}</p>{% endif %}
 <label><input type="checkbox" name="ch2" value="1"{% if channels.want_on %} checked{% endif %}> {{t('ch2_enable')}}</label>
-<h3 style="margin-top:12px">🔀 {{t('ch34_title')}}</h3>
-<p class="muted">{{t('ch34_help')}}</p>
-<p class="muted">{{ t('ch34_warn').replace('{p3}', channels.ch3_ports).replace('{p4}', channels.ch4_ports) }}</p>
-<p>{{ t('ch34_now').replace('{ch3}', t('ch34_on') if channels.ch3 else t('ch34_off')).replace('{ch4}', t('ch34_on') if channels.ch4 else t('ch34_off')) }}</p>
-{% if channels.ch3 and not channels.ch3_ports_open %}<p class="muted">⚠️ {{t('ch34_ports').replace('{n}', '3').replace('{ports}', channels.ch3_ports)}}</p>{% endif %}
-{% if channels.ch4 and not channels.ch4_ports_open %}<p class="muted">⚠️ {{t('ch34_ports').replace('{n}', '4').replace('{ports}', channels.ch4_ports)}}</p>{% endif %}
-<label><input type="checkbox" name="ch3" value="1"{% if channels.want_ch3 %} checked{% endif %}> {{t('ch3_enable')}}</label><br>
-<label><input type="checkbox" name="ch4" value="1"{% if channels.want_ch4 %} checked{% endif %}> {{t('ch4_enable')}}</label>
 <h3 style="margin-top:12px">{{t('ch2_share')}}</h3>
 <select name="share">
 {% for p in channels.choices %}<option value="{{p}}"{% if channels.want_share == p %} selected{% endif %}>{{p}}%</option>{% endfor %}
@@ -7765,23 +7631,6 @@ TPL_AREZZO = BASE.replace("__BODY__", """
 <input type="hidden" name="_csrf" value="{{csrf_token}}">
 <p class="muted">{{t('az_help')}}</p>
 <label><input type="checkbox" name="on" value="1" {% if cur['on'] %}checked{% endif %}> {{t('az_enable')}}</label>
-<button class="big" style="margin-top:18px">{{t('easter_save')}}</button>
-</form></div>""")
-
-# MT2009_PLUS_TELEPORT_MAP_V1 (Autor: Mur4s): the teleport map's page, the Arezzo page's shape.
-TPL_TELEPORT_MAP = BASE.replace("__BODY__", """
-<p><a href="{{url_for('dash')}}">{{t('back_players')}}</a></p>
-<div class="card">
-<h3>{{t('tpm_nav')}}</h3>
-<p class="muted">{{t('tpm_intro')}}</p>
-<p><span class="badge">🧭 {{t('tpm_nav')}}: {{t('easter_on') if cur['on'] else t('easter_off')}}</span></p>
-</div>
-
-<div class="card">
-<form method="post">
-<input type="hidden" name="_csrf" value="{{csrf_token}}">
-<p class="muted">{{t('tpm_help')}}</p>
-<label><input type="checkbox" name="on" value="1" {% if cur['on'] %}checked{% endif %}> {{t('tpm_enable')}}</label>
 <button class="big" style="margin-top:18px">{{t('easter_save')}}</button>
 </form></div>""")
 
@@ -7967,7 +7816,7 @@ TPL_EVENTS = BASE.replace("__BODY__", """
 <input type="hidden" name="action" value="now">
 <input type="hidden" name="kind" value="{{k}}">
 {{t('ev_now_minutes')}}
-<select name="minutes">{% for m in minutes %}<option value="{{m}}" {% if m == 60 %}selected{% endif %}>{{minutes_label(m)}}</option>{% endfor %}</select>
+<select name="minutes">{% for m in minutes %}<option value="{{m}}" {% if m == 60 %}selected{% endif %}>{{m}}</option>{% endfor %}</select>
 {% if k in world_kinds %}{{t('ev_now_' + k)}} <input type="number" name="value" min="1" max="{{world_max[k]}}" value="{{world_default[k]}}" style="width:60px">
 <select name="map">{% for m in maps %}<option value="{{m[0]}}">{{map_name(m[0])}}</option>{% endfor %}</select>
 {% elif k not in ('chest', 'bossloot', 'metinloot', 'goblin', 'catchking', 'rumi', 'yutnori', 'flower', 'easter') %}{{t('ev_now_value')}} <input type="number" name="value" min="1" max="1000" value="50" style="width:70px">{% endif %}
@@ -8167,10 +8016,10 @@ TPL_AI = BASE.replace("__BODY__", """
       </select></label>
     <label>{{t('ai_war_hours')}}
       <select name="WAR_HOURS">
-        {% for h in (1, 2, 3, 4) %}<option value="{{h}}" {% if cur.get('WAR_HOURS', 1) == h %}selected{% endif %}>{{h}} {{t('ai_war_hour_unit')}}</option>{% endfor %}
+        {% for h in (1, 2, 3, 4) %}<option value="{{h}}" {% if cur.get('WAR_HOURS', 2) == h %}selected{% endif %}>{{h}} {{t('ai_war_hour_unit')}}</option>{% endfor %}
       </select></label>
     {% if engine_mt2009 %}<label>{{t('ai_war_kills')}}
-      <input type="number" name="WAR_KILLS" min="0" max="1000" step="10" style="width:80px" value="{{cur.get('WAR_KILLS', 200)}}"> {{t('ai_war_kills_unit')}}</label>{% endif %}
+      <input type="number" name="WAR_KILLS" min="0" max="1000" step="10" style="width:80px" value="{{cur.get('WAR_KILLS', 100)}}"> {{t('ai_war_kills_unit')}}</label>{% endif %}
   </div>
   <p class="muted" style="margin:6px 0 0">{{t('ai_war_len_help')}}</p>
 </div>
@@ -8265,27 +8114,6 @@ TPL_AI = BASE.replace("__BODY__", """
   <div class="muted" style="display:flex;justify-content:space-between;font-size:12px">
     <span>0 — {{t('ai_kpvp_off')}}</span><span>100 — {{t('ai_kpvp_all')}}</span>
   </div>
-</div>
-<div style="margin-bottom:18px">{# MT2009_PLUS_BOT_CHAT_V2 #}
-  <input type="hidden" name="BOTCHAT_FORM" value="1">
-  <h3 style="margin:0 0 2px">💬 {{t('ai_botchat')}}</h3>
-  <p class="muted" style="margin:0 0 6px">{{t('ai_botchat_help')}}</p>
-  <label><input type="checkbox" name="SPOT" value="1" {% if cur.get('SPOT', 1) %}checked{% endif %}> {{t('ai_spot_on')}}</label>
-  <h4 style="margin:10px 0 2px">{{t('ai_tradechat')}}
-      <span class="badge" id="v_TRADECHAT">{% if cur.get('TRADECHAT', 75) %}{{cur.get('TRADECHAT', 75)}} s{% else %}{{t('ai_tradechat_off')}}{% endif %}</span></h4>
-  <input type="range" name="TRADECHAT" id="s_TRADECHAT" min="0" max="600" step="15" value="{{cur.get('TRADECHAT', 75)}}" style="width:100%"
-         oninput="document.getElementById('v_TRADECHAT').textContent=(this.value>0?this.value+' s':'{{t('ai_tradechat_off')}}')">
-  <div class="muted" style="display:flex;justify-content:space-between;font-size:12px">
-    <span>0 — {{t('ai_tradechat_off')}}</span><span>600 s</span>
-  </div>
-  <h4 style="margin:10px 0 2px">{{t('ai_tradechat_bot')}}
-      <span class="badge" id="v_TRADECHAT_BOT">{{cur.get('TRADECHAT_BOT', 20)}} min</span></h4>
-  <input type="range" name="TRADECHAT_BOT" id="s_TRADECHAT_BOT" min="1" max="120" step="1" value="{{cur.get('TRADECHAT_BOT', 20)}}" style="width:100%"
-         oninput="document.getElementById('v_TRADECHAT_BOT').textContent=this.value+' min'">
-  <h4 style="margin:10px 0 2px">{{t('ai_shout_answer')}}
-      <span class="badge" id="v_SHOUT_ANSWER">{{cur.get('SHOUT_ANSWER', 100)}}%</span></h4>
-  <input type="range" name="SHOUT_ANSWER" id="s_SHOUT_ANSWER" min="0" max="100" step="5" value="{{cur.get('SHOUT_ANSWER', 100)}}" style="width:100%"
-         oninput="document.getElementById('v_SHOUT_ANSWER').textContent=this.value+'%'">
 </div>
 <div style="margin-bottom:18px">
   <h3 style="margin:0 0 2px">📜 {{t('ai_scroll')}}
@@ -11685,11 +11513,9 @@ def bot_sql(query):
 # engine reads to hand out the commands, and the one the player page's rank
 # card writes. That is what keeps Admin, AdminNinja, AdminSura and AdminSzaman
 # (gm_characters.sql: level 90, 500 000 000 yang and a full +9 set each) off
-# the first four places of every table. While an account has such a game
-# master, all its characters are out (MT2009_PLUS_RANKING_GM_ACCOUNT_CURRENT_V2,
-# the owner, 6 October: "cale konta GM, ale musza miec aktualnie GM na
-# koncie"); a row of a deleted or renamed GM character hides nobody.
-# Not the names: the r40250 package calls its GM [SA]Admin, and a rank
+# the first four places of every table. Not the admin account: the operator's
+# own character often lives on it ("tylko moja Tieru"), and it is a player's.
+# Not the names either: the r40250 package calls its GM [SA]Admin, and a rank
 # given in the panel goes to whatever character it is given to. A PLAYER row
 # is no rank (gm_rank_of); a GM whose rank is taken away is ranked again.
 #
@@ -11726,22 +11552,8 @@ def rankings_count_people():
 
 def _not_game_master(alias):
     ref = (alias + ".") if alias else ""
-    # MT2009_PLUS_RANKING_GM_ACCOUNT_CURRENT_V2: every character of an account
-    # that has a game master NOW - a common.gmlist row with a rank (not PLAYER)
-    # on that account whose name is a character that still exists on it (the
-    # row the engine gives the commands by, gm_new_get_level). The owner,
-    # 6 October: "cale konta GM, ale musza miec aktualnie GM na koncie; jak
-    # mieli w przeszlosci, to nadal moga wyswietlac sie w rankingu". A row left
-    # by a deleted or renamed GM character hides nobody (the 2.24.0 account-wide
-    # rule, MT2009_PLUS_RANKING_NO_GM_ACCOUNT_V1, hid such an account for good;
-    # MT2009_PLUS_RANKING_CURRENT_GM_V1 hid only the GM character itself).
-    # account_id is left unqualified for alias "": neither gmlist nor
-    # account.account has that column, so it is the ranked row's.
     return ("NOT EXISTS (SELECT 1 FROM common.gmlist rg"
-            " JOIN account.account gacc ON gacc.login = rg.mAccount"
-            " WHERE gacc.id = " + ref + "account_id AND rg.mAuthority <> 'PLAYER'"
-            " AND EXISTS (SELECT 1 FROM player.player rgp"
-            " WHERE rgp.account_id = gacc.id AND rgp.name = rg.mName))")
+            " WHERE rg.mName = " + ref + "name AND rg.mAuthority <> 'PLAYER')")
 
 
 def _ranked(alias, pct, people_only):
@@ -13766,13 +13578,6 @@ def api_bot_logs(bot_name):
             "/opt/metin2/var/channel2/game1/syslog",
             "/opt/metin2/var/channel2/first/syslog",
             "/opt/metin2/var/channel2/game2/syslog",
-            # MT2009_PLUS_CH34_V1
-            "/opt/metin2/var/channel3/game1/syslog",
-            "/opt/metin2/var/channel3/first/syslog",
-            "/opt/metin2/var/channel3/game2/syslog",
-            "/opt/metin2/var/channel4/game1/syslog",
-            "/opt/metin2/var/channel4/first/syslog",
-            "/opt/metin2/var/channel4/game2/syslog",
         ]
         matched_lines = []
         # The whole name and not a prefix of one: "botgrom" used to match
@@ -19148,45 +18953,6 @@ def seonhae():
         flash(t("db_down"), "error")
     return render_template_string(TPL_SEONHAE, cur=cur_se, drops=read_seonhae_drops())
 
-# MT2009_PLUS_TELEPORT_MAP_V1 (Autor: Mur4s): the teleport map under TAB on or off. Live immediately, no restart.
-@app.route("/teleport-map", methods=["GET", "POST"])
-@login_required
-def teleport_map():
-    if not ENGINE_MT2009:
-        flash(t("rates_no_script"), "error")
-        return redirect(url_for("dash"))
-    if request.method == "POST":
-        on = 1 if request.form.get("on") else 0
-        try:
-            with db() as c, c.cursor() as cur:
-                persist_teleport_map(cur, on)
-        except Exception:
-            flash(t("db_down"), "error")
-            return redirect(url_for("teleport_map"))
-        try:
-            status, qid = queue_and_wait("", "TPMAP", str(on), "", wait=RARE_LIVE_WAIT)
-        except Exception:
-            status, qid = "failed", 0
-        if status == "done":
-            flash(t("az_saved_live"))
-        else:
-            if status == "timeout":
-                try:
-                    with db() as c, c.cursor() as cur:
-                        cur.execute("UPDATE player.web_admin_queue SET status='cancelled' "
-                                    "WHERE id=%s AND status='pending'", (qid,))
-                except Exception:
-                    pass
-            flash(t("easter_saved_persisted"))
-        return redirect(url_for("teleport_map"))
-
-    cur_tp = {"on": 0}
-    try:
-        cur_tp = read_teleport_map()
-    except Exception:
-        flash(t("db_down"), "error")
-    return render_template_string(TPL_TELEPORT_MAP, cur=cur_tp)
-
 @app.route("/rates", methods=["GET", "POST"])
 @login_required
 def rates():
@@ -19617,18 +19383,8 @@ def read_channels_state():
     ports = eff.get("PORTS", "%d-%d" % (base, base + 2))
     last = re.search(r"(\d+)\s*$", ports)
     ports_open = bool(last) and int(last.group(1)) >= base + 12
-    # MT2009_PLUS_CH34_V1: CH3 (BASE+20..22) and CH4 (BASE+30..32), in a row
-    # after CH2; a server from before them writes no CH3/CH4 lines (off).
-    ch3 = on and eff.get("CH3") == "1"
-    ch4 = ch3 and eff.get("CH4") == "1"
     state = {"on": on, "share": share, "ports_open": ports_open,
              "ch2_ports": "%d-%d" % (base + 10, base + 12),
-             "ch3": ch3, "ch4": ch4,
-             "ch3_ports": "%d-%d" % (base + 20, base + 22),
-             "ch4_ports": "%d-%d" % (base + 30, base + 32),
-             "ch3_ports_open": bool(last) and int(last.group(1)) >= base + 22,
-             "ch4_ports_open": bool(last) and int(last.group(1)) >= base + 32,
-             "want_ch3": ch3, "want_ch4": ch4,
              "want_on": on, "want_share": share, "pending": "", "choices": CH2_SHARE_CHOICES}
     # The wish, unless the server already runs a later choice (the launcher's,
     # written into .env after the panel's): the entrypoint notes the moment of
@@ -19638,19 +19394,11 @@ def read_channels_state():
     if wish.get("CH2") in ("0", "1") and not overtaken:
         w_on = wish.get("CH2") == "1"
         w_share = int(wish.get("SHARE", "40")) if wish.get("SHARE", "").isdigit() else 40
-        # A wish from before CH3/CH4 leaves them as the server runs them.
-        w_ch3 = w_on and (wish.get("CH3") == "1" if wish.get("CH3") in ("0", "1") else ch3)
-        w_ch4 = w_ch3 and (wish.get("CH4") == "1" if wish.get("CH4") in ("0", "1") else ch4)
         state["want_on"], state["want_share"] = w_on, w_share
-        state["want_ch3"], state["want_ch4"] = w_ch3, w_ch4
         # A wish the running server does not match yet.
-        if w_on != on or (w_on and w_share != share) or w_ch3 != ch3 or w_ch4 != ch4:
-            what = (t("ch2_on_word").replace("{share}", str(w_share)) if w_on
-                    else t("ch2_off_word"))
-            if w_on:
-                what += ", CH3 %s, CH4 %s" % (t("ch34_on") if w_ch3 else t("ch34_off"),
-                                              t("ch34_on") if w_ch4 else t("ch34_off"))
-            state["pending"] = what
+        if w_on != on or (w_on and w_share != share):
+            state["pending"] = (t("ch2_on_word").replace("{share}", str(w_share)) if w_on
+                                else t("ch2_off_word"))
     if state["want_share"] not in CH2_SHARE_CHOICES:
         state["want_share"] = 40
     return state
@@ -19667,11 +19415,7 @@ def rates_channels():
     if not raw.isdigit() or int(raw) not in CH2_SHARE_CHOICES:
         flash(t("ch2_bad"), "error")
         return redirect(url_for("rates"))
-    # MT2009_PLUS_CH34_V1: CH3 only with CH2, CH4 only with CH3.
-    ch3 = on and request.form.get("ch3", "") == "1"
-    ch4 = ch3 and request.form.get("ch4", "") == "1"
-    body = "CH2=%d\nSHARE=%d\nCH3=%d\nCH4=%d\nSET_AT=%d\n" % (
-        1 if on else 0, int(raw), 1 if ch3 else 0, 1 if ch4 else 0, int(time.time()))
+    body = "CH2=%d\nSHARE=%d\nSET_AT=%d\n" % (1 if on else 0, int(raw), int(time.time()))
     tmp = CHANNELS_WISH + ".tmp"
     try:
         with open(tmp, "w", encoding="ascii") as fh:
@@ -19680,8 +19424,7 @@ def rates_channels():
     except OSError:
         flash(t("ch2_failed"), "error")
         return redirect(url_for("rates"))
-    app.logger.info("channels: CH2=%s CH3=%s CH4=%s share=%s written for the next start",
-                    int(on), int(ch3), int(ch4), raw)
+    app.logger.info("channels: CH2=%s share=%s written for the next start", int(on), raw)
     flash(t("ch2_saved"))
     return redirect(url_for("rates"))
 
@@ -20267,7 +20010,7 @@ def events_page():
             return redirect(url_for("events_page"))
         if action == "now":
             try:
-                minutes = max(5, min(10080, int(request.form.get("minutes") or 60)))
+                minutes = max(5, min(1440, int(request.form.get("minutes") or 60)))
                 value = max(1, min(1000, int(request.form.get("value") or 50)))
             except ValueError:
                 minutes, value = 60, 50
@@ -20392,20 +20135,6 @@ def ai_weights():
             vals["KINGDOMPVP"] = max(0, min(100, int(request.form.get("KINGDOMPVP", 0))))
         except (TypeError, ValueError):
             vals["KINGDOMPVP"] = 0
-        # MT2009_PLUS_BOT_CHAT_V2: a form without the chat's fields (a tab
-        # opened before they existed) keeps the file's.
-        if "BOTCHAT_FORM" in request.form:
-            vals["SPOT"] = 1 if request.form.get("SPOT") else 0
-        else:
-            vals["SPOT"] = old.get("SPOT", 1)
-        for key, lo, hi, dflt in (("TRADECHAT", 0, 3600, 75), ("TRADECHAT_BOT", 1, 240, 20), ("SHOUT_ANSWER", 0, 100, 100)):
-            try:
-                v = int(request.form.get(key, old.get(key, dflt)))
-                if key == "TRADECHAT" and 0 < v < 15:
-                    v = 15
-                vals[key] = max(lo, min(hi, v))
-            except (TypeError, ValueError):
-                vals[key] = old.get(key, dflt)
         # The three wills are on the mt2009 page alone; a form without them
         # (r40250, or a tab opened before they existed) keeps the file's.
         for key in ("BATTLEPASS", "SASH", "ALCHEMY"):
@@ -20422,18 +20151,18 @@ def ai_weights():
         except (TypeError, ValueError):
             vals["WAR_MINUTES"] = 30
         try:
-            vals["WAR_HOURS"] = max(1, min(4, int(request.form.get("WAR_HOURS", 1))))
+            vals["WAR_HOURS"] = max(1, min(4, int(request.form.get("WAR_HOURS", 2))))
         except (TypeError, ValueError):
-            vals["WAR_HOURS"] = 1
+            vals["WAR_HOURS"] = 2
         # The kills that win a war: on the mt2009 page alone; elsewhere the
         # file's value stays.
         if ENGINE_MT2009:
             try:
-                vals["WAR_KILLS"] = max(0, min(1000, int(request.form.get("WAR_KILLS", 200))))
+                vals["WAR_KILLS"] = max(0, min(1000, int(request.form.get("WAR_KILLS", 100))))
             except (TypeError, ValueError):
-                vals["WAR_KILLS"] = 200
+                vals["WAR_KILLS"] = 100
         else:
-            vals["WAR_KILLS"] = old.get("WAR_KILLS", 200)
+            vals["WAR_KILLS"] = old.get("WAR_KILLS", 100)
         for key in ("CHEST", "CHEST_STONE"):
             try:
                 vals[key] = max(0, min(1000, int(request.form.get(key))))
@@ -22108,8 +21837,7 @@ def offline_apply(cur, pid, cmd, arg1, arg2, reason="timeout", name=""):
        Only ITEM / GOLD / LEVEL can be done this way. The caller must have claimed the
        queue row first, otherwise the quest could apply the same thing a second time."""
     if cmd == "GOLD":
-        # MT2009_PLUS_YANG_LIMITS_V1: a purse holds up to 100 bn (length.h GOLD_MAX).
-        cur.execute("UPDATE player.player SET gold=LEAST(100000000000,GREATEST(0,gold+%s)) WHERE id=%s", (int(arg1), pid))
+        cur.execute("UPDATE player.player SET gold=GREATEST(0,gold+%s) WHERE id=%s", (int(arg1), pid))
     elif cmd == "LEVEL":
         cur.execute("UPDATE player.player SET level=%s WHERE id=%s", (int(arg1), pid))
     elif cmd == "ITEM":

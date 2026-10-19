@@ -1426,7 +1426,7 @@ namespace playerbot_bpbots
 			long long unit = std::max<long long>((long long)GetPlayerBotMaterialAskingBase(vnums[r]),
 					GetPlayerBotVnumSaleValue(vnums[r], dwNow));
 			if (IsPlayerBotCorVnum(vnums[r]))
-				unit = std::max<long long>(unit, (long long)PLAYERBOT_COR_DRACONIS_PRICE);
+				unit = std::max<long long>(unit, (long long)GetPlayerBotCorDraconisPrice(vnums[r]));	// MT2009_PLUS_COR_GRADE_PRICE_V1
 			total += unit * count;
 		}
 		return std::max(total, ROOM_REWARD_MIN_VALUE);

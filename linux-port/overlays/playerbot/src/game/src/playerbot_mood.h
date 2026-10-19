@@ -338,8 +338,13 @@ namespace
 
 	// A refine that landed. +8 and +9 are the document's euphoria: BARDZO
 	// DOBRY for three hours, and nothing changes it.
+	// MT2009_PLUS_BOT_DAY_GOAL_V1: every refine that landed counts for a
+	// Cel Dnia of refines (playerbot_day_goal.h, included later).
+	void NotePlayerBotDayGoalRefine(LPCHARACTER ch, int newPlus);
+
 	void NotePlayerBotMoodRefine(LPCHARACTER ch, int newPlus)
 	{
+		NotePlayerBotDayGoalRefine(ch, newPlus);
 		if (!ch || newPlus < 8 || !IsPlayerBotPersonaEnabled())
 			return;
 		TPlayerBotPersona* p = FindPlayerBotPersona(ch);

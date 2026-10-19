@@ -59,3 +59,5 @@
 .playerbot-count-value input[type="number"]{width:82px;flex:none}
 .playerbot-count-value small{color:var(--muted);font-size:.85rem}
 @media(max-width:650px){.playerbot-count-row{grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important}.playerbot-count-controls{grid-column:1/-1;grid-row:2}.playerbot-count-value{justify-self:end}}
+/* MT2009_PLUS_DROP_BONUS_PCT_V1: the drop bonus chance under the difficulty form. */
+.drop-bonus-form{margin-top:18px;padding-top:14px;border-top:1px solid var(--edge)}.drop-bonus-form h3{margin:0}.drop-bonus-form p{margin:0}

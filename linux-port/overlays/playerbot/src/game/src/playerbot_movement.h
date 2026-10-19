@@ -1180,6 +1180,25 @@ namespace
 		return false;
 	}
 
+	// Whether ch can attack target. Unlike battle_is_attackable, this does not
+	// disqualify targets solely because ch is temporarily riding a horse (e.g. while
+	// travelling to assist or hunt). The combat pass will dismount if needed before striking.
+	bool IsPlayerBotAttackableTarget(LPCHARACTER ch, LPCHARACTER target)
+	{
+		if (!ch || !target || target->IsDead())
+			return false;
+		if (battle_is_attackable(ch, target))
+			return true;
+		if (ch->IsRiding())
+		{
+			// If target is monster or stone, check if target could attack ch or if
+			// ch could attack on foot (safely passing the riding check).
+			if (target->IsMonster() || target->IsStone())
+				return battle_is_attackable(target, ch);
+		}
+		return false;
+	}
+
 	// Whether a rider keeps the saddle for the fight in hand: the foe it holds
 	// decides, and with none the bot's own build does. The passes that climb
 	// down "for a fight" ask this and not CanPlayerBotEverFightOnHorse, or a
@@ -1499,6 +1518,27 @@ namespace
 				state.bLastNavOutcome = PLAYERBOT_NAV_OUT_UNREACHABLE;
 				return false;
 			}
+		}
+		// MT2009_PLUS_ZODIAC_NAV_V1: an open arena (the Zodiac Temple's floors) is walked straight.
+		if (IsPlayerBotOpenArenaMap(mapIndex))
+		{
+			ClearPlayerBotRoute(state, false);
+			const int snap = std::max(1, targetSnapRadius) * 50;
+			if (DISTANCE_APPROX(ch->GetX() - destX, ch->GetY() - destY) <= snap)
+			{
+				state.bLastNavOutcome = PLAYERBOT_NAV_OUT_ARRIVED;
+				return true;
+			}
+			static std::map<DWORD, std::pair<long, long> > s_mapArenaGoto;
+			std::pair<long, long>& last = s_mapArenaGoto[ch->GetPlayerID()];
+			if (!ch->IsStateMove() || last.first != destX || last.second != destY)
+			{
+				last = std::make_pair(destX, destY);
+				ch->Goto(destX, destY);
+				ch->SendMovePacket(FUNC_MOVE, 0, destX, destY, ch->GetCurrentMoveDuration(), dwNow);
+			}
+			state.bLastNavOutcome = PLAYERBOT_NAV_OUT_MOVED;
+			return true;
 		}
 		CPlayerBotNavigation& navigation = CPlayerBotNavigation::instance(mapIndex);
 		if (!navigation.Init(mapIndex))

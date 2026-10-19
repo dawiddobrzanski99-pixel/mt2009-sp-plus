@@ -120,6 +120,24 @@ namespace
 		{ 9681, 361, 54, 71, 6, true },		// Anubis (62), 2-3 h
 		{ 3390, 362, 95, 120, 8, true },	// Lemur Hrabia (103), Zaczarowany Las, 50-70 min
 		{ 3391, 362, 95, 120, 10, true },	// Straz Przyboczna Lemur (105), 2-3 h
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 2 (the owner, 10 October): the
+		// bosses the raids passed by. The Monkey Dungeons' three - Skalista
+		// Malpa in each kingdom's easy dungeon (boss.txt, group 5008, every
+		// half hour), Chodzaca Malpa in the second and Lord Malp in the third
+		// (regen.txt, groups 5018 and 5029, every half hour) - are for the bots
+		// already in that dungeon (the recruit's "far"): thirteen to thirty-two
+		// thousand health is no boss to bring anybody across the world for.
+		// The windows are the dungeons' level bands
+		// (GetPlayerBotMonkeyBandForLevel) round the boss.
+		{ 5161,   5, 20, 40, 3, false },	// Skalista Malpa (30), Shinsoo's Monkey Dungeon
+		{ 5161,  25, 20, 40, 3, false },	// Chunjo's
+		{ 5161,  45, 20, 40, 3, false },	// Jinno's
+		{ 5162, 108, 33, 52, 3, false },	// Chodzaca Malpa (43), Monkey Dungeon II
+		{ 5163, 109, 46, 64, 4, false },	// Lord Malp (55), Monkey Dungeon III
+		// The Red Forest's Olbrzymi Duch Drzewa (special_spawns.txt Boss_RedLas,
+		// group 2314, every 2.5-3.5 h), 404 thousand health - the window opens
+		// at 80, where the Red Forest's own bots stand.
+		{ 2306,  68, 80, 98, 6, true },		// Olbrzymi Duch Drzewa (89), Red Forest
 	};
 	const size_t PLAYERBOT_WORLD_BOSS_COUNT = sizeof(PLAYERBOT_WORLD_BOSSES) / sizeof(PLAYERBOT_WORLD_BOSSES[0]);
 
@@ -308,6 +326,26 @@ namespace
 				return;
 			}
 		}
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 2: a Monkey Dungeon's chamber is
+		// smaller than the open maps' sight - nearer spots in his chamber.
+		if (IsPlayerBotMonkeyMap(row.lMap) && nav && bossGround != 0)
+		{
+			static const long radii[2] = { 1400, 800 };
+			for (int r = 0; r < 2; ++r)
+				for (int attempt = 0; attempt < 8; ++attempt)
+				{
+					const double rad = (double)((firstAngle + (DWORD)attempt * 45U) % 360U) * 3.14159265 / 180.0;
+					const long x = raid.lBossX + (long)(cos(rad) * radii[r]);
+					const long y = raid.lBossY + (long)(sin(rad) * radii[r]);
+					if (!IsPlayerBotPositionBlocked(row.lMap, x, y) &&
+							navigation.GetComponentAtWorld(x, y, 4) == bossGround)
+					{
+						outX = x;
+						outY = y;
+						return;
+					}
+				}
+		}
 		outX = raid.lBossX;
 		outY = raid.lBossY;
 	}
@@ -347,10 +385,12 @@ namespace
 		if (map >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN || map == PLAYERBOT_MAP_DEMON_TOWER ||
 				IsPlayerBotDemonTowerInstance(map))
 			return "dungeon";
-		// The Spider Dungeon is reached across the desert on foot
-		// (TransitionPlayerBotMap), which takes longer than a gathering lasts:
-		// its queen is for the bots already down there.
-		if (row.lMap == PLAYERBOT_MAP_SPIDER_V1 && map != row.lMap)
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 3: the Spider Queen is no longer
+		// the bots' already down there alone - a raid brings its members to
+		// their spots in V1 as it does in V2 (TransitionPlayerBotMap), so the
+		// bots of her window from Sohan, Hwang or the desert come too.
+		// Point 2: a Monkey Dungeon's boss is for the bots in that dungeon.
+		if (IsPlayerBotMonkeyMap(row.lMap) && map != row.lMap)
 			return "far";
 		if (st.bRecoveringAfterDeath || c->GetMaxHP() <= 0 ||
 				(long long)c->GetHP() * 100 < (long long)c->GetMaxHP() * PLAYERBOT_BOSS_RAID_MIN_HP_PERCENT)
@@ -440,7 +480,11 @@ namespace
 			r.onMap = c->GetMapIndex() == row.lMap;
 			// On his map, but on ground his own ground does not join: an island
 			// the bot cannot leave on foot.
-			if (r.onMap && bossGround != 0 && navigation.GetComponentAtWorld(c->GetX(), c->GetY()) != bossGround)
+			// MT2009_PLUS_BOT_BOSS_CALL_V1, point 2: not in a Monkey Dungeon,
+			// whose chambers no ground joins - a member in another chamber is
+			// brought to its spot (ManagePlayerBotBossRaid).
+			if (r.onMap && bossGround != 0 && !IsPlayerBotMonkeyMap(row.lMap) &&
+					navigation.GetComponentAtWorld(c->GetX(), c->GetY()) != bossGround)
 				continue;
 			r.shaman = c->GetJob() == JOB_SHAMAN;
 			r.strength = GetPlayerBotStrengthCached(it->first);
@@ -662,16 +706,120 @@ namespace
 					(unsigned int)row.wRace, (unsigned int)raid.bEmpire, dropped, added, (unsigned int)raid.members.size());
 	}
 
+	// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4 (the owner, 10 October): "bot,
+	// ktory pierwszy zobaczy bossa, wola na pomoc swoje krolestwo". The bot
+	// nearest him within PLAYERBOT_BOSS_CALL_SIGHT, on his ground (in a Monkey
+	// Dungeon, in his chamber), is the one that saw him; the raid is then its
+	// kingdom's (but on a kingdom's own map, where the map's kingdom is asked
+	// as ever, and in a raid of all three), it is the raid's first member, and
+	// it calls on the kingdom's shout and its guild's chat. A boss nobody has
+	// seen for PLAYERBOT_BOSS_CALL_UNSEEN_MS is called to as before, so no
+	// boss stands for ever because nobody walked past him. Not the Temple of
+	// Ochao's and the Arezzo maps' bosses, whose raids are their own.
+	struct TPlayerBotBossSighting
+	{
+		DWORD dwVID;
+		DWORD dwSince;
+		TPlayerBotBossSighting() : dwVID(0), dwSince(0) {}
+	};
+	std::map<TPlayerBotBossKey, TPlayerBotBossSighting> s_mapPlayerBotBossSightings;
+	std::map<std::pair<long, WORD>, DWORD> s_mapPlayerBotBossShoutAt;
+	unsigned int s_uPlayerBotBossCalls = 0;
+
+	bool IsPlayerBotBossCallRow(const TPlayerBotWorldBoss& row)
+	{
+		return row.lMap != PLAYERBOT_MAP_OCHAO && !IsPlayerBotArezzoMap(row.lMap);
+	}
+
+	LPCHARACTER FindPlayerBotBossSpotter(const TPlayerBotWorldBoss& row, LPCHARACTER boss)
+	{
+		if (!boss)
+			return NULL;
+		const int owner = playerbot_empire_rules::GetMapOwnerEmpire(row.lMap);
+		CPlayerBotNavigation& navigation = CPlayerBotNavigation::instance(row.lMap);
+		const bool nav = navigation.Init(row.lMap);
+		const bool monkey = IsPlayerBotMonkeyMap(row.lMap);
+		const int bossChamber = monkey ? GetPlayerBotMonkeyChamberAt(row.lMap, boss->GetX(), boss->GetY()) : -1;
+		const DWORD bossGround = (nav && !monkey) ? navigation.GetComponentAtWorld(boss->GetX(), boss->GetY(), 12) : 0;
+		LPCHARACTER best = NULL;
+		int bestDistance = 0;
+		for (TPlayerBotAIStateMap::const_iterator it = s_mapPlayerBotAIStates.begin(); it != s_mapPlayerBotAIStates.end(); ++it)
+		{
+			LPCHARACTER c = CHARACTER_MANAGER::instance().FindByPID(it->first);
+			if (!c || c->IsDead() || c->GetMapIndex() != row.lMap || !c->GetDesc() || !c->GetDesc()->IsBot())
+				continue;
+			if (owner > 0 && (int)c->GetEmpire() != owner)
+				continue;
+			const int d = DISTANCE_APPROX(c->GetX() - boss->GetX(), c->GetY() - boss->GetY());
+			if (d > PLAYERBOT_BOSS_CALL_SIGHT || (best && d >= bestDistance))
+				continue;
+			if (monkey && bossChamber >= 0 && GetPlayerBotMonkeyChamberAt(row.lMap, c->GetX(), c->GetY()) != bossChamber)
+				continue;
+			if (bossGround != 0 && navigation.GetComponentAtWorld(c->GetX(), c->GetY()) != bossGround)
+				continue;
+			best = c;
+			bestDistance = d;
+		}
+		return best;
+	}
+
+	// The call itself: one line on the kingdom's shout, in the bot's name as
+	// every bot shout is, and one in its guild's chat - once per boss and map
+	// in PLAYERBOT_BOSS_CALL_SHOUT_GAP_MS, whoever asks (this raid's call or
+	// the boss hubs' sighting, playerbot_wandering.h).
+	bool ShoutPlayerBotBossSighting(LPCHARACTER ch, long lMap, WORD wRace, const char* bossName, DWORD dwNow)
+	{
+		if (!ch || ch->GetEmpire() < 1 || ch->GetEmpire() > 3)
+			return false;
+		DWORD& at = s_mapPlayerBotBossShoutAt[std::make_pair(lMap, wRace)];
+		if (at != 0 && dwNow - at < PLAYERBOT_BOSS_CALL_SHOUT_GAP_MS)
+			return false;
+		at = dwNow ? dwNow : 1;
+		const char* name = bossName && *bossName ? bossName : GetPlayerBotWorldBossName(wRace);
+		const char* where = GetPlayerBotMapDestinationPl(lMap);
+		char body[CHAT_MAX_LEN + 1];
+		if (where && *where)
+			snprintf(body, sizeof(body), "%s stoi! Chodzcie %s, zbieramy sie na niego - potrzebuje pomocy!", name, where);
+		else
+			snprintf(body, sizeof(body), "%s stoi! Zbieramy sie na niego - potrzebuje pomocy!", name);
+		char msg[CHAT_MAX_LEN + 1];
+		snprintf(msg, sizeof(msg), "%s : %s", ch->GetName(), body);
+		SendPlayerBotShout(msg, ch->GetEmpire());
+		BattlePassOnShout(ch); // MT2009_PLUS_BP_BOTS_V1: a shout for the Battle Pass
+		if (ch->GetGuild())
+		{
+			char guildMsg[CHAT_MAX_LEN + 1];
+			snprintf(guildMsg, sizeof(guildMsg), "%s stoi! Zbieramy sie na niego.", name);
+			ch->GetGuild()->Chat(guildMsg);
+		}
+		++s_uPlayerBotBossCalls;
+		sys_log(0, "PLAYERBOT_RAID: kingdom call pid=%u name=%s empire=%u guild=%u race=%u map=%ld text=\"%s\"",
+				ch->GetPlayerID(), ch->GetName(), (unsigned int)ch->GetEmpire(),
+				ch->GetGuild() ? (unsigned int)ch->GetGuild()->GetID() : 0U, (unsigned int)wRace, lMap, body);
+		return true;
+	}
+
 	// A boss standing with no raid on him: the kingdom with the most bots free
 	// for him (his own map's, for the Captain of a second village), its bots
 	// on his map first and then the strongest, a Shaman in when there is one.
-	bool CallPlayerBotBossRaid(size_t rowIndex, LPCHARACTER boss, DWORD dwNow)
+	bool CallPlayerBotBossRaid(size_t rowIndex, LPCHARACTER boss, DWORD dwNow, LPCHARACTER spotter = NULL)
 	{
 		const TPlayerBotWorldBoss& row = PLAYERBOT_WORLD_BOSSES[rowIndex];
 		const int owner = playerbot_empire_rules::GetMapOwnerEmpire(row.lMap);
 		std::vector<TPlayerBotBossRecruit> pool;
 		int inBand = 0;
 		CollectPlayerBotBossRecruits(row, boss, (BYTE)std::max(0, owner), dwNow, pool, inBand);
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4: the bot that saw him goes
+		// first, when it may go at all.
+		bool spotterIn = false;
+		if (spotter)
+			for (size_t i = 0; i < pool.size(); ++i)
+				if (pool[i].pid == spotter->GetPlayerID())
+				{
+					std::rotate(pool.begin(), pool.begin() + i, pool.begin() + i + 1);
+					spotterIn = true;
+					break;
+				}
 		int perEmpire[4] = { 0, 0, 0, 0 };
 		for (size_t i = 0; i < pool.size(); ++i)
 			if (pool[i].empire >= 1 && pool[i].empire <= 3)
@@ -680,6 +828,10 @@ namespace
 		// MT2009_PLUS_BOSS_RAID_V2: the strongest of every kingdom (empire 0).
 		if (row.bAnyKingdom)
 			empire = 0;
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4: the kingdom of the bot that
+		// saw him (FindPlayerBotBossSpotter asks the map's kingdom on its own).
+		else if (empire == 0 && spotter && spotter->GetEmpire() >= 1 && spotter->GetEmpire() <= 3)
+			empire = spotter->GetEmpire();
 		else if (empire == 0)
 		{
 			// Ties go round by the hour, so one kingdom does not take every
@@ -775,9 +927,13 @@ namespace
 		++s_uPlayerBotBossRaidsFormed;
 		if (row.lMap == PLAYERBOT_MAP_OCHAO)
 			LogPlayerBotOchaoRaidMembers("formed", raid, boss);
-		sys_log(0, "PLAYERBOT_RAID: formed boss=%s race=%u map=%ld pos=(%ld,%ld) empire=%u members=%u on_map=%d shaman=%d need=%d in_band=%d",
+		sys_log(0, "PLAYERBOT_RAID: formed boss=%s race=%u map=%ld pos=(%ld,%ld) empire=%u members=%u on_map=%d shaman=%d need=%d in_band=%d spotter=%u spotter_in=%d",
 				GetPlayerBotWorldBossName(row.wRace), (unsigned int)row.wRace, row.lMap, raid.lBossX, raid.lBossY,
-				(unsigned int)empire, (unsigned int)raid.members.size(), onMap, withShaman ? 1 : 0, need, inBand);
+				(unsigned int)empire, (unsigned int)raid.members.size(), onMap, withShaman ? 1 : 0, need, inBand,
+				spotter ? spotter->GetPlayerID() : 0U, spotterIn ? 1 : 0);
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4: and the call that brought them.
+		if (spotter)
+			ShoutPlayerBotBossSighting(spotter, row.lMap, row.wRace, GetPlayerBotWorldBossName(row.wRace), dwNow);
 		return true;
 	}
 
@@ -1089,18 +1245,49 @@ namespace
 			if (!boss)
 			{
 				s_mapPlayerBotBossRaidNext[key] = dwNow + PLAYERBOT_BOSS_RAID_DOWN_RECHECK_MS;
+				s_mapPlayerBotBossSightings.erase(key);
 				continue;
 			}
-			if (!CallPlayerBotBossRaid(i, boss, dwNow))
+			// MT2009_PLUS_BOT_BOSS_CALL_V1, point 4: who saw him - or, while
+			// nobody has, a wait of PLAYERBOT_BOSS_CALL_UNSEEN_MS before he is
+			// called to anyway.
+			LPCHARACTER spotter = NULL;
+			if (IsPlayerBotBossCallRow(row))
+			{
+				TPlayerBotBossSighting& seen = s_mapPlayerBotBossSightings[key];
+				if (seen.dwVID != (DWORD)boss->GetVID())
+				{
+					seen.dwVID = (DWORD)boss->GetVID();
+					seen.dwSince = dwNow;
+				}
+				spotter = FindPlayerBotBossSpotter(row, boss);
+				if (!spotter && dwNow - seen.dwSince < PLAYERBOT_BOSS_CALL_UNSEEN_MS)
+					continue;
+				if (spotter)
+					sys_log(0, "PLAYERBOT_RAID: spotted boss=%s race=%u map=%ld by pid=%u name=%s empire=%u level=%u dist=%d standing_s=%u",
+							GetPlayerBotWorldBossName(row.wRace), (unsigned int)row.wRace, row.lMap,
+							spotter->GetPlayerID(), spotter->GetName(), (unsigned int)spotter->GetEmpire(),
+							(unsigned int)spotter->GetLevel(),
+							DISTANCE_APPROX(spotter->GetX() - boss->GetX(), spotter->GetY() - boss->GetY()),
+							(dwNow - seen.dwSince) / 1000U);
+				else
+					sys_log(0, "PLAYERBOT_RAID: unseen boss=%s race=%u map=%ld standing_s=%u - called without a spotter",
+							GetPlayerBotWorldBossName(row.wRace), (unsigned int)row.wRace, row.lMap,
+							(dwNow - seen.dwSince) / 1000U);
+			}
+			// A kingdom of the spotter's with too few free for him: the kingdom
+			// with the most, as before, rather than nobody.
+			if (!CallPlayerBotBossRaid(i, boss, dwNow, spotter) &&
+					!(spotter && CallPlayerBotBossRaid(i, boss, dwNow, NULL)))
 				s_mapPlayerBotBossRaidNext[key] = dwNow + PLAYERBOT_BOSS_RAID_CALL_RETRY_MS;
 		}
 
 		if (s_dwNextPlayerBotBossRaidCensus == 0 || dwNow >= s_dwNextPlayerBotBossRaidCensus)
 		{
 			s_dwNextPlayerBotBossRaidCensus = dwNow + PLAYERBOT_BOSS_RAID_CENSUS_MS;
-			sys_log(0, "PLAYERBOT_RAID: census formed=%u killed=%u outpaced=%u too_few=%u active=%u",
+			sys_log(0, "PLAYERBOT_RAID: census formed=%u killed=%u outpaced=%u too_few=%u active=%u kingdom_calls=%u",
 					s_uPlayerBotBossRaidsFormed, s_uPlayerBotBossRaidsKilled, s_uPlayerBotBossRaidsOutpaced,
-					s_uPlayerBotBossRaidsTooFew, (unsigned int)s_mapPlayerBotBossRaids.size());
+					s_uPlayerBotBossRaidsTooFew, (unsigned int)s_mapPlayerBotBossRaids.size(), s_uPlayerBotBossCalls);
 		}
 	}
 
@@ -1155,7 +1342,17 @@ namespace
 		// the walk is the way, planned round its walls.
 		// MT2009_PLUS_AREZZO_BOTS_V1 (walk): nor on an Arezzo map - there the
 		// walk is its routes.
-		if (distance > PLAYERBOT_BOSS_RAID_WALK_MAX && row.lMap != PLAYERBOT_MAP_OCHAO && !IsPlayerBotArezzoMap(row.lMap))
+		// MT2009_PLUS_BOT_BOSS_CALL_V1, point 2: nor from another chamber of a
+		// Monkey Dungeon, which no walk leaves but by its doors.
+		int bossChamber = -1, ownChamber = -1;
+		if (IsPlayerBotMonkeyMap(row.lMap))
+		{
+			bossChamber = GetPlayerBotMonkeyChamberAt(row.lMap, boss->GetX(), boss->GetY());
+			ownChamber = GetPlayerBotMonkeyChamberAt(row.lMap, ch->GetX(), ch->GetY());
+		}
+		const bool otherChamber = bossChamber >= 0 && ownChamber >= 0 && bossChamber != ownChamber;
+		if ((distance > PLAYERBOT_BOSS_RAID_WALK_MAX || otherChamber) &&
+				row.lMap != PLAYERBOT_MAP_OCHAO && !IsPlayerBotArezzoMap(row.lMap))
 		{
 			SetPlayerBotAction(state, BOT_ACTION_TRAVEL, dwNow);
 			if (dwNow < state.dwNextBossRaidMoveTime)

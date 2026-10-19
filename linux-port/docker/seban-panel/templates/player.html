@@ -69,6 +69,16 @@
       <form class="manage-form game-admin-card" method="post" action="{{url_for('player_action_reset_position', pid=character.id)}}" onsubmit="return confirm('Zresetować pozycję postaci do stolicy własnego królestwa?');"><h3>Resetuj pozycję</h3><small class="muted">Przenosi do stolicy własnego królestwa (jak żywy bot — może zostać nadpisane przy zapisie z pamięci).</small><button class="secondary">Resetuj pozycję</button></form>
       <form class="manage-form game-admin-card" method="post" action="{{url_for('player_action_dungeon_reset', pid=character.id)}}"><h3>🏰 Limit dungeonów</h3><label>Loch<select name="dungeon">{% for key,label,_q in dungeon_reset_choices %}<option value="{{key}}">{{label}}</option>{% endfor %}</select></label><small class="muted">Zeruje dzisiejsze wyprawy (5 dziennie); botowi także odpoczynek. W grze: /dungeon_reset {{character.name}} [loch|all]. Działa online (każdy kanał) i offline.</small><button class="secondary">🏰 Resetuj limit</button></form>
     </div></section>
+    {% if exp_lock %}<section class="panel admin-group" id="exp-lock"><h2>⚡ Doświadczenie (EXP)</h2><p class="muted">Blokada exp bota: dropper w swoim paśmie, Grinder na progu, farmer na swoim terenie, bot przy progu rozwoju, krzykacz, oddział testowy…</p><div class="admin-grid">
+      <form class="manage-form game-admin-card" method="post" action="{{url_for('player_action_exp_lock', pid=character.id)}}"><h3>{% if exp_lock.blocked %}🔒 Exp zablokowany{% else %}✅ Exp leci{% endif %}</h3>
+        <small>{% if exp_lock.blocked %}Bot nie zdobywa doświadczenia{% if exp_lock.lock_level %} (trzymany na {{exp_lock.lock_level}} lvl){% endif %}.{% else %}Bot zdobywa doświadczenie{% if exp_lock.lock_level and not exp_lock.unlocked %} — zatrzyma się na {{exp_lock.lock_level}} lvl{% endif %}.{% endif %}</small>
+        {% if not exp_lock.online %}<small class="muted">Bota nie ma w grze — stan z ostatniego zapisu postaci.</small>{% endif %}
+        <small>{% if exp_lock.unlocked %}🔓 Odblokowany ręcznie: żadna blokada go nie trzyma.{% else %}Bez ręcznej zmiany: o blokadzie decydują zasady bota.{% endif %}</small>
+        {% if exp_lock.unlocked %}<input type="hidden" name="mode" value="restore"><button class="secondary">↩ Przywróć blokadę</button>
+        {% else %}<input type="hidden" name="mode" value="unlock"><button>🔓 Odblokuj exp</button>{% endif %}
+        <small class="muted">„Odblokuj exp” puszcza bota dalej mimo blokady. „Przywróć blokadę” oddaje decyzję zasadom bota. Bot w grze dostaje zmianę od razu, bot poza grą — przy wejściu.</small>
+      </form>
+    </div></section>{% endif %}
     <section class="panel admin-group"><h2>🪪 Nick i uprawnienia</h2><div class="admin-grid">
       <form class="manage-form game-admin-card" method="post" action="{{url_for('player_action_rename', pid=character.id)}}"><h3>Zmień nick</h3><label>Nowy nick<input type="text" name="new_name" minlength="2" maxlength="24" pattern="[A-Za-z0-9]+" required></label><small class="muted">Jeśli to żywy bot, silnik nie powinien cofnąć zmiany przy zapisie — ale w razie czego krótko zrestartuj kanał gry.</small><button class="secondary">Zmień nick</button></form>
       <form class="manage-form game-admin-card" method="post" action="{{url_for('player_action_gm_rank', pid=character.id)}}"><h3>Ranga GM</h3><label>Ranga<select name="rank">{% for value,label in gm_ranks %}<option value="{{value}}" {% if character.gm_rank==value %}selected{% endif %}>{{label}}</option>{% endfor %}</select></label><small class="muted">Silnik czyta listę GM-ów z common.gmlist przy starcie i przy /reload a (wymaga zalogowanego Właściciela) — bez tego zmiana zadziała od następnego logowania tej postaci.</small><button class="secondary">Zapisz rangę</button></form>
@@ -96,6 +106,21 @@
     <div id="inventory-live-region">{% set gold = character.gold %}{% include '_inventory_fragment.html' %}</div>
   </aside>
 </section>
+<script>
+// A tooltip that would be cut over the top of its panel (a long item's name) flips under the item.
+document.addEventListener('mouseover', function (ev) {
+  var slot = ev.target.closest && ev.target.closest('.equip-slot,.inv-slot,.safebox-slot,.shop-slot,.skill-slot');
+  if (!slot || slot.dataset.tipChecked === '1') return;
+  var tip = slot.querySelector('.item-tip'); if (!tip) return;
+  slot.classList.remove('tip-below');
+  var top = tip.getBoundingClientRect().top, limit = 0, p = slot.parentElement;
+  while (p && p !== document.body) {
+    var o = getComputedStyle(p); if (o.overflow !== 'visible' || o.overflowY !== 'visible') { limit = Math.max(limit, p.getBoundingClientRect().top); break; }
+    p = p.parentElement;
+  }
+  if (top < limit + 2) slot.classList.add('tip-below');
+});
+</script>
 <script>
 document.body.dataset.ajaxForms='1';
 // IIFE + explicitly clearing both polling intervals before re-creating them:

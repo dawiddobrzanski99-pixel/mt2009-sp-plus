@@ -64,7 +64,7 @@
             <input name="{{ p }}vnum" value="" class="dbe-narrow" inputmode="numeric" placeholder="numer"></td>
           <td><input name="{{ p }}x" class="dbe-narrow" inputmode="numeric" data-x></td>
           <td><input name="{{ p }}y" class="dbe-narrow" inputmode="numeric" data-y></td>
-          <td class="dbe-nowrap"><input name="{{ p }}rx" value="0" class="dbe-tiny"> / <input name="{{ p }}ry" value="0" class="dbe-tiny"></td>
+          <td class="dbe-nowrap"><input name="{{ p }}rx" value="10" class="dbe-tiny"> / <input name="{{ p }}ry" value="10" class="dbe-tiny"></td>{# MT2009_PLUS_SPAWN_AREA_V1: 0 / 0 = one exact point #}
           <td class="dbe-nowrap"><input name="{{ p }}od" value="{{ '20' if file.kind == 'stone' else '30' }}" class="dbe-tiny" inputmode="decimal"> – <input name="{{ p }}do" value="{{ '25' if file.kind == 'stone' else '40' }}" class="dbe-tiny" inputmode="decimal"></td>
           <td></td>
           <td><input name="{{ p }}ile" value="1" class="dbe-tiny" inputmode="numeric"></td>
@@ -76,7 +76,7 @@
     </div>
     {% if file.other %}<p class="muted">Plik ma też {{ file.other }} wiersz(y) innego rodzaju (np. obszary wyłączone) – zostają bez zmian.</p>{% endif %}
     <p class="muted dbe-note">Numer: dla „Potwór” – vnum potwora (znajdziesz go w <a href="{{ url_for('dbeditor.mobs') }}">Potworach</a>), dla „Grupa” – numer grupy z group.txt.
-      X i Y to kratki mapy (te same, co w plikach gry). Czas 0 = pojawia się tylko raz, przy starcie serwera. Wiersz bez zmian zostaje w pliku dokładnie taki, jaki był.</p>
+      X i Y to kratki mapy (te same, co w plikach gry). Obszar ±X / ±Y: gra losuje miejsce w tym obszarze; 0 / 0 to jeden dokładny punkt – jeśli wypada na przeszkodzie albo w strefie bez walki, potwór się nie pojawi, a grupa przy 0 / 0 w ogóle nie działa. Czas 0 = pojawia się tylko raz, przy starcie serwera. Wiersz bez zmian zostaje w pliku dokładnie taki, jaki był.</p>
     <div class="dbe-actions">
       <button type="submit">💾 Zapisz {{ file.title|lower }}</button>
       <span class="muted">Zmiana czeka na restart gry („Zastosuj”). Przed zapisem gra sprawdzi plik; błędny plik nie zostanie użyty.</span>

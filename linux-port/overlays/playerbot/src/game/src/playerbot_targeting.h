@@ -801,6 +801,219 @@ namespace
 		return false;
 	}
 
+	// ----------------------------------------------- MT2009_PLUS_PARTY_SPREAD_V1
+	//
+	// "Teraz wszystkie boty z PT rzucaja sie od razu na potwora, ktorego ja
+	// atakuje. A przy zwyklym expie (nie boss, nie metin) niech bedzie tak, ze
+	// boty z PT zabijaja sobie swoje potwory w obrebie mojej postaci" (the
+	// owner, 12 October). A bot hunting beside a person - in the person's
+	// party, or called by "Expimy razem" - takes the person's own target as
+	// before only when it is a boss or a Metin stone
+	// (IsPlayerBotPartyHeavyTarget). An ordinary monster it leaves to the
+	// person and picks one of its own within PLAYERBOT_PARTY_SPREAD_RANGE of
+	// the person, one no other member is on (FindPlayerBotPartySpreadFoe).
+	// What hits the bot is answered first; what hits a person under
+	// PLAYERBOT_PARTY_SPREAD_DANGER_HP_PERCENT next, the person's own target
+	// included; and with nothing else in reach the callers fall back to the
+	// old choice, so the bot finishes the person's monster after all.
+	bool IsPlayerBotPartyHeavyTarget(LPCHARACTER target)
+	{
+		return target && ((target->IsStone() && !IsPlayerBotEventStone(target->GetRaceNum())) ||
+				(target->IsMonster() && target->GetMobRank() >= MOB_RANK_BOSS));
+	}
+
+	bool IsPlayerBotPartySpreadPersonInDanger(LPCHARACTER person)
+	{
+		return person && !person->IsDead() && person->GetMaxHP() > 0 &&
+				(long long)person->GetHP() * 100 <
+						(long long)person->GetMaxHP() * PLAYERBOT_PARTY_SPREAD_DANGER_HP_PERCENT;
+	}
+
+	// The person a bot in a person's party hunts round - the leader - or NULL
+	// where the rule does not reach: no person's party, a companion (its own
+	// pass, playerbot_sidekick.h), the person on another map, a dungeon
+	// instance (the party dungeon's own pass).
+	LPCHARACTER GetPlayerBotPartySpreadPerson(LPCHARACTER ch)
+	{
+		if (!ch || !ch->GetParty() || !IsPlayerBotHumanLedParty(ch->GetParty()) ||
+				IsPlayerBotSidekickPID(ch->GetPlayerID()) ||
+				ch->GetMapIndex() >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN)
+			return NULL;
+		LPCHARACTER person = ch->GetParty()->GetLeaderCharacter();
+		if (!person || person == ch || person->IsDead() || person->GetMapIndex() != ch->GetMapIndex())
+			return NULL;
+		return person;
+	}
+
+	// The person's own target when it is a boss or a stone this bot may take:
+	// that one the whole party beats, as before. The party focus's own bars
+	// (FFindPlayerBotPartyFocus), so the target pass does not drop it again.
+	LPCHARACTER GetPlayerBotPartySpreadHeavyFocus(LPCHARACTER ch, LPCHARACTER person, DWORD dwNow)
+	{
+		LPCHARACTER target = person ? person->GetTarget() : NULL;
+		if (!ch || !target || target == ch || target->IsDead() || !IsPlayerBotPartyHeavyTarget(target) ||
+				target->GetMapIndex() != ch->GetMapIndex() ||
+				DISTANCE_APPROX(target->GetX() - person->GetX(), target->GetY() - person->GetY()) >
+						PLAYERBOT_PARTY_SPREAD_RANGE ||
+				IsPlayerBotSafeZone(target->GetMapIndex(), target->GetX(), target->GetY()) ||
+				!IsPlayerBotAttackableTarget(ch, target))
+			return NULL;
+		if (target->IsStone())
+			return IsPlayerBotMetinWorthFighting(ch, target) ? target : NULL;
+		if ((int)target->GetLevel() > (int)ch->GetLevel() + PLAYERBOT_MAX_TARGET_LEVEL_DELTA &&
+				target->GetVictim() != ch && !CanPlayerBotPartyChallenge(ch, target, dwNow, NULL))
+			return NULL;
+		return target;
+	}
+
+	// What the other bots of the party are on: their aim and their victims.
+	struct FPlayerBotPartySpreadClaims
+	{
+		LPCHARACTER self;
+		std::set<DWORD> vids;
+		explicit FPlayerBotPartySpreadClaims(LPCHARACTER s) : self(s) {}
+		void operator()(LPCHARACTER member)
+		{
+			if (!member || member == self || member->IsDead() || !member->GetDesc() || !member->GetDesc()->IsBot())
+				return;
+			TPlayerBotAIStateMap::const_iterator it = s_mapPlayerBotAIStates.find(member->GetPlayerID());
+			if (it != s_mapPlayerBotAIStates.end() && it->second.dwTargetVID != 0)
+				vids.insert(it->second.dwTargetVID);
+			if (member->GetVictim())
+				vids.insert((DWORD)member->GetVictim()->GetVID());
+		}
+	};
+
+	struct FPlayerBotPartySpreadFoes
+	{
+		LPCHARACTER self;
+		LPCHARACTER person;
+		LPCHARACTER personTarget;
+		const std::set<DWORD>& claimed;
+		const std::map<DWORD, DWORD>& failed;
+		DWORD heldVID;
+		DWORD dwNow;
+		bool danger;
+		LPCHARACTER onSelf;
+		int onSelfDist;
+		LPCHARACTER onPersonDanger;
+		int onPersonDangerDist;
+		LPCHARACTER held;
+		LPCHARACTER onPerson;
+		int onPersonDist;
+		LPCHARACTER freeFoe;
+		int freeDist;
+
+		FPlayerBotPartySpreadFoes(LPCHARACTER s, LPCHARACTER p, const std::set<DWORD>& c,
+				const std::map<DWORD, DWORD>& f, DWORD held_, DWORD now)
+			: self(s), person(p), personTarget(p->GetTarget()), claimed(c), failed(f), heldVID(held_), dwNow(now),
+			  danger(IsPlayerBotPartySpreadPersonInDanger(p)), onSelf(NULL), onSelfDist(INT_MAX),
+			  onPersonDanger(NULL), onPersonDangerDist(INT_MAX), held(NULL), onPerson(NULL), onPersonDist(INT_MAX),
+			  freeFoe(NULL), freeDist(INT_MAX)
+		{
+		}
+
+		void operator()(LPENTITY ent)
+		{
+			if (!ent || !ent->IsType(ENTITY_CHARACTER))
+				return;
+			LPCHARACTER c = (LPCHARACTER)ent;
+			if (c == self || c == person || !c->IsMonster() || c->IsDead() ||
+					c->GetMapIndex() != self->GetMapIndex() || c->GetMobRank() >= MOB_RANK_BOSS)
+				return;
+			const int fromPerson = DISTANCE_APPROX(c->GetX() - person->GetX(), c->GetY() - person->GetY());
+			if (fromPerson > PLAYERBOT_PARTY_SPREAD_RANGE ||
+					IsPlayerBotSafeZone(c->GetMapIndex(), c->GetX(), c->GetY()))
+				return;
+			std::map<DWORD, DWORD>::const_iterator f = failed.find((DWORD)c->GetVID());
+			if (f != failed.end() && dwNow < f->second)
+				return;
+			if (!IsPlayerBotAttackableTarget(self, c) || IsPlayerBotMonsterOutOfWalk(self, c))
+				return;
+			LPCHARACTER victim = c->GetVictim();
+			const int fromSelf = DISTANCE_APPROX(c->GetX() - self->GetX(), c->GetY() - self->GetY());
+			// Defence is never refused, whatever its level.
+			if (victim == self)
+			{
+				if (fromSelf < onSelfDist)
+				{
+					onSelf = c;
+					onSelfDist = fromSelf;
+				}
+				return;
+			}
+			if ((int)c->GetLevel() > (int)self->GetLevel() + PLAYERBOT_MAX_TARGET_LEVEL_DELTA &&
+					!CanPlayerBotPartyChallenge(self, c, dwNow, NULL))
+				return;
+			if (danger && victim == person)
+			{
+				if (fromPerson < onPersonDangerDist)
+				{
+					onPersonDanger = c;
+					onPersonDangerDist = fromPerson;
+				}
+				return;
+			}
+			// The person's own monster is the person's.
+			if (c == personTarget)
+				return;
+			// The one it is already on stays its own: no turning between two.
+			if ((DWORD)c->GetVID() == heldVID)
+			{
+				held = c;
+				return;
+			}
+			if (claimed.find((DWORD)c->GetVID()) != claimed.end() ||
+					(victim && victim != person && self->GetParty() && victim->GetParty() == self->GetParty()) ||
+					IsTargetClaimedByAnotherBot(self, (DWORD)c->GetVID()))
+				return;
+			if (victim == person)
+			{
+				if (fromPerson < onPersonDist)
+				{
+					onPerson = c;
+					onPersonDist = fromPerson;
+				}
+				return;
+			}
+			if (fromSelf < freeDist)
+			{
+				freeFoe = c;
+				freeDist = fromSelf;
+			}
+		}
+	};
+
+	// The bot's own monster beside the person (see above), or NULL: nothing
+	// but the person's own and the other members' in reach. why: "self",
+	// "person_danger", "held", "at_person" or "own".
+	LPCHARACTER FindPlayerBotPartySpreadFoe(LPCHARACTER ch, LPCHARACTER person, const TPlayerBotAIState& state,
+			DWORD dwNow, const char** why = NULL)
+	{
+		if (!ch || !person || person->GetMapIndex() != ch->GetMapIndex() || !person->GetSectree())
+			return NULL;
+		FPlayerBotPartySpreadClaims claims(ch);
+		if (ch->GetParty())
+			ch->GetParty()->ForEachOnMapMember(claims, ch->GetMapIndex());
+		FPlayerBotPartySpreadFoes foes(ch, person, claims.vids, state.mapFailedTargets, state.dwTargetVID, dwNow);
+		person->GetSectree()->ForEachAround(foes);
+		const char* reason = NULL;
+		LPCHARACTER foe = NULL;
+		if (foes.onSelf)
+			foe = foes.onSelf, reason = "self";
+		else if (foes.onPersonDanger)
+			foe = foes.onPersonDanger, reason = "person_danger";
+		else if (foes.held)
+			foe = foes.held, reason = "held";
+		else if (foes.onPerson)
+			foe = foes.onPerson, reason = "at_person";
+		else if (foes.freeFoe)
+			foe = foes.freeFoe, reason = "own";
+		if (why)
+			*why = reason;
+		return foe;
+	}
+
 	struct TTargetCandidate
 	{
 		DWORD dwVID;
@@ -2205,7 +2418,13 @@ namespace
 		// No UseArrow: a bot's quiver never empties (Tieru, 24 September), so an
 		// Archer does not walk to town for arrows every half hour. The skill
 		// path in playerbot_combat.h does the same.
-		primary->SetSyncOwner(ch);
+		// Human duel melee ownership was sent before the combo, together with
+		// movement credit for the victim's own landing report. Do not send a
+		// second ownership packet after the impact; bow hits need no slide.
+		const auto duelContext = playerbot_pvp::duels.find(ch->GetPlayerID());
+		const bool preparedDuel = duelContext != playerbot_pvp::duels.end() && duelContext->second.prepared;
+		const bool humanVictim = primary->IsPC() && primary->GetDesc() && !primary->GetDesc()->IsBot();
+		if (playerbot_duel::AssignClientSyncOwner(preparedDuel, humanVictim)) primary->SetSyncOwner(ch);
 		if (!primary->IsDead() && primary->CanBeginFight())
 			primary->BeginFight(ch);
 
@@ -2341,6 +2560,13 @@ namespace
 		return scaled < 200U ? 200U : scaled;
 	}
 
+	int GetPlayerBotBasicAttackRange(LPCHARACTER ch)
+	{
+		LPITEM weapon = ch ? ch->GetWear(WEAR_WEAPON) : NULL;
+		const bool isBow = weapon && weapon->GetSubType() == WEAPON_BOW && !IsPlayerBotFightingAsMonster(ch);
+		return isBow ? GetPlayerBotBowRange(ch->GetMapIndex()) : 280;
+	}
+
 	bool ExecutePlayerBotBasicAttack(LPCHARACTER ch, LPCHARACTER target,
 			TPlayerBotAIState& state, DWORD dwNow)
 	{
@@ -2393,7 +2619,7 @@ namespace
 			if (!EnsurePlayerBotArrowsEquipped(ch) || ch->GetArrowAndBow(&bow, &arrow, 1) != 1)
 				return false;
 		}
-		const int combatRange = isBow ? GetPlayerBotBowRange(ch->GetMapIndex()) : 280;
+		const int combatRange = GetPlayerBotBasicAttackRange(ch);
 		if (DISTANCE_APPROX(ch->GetX() - target->GetX(), ch->GetY() - target->GetY()) > combatRange)
 			return false;
 
@@ -2421,6 +2647,38 @@ namespace
 		std::vector<DWORD> extraArrows;
 		if (isBow)
 			CollectPlayerBotExtraArrows(ch, target, extraArrows);
+		// Ownership must arrive BEFORE the combo packet: the human client's
+		// hit event supplies both the slide and the ordinary fall animation.
+		// Its own next Move reports the resulting position. A bot cannot send
+		// CG_SYNC_POSITION, and stale move-check coordinates must not undo it.
+		auto duelHit = playerbot_pvp::duels.find(ch->GetPlayerID());
+		const bool preparedHit = duelHit != playerbot_pvp::duels.end() &&
+			duelHit->second.prepared && duelHit->second.opponentPid == target->GetPlayerID() &&
+			state.dwGuildWarEnemyGID == 0;
+		const bool humanHit = target->IsPC() && target->GetDesc() && !target->GetDesc()->IsBot();
+		if (playerbot_duel::NeedsHitSlideAllowance(preparedHit,humanHit,!isBow))
+		{
+			// The client needs a visual owner for external-force hit physics.
+			// Do NOT assign engine sync ownership to a bot with no sync client:
+			// the victim's own Move reports its landing, with the credit below.
+			TPacketGCOwnership visualOwner = {};
+			visualOwner.bHeader = HEADER_GC_OWNERSHIP;
+			visualOwner.dwOwnerVID = ch->GetVID();
+			visualOwner.dwVictimVID = target->GetVID();
+			target->PacketAround(visualOwner);
+#ifdef PLAYERBOT_ENGINE_MT2009
+			// FUNC_WAIT's short-distance guard otherwise puts a knocked-back
+			// standing player back at the pre-hit position. This one transition
+			// was caused by a validated melee impact, not a voluntary walk.
+			target->SetLastMoveFunc(FUNC_COMBO);
+			if (target->HasPlayerData())
+				target->playerData->m_iMoveBonusPointNextRound = playerbot_duel::HitSlideMovementBonus(
+					target->playerData->m_iMoveBonusPointNextRound);
+#endif
+			if (playerbot_duel::debug && state.bComboMotion == MOTION_COMBO_ATTACK_4)
+				sys_log(0,"PLAYERBOT_DUEL: combo finish pid=%u foe=%u landing_credit=%d resist_fall=%d",
+					ch->GetPlayerID(),target->GetPlayerID(),playerbot_duel::hitSlideAllowance,target->IsResistFall());
+		}
 		SendPlayerBotAttackPacket(ch, target, state.bComboMotion, &extraArrows);
 		AttackPlayerBotMeleeGroup(ch, target, &extraArrows);
 		// MT2009_PLUS_GUILD_WAR_ARENA_V1: every blow of a bot at war, for the
@@ -3010,6 +3268,70 @@ namespace
 		return other;
 	}
 
+	// MT2009_PLUS_BOT_CAPE_V3: the grounds a bot alone uses a cape on.
+	bool IsPlayerBotCapeSoloMap(long mapIndex)
+	{
+		for (size_t i = 0; i < sizeof(PLAYERBOT_CAPE_SOLO_MAPS) / sizeof(PLAYERBOT_CAPE_SOLO_MAPS[0]); ++i)
+			if (PLAYERBOT_CAPE_SOLO_MAPS[i] == mapIndex)
+				return true;
+		return false;
+	}
+
+	// The cape's experience: crowds beaten without dying (a quest flag).
+	int GetPlayerBotCapeXp(LPCHARACTER ch)
+	{
+		return ch ? std::max(0, std::min(PLAYERBOT_CAPE_XP_MAX, ch->GetQuestFlag(PLAYERBOT_CAPE_XP_FLAG))) : 0;
+	}
+
+	void NotePlayerBotCapeOutcome(LPCHARACTER ch, bool survived)
+	{
+		if (!ch)
+			return;
+		const int before = GetPlayerBotCapeXp(ch);
+		const int after = survived ? std::min(PLAYERBOT_CAPE_XP_MAX, before + 1) : before / 2;
+		if (after != before)
+			ch->SetQuestFlag(PLAYERBOT_CAPE_XP_FLAG, after);
+	}
+
+	// How many monsters this bot dares to pull now: its experience's limit.
+	int GetPlayerBotCapeLimit(LPCHARACTER ch)
+	{
+		return PLAYERBOT_CAPE_START_LIMIT + GetPlayerBotCapeXp(ch) * PLAYERBOT_CAPE_XP_STEP;
+	}
+
+	// A party of bots, and how many of its members stand near the bot - 0 for
+	// no party, -1 for a party with a person in it (theirs to decide: the
+	// party stands while its person is away, and pulls nothing for it).
+	int CountPlayerBotCapePartyNear(LPCHARACTER ch)
+	{
+		LPPARTY party = ch ? ch->GetParty() : NULL;
+		if (!party)
+			return 0;
+		struct FMembers
+		{
+			LPCHARACTER m_ch;
+			int m_iNear;
+			bool m_bPerson;
+			explicit FMembers(LPCHARACTER ch) : m_ch(ch), m_iNear(0), m_bPerson(false) {}
+			void operator()(LPCHARACTER member)
+			{
+				if (!member || member == m_ch)
+					return;
+				if (!member->GetDesc() || !member->GetDesc()->IsBot())
+				{
+					m_bPerson = true;
+					return;
+				}
+				if (!member->IsDead() && member->GetMapIndex() == m_ch->GetMapIndex() &&
+						DISTANCE_APPROX(m_ch->GetX() - member->GetX(), m_ch->GetY() - member->GetY()) <= PLAYERBOT_CAPE_PARTY_RANGE)
+					++m_iNear;
+			}
+		};
+		FMembers f(ch);
+		party->ForEachOnlineMember(f);
+		return f.m_bPerson ? -1 : f.m_iNear;
+	}
+
 	// The tick's word: true when the cape was used this tick.
 	bool HandlePlayerBotValourCape(LPCHARACTER ch, TPlayerBotAIState& state, DWORD dwNow)
 	{
@@ -3028,24 +3350,37 @@ namespace
 			if (crowd.m_iOnMe > 0 && !timedOut && last->second.lMapIndex == ch->GetMapIndex())
 				return false;
 			last->second.bOpen = false;
-			sys_log(0, "PLAYERBOT_CAPE: crowd beaten pid=%u name=%s pulled=%d secs=%u hp=%d/%d%s",
+			// MT2009_PLUS_BOT_CAPE_V3: the experience - a crowd beaten alive
+			// raises the limit, a death under it halves what was learnt.
+			const bool died = state.dwLastDeathTime != 0 && (int)(state.dwLastDeathTime - last->second.dwAt) >= 0;
+			NotePlayerBotCapeOutcome(ch, !died && !timedOut);
+			sys_log(0, "PLAYERBOT_CAPE: crowd beaten pid=%u name=%s pulled=%d secs=%u hp=%d/%d%s%s xp=%d limit=%d",
 					pid, ch->GetName(), last->second.iPulled, (unsigned int)((dwNow - last->second.dwAt) / 1000),
-					ch->GetHP(), ch->GetMaxHP(), timedOut ? " timeout" : "");
+					ch->GetHP(), ch->GetMaxHP(), timedOut ? " timeout" : "", died ? " died" : "",
+					GetPlayerBotCapeXp(ch), GetPlayerBotCapeLimit(ch));
 			return false;
 		}
 		// Cheap questions before the world is looked at.
 		if (state.dwNextCapeCheck > dwNow)
 			return false;
 		state.dwNextCapeCheck = dwNow + 3000 + PlayerBotNavHash(pid ^ (dwNow / 1000U)) % 2000U;
-		if (!IsPlayerBotCapeBuild(ch) || ch->GetParty() || ch->GetMyShop() || ch->GetExchange() ||
+		// MT2009_PLUS_BOT_CAPE_V3: alone on the chosen grounds; in a party of
+		// bots its leader, anywhere it hunts, never in a person's party.
+		const int partyNear = CountPlayerBotCapePartyNear(ch);
+		if (partyNear < 0 || (ch->GetParty() && ch->GetParty()->GetLeaderPID() != pid) ||
+				(!ch->GetParty() && !IsPlayerBotCapeSoloMap(ch->GetMapIndex())))
+			return false;
+		if (!IsPlayerBotCapeBuild(ch) || ch->GetMyShop() || ch->GetExchange() ||
 				(ch->IsRiding() && !CanPlayerBotEverFightOnHorse(ch)) ||
 				ch->GetMapIndex() >= PLAYERBOT_INSTANCE_MAP_INDEX_MIN ||
 				IsPlayerBotSafeZone(ch->GetMapIndex(), ch->GetX(), ch->GetY()) ||
 				!IsPlayerBotGrindAllowedHere(ch))
 			return false;
-		if (state.bBotRole != BOT_ROLE_MOB_GRINDER ||
+		const bool capeParty = ch->GetParty() != NULL;	// MT2009_PLUS_BOT_CAPE_V3: a party's own role and goal
+		if ((state.bBotRole != BOT_ROLE_MOB_GRINDER && !(capeParty && state.bBotRole == BOT_ROLE_PARTY_FIGHTER)) ||
 				(state.bLongTermGoal != BOT_GOAL_LEVEL_UP && state.bLongTermGoal != BOT_GOAL_HUNTING &&
-				 state.bLongTermGoal != BOT_GOAL_GET_EQUIPMENT) ||	// MT2009_PLUS_BOT_CAPE_V2
+				 state.bLongTermGoal != BOT_GOAL_GET_EQUIPMENT &&
+				 !(capeParty && state.bLongTermGoal == BOT_GOAL_PARTY_CHALLENGE)) ||	// MT2009_PLUS_BOT_CAPE_V2
 				state.bMultiPullActive || state.bVisitingShop || state.bRecoveringAfterDeath || state.bTacticalRetreat ||
 				state.bFishingSession ||
 				(state.dwLastDeathTime != 0 && dwNow - state.dwLastDeathTime < PLAYERBOT_CAPE_DEATH_HOLD_MS))
@@ -3073,8 +3408,11 @@ namespace
 		if (crowd.m_iLevelMax > (int)ch->GetLevel() + PLAYERBOT_CAPE_MAX_OVER_LEVELS ||
 				average > (int)ch->GetLevel() - PLAYERBOT_CAPE_LEVEL_MARGIN)
 			return false;
-		const int capacity = GetPlayerBotCapeCapacity(ch, average);
-		if (crowd.m_iFree > capacity)
+		// MT2009_PLUS_BOT_CAPE_V3: under the experience's limit, which a party
+		// near the leader raises.
+		const int capacity = std::min(GetPlayerBotCapeCapacity(ch, average) + partyNear * PLAYERBOT_CAPE_PARTY_MEMBER,
+				GetPlayerBotCapeLimit(ch) + partyNear * PLAYERBOT_CAPE_PARTY_MEMBER);
+		if (crowd.m_iFree > std::min(capacity, PLAYERBOT_CAPE_PULL_MAX))
 			return false;
 
 		const DWORD capeVnum = ch->GetInventoryItem(cell)->GetVnum();
@@ -3093,9 +3431,10 @@ namespace
 		ClearPlayerBotRoute(state, true);
 		if (ch->IsStateMove())
 			ch->Stop();
-		sys_log(0, "PLAYERBOT_CAPE: used pid=%u name=%s lv=%d vnum=%u map=%ld pos=(%ld,%ld) crowd=%d avg_lv=%d max_lv=%d capacity=%d capes_left=%d",
+		sys_log(0, "PLAYERBOT_CAPE: used pid=%u name=%s lv=%d vnum=%u map=%ld pos=(%ld,%ld) crowd=%d avg_lv=%d max_lv=%d capacity=%d capes_left=%d xp=%d party_near=%d",
 				pid, ch->GetName(), ch->GetLevel(), capeVnum, ch->GetMapIndex(), ch->GetX(), ch->GetY(),
-				crowd.m_iFree, average, crowd.m_iLevelMax, capacity, CountPlayerBotValourCapes(ch));
+				crowd.m_iFree, average, crowd.m_iLevelMax, capacity, CountPlayerBotValourCapes(ch),
+				GetPlayerBotCapeXp(ch), partyNear);
 		return true;
 	}
 }

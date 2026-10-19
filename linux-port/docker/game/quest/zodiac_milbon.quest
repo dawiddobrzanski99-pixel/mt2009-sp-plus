@@ -1,0 +1,124 @@
+--[[
+	Chats Of Monk Milbon
+	Dev: WLsj24; MT2009 PLUS - Autor: Digi Rasta (MT2009_PLUS_ZODIAC_V1)
+--]]
+quest zodiac_milbon begin
+	state start begin
+
+		function regenPortals(get_day)
+			local map_index = 358
+			local data = {
+				{"Poniedzia³ek (Zi-Chou)", "data/dungeon/zodiac/days/1-monday.txt"},
+				{"Wtorek (Yin-Mao)", "data/dungeon/zodiac/days/2-tuesday.txt"},
+				{"Œroda (Chen-Si)", "data/dungeon/zodiac/days/3-wednesday.txt"},
+				{"Czwartek (Wu-Wei)", "data/dungeon/zodiac/days/4-thursday.txt"},
+				{"Pi¹tek (Shen-Yu)", "data/dungeon/zodiac/days/5-friday.txt"},
+				{"Sobota (Xu-Hai)", "data/dungeon/zodiac/days/6-saturday.txt"},
+			}
+			say("Czy na pewno chcesz zregenerowaæ?")
+			local option = select("Tak", "Nie")
+			if option == 2 then return end
+			if pc.get_map_index() == map_index then
+				say("Regeneracja zakoñczona")
+				regen_in_map(map_index, data[get_day][2])
+			else
+				say("Aby dokoñczyæ regeneracjê, musisz byæ na mapie Œwi¹tyni Zodiaku.")
+				return
+			end
+		end
+
+		function regenAllPortals()
+			local map_index = 358
+			say("Czy na pewno chcesz zregenerowaæ wszystkie portale?")
+			local option = select("Tak", "Nie")
+			if option == 2 then return end
+			if pc.get_map_index() == map_index then
+				say("Regeneracja zakoñczona")
+				regen_in_map(map_index, "data/dungeon/zodiac/days/1-monday.txt")
+				regen_in_map(map_index, "data/dungeon/zodiac/days/2-tuesday.txt")
+				regen_in_map(map_index, "data/dungeon/zodiac/days/3-wednesday.txt")
+				regen_in_map(map_index, "data/dungeon/zodiac/days/4-thursday.txt")
+				regen_in_map(map_index, "data/dungeon/zodiac/days/5-friday.txt")
+				regen_in_map(map_index, "data/dungeon/zodiac/days/6-saturday.txt")
+			else
+				say("Aby dokoñczyæ regeneracjê, musisz byæ na mapie Œwi¹tyni Zodiaku.")
+				return
+			end
+		end
+
+		when 20438.chat."Regu³y œwi¹tyni" begin --749
+			say_title(mob_name(20438))
+			say("Ka¿dego dnia otwieraj¹ siê zawsze dwie ró¿ne[ENTER]œwi¹tynie.") --754
+			say("W niedziele otwarte s¹ wszystkie œwi¹tynie.") --755
+			say("Wymieñ insygnia na skarby Aureolin, Aventurin[ENTER]oraz Gwiezdny Skarb pod 'Zrealizuj szkatu³kê'.[ENTER]Przeci¹gnij insygnia bezpoœrednio na mnie, to[ENTER]wymieniê ka¿de 10 insygniów jednego rodzaju na[ENTER]czerwone pud³o Zodiaku lub kwiat ¿ywio³u (insygnia[ENTER]Zodiaku tak¿e na niebieskie pud³o Zodiaku). Za[ENTER]pomoc¹ kwiatów ¿ywio³u mo¿esz ulepszaæ talizmany[ENTER]¿ywio³owe! Za 10 insygniów dam ci jeden kwiat.") --756
+		end
+
+		when 20438.chat."Zrealizuj szkatu³kê " begin --750
+			setskin(NOWINDOW)
+			game.zodiac_temple_table()
+		end
+
+		when 20438.chat."Ranking" begin --751
+			say("Jeszcze nieaktywne.")
+		end
+
+		when 20438.chat."Wróæ do wioski" begin --752
+			warp_to_village()
+		end
+
+		-- MT2009_PLUS_ZODIAC_ITEMS_V1 (the owner, 8/9 October): 10 Insygnia of one kind (33001-33024) dragged onto
+		-- Mnich Milbon - every ten for a Czerwone Pudlo Zodiaku (33029) or a Kwiat Zywiolu (our 95500, the
+		-- talismans' flower; the package's own 33031 is not used). The Zodiac Insignia (33013-33022) can still
+		-- be a Niebieskie Pudlo Zodiaku (33030) too - the armours' refine material has no other source.
+		when 20438.take with item.get_vnum() >= 33001 and item.get_vnum() <= 33024 begin
+			local vnum = item.get_vnum()
+			if pc.count_item(vnum) < 10 then
+				say("Masz za ma³o insygniów.") --773
+				return
+			end
+			local total = math.floor(pc.count_item(vnum)/10)
+			local ITEM_COUNT_LIMIT = 200
+			if total > ITEM_COUNT_LIMIT then
+				total = ITEM_COUNT_LIMIT
+			end
+			local blue = vnum >= 33013 and vnum <= 33022
+			local menu
+			if blue then
+				menu = select("Czerwone Pud³o Zodiaku", "Kwiat ¯ywio³u", "Niebieskie Pud³o Zodiaku", "Zamknij")
+				if menu == 4 then return end
+			else
+				menu = select("Czerwone Pud³o Zodiaku", "Kwiat ¯ywio³u", "Zamknij")
+				if menu == 3 then return end
+			end
+			if pc.count_item(vnum) < total*10 then
+				say("Masz za ma³o insygniów.") --773
+				return
+			end
+			pc.remove_item(vnum, total*10)
+			if menu == 1 then
+				pc.give_item2(33029, total)
+				syschat(string.format("Otrzymujesz czerwone pud³a Zodiaku: %d", total)) --777
+			elseif menu == 2 then
+				pc.give_item2(95500, total)
+				syschat(string.format("Otrzymujesz kwiaty ¿ywio³u: %d", total)) --778
+			else
+				pc.give_item2(33030, total)
+				syschat(string.format("Otrzymujesz niebieskie pud³a Zodiaku: %d", total)) --780
+			end
+		end
+
+		when 20438.chat."Zregeneruj portale" with pc.get_gm_level()== 5 begin
+			say_size(350, 350)
+			say_title("Zregeneruj portale:")
+			say("Które portale chcesz zregenerowaæ?")
+			local days = select("Poniedzia³ek (Zi-Chou)", "Wtorek (Yin-Mao)", "Œroda (Chen-Si)", "Czwartek (Wu-Wei)", "Pi¹tek (Shen-Yu)", "Sobota (Xu-Hai)", "Niedziela (WSZYSTKIE)", "WyjdŸ ")
+			if days == 8 then return end
+			if days == 7 then
+				zodiac_milbon.regenAllPortals()
+			else
+				zodiac_milbon.regenPortals(days)
+			end
+		end
+
+	end
+end

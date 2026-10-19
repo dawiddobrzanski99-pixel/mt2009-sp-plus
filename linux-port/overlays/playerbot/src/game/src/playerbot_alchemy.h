@@ -540,7 +540,7 @@ namespace
 			// MT2009_PLUS_OWNER_PRICES_V2: and the higher the user, the more
 			// (GetPlayerBotOperatorLevelPercent, playerbot_town.h).
 			const int purse = IsPlayerBotCorMarketPlentiful() ? PLAYERBOT_DS_COR_PLENTY_PURSE : 40;
-			return unit <= (long long)ScalePlayerBotIwakuraPrice(PLAYERBOT_COR_DRACONIS_PRICE) * PLAYERBOT_DS_COR_BUY_MULT *
+			return unit <= (long long)ScalePlayerBotIwakuraPrice(GetPlayerBotCorDraconisPrice(item->GetVnum())) * PLAYERBOT_DS_COR_BUY_MULT *	// MT2009_PLUS_COR_GRADE_PRICE_V1
 						GetPlayerBotOperatorLevelPercent((int)ch->GetLevel()) / 100 &&
 					price <= spare * purse / 100;
 		}

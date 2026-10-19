@@ -366,11 +366,13 @@ namespace
 		switch (wearCell)
 		{
 			case WEAR_SHIELD:
-				// Immunity to stun first, as it always was; then the two lines a
-				// shield is otherwise kept for, and both of them roll here and
-				// nowhere else worth speaking of.
-				return immuneStun || block >= PLAYERBOT_BONUS_KEEP_BLOCK ||
-						race >= PLAYERBOT_BONUS_KEEP_RACE;
+				// MT2009_PLUS_BOT_SMITHY_V1, point 3 ("Tarcze bonowane pod
+				// Niewrazliwosc na omdlenie i rase mapy"): a shield is finished
+				// with immunity to stun AND the race line of the map the bot
+				// fights on (or immunity alone where the map has no race an item
+				// can be strong against). Block and a race line alone no longer
+				// finish it; the score keeps them from being mixed off meanwhile.
+				return immuneStun && (wantedRace == APPLY_NONE || race >= PLAYERBOT_BONUS_KEEP_RACE);
 			case WEAR_WEAPON:
 			{
 				// A level-30 or level-75 weapon a player hand-tuned is finished
@@ -380,6 +382,16 @@ namespace
 				// is mixed on to thirty (the target below), not stopped at the
 				// lock's twenty-five; its skill line keeps the lock.
 				const int lvl = item->GetLevelLimit();
+				// MT2009_PLUS_BOT_L30_AVG_MIX_V2 (the owner, 10 October: the
+				// level-30 weapons are mixed for their average at +7 to +9 too;
+				// a weak average is never "protected"): the family is finished
+				// by its average alone - thirty - and for a caster's bell or fan
+				// by a skill line over the lock as well. A skill line over the
+				// PvP mark no longer keeps a sword of a weak average as it is.
+				if (IsPlayerBotSpecialLevel30Weapon(item))
+					return average >= PLAYERBOT_BONUS_WEAPON_TARGET_AVERAGE ||
+							((item->GetSubType() == WEAPON_BELL || item->GetSubType() == WEAPON_FAN) &&
+								skill >= PLAYERBOT_BONUS_WEAPON_LOCK_PCT);
 				if ((lvl == 30 || lvl == 75) &&
 						((lvl == 75 && average >= PLAYERBOT_BONUS_WEAPON_LOCK_PCT) ||
 						 skill >= PLAYERBOT_BONUS_WEAPON_LOCK_PCT))
@@ -878,7 +890,8 @@ namespace
 	// with them body armour and helmets, the operator's choice - from level 21
 	// at +7, bracelets, necklaces and boots from +4, earrings from +7. Nothing
 	// under +4 at all (point 1: "dodawanie bonusow do itemow od +0 do +3 jest
-	// od teraz niemozliwe").
+	// od teraz niemozliwe"). MT2009_PLUS_BOT_SMITHY_V1, point 11: every +7
+	// above is +6 now ("Bonowanie rusza od +6", playerbot_types.h).
 	bool IsPlayerBotBonusCategoryAllowed(LPITEM item)
 	{
 		if (!item)
@@ -1151,11 +1164,15 @@ namespace
 		int plainAdd;
 		int plainChange;
 		int marble;
+		// MT2009_PLUS_BOT_SMITHY_V1, point 10: the ordinary stones' units.
+		int plainAddUnits;
+		int plainChangeUnits;
 	};
 
 	void ReadPlayerBotBonusBag(LPCHARACTER ch, TPlayerBotBonusBag& bag)
 	{
 		bag.greenAdd = bag.greenChange = bag.plainAdd = bag.plainChange = bag.marble = -1;
+		bag.plainAddUnits = bag.plainChangeUnits = 0;
 		for (WORD cell = 0; ch && cell < PLAYERBOT_BAG_CELLS; ++cell)
 		{
 			LPITEM stone = ch->GetInventoryItem(cell);
@@ -1169,6 +1186,10 @@ namespace
 			if (tradeable && (int)ch->GetLevel() < PLAYERBOT_TRADEABLE_BONUS_MIN_LEVEL)
 				continue;
 			const bool green = IsPlayerBotGreenBonusStone(stone->GetVnum());
+			if (!green && stone->GetSubType() == USE_ADD_ATTRIBUTE)
+				bag.plainAddUnits += (int)stone->GetCount();
+			else if (!green && stone->GetSubType() == USE_CHANGE_ATTRIBUTE)
+				bag.plainChangeUnits += (int)stone->GetCount();
 			int* first = NULL;
 			switch (stone->GetSubType())
 			{
@@ -1199,7 +1220,9 @@ namespace
 	playerbot_bonus_rules::TBag GetPlayerBotBonusBagKinds(const TPlayerBotBonusBag& bag)
 	{
 		const playerbot_bonus_rules::TBag kinds = {
-			bag.greenAdd >= 0, bag.greenChange >= 0, bag.plainAdd >= 0, bag.plainChange >= 0, bag.marble >= 0
+			bag.greenAdd >= 0, bag.greenChange >= 0, bag.plainAdd >= 0, bag.plainChange >= 0, bag.marble >= 0,
+			bag.plainAddUnits > PLAYERBOT_BONUS_GOODS_STONE_RESERVE,
+			bag.plainChangeUnits > PLAYERBOT_BONUS_GOODS_STONE_RESERVE
 		};
 		return kinds;
 	}
@@ -1318,6 +1341,46 @@ namespace
 	// Why the rest keeps the score's stop is playerbot_bonus_rules::WantsChange:
 	// one piece takes every stone while it can use one. A green change mixes
 	// to the finish wherever a change can roll it (ChangeReachesFinish).
+	// MT2009_PLUS_BOT_SMITHY_V1, point 10 ("Dobre bonusy sa lepiej chronione,
+	// takze te przydatne w PvP"): a line a player keeps the piece for - a top
+	// roll (IsPlayerBotTopBonusLine), or one of Iwakura's best PvP lines
+	// (PLAYERBOT_BONUS_PROTECT_PVP_TIER: strong against people, the weapon
+	// resistances, magic resistance, penetration, critical, health) rolled at
+	// PLAYERBOT_BONUS_PROTECT_ROLL_PERCENT of its top or more. An ordinary
+	// change never mixes such a piece; a line is still added to it.
+	bool HasPlayerBotProtectedBonusLine(LPCHARACTER ch, LPITEM item)
+	{
+		if (!ch || !item)
+			return false;
+		for (int i = 0; i < ITEM_ATTRIBUTE_MAX_NUM; ++i)
+		{
+			const BYTE type = item->GetAttributeType(i);
+			const long value = item->GetAttributeValue(i);
+			if (type == APPLY_NONE || value <= 0)
+				continue;
+			if (IsPlayerBotTopBonusLine(type, value))
+				return true;
+			if (GetPlayerBotBonusTier(type, (int)ch->GetJob(), true) >= PLAYERBOT_BONUS_PROTECT_PVP_TIER)
+			{
+				const long top = GetPlayerBotBonusMaxRoll(item, type);
+				if (top > 0 && value * 100 >= top * PLAYERBOT_BONUS_PROTECT_ROLL_PERCENT)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	// MT2009_PLUS_BOT_SMITHY_V1, point 3: a shield is mixed until it carries
+	// the immunity to stun (then the score keeps it, and the adds fill the
+	// rest of its lines - the map's race among them, with luck).
+	bool HasPlayerBotImmuneStunLine(LPITEM item)
+	{
+		for (int i = 0; item && i < ITEM_ATTRIBUTE_MAX_NUM; ++i)
+			if (item->GetAttributeType(i) == APPLY_IMMUNE_STUN && item->GetAttributeValue(i) > 0)
+				return true;
+		return false;
+	}
+
 	bool PlayerBotWantsBonusChange(LPCHARACTER ch, const TPlayerBotBonusTarget& target, bool green)
 	{
 		LPITEM item = target.item;
@@ -1327,6 +1390,14 @@ namespace
 		// the hold (IsPlayerBotSwapHeldForBonus).
 		if (target.kind == PLAYERBOT_BONUS_TARGET_HELD)
 			return true;
+		// MT2009_PLUS_BOT_SMITHY_V1, point 10: a protected line is never mixed
+		// off by an ordinary change - but where the operator mixes to the
+		// finish (the level-30 weapons' average line, the young bot's
+		// jewellery), which is that rule's own answer.
+		const bool operatorMix = IsPlayerBotSpecialLevel30WeaponVnum(item->GetVnum()) ||
+				(target.kind != PLAYERBOT_BONUS_TARGET_GOODS && IsPlayerBotEarlyBonusSlot(ch, target.wearCell));
+		if (!green && !operatorMix && HasPlayerBotProtectedBonusLine(ch, item))
+			return false;
 		// MT2009_PLUS_PROGRESSION_V1: a bot the checklist holds for health from
 		// its items changes a worn piece that can carry a health line and has
 		// none (item_attr: body, boots, bracelet, necklace).
@@ -1345,8 +1416,11 @@ namespace
 		const bool mixToFinish = green
 				? playerbot_bonus_rules::ChangeReachesFinish(item->GetType() == ITEM_WEAPON,
 					HasPlayerBotDamageAddon(item))
-				: (IsPlayerBotSpecialLevel30WeaponVnum(item->GetVnum()) ||
-					(target.kind != PLAYERBOT_BONUS_TARGET_GOODS && IsPlayerBotEarlyBonusSlot(ch, target.wearCell)));
+				: (operatorMix ||
+					// MT2009_PLUS_BOT_SMITHY_V1, point 3: a shield without the
+					// immunity to stun is mixed for it.
+					(target.wearCell == WEAR_SHIELD && item->GetType() == ITEM_ARMOR &&
+						item->GetSubType() == ARMOR_SHIELD && !HasPlayerBotImmuneStunLine(item)));
 		return playerbot_bonus_rules::WantsChange(HasPlayerBotFinishedBonus(ch, item, target.wearCell),
 				mixToFinish, ScorePlayerBotItemBonuses(ch, item, target.wearCell), PLAYERBOT_BONUS_KEEP_SCORE);
 	}
@@ -1378,6 +1452,10 @@ namespace
 		// piece the swap rule holds for the slot.
 		piece.greenRank = piece.goods ? -1
 				: (target.wearCell == WEAR_BODY ? 0 : (target.wearCell == WEAR_WEAPON ? 1 : -1));
+		// MT2009_PLUS_BOT_L30_AVG_MIX_V2: a level-30 weapon short of its average.
+		piece.mixAverage = item && IsPlayerBotSpecialLevel30Weapon(item) &&
+				(int)item->GetRefineLevel() >= PLAYERBOT_BONUS_L30_MIX_MIN_PLUS &&
+				!HasPlayerBotFinishedBonus(ch, item, WEAR_WEAPON);
 		return piece;
 	}
 
@@ -1458,6 +1536,61 @@ namespace
 	// categories of Patch 4, the rest of the gear (IsPlayerBotBonusRestPiece,
 	// Patch 5, point 5), or none at all where only a green stone fits it
 	// (Patch 5, point 9).
+	// MT2009_PLUS_BOT_SMITHY_V1, point 11 ("czesc botow bonuje przedmioty na
+	// sprzedaz") and point 10 ("Bonowacz dziala od 30 lvl i korzysta tylko z
+	// nadwyzki"): PLAYERBOT_BONUS_GOODS_SELLER_PERCENT of the bots, by pid,
+	// from PLAYERBOT_BONUS_GOODS_MIN_LEVEL - never a companion, whose bag is
+	// its owner's.
+	bool IsPlayerBotBonusGoodsSeller(LPCHARACTER ch)
+	{
+		return ch && (int)ch->GetLevel() >= PLAYERBOT_BONUS_GOODS_MIN_LEVEL &&
+				!IsPlayerBotSidekickPID(ch->GetPlayerID()) &&
+				(int)(PlayerBotNavHash(ch->GetPlayerID() ^ 0x424F4E57U) % 100U) < PLAYERBOT_BONUS_GOODS_SELLER_PERCENT;
+	}
+
+	// Its goods: gear in the bag a counter takes (IsPlayerBotSaleGear) from
+	// PLAYERBOT_BONUS_GOODS_MIN_PLUS, that a stone may go on by the categories
+	// (IsPlayerBotBonusCategoryAllowed) and that the bot keeps for nothing of
+	// its own - not its next piece, not the higher tier its anvil works, not
+	// the backup, not the Demon Tower smith's piece, nothing a companion's
+	// owner gave. The highest plus first, `max` of them.
+	bool IsPlayerBotTowerSmithReserve(LPCHARACTER ch, LPITEM item);
+	int CollectPlayerBotBonusSellerGoods(LPCHARACTER ch, LPITEM* out, int max)
+	{
+		int n = 0;
+		for (WORD cell = 0; ch && cell < PLAYERBOT_BAG_CELLS; ++cell)
+		{
+			LPITEM item = ch->GetInventoryItem(cell);
+			if (!item || item->GetCell() != cell || item->IsEquipped() || item->isLocked() ||
+					(int)item->GetRefineLevel() < PLAYERBOT_BONUS_GOODS_MIN_PLUS || !IsPlayerBotSaleGear(item) ||
+					!CanPlayerBotRerollItem(item) || IsPlayerBotSidekickLockedItem(ch, item) ||
+					IsPlayerBotSidekickGift(ch, item) || IsPlayerBotSidekickPinned(ch, item) ||
+					GetPlayerBotItemPolicy(item) == PLAYERBOT_ITEM_POLICY_KEEP)
+				continue;
+			if (IsPlayerBotEquipmentCandidate(ch, item) &&
+					(IsPlayerBotWearableUpgrade(ch, item, cell) || IsPlayerBotHigherTierSpare(ch, item)))
+				continue;
+			if (item->GetType() == ITEM_WEAPON ? IsPlayerBotKeptBackupWeapon(ch, item)
+					: IsPlayerBotKeptBackupArmour(ch, item))
+				continue;
+			if (IsPlayerBotTowerSmithReserve(ch, item))
+				continue;
+			// Kept sorted by plus, highest first.
+			int at = n < max ? n : max - 1;
+			if (n >= max && (int)item->GetRefineLevel() <= (int)out[max - 1]->GetRefineLevel())
+				continue;
+			while (at > 0 && (int)out[at - 1]->GetRefineLevel() < (int)item->GetRefineLevel())
+			{
+				out[at] = out[at - 1];
+				--at;
+			}
+			out[at] = item;
+			if (n < max)
+				++n;
+		}
+		return n;
+	}
+
 	void CollectPlayerBotBonusTargets(LPCHARACTER ch, std::vector<TPlayerBotBonusTarget>& out)
 	{
 		out.clear();
@@ -1575,6 +1708,28 @@ namespace
 			const TPlayerBotBonusTarget target = { item, (BYTE)WEAR_WEAPON, (BYTE)PLAYERBOT_BONUS_TARGET_GOODS,
 					(BYTE)playerbot_bonus_rules::PLAIN_CATEGORY };
 			out.push_back(target);
+		}
+
+		// MT2009_PLUS_BOT_SMITHY_V1, point 11: the bonus maker's goods, last
+		// (CollectPlayerBotBonusSellerGoods).
+		if (IsPlayerBotBonusGoodsSeller(ch))
+		{
+			LPITEM goods[PLAYERBOT_BONUS_GOODS_PIECES] = {};
+			const int n = CollectPlayerBotBonusSellerGoods(ch, goods, PLAYERBOT_BONUS_GOODS_PIECES);
+			for (int i = 0; i < n; ++i)
+			{
+				bool already = false;
+				for (size_t k = 0; k < out.size() && !already; ++k)
+					already = out[k].item == goods[i];
+				if (already)
+					continue;
+				const int slot = goods[i]->FindEquipCell(ch);
+				const BYTE wearCell = (BYTE)(slot >= 0 && slot < WEAR_MAX_NUM ? slot
+						: (goods[i]->GetType() == ITEM_WEAPON ? WEAR_WEAPON : WEAR_BODY));
+				const TPlayerBotBonusTarget target = { goods[i], wearCell, (BYTE)PLAYERBOT_BONUS_TARGET_GOODS,
+						(BYTE)playerbot_bonus_rules::PLAIN_CATEGORY };
+				out.push_back(target);
+			}
 		}
 	}
 
@@ -2329,7 +2484,7 @@ namespace
 		if (IsPlayerBotTradeableBonusVnum(stone->GetVnum()) &&
 				(int)ch->GetLevel() < PLAYERBOT_TRADEABLE_BONUS_MIN_LEVEL)
 			return false;
-		playerbot_bonus_rules::TBag kind = { false, false, false, false, false };
+		playerbot_bonus_rules::TBag kind = { false, false, false, false, false, false, false };
 		const bool green = IsPlayerBotGreenBonusStone(stone->GetVnum());
 		switch (stone->GetSubType())
 		{

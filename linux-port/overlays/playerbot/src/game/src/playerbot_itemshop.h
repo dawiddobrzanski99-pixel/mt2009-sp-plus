@@ -290,6 +290,10 @@ namespace
 	// bags of every stall keeper - 13 cashed of 1578 delivered in half an
 	// hour on the test world (26 September 2026). The account is read first
 	// when its balance is not known or due, never on the heels of a charge.
+	// MT2009_PLUS_MARKET_LIFE_V1, point 6: a voucher seller whose needs the
+	// balance covers keeps its vouchers for its counter (defined below).
+	bool PlayerBotKeepsVouchersForCounter(LPCHARACTER ch, const TPlayerBotAIState& state, DWORD dwNow);
+
 	void CashPlayerBotVouchers(LPCHARACTER ch, TPlayerBotAIState& state, DWORD dwNow)
 	{
 		if (!ch || !ch->IsItemLoaded() || ch->IsDead() || !ch->GetDesc() || dwNow < state.dwNextVoucherCheckTime)
@@ -303,6 +307,8 @@ namespace
 			return;
 		if (!state.bDragonBalanceKnown || dwNow >= state.dwNextItemShopBalanceTime)
 			RefreshPlayerBotDragonBalance(ch, state, dwNow);
+		if (!sidekick && PlayerBotKeepsVouchersForCounter(ch, state, dwNow))
+			return;
 		UsePlayerBotVoucher(ch, state, dwNow);
 	}
 
@@ -1066,7 +1072,66 @@ namespace
 				s_uPlayerBotVouchersUsed, s_uPlayerBotCoinsCharged, s_uPlayerBotItemShopBuys,
 				s_uPlayerBotItemShopRefusals, s_uPlayerBotItemShopSaving, bought.empty() ? "-" : bought.c_str());
 	}
+
+	// MT2009_PLUS_MARKET_LIFE_V1, point 6 (the owner's list, 9 October): "Kupony
+	// SM: boty wystawiaja je na sklepy, kiedy nie potrzebuja ich w ItemShopie".
+	// PLAYERBOT_VOUCHER_SELLER_PERCENT of the bots with a counter (by pid) cash
+	// a voucher only while the coins of their needs (CollectPlayerBotItemShopNeeds:
+	// what they would use - the look waits for a surplus anyway) are more than
+	// the balance; otherwise the voucher is the counter's for the next
+	// PLAYERBOT_VOUCHER_COUNTER_HOLD_MS (IsPlayerBotVoucherForCounter), priced
+	// off the sheet like any good (80014-80018, playerbot_price_tables.h). With
+	// the ItemShop off for the bots (ISHOP) the vouchers stay in the bags, and
+	// every bot with a counter puts them up.
+	const int PLAYERBOT_VOUCHER_SELLER_PERCENT = 50;
+	const DWORD PLAYERBOT_VOUCHER_COUNTER_HOLD_MS = 30 * 60 * 1000;
+	std::map<DWORD, DWORD> s_mapPlayerBotVoucherCounterUntil;
+	unsigned int s_uPlayerBotVoucherKeeps = 0;
+
+	bool IsPlayerBotVoucherSeller(LPCHARACTER ch)
+	{
+		return ch && (int)(PlayerBotNavHash(ch->GetPlayerID() ^ 0x4b55504fU) % 100U) < PLAYERBOT_VOUCHER_SELLER_PERCENT;
+	}
+
+	bool PlayerBotKeepsVouchersForCounter(LPCHARACTER ch, const TPlayerBotAIState& state, DWORD dwNow)
+	{
+		if (!ch || !PlayerBotHasCounter(ch) || !IsPlayerBotVoucherSeller(ch))
+			return false;
+		TPlayerBotItemShopWish wishes[PLAYERBOT_ISHOP_MAX_WISHES];
+		const int n = CollectPlayerBotItemShopNeeds(ch, state, wishes);
+		long long need = 0;
+		for (int i = 0; i < n; ++i)
+			if (!wishes[i].bMarks)
+				need += GetPlayerBotItemShopCheapest(ch, wishes[i].dwVnum, false);
+		if (need > (long long)state.iDragonCoins)
+			return false;
+		std::map<DWORD, DWORD>::iterator it = s_mapPlayerBotVoucherCounterUntil.find(ch->GetPlayerID());
+		const bool fresh = it == s_mapPlayerBotVoucherCounterUntil.end() || (int)(dwNow - it->second) >= 0;
+		s_mapPlayerBotVoucherCounterUntil[ch->GetPlayerID()] = dwNow + PLAYERBOT_VOUCHER_COUNTER_HOLD_MS;
+		if (fresh)
+		{
+			++s_uPlayerBotVoucherKeeps;
+			sys_log(0, "PLAYERBOT_ISHOP: vouchers kept for the counter pid=%u name=%s balance=%d need=%lld",
+					ch->GetPlayerID(), ch->GetName(), state.iDragonCoins, need);
+		}
+		return true;
+	}
+
+	bool IsPlayerBotVoucherForCounter(LPCHARACTER ch, LPITEM item)
+	{
+		if (!ch || !item || IsPlayerBotSidekickPID(ch->GetPlayerID()) || !PlayerBotHasCounter(ch))
+			return false;
+		if (!IsPlayerBotItemShopEnabled())
+			return true;
+		std::map<DWORD, DWORD>::const_iterator it = s_mapPlayerBotVoucherCounterUntil.find(ch->GetPlayerID());
+		return it != s_mapPlayerBotVoucherCounterUntil.end() && (int)(it->second - get_dword_time()) > 0;
+	}
 #else
+	bool IsPlayerBotVoucherForCounter(LPCHARACTER, LPITEM)
+	{
+		return false;
+	}
+
 	void CashPlayerBotVouchers(LPCHARACTER, TPlayerBotAIState&, DWORD)
 	{
 	}

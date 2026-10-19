@@ -9,6 +9,7 @@
 -- only in M1. Anywhere else, or off, neither option is offered, and a click
 -- on her opens her shop as it always did. The server asks the same two
 -- questions again at every /flea_ command.
+-- Rebuilt by Vekirion 10 October 2026 - reworked UI and functionality - renamed Dom Aukcyjny - this quest remains in use. UwU
 quest flea_market begin
 	state start begin
 		when 9003.chat."Kup przedmioty" with game.get_event_flag("m2_flea_market_off") == 0 and
@@ -17,7 +18,7 @@ quest flea_market begin
 			npc.open_shop()
 		end
 
-		when 9003.chat."Dom Towarowy" with game.get_event_flag("m2_flea_market_off") == 0 and
+		when 9003.chat."Dom Aukcyjny" with game.get_event_flag("m2_flea_market_off") == 0 and
 				(pc.get_map_index() == 1 or pc.get_map_index() == 21 or pc.get_map_index() == 41) begin
 			setskin(NOWINDOW)
 			cmdchat("FleaMarketOpen")

@@ -24,6 +24,36 @@
 
 #ifdef MT2009_PLUS_ELEMENTS_V1
 
+#ifdef ENABLE_12ZI
+#include "playerbot_zodiac_temple.h"
+#endif
+
+// MT2009_PLUS_ZODIAC_ELEMENTS_V1 - the Swiatynia Zodiaku's element (the owner, 9 October, as the PL wiki):
+// every monster, Metin and boss on a temple floor has its sign's element - Zi Mrok, Chou Ziemia, Yin Ogien,
+// Mao Wiatr, Chen Blyskawica, Si Lod, Wu Lod, Wei Blyskawica, Shen Ziemia, Yu Wiatr, Xu Mrok, Hai Ogien.
+// The temple's monsters and Metins are the same vnums in several signs (group.zodiak.txt, SpawnStone), so the
+// element is the floor's, read here at run time from the CZodiac of the victim's (or attacker's) map; on a
+// temple floor it replaces the proto's bits. The bosses (2750-2862, ten vnums a sign) carry it in mob_proto
+// as well (tools/zywioly rule g), so the client shows their element; the others show none.
+static bool ElementsHasFlag(LPCHARACTER mob, DWORD flag)
+{
+#ifdef ENABLE_12ZI
+	const long map = mob->GetMapIndex();
+	if (map >= 3580000 && map < 3590000)
+	{
+		static const DWORD SIGN_FLAG[13] = { 0,
+			RACE_FLAG_ATT_DARK, RACE_FLAG_ATT_EARTH, RACE_FLAG_ATT_FIRE, RACE_FLAG_ATT_TEMPLE, RACE_FLAG_ATT_ELEC,
+			RACE_FLAG_ATT_ICE, RACE_FLAG_ATT_ICE, RACE_FLAG_ATT_ELEC, RACE_FLAG_ATT_EARTH, RACE_FLAG_ATT_TEMPLE,
+			RACE_FLAG_ATT_DARK, RACE_FLAG_ATT_FIRE };
+		LPZODIAC z = CZodiacManager::instance().FindByMapIndex(map);
+		const BYTE sign = z ? z->GetPortal() : 0;
+		if (sign >= 1 && sign <= 12)
+			return flag == SIGN_FLAG[sign];
+	}
+#endif
+	return mob->IsRaceFlag(flag);
+}
+
 // A Talisman +0 from a boss (rank >= boss) of its element 5%, from a Metin stone of its element
 // 2% - the element read from the monster's race flags, as for the damage. Called beside the
 // boss / mod drop in CHARACTER::Reward (char_battle.cpp). Under the owner's rules no Metin
@@ -45,7 +75,7 @@ bool ElementsTalismanDrop(LPCHARACTER victim, LPCHARACTER killer, std::vector<LP
 	bool dropped = false;
 	for (const auto& t : TALISMAN_OF)
 	{
-		if (!victim->IsRaceFlag(t.flag) || number(1, 1000) > (metin ? 20 : 50))
+		if (!ElementsHasFlag(victim, t.flag) || number(1, 1000) > (metin ? 20 : 50))
 			continue;
 
 		LPITEM item = ITEM_MANAGER::instance().CreateItem(t.vnum, 1, 0, true);
@@ -139,7 +169,7 @@ int ElementsAttackBonus(LPCHARACTER pkAttacker, LPCHARACTER pkVictim, int iAtk)
 				continue;
 
 			general += MIN(power / 10, GENERAL_MAX_PERCENT);
-			if (pkVictim->IsNPC() && pkVictim->IsRaceFlag(e.flag))
+			if (pkVictim->IsNPC() && ElementsHasFlag(pkVictim, e.flag))
 				halves += ElementHalfPercents(power);
 		}
 
@@ -157,7 +187,7 @@ int ElementsAttackBonus(LPCHARACTER pkAttacker, LPCHARACTER pkVictim, int iAtk)
 		int resist = 0;
 
 		for (const TElement& e : ELEMENTS)
-			if (pkAttacker->IsRaceFlag(e.flag))
+			if (ElementsHasFlag(pkAttacker, e.flag))
 				resist = MAX(resist, MIN(pkVictim->GetPoint(e.resist), ELEMENT_CAP_PERCENT));
 
 		if (resist > 0)

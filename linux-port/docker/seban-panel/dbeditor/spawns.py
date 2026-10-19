@@ -74,8 +74,9 @@ def install(bp, ctx):
     def settings_summary():
         f = flags()
         boss, _s = sf.delay_percent(f, True, 0)
+        metin, _s = sf.delay_percent(f, True, 0, stone=True)
         mob, _s = sf.delay_percent(f, False, 0)
-        per_map = sorted({int(m.group(2)) for k in f for m in [re.fullmatch(r"fast(Boss|Mob)Spawn(\d+)", k)]
+        per_map = sorted({int(m.group(2)) for k in f for m in [re.fullmatch(r"fast(Boss|Mob|Metin)Spawn(\d+)", k)]
                           if m and 0 < int(f[k] or 0) < 100})
         status = {}
         function = sf.dropfiles.panel_function("read_map_regen_status")
@@ -84,8 +85,9 @@ def install(bp, ctx):
                 status = function() or {}
             except Exception:
                 status = {}
-        return {"boss": boss, "mob": mob,
+        return {"boss": boss, "mob": mob, "metin": metin,
                 "boss_count": sf.count_percent(f, True, 0, True), "mob_count": sf.count_percent(f, False, 0, True),
+                "metin_count": sf.count_percent(f, True, 0, True, stone=True),
                 "per_map": per_map, "map_regens": bool(status.get("values") or status.get("stones")),
                 "map_regen_status": status}
 
@@ -122,8 +124,9 @@ def install(bp, ctx):
         else:
             icon = "👹"
         level = max((table[m]["level"] for m in known), default=0)
-        percent, source = sf.delay_percent(flags(), boss_or_stone, map_index)
-        count_pct = sf.count_percent(flags(), boss_or_stone, map_index, all_fighters)
+        stone = any(table.get(m, {}).get("type") == 2 for m in known)  # MT2009_PLUS_REGEN_METIN_SPLIT_V1
+        percent, source = sf.delay_percent(flags(), boss_or_stone, map_index, stone=stone)
+        count_pct = sf.count_percent(flags(), boss_or_stone, map_index, all_fighters, stone=stone)
         return {"name": name, "icon": icon, "level": level, "boss_or_stone": boss_or_stone,
                 "low": row["low"], "high": row["high"], "once": row["low"] == 0,
                 "eff_low": sf.effective_seconds(row["low"], percent), "eff_high": sf.effective_seconds(row["high"], percent),
@@ -236,6 +239,12 @@ def install(bp, ctx):
             y = sf.parse_int(form.get(prefix + "y"), f"wiersz {number}: Y", 0, height)
             rx = sf.parse_int(form.get(prefix + "rx") or "0", f"wiersz {number}: obszar X", 0, 2000)
             ry = sf.parse_int(form.get(prefix + "ry") or "0", f"wiersz {number}: obszar Y", 0, 2000)
+            # MT2009_PLUS_SPAWN_AREA_V1: a line with a 0 / 0 area is one exact
+            # point (regen.cpp regen_spawn) and the game then puts down the
+            # MONSTER of that number, even for a group - a group never shows.
+            if typ in ("g", "r") and rx == 0 and ry == 0:
+                raise ValueError(f"wiersz {number}: grupa potrzebuje obszaru ±X / ±Y większego niż 0 "
+                                 "(przy 0 / 0 gra wstawia potwora o numerze grupy, a nie grupę).")
             low = sf.parse_minutes(form.get(prefix + "od"), f"wiersz {number}: co ile – od")
             high_raw = (form.get(prefix + "do") or "").strip()
             high = sf.parse_minutes(high_raw, f"wiersz {number}: co ile – do") if high_raw else low
@@ -326,6 +335,19 @@ def install(bp, ctx):
                 return redirect(back)
             flash(f"Zapisano: {sf.MAP_FILES[kind]} – {index.map_title(map_index)}. Zmiana czeka na zastosowanie "
                   "(restart gry – „Zastosuj”).", "success")
+            # MT2009_PLUS_SPAWN_AREA_V1: a monster at one exact point (area 0 / 0)
+            # is put down only when that very spot is free (SpawnMob: no
+            # obstacle, no safe zone) - on a tree, a wall or in a town it never
+            # shows, with no error. A changed or new line like that is worth a word.
+            old_raw = {ln["raw"] for ln in lines}
+            exact = [ln["row"] for ln in new_lines if ln["raw"] not in old_raw and ln["row"]
+                     and not ln["row"].get("bad") and ln["row"]["type"] == "m"
+                     and ln["row"]["rx"] == 0 and ln["row"]["ry"] == 0]
+            if exact:
+                flash("Uwaga: " + ", ".join(f"({r['x']}, {r['y']})" for r in exact[:5]) +
+                      " – obszar 0 / 0 to jeden dokładny punkt. Jeśli wypada na przeszkodzie (drzewo, skała, "
+                      "budynek) albo w strefie bez walki, potwór nigdy się nie pojawi. Bezpieczniej wpisać obszar "
+                      "np. 10 / 10.", "warning")
             return redirect(back)
         files = []
         for kind, title in sf.MAP_FILES.items():

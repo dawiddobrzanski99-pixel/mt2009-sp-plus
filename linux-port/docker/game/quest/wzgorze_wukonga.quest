@@ -34,9 +34,9 @@ quest wzgorze_wukonga begin
 				limit_min = 30,
 				-- MT2009_PLUS_DUNGEON_FEE_V1: the price of a new expedition (each player, paid on entering it) and
 				-- how many new expeditions a player may start a day (Polish midnight).
-				fee = 2500000, fee_text = "2 500 000", -- MT2009_PLUS_AREZZO_BALANCE_V1: half of 5 000 000 (the owner, 5 October)
-				daily = 5,
-				wave_kills = 60,
+				fee = 5000000, fee_text = "5 000 000", -- Shared fix: entry fee x2.
+				daily = 10,
+				wave_kills = 40,
 				seals = 3,
 				chests_min = 2, chests_max = 4, -- MT2009_PLUS_AREZZO_BALANCE_V1: 1-3 before, as the level-30 library
 				path = "data/dungeon/wzgorze_wukonga/",
@@ -64,8 +64,7 @@ quest wzgorze_wukonga begin
 		end
 
 		function over_limit()
-			local c = wzgorze_wukonga.cfg()
-			return not pc.is_gm() and wzgorze_wukonga.runs_today() >= c.daily
+			return false -- No daily entry limit.
 		end
 
 		function too_poor()
@@ -103,7 +102,7 @@ quest wzgorze_wukonga begin
 				pc.setf("wzgorze_wukonga", "runs", 0)
 			end
 			pc.setf("wzgorze_wukonga", "runs", pc.getf("wzgorze_wukonga", "runs") + 1)
-			syschat("Op³ata za wejœcie: "..c.fee_text.." Yang. Dzisiejsza wyprawa "..pc.getf("wzgorze_wukonga", "runs").."/"..c.daily..".")
+			syschat("Oplata za wejscie: "..c.fee_text.." Yang. Bez limitu dobowego.")
 			return true
 		end
 
@@ -235,6 +234,7 @@ quest wzgorze_wukonga begin
 				d.set_regen_file(c.path.."wave.txt")
 			elseif stage == 2 then
 				d.setf("left", 6)
+				d.setf("progress_time", get_global_time()) -- MT2009_PLUS_WUKONG_STAGE_WATCH_V1
 				d.regen_file(c.path.."stones.txt")
 				d.set_regen_file(c.path.."guards.txt")
 			elseif stage == 3 then
@@ -243,6 +243,7 @@ quest wzgorze_wukonga begin
 				d.set_regen_file(c.path.."guards.txt")
 			elseif stage == 4 then
 				d.setf("left", 4)
+				d.setf("progress_time", get_global_time()) -- MT2009_PLUS_WUKONG_STAGE_WATCH_V1
 				d.regen_file(c.path.."eggs.txt")
 				d.set_regen_file(c.path.."guards.txt")
 			elseif stage == 5 then
@@ -421,7 +422,7 @@ quest wzgorze_wukonga begin
 			say("")
 			say_reward("Wymagany poziom: "..c.min_level..". Limit "..c.limit_min.." minut, bez czekania miêdzy wyprawami.") -- MT2009_PLUS_DUNGEON_NO_PLAYER_COOLDOWN_V1
 			say_reward("Boty z Twojej dru¿yny wejd¹ do lochu razem z Tob¹.")
-			say_reward("Wejœcie: "..c.fee_text.." Yang. Najwy¿ej "..c.daily.." wypraw dziennie (dziœ: "..wzgorze_wukonga.runs_today().."/"..c.daily..").") -- MT2009_PLUS_DUNGEON_FEE_V1
+			say_reward("Wejscie: "..c.fee_text.." Yang. Bez limitu wypraw dziennie.")
 			say_reward("P³acisz tylko za siebie - boty z dru¿yny i towarzysz wchodz¹ bez op³aty.") -- MT2009_PLUS_DUNGEON_FEE_LEADER_V1
 			if select("WejdŸ do lochu", "Nie teraz") ~= 1 then
 				return
@@ -816,6 +817,14 @@ quest wzgorze_wukonga begin
 				if d.getf("stage") == 3 then
 					wzgorze_wukonga.guardians_check() -- MT2009_PLUS_WUKONG_GUARDIANS_V1
 				end
+				-- MT2009_PLUS_WUKONG_STAGE_WATCH_V1 (12 October): a Kamien Wzgorza or a Jajo Feniksa that never
+				-- came up (an exact spawn point the engine refused) or stands where nobody reaches it left the
+				-- run waiting for ever with "Pozostalo: 1". Four minutes without a kill of the stage closes it.
+				local st = d.getf("stage")
+				if (st == 2 or st == 4) and d.getf("left") > 0 and get_global_time() - d.getf("progress_time") > 240 then
+					d.notice("Wzgórze Wukonga: Ostatnie cele etapu rozpad³y siê same.")
+					wzgorze_wukonga.next_stage()
+				end
 				server_timer("wukong_tick", 60, get_server_timer_arg())
 			end
 		end
@@ -879,6 +888,7 @@ quest wzgorze_wukonga begin
 		end
 
 		when 9701.kill with wzgorze_wukonga.inside() and d.getf("stage") == 2 begin
+			d.setf("progress_time", get_global_time()) -- MT2009_PLUS_WUKONG_STAGE_WATCH_V1
 			local left = d.getf("left") - 1
 			d.setf("left", left)
 			if left <= 0 then
@@ -900,6 +910,7 @@ quest wzgorze_wukonga begin
 		end
 
 		when 9702.kill with wzgorze_wukonga.inside() and d.getf("stage") == 4 begin
+			d.setf("progress_time", get_global_time()) -- MT2009_PLUS_WUKONG_STAGE_WATCH_V1
 			local left = d.getf("left") - 1
 			d.setf("left", left)
 			if left <= 0 then

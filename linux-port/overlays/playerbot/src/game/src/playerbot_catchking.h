@@ -10,7 +10,10 @@
 // equal one scores and is spent, a lower one is spent for nothing; a 5 next to
 // a hidden 5 is caught; the King scores 100 only on the King and ends the
 // game; a full row or column is +10. 10+ points win a King's Loot per deck
-// bet (1-5 decks, 30 000 yang each): Bronze 10-399, Silver 400-549, Gold 550+.
+// bet (1-50 decks, 30 000 yang each): Bronze 10-399, Silver 400-549, Gold 550+.
+// (MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: the bet was 1-5; the window's "Liczba gier" row
+// - 1, 2, 5, 10, 25, 50 - sets it, in the start packet as before. The season's
+// ranking counts a game of n decks as n games of its score.)
 // The cards of a deck come from kills while the event runs (a share of every
 // kill, "mini_game_catchking_drop"; 25 cards = 1 deck, 999 decks at most) -
 // quest flags minigame_catchking.piece_count / pack_count, Owsap's names.
@@ -92,7 +95,7 @@ namespace mt2009_catchking
 		FIELD_CARDS = 25,
 		HAND_CARDS = 12,
 		CARD_KING = 6,
-		BET_MAX = 5,
+		BET_MAX = 50,		// MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]: was 5 (the client: CATCHKING_CHALLENGE_MAX)
 		COST_PER_DECK = 30000,
 		REWARD_MIN_SCORE = 10,
 		REWARD_MID_SCORE = 400,
@@ -354,8 +357,11 @@ namespace mt2009_catchking
 		}
 	}
 
-	void RegisterScore(LPCHARACTER ch, DWORD score)
+	// games: the decks bet - the ranking counts the game that many times
+	// (MT2009_PLUS_PLAY_COUNT_V1 [Autor: Vekirion]); the best score is the game's own.
+	void RegisterScore(LPCHARACTER ch, DWORD score, int games = 1)
 	{
+		games = std::max(1, games);
 		const DWORD season = Season();
 		const int best = QF(ch, QF_BEST);
 		if ((int)score > best)
@@ -369,10 +375,10 @@ namespace mt2009_catchking
 		DBManager::instance().EscapeString(name, sizeof(name), ch->GetName(), strlen(ch->GetName()));
 		DBManager::instance().Query(
 			"INSERT INTO player.minigame_catchking (season, pid, name, empire, max_score, total_score, games, claimed, last_play) "
-			"VALUES (%u, %u, '%s', %u, %u, %u, 1, 0, NOW()) "
+			"VALUES (%u, %u, '%s', %u, %u, %u, %d, 0, NOW()) "
 			"ON DUPLICATE KEY UPDATE name = VALUES(name), empire = VALUES(empire), max_score = GREATEST(max_score, VALUES(max_score)), "
-			"total_score = total_score + VALUES(total_score), games = games + 1, last_play = NOW()",
-			season, ch->GetPlayerID(), name, (unsigned int)ch->GetEmpire(), score, score);
+			"total_score = total_score + VALUES(total_score), games = games + VALUES(games), last_play = NOW()",
+			season, ch->GetPlayerID(), name, (unsigned int)ch->GetEmpire(), score, score * (DWORD)games, games);
 	}
 
 	// The game's end: the score is ranked, the Loots given (or kept for the
@@ -384,7 +390,7 @@ namespace mt2009_catchking
 			return 1;
 		const TGame game = it->second;
 		s_games.erase(it);
-		RegisterScore(ch, game.score);
+		RegisterScore(ch, game.score, game.bet);
 		const int tier = LootTier(game.score);
 		sys_log(0, "CATCH_KING: %s (pid %u) ends with %u points, bet %u, tier %d%s", ch->GetName(), ch->GetPlayerID(),
 				game.score, (unsigned int)game.bet, tier, leaving ? " (left the game)" : "");

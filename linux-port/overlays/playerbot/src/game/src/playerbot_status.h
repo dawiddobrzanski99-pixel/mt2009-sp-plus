@@ -23,6 +23,10 @@ namespace
 	// before it sets off. A status line that says only "Czekam" is exactly
 	// what a person cannot report.
 	const char* GetPlayerBotLureWaitReason(DWORD dwPID);
+	// MT2009_PLUS_BOT_DAY_GOAL_V1: a bot's Cel Dnia, in blue in front of its
+	// status (playerbot_day_goal.h, included below this file).
+	bool GetPlayerBotDayGoalTag(LPCHARACTER ch, bool en, char* out, size_t size);
+	DWORD GetPlayerBotDayGoalKey(LPCHARACTER ch);
 
 	// Whether a real player is close enough for any of this to be seen. The
 	// overhead text exists for them, so with nobody watching there is nothing
@@ -1042,7 +1046,9 @@ namespace
 				? state.dwTargetVID : 0;
 		const BYTE relevantTownPhase = state.bVisitingShop
 				? state.bTownVisitPhase : BOT_TOWN_PHASE_NONE;
+		const DWORD dayGoalKey = GetPlayerBotDayGoalKey(ch);	// MT2009_PLUS_BOT_DAY_GOAL_V1
 		const bool changed =
+				state.dwLastStatusDayGoalKey != dayGoalKey ||
 				state.bLastStatusAction != state.bCurrentAction ||
 				state.bLastStatusGoal != state.bLongTermGoal ||
 				state.bLastStatusTownPhase != relevantTownPhase ||
@@ -1076,6 +1082,25 @@ namespace
 		BuildPlayerBotStatusText(ch, state, szStatus, sizeof(szStatus));
 		char szStatusEn[160];
 		BuildPlayerBotStatusText(ch, state, szStatusEn, sizeof(szStatusEn), true);
+		// MT2009_PLUS_BOT_DAY_GOAL_V1: the Cel Dnia in front, in its blue - a
+		// colour tag every text tail of the client draws. The panel's status
+		// file never sees it (BuildPlayerBotStatusText is that file's).
+		{
+			char tag[96];
+			if (GetPlayerBotDayGoalTag(ch, false, tag, sizeof(tag)))
+			{
+				char joined[PLAYERBOT_STATUS_TAIL_MAX_BYTES + 1];
+				snprintf(joined, sizeof(joined), "%s%s", tag, szStatus);
+				strlcpy(szStatus, joined, sizeof(szStatus));
+			}
+			if (GetPlayerBotDayGoalTag(ch, true, tag, sizeof(tag)))
+			{
+				char joined[PLAYERBOT_STATUS_TAIL_MAX_BYTES + 1];
+				snprintf(joined, sizeof(joined), "%s%s", tag, szStatusEn);
+				strlcpy(szStatusEn, joined, sizeof(szStatusEn));
+			}
+		}
+		state.dwLastStatusDayGoalKey = dayGoalKey;
 		SendPlayerBotOverheadChat(ch, szStatus, szStatusEn);
 		state.dwLastStatusChatTime = dwNow;
 		state.dwNextStatusProbeTime = dwNow + 2500;

@@ -470,6 +470,17 @@ namespace
 	// companions with it off, by pid.
 	std::set<DWORD> s_setPlayerBotSidekickNoEmotion;
 	bool s_bPlayerBotSidekickEmotionColumn = false;
+	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans" (the owner, 9
+	// October: "Towarzysz najpierw bije lucznikow i magow, ktorzy atakuja
+	// gracza, jego albo grupe - np. tych wychodzacych z Metina"). On, an archer
+	// or a caster (the mob's battle type RANGE or MAGIC) hitting the owner, the
+	// companion or a member of the owner's party within the guard range goes
+	// before the owner's target - the stone they came out of - and every other
+	// monster; another kingdom's attackers still come first. Kept in
+	// player.playerbot_sidekick.ranged_first (1 on, by default); the companions
+	// with it off, by pid.
+	std::set<DWORD> s_setPlayerBotSidekickNoRanged;
+	bool s_bPlayerBotSidekickRangedColumn = false;
 	const DWORD PLAYERBOT_SIDEKICK_EMOTE_REACT_MS = 20 * 1000;
 	const DWORD PLAYERBOT_SIDEKICK_EMOTE_SAY_MS = 90 * 1000;
 	const int PLAYERBOT_SIDEKICK_EMOTE_REACT_PERCENT = 60;	// to a solo emotion of its owner's beside it
@@ -863,6 +874,14 @@ namespace
 		s_bPlayerBotSidekickEmotionColumn = emotions.get() && emotions->uiSQLErrno == 0;
 		if (!s_bPlayerBotSidekickEmotionColumn)
 			sys_err("PLAYERBOT_SIDEKICK: no emotions column errno=%u", emotions.get() ? emotions->uiSQLErrno : 0U);
+		// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans", on by default.
+		std::unique_ptr<SQLMsg> rangedFirst(AccountDB::instance().DirectQuery(
+				"ALTER TABLE player.playerbot_sidekick "
+				"ADD COLUMN IF NOT EXISTS ranged_first TINYINT UNSIGNED NOT NULL DEFAULT 1"));
+		s_bPlayerBotSidekickRangedColumn = rangedFirst.get() && rangedFirst->uiSQLErrno == 0;
+		if (!s_bPlayerBotSidekickRangedColumn)
+			sys_err("PLAYERBOT_SIDEKICK: no ranged_first column errno=%u",
+					rangedFirst.get() ? rangedFirst->uiSQLErrno : 0U);
 		// A companion whose owner's character was deleted would be kept out of
 		// the population for good: its record goes, and the identity plays on
 		// as the bot it was, under the name it was given.
@@ -1119,6 +1138,26 @@ namespace
 						off.insert(pid);
 				}
 				s_setPlayerBotSidekickNoEmotion.swap(off);
+			}
+		}
+		// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: the companions with "Najpierw dystans" off.
+		if (s_bPlayerBotSidekickRangedColumn)
+		{
+			std::unique_ptr<SQLMsg> ranged(AccountDB::instance().DirectQuery(
+					"SELECT sidekick_pid FROM player.playerbot_sidekick WHERE ranged_first=0"));
+			if (ranged.get() && ranged->uiSQLErrno == 0 && ranged->Get() && ranged->Get()->pSQLResult)
+			{
+				std::set<DWORD> off;
+				MYSQL_ROW rangedRow;
+				while (NULL != (rangedRow = mysql_fetch_row(ranged->Get()->pSQLResult)))
+				{
+					DWORD pid = 0;
+					if (rangedRow[0])
+						str_to_number(pid, rangedRow[0]);
+					if (pid != 0)
+						off.insert(pid);
+				}
+				s_setPlayerBotSidekickNoRanged.swap(off);
 			}
 		}
 	}
@@ -1464,6 +1503,15 @@ namespace
 	bool IsPlayerBotSidekickEmotionsOn(DWORD pid)
 	{
 		return s_setPlayerBotSidekickNoEmotion.find(pid) == s_setPlayerBotSidekickNoEmotion.end();
+	}
+
+	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans" - on unless its
+	// owner switched it off, and only while it is somebody's companion (a
+	// guild's bot answering its person asks the same foe search).
+	bool IsPlayerBotSidekickRangedFirst(DWORD pid)
+	{
+		return s_mapPlayerBotSidekickOwner.find(pid) != s_mapPlayerBotSidekickOwner.end() &&
+				s_setPlayerBotSidekickNoRanged.find(pid) == s_setPlayerBotSidekickNoRanged.end();
 	}
 
 	bool IsPlayerBotSidekickSharingLoot(DWORD pid)
@@ -2308,6 +2356,115 @@ namespace
 		rt->second.bLureStage = 0;
 		rt->second.dwLureVID = 0;
 		HandPlayerBotSidekickFoesToOwner(ch, GetPlayerBotSidekickOwnerChar(rec->dwOwnerPID), rt->second, dwNow, "down");
+	}
+
+	// MT2009_PLUS_SIDEKICK_ZODIAC_V1: the companion fallen on a floor of the
+	// Swiatynia Zodiaku while its owner stands on the same floor keeps the
+	// temple's rule, as a person does: it stands up with Prisms of Revival
+	// (33025, 33032) - its own (RevivePlayerBotInZodiac spends them: the
+	// owner hands them over in the companion's window, which takes them from
+	// a companion lying too) or the owner's, by the temple's revive window
+	// ("/revive <vid>", do_revive in playerbot_zodiac_ext.cpp). The client
+	// opens that window only on the server's word (OpenReviveDialog), and
+	// nothing ever said it for somebody else's character - so a companion
+	// with no Prisms just lay there with no word ("jak zginie, to juz nie
+	// wstanie nigdy", a player on the Discord, 10 October). Now it says what
+	// it needs and the owner gets the window once a death (again on the
+	// whisper "wstan"). An owner gone from the floor leaves the rule behind:
+	// HandleDeath stands the companion up (RevivePlayerBotInZodiac) and it
+	// goes after the owner. The engine's own three minutes (dead_event) end
+	// the wait as for anybody lying that long.
+	struct TPlayerBotSidekickZodiacDown
+	{
+		DWORD dwDeaths;	// the temple's death count it spoke for
+		int iHave;		// and the Prisms it had then
+		TPlayerBotSidekickZodiacDown() : dwDeaths(0), iHave(-1) {}
+	};
+	std::map<DWORD, TPlayerBotSidekickZodiacDown> s_mapPlayerBotSidekickZodiacDown;
+	unsigned int s_uPlayerBotSidekickZodiacHolds = 0;
+
+	int CountPlayerBotSidekickZodiacPrisms(LPCHARACTER ch)
+	{
+		if (!ch)
+			return 0;
+		return (int)(ch->CountSpecifyItem(PLAYERBOT_ZODIAC_PRISM) + ch->CountSpecifyItem(PLAYERBOT_ZODIAC_PRISM_AWAKENING));
+	}
+
+	// What the companion lying on the floor says, and the owner's revive
+	// window when the owner has the Prisms and stands.
+	void TellPlayerBotSidekickZodiacDown(LPCHARACTER ch, LPCHARACTER owner, int need, int have, bool offerWindow)
+	{
+		const int ownerHas = CountPlayerBotSidekickZodiacPrisms(owner);
+		char text[384];
+		snprintf(text, sizeof(text), "Leze w Swiatyni Zodiaku. Potrzebuje %d Pryzmat%s Ozywienia, zeby wstac (mam %d). %s "
+				"Kiedy wyjdziesz ze Swiatyni, wstane sam i pojde za toba.",
+				need, need == 1 ? "u" : "ow", have,
+				ownerHas >= need ? "Wskrzes mnie swoimi (okno wskrzeszenia, albo szepnij mi \"wstan\") albo daj mi je w oknie Towarzysza."
+						: "Daj mi je w oknie Towarzysza - sam masz ich za malo, zeby mnie wskrzesic.");
+		SayPlayerBotSidekick(owner, text);
+		if (offerWindow && ownerHas >= need && !owner->IsDead() && owner->GetDesc() && !owner->GetDesc()->IsBot())
+			owner->ChatPacket(CHAT_TYPE_COMMAND, "OpenReviveDialog %u %u", (unsigned int)ch->GetVID(), (unsigned int)need);
+	}
+
+	// HandleDeath (playerbot_survival.h), on every revive attempt: true while
+	// the companion lies waiting for Prisms.
+	bool HoldPlayerBotSidekickInZodiac(LPCHARACTER ch, DWORD dwNow)
+	{
+		(void)dwNow;
+		if (!ch || !ch->IsDead() || !IsPlayerBotZodiacInstance(ch->GetMapIndex()) || s_mapPlayerBotSidekickOwner.empty())
+			return false;
+		const DWORD pid = ch->GetPlayerID();
+		const TPlayerBotSidekick* rec = FindPlayerBotSidekickOf(pid);
+		if (!rec)
+			return false;
+		LPCHARACTER owner = GetPlayerBotSidekickOwnerChar(rec->dwOwnerPID);
+		const int need = GetPlayerBotZodiacPrismNeed(ch);
+		const int have = CountPlayerBotSidekickZodiacPrisms(ch);
+		if (rec->bMode != PLAYERBOT_SIDEKICK_FOLLOW || !owner || owner->GetMapIndex() != ch->GetMapIndex() || have >= need)
+		{
+			std::map<DWORD, TPlayerBotSidekickZodiacDown>::iterator it = s_mapPlayerBotSidekickZodiacDown.find(pid);
+			if (it != s_mapPlayerBotSidekickZodiacDown.end())
+			{
+				sys_log(0, "PLAYERBOT_SIDEKICK: zodiac wait over pid=%u name=%s map=%ld need=%d have=%d owner_here=%d",
+						pid, ch->GetName(), ch->GetMapIndex(), need, have,
+						owner && owner->GetMapIndex() == ch->GetMapIndex() ? 1 : 0);
+				s_mapPlayerBotSidekickZodiacDown.erase(it);
+			}
+			return false;
+		}
+		TPlayerBotSidekickZodiacDown& down = s_mapPlayerBotSidekickZodiacDown[pid];
+		const DWORD deaths = ch->GetDeadCount();
+		if (down.dwDeaths != deaths || down.iHave != have)
+		{
+			const bool newDeath = down.dwDeaths != deaths;
+			down.dwDeaths = deaths;
+			down.iHave = have;
+			++s_uPlayerBotSidekickZodiacHolds;
+			TellPlayerBotSidekickZodiacDown(ch, owner, need, have, newDeath);
+			sys_log(0, "PLAYERBOT_SIDEKICK: zodiac lies for prisms pid=%u name=%s map=%ld need=%d have=%d owner_has=%d deaths=%u total=%u",
+					pid, ch->GetName(), ch->GetMapIndex(), need, have, CountPlayerBotSidekickZodiacPrisms(owner),
+					(unsigned int)deaths, s_uPlayerBotSidekickZodiacHolds);
+		}
+		return true;
+	}
+
+	// The owner's whisper "wstan" to a companion lying on its floor: what it
+	// needs again, and the revive window.
+	bool AnswerPlayerBotSidekickZodiacWhisper(LPCHARACTER owner, LPCHARACTER ch, const char* folded)
+	{
+		if (!owner || !ch || !ch->IsDead() || !IsPlayerBotZodiacInstance(ch->GetMapIndex()))
+			return false;
+		static const char* const words[] = { "wstan", "wstawaj", "wskrzes", "ozyw", "pryzmat", "pryzmaty", "revive" };
+		bool heard = false;
+		for (size_t i = 0; !heard && i < sizeof(words) / sizeof(words[0]); ++i)
+			heard = strstr(folded, words[i]) != NULL;
+		if (!heard)
+			return false;
+		if (owner->GetMapIndex() != ch->GetMapIndex())
+			return false;
+		const int need = GetPlayerBotZodiacPrismNeed(ch);
+		TellPlayerBotSidekickZodiacDown(ch, owner, need, CountPlayerBotSidekickZodiacPrisms(ch), true);
+		return true;
 	}
 
 	// Before an order takes the companion out of the owner's fight.
@@ -3201,6 +3358,14 @@ namespace
 				ch->SetDungeon(after);
 		}
 		CPlayerBotNavigation::instance(targetMap).Init(targetMap);
+		// MT2009_PLUS_SIDEKICK_ZODIAC_V1: the temple of the floor it stands on
+		// now, as WarpBot gives it (playerbot_zodiac_bots.h). Placed after its
+		// owner it was never a member of the temple it went into - nor did it
+		// leave the one it came out of: its death flags went along to the next
+		// map, and a temple it still counted in outlived the party and was
+		// closed under a member that had walked away.
+		if (oldMap != targetMap)
+			SyncPlayerBotZodiac(ch, targetMap);
 		state.lLastX = x;
 		state.lLastY = y;
 		state.dwLastMeaningfulActivityTime = dwNow;
@@ -4545,6 +4710,7 @@ namespace
 		DropPlayerBotSidekickEmotionConsent(rec.dwSidekickPID);	// MT2009_PLUS_SIDEKICK_EMOTIONS_V1
 		s_mapPlayerBotSidekickEmotions.erase(rec.dwSidekickPID);
 		s_setPlayerBotSidekickNoEmotion.erase(rec.dwSidekickPID);
+		s_setPlayerBotSidekickNoRanged.erase(rec.dwSidekickPID);	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1
 		s_setPlayerBotSidekickEquipLock.erase(rec.dwSidekickPID);	// MT2009_PLUS_SIDEKICK_EQUIP_LOCK_V1
 		s_setPlayerBotSidekickNoKeep.erase(rec.dwSidekickPID);	// MT2009_PLUS_SIDEKICK_QUICK_TRANSFER_V1
 		SetPlayerBotSidekickFlag(rec.dwOwnerPID, "towarzysz.created", 0);
@@ -4741,6 +4907,26 @@ namespace
 			return "Dobra, emocje wlaczone: pocalunek czy klepniecie ode mnie nie wymaga zgody - zaznacz mnie i wybierz "
 					"emocje (okno postaci, Emocje). Czasem tez odpowiem.";
 		return "Dobra, emocje wylaczone: na emocje we dwoje musisz mnie poprosic jak kazdego.";
+	}
+
+	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans", kept at once.
+	const char* SetPlayerBotSidekickRangedFirst(TPlayerBotSidekick& rec, bool on)
+	{
+		if (IsPlayerBotSidekickRangedFirst(rec.dwSidekickPID) != on)
+		{
+			if (on)
+				s_setPlayerBotSidekickNoRanged.erase(rec.dwSidekickPID);
+			else
+				s_setPlayerBotSidekickNoRanged.insert(rec.dwSidekickPID);
+			if (s_bPlayerBotSidekickRangedColumn)
+				SetPlayerBotSidekickSetting(rec, "ranged_first", on ? 1U : 0U);
+			sys_log(0, "PLAYERBOT_SIDEKICK: ranged first owner=%u pid=%u on=%d", rec.dwOwnerPID, rec.dwSidekickPID,
+					on ? 1 : 0);
+		}
+		if (on)
+			return "Dobra, najpierw bije lucznikow i magow, ktorzy atakuja ciebie, mnie albo kogos z grupy - "
+					"potem wracam do twojego celu.";
+		return "Dobra, bije po kolei: najpierw twoj cel, potem to, co atakuje ciebie albo mnie.";
 	}
 
 #if defined(PLAYERBOT_ENGINE_MT2009)
@@ -5335,7 +5521,13 @@ namespace
 	{
 		if (sk->IsDead())
 		{
-			snprintf(out, size, "lezy - zaraz wstanie");
+			// MT2009_PLUS_SIDEKICK_ZODIAC_V1: on a temple floor, waiting for Prisms.
+			if (IsPlayerBotZodiacInstance(sk->GetMapIndex()) &&
+					s_mapPlayerBotSidekickZodiacDown.find(sk->GetPlayerID()) != s_mapPlayerBotSidekickZodiacDown.end())
+				snprintf(out, size, "lezy - potrzebuje %d Pryzmat%s Ozywienia", GetPlayerBotZodiacPrismNeed(sk),
+						GetPlayerBotZodiacPrismNeed(sk) == 1 ? "u" : "ow");
+			else
+				snprintf(out, size, "lezy - zaraz wstanie");
 			return;
 		}
 		// MT2009_PLUS_SIDEKICK_SHOP_ERRAND_V1: what it was sent for, and how many so far.
@@ -5450,9 +5642,10 @@ namespace
 		// EQ" after it, and MT2009_PLUS_SIDEKICK_NOTIFY_MUTE_V1's "Szepty" after
 		// that; MT2009_PLUS_SIDEKICK_NO_LOOT_V1's "Drop" (1 split, 0 all the
 		// owner's) after it, and MT2009_PLUS_SIDEKICK_EMOTIONS_V1's "Emocje"
-		// (1 on) last.
+		// (1 on) after it, and MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1's "Najpierw
+		// dystans" (1 on) last.
 		SendPlayerBotSidekickCommand(owner,
-				"SidekickInfo %d 1 %d %d %d %d %d %d %d %d %d %ld %d %u %u %d %d %lld %u %u %d %d %d %d %d %d %u %d %d %d %d %d %d %d %u %d %d",
+				"SidekickInfo %d 1 %d %d %d %d %d %d %d %d %d %ld %d %u %u %d %d %lld %u %u %d %d %d %d %d %d %u %d %d %d %d %d %d %d %u %d %d %d",
 				PLAYERBOT_SIDEKICK_WINDOW_PROTOCOL,
 				inWorld ? (int)sk->GetRaceNum() : -1, inWorld ? (int)sk->GetSkillGroup() : 0,
 				inWorld ? sk->GetLevel() : 0, expPercent,
@@ -5469,7 +5662,8 @@ namespace
 				IsPlayerBotSidekickKeepingLoot(rec.dwSidekickPID) ? 1 : 0,
 				(unsigned int)GetPlayerBotSidekickNotify(rec.dwOwnerPID),	// MT2009_PLUS_SIDEKICK_NOTIFY_MUTE_V1
 				IsPlayerBotSidekickSharingLoot(rec.dwSidekickPID) ? 1 : 0,	// MT2009_PLUS_SIDEKICK_NO_LOOT_V1
-				IsPlayerBotSidekickEmotionsOn(rec.dwSidekickPID) ? 1 : 0);	// MT2009_PLUS_SIDEKICK_EMOTIONS_V1
+				IsPlayerBotSidekickEmotionsOn(rec.dwSidekickPID) ? 1 : 0,	// MT2009_PLUS_SIDEKICK_EMOTIONS_V1
+				IsPlayerBotSidekickRangedFirst(rec.dwSidekickPID) ? 1 : 0);	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1
 		char doing[96] = "";
 		char place[64] = "";
 		if (inWorld)
@@ -7395,6 +7589,10 @@ namespace
 			return false;
 		char folded[160];
 		FoldPlayerBotChatText(text, folded, sizeof(folded));
+		// MT2009_PLUS_SIDEKICK_ZODIAC_V1: "wstan" to a companion lying on a
+		// temple floor - the Prisms it needs, and the revive window.
+		if (AnswerPlayerBotSidekickZodiacWhisper(from, bot, folded))
+			return true;
 		bool handled = false;
 		const int stance = GetPlayerBotSidekickStanceHeard(folded);
 		if (stance >= 0)
@@ -7531,6 +7729,7 @@ namespace
 	//            | luruj <0|1> | kup <towar> <ile> [tak]
 	//            | podzial <1 drop dzielony, 0 caly drop dla wlasciciela>	(MT2009_PLUS_SIDEKICK_NO_LOOT_V1)
 	//            | emocje <1 zgoda na emocje we dwoje, 0 bez>	(MT2009_PLUS_SIDEKICK_EMOTIONS_V1)
+	//            | dystans <1 najpierw lucznicy i magowie, 0 po kolei>	(MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1)
 	void HandlePlayerBotSidekickCommand(LPCHARACTER ch, const char* argument)
 	{
 		if (!ch || !ch->GetDesc() || (ch->GetDesc()->IsBot() && !s_bPlayerBotSidekickSelfTest))
@@ -7719,6 +7918,15 @@ namespace
 			else
 				SayPlayerBotSidekick(ch, "Uzyj: /towarzysz emocje 1 (emocje we dwoje bez pytania o zgode) albo "
 						"/towarzysz emocje 0");
+		}
+		// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans".
+		else if (!strcmp(sub, "dystans"))
+		{
+			if (!strcmp(a1, "0") || !strcmp(a1, "1"))
+				SayPlayerBotSidekick(ch, SetPlayerBotSidekickRangedFirst(rec->second, !strcmp(a1, "1")));
+			else
+				SayPlayerBotSidekick(ch, "Uzyj: /towarzysz dystans 1 (najpierw lucznicy i magowie, ktorzy atakuja "
+						"ciebie, mnie albo grupe) albo /towarzysz dystans 0");
 		}
 		else if (!strcmp(sub, "grupa"))
 		{
@@ -7917,7 +8125,7 @@ namespace
 			const int fromSelf = DISTANCE_APPROX(c->GetX() - self->GetX(), c->GetY() - self->GetY());
 			if (owner && c->GetVictim() == owner)
 			{
-				if (fromOwner < onOwnerDist && battle_is_attackable(self, c))
+				if (fromOwner < onOwnerDist && IsPlayerBotAttackableTarget(self, c))
 				{
 					onOwner = c;
 					onOwnerDist = fromOwner;
@@ -7926,7 +8134,7 @@ namespace
 			}
 			if (c->GetVictim() == self)
 			{
-				if (fromSelf < onSelfDist && battle_is_attackable(self, c))
+				if (fromSelf < onSelfDist && IsPlayerBotAttackableTarget(self, c))
 				{
 					onSelf = c;
 					onSelfDist = fromSelf;
@@ -7935,13 +8143,83 @@ namespace
 			}
 			if (fromOwner > PLAYERBOT_SIDEKICK_HUNT_RANGE || c->GetMobRank() >= MOB_RANK_BOSS)
 				return;
-			if (fromSelf < idleDist && battle_is_attackable(self, c))
+			if (fromSelf < idleDist && IsPlayerBotAttackableTarget(self, c))
 			{
 				idle = c;
 				idleDist = fromSelf;
 			}
 		}
 	};
+
+	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: the nearest archer or caster (the
+	// mob's battle type RANGE or MAGIC) within the guard range of the centre
+	// that is hitting the owner, the companion or a member of the owner's
+	// party - the ones a Metin lets out, which shoot at the owner from behind
+	// the stone while the companion beats on it.
+	struct FPlayerBotSidekickRangedFoes
+	{
+		LPCHARACTER self;
+		LPCHARACTER owner;
+		long centreX;
+		long centreY;
+		long mapIndex;
+		LPCHARACTER best;
+		int bestDist;
+		bool bestOnOwner;
+
+		FPlayerBotSidekickRangedFoes(LPCHARACTER s, LPCHARACTER o, long x, long y, long map)
+			: self(s), owner(o), centreX(x), centreY(y), mapIndex(map), best(NULL), bestDist(INT_MAX),
+			  bestOnOwner(false)
+		{
+		}
+
+		void operator()(LPENTITY ent)
+		{
+			if (!ent || !ent->IsType(ENTITY_CHARACTER))
+				return;
+			LPCHARACTER c = (LPCHARACTER)ent;
+			if (c == self || c == owner || c->IsDead() || !c->IsMonster() || c->GetMapIndex() != mapIndex)
+				return;
+			const BYTE battle = c->GetMobBattleType();
+			if (battle != BATTLE_TYPE_RANGE && battle != BATTLE_TYPE_MAGIC)
+				return;
+			LPCHARACTER victim = c->GetVictim();
+			if (!victim)
+				return;
+			const bool onOwner = owner && victim == owner;
+			if (!onOwner && victim != self &&
+					!(owner && owner->GetParty() && victim->IsPC() && victim->GetParty() == owner->GetParty()))
+				return;
+			if (DISTANCE_APPROX(c->GetX() - centreX, c->GetY() - centreY) > PLAYERBOT_SIDEKICK_GUARD_RANGE)
+				return;
+			const int fromSelf = DISTANCE_APPROX(c->GetX() - self->GetX(), c->GetY() - self->GetY());
+			if (fromSelf >= bestDist || !IsPlayerBotAttackableTarget(self, c))
+				return;
+			best = c;
+			bestDist = fromSelf;
+			bestOnOwner = onOwner;
+		}
+	};
+
+	// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: "Najpierw dystans" on and a stance
+	// that fights: the archer or caster to take first, and why (at the owner,
+	// or at itself or the party). NULL with the switch off or none about.
+	// sectree: the one round the centre (the owner's, or its own at the spot it
+	// keeps).
+	LPCHARACTER FindPlayerBotSidekickRangedFoe(LPCHARACTER ch, LPCHARACTER owner, BYTE stance, LPSECTREE sectree,
+			long x, long y, long mapIndex, int& why)
+	{
+		if (!ch || stance == PLAYERBOT_SIDEKICK_STANCE_PASSIVE || !IsPlayerBotSidekickRangedFirst(ch->GetPlayerID()))
+			return NULL;
+		if (!sectree)
+			return NULL;
+		FPlayerBotSidekickRangedFoes ranged(ch, owner, x, y, mapIndex);
+		sectree->ForEachAround(ranged);
+		if (!ranged.best)
+			return NULL;
+		why = ranged.bestOnOwner ? PLAYERBOT_SIDEKICK_FOE_AT_OWNER : PLAYERBOT_SIDEKICK_FOE_AT_SELF;
+		return ranged.best;
+	}
 
 	// A character the owner is at war with: its guild and the owner's are in a
 	// guild war. The one kind of person the companion strikes on its own
@@ -8016,13 +8294,26 @@ namespace
 	// kingdom.
 	void NotePlayerBotSidekickDefendBlow(LPCHARACTER victim, LPCHARACTER attacker, DWORD dwNow)
 	{
+		// MT2009_PLUS_SIDEKICK_DEFEND_V2 (the owner, 10 October: "gdy inne boty
+		// atakuja nas podczas expa, albo my zaatakujemy inne boty, na przyklad z
+		// innego krolestwa: towarzysz sie dolacza i rowniez z nimi walczy;
+		// wyjatek: pojedynek"): a blow from any kingdom, and the owner's own
+		// blow at a character too - kept under the owner, its foe to fight.
+		// A duel or a guild war never gets here (IsPlayerBotBlowConsensual).
 		if (!victim || !attacker || victim == attacker || s_mapPlayerBotSidekicks.empty() || !attacker->IsPC() ||
-				attacker->GetEmpire() == victim->GetEmpire())
+				!victim->IsPC())
 			return;
-		const DWORD pid = victim->GetPlayerID();
+		DWORD pid = victim->GetPlayerID();
+		LPCHARACTER foe = attacker;
 		if (s_mapPlayerBotSidekicks.find(pid) == s_mapPlayerBotSidekicks.end() &&
 				s_mapPlayerBotSidekickOwner.find(pid) == s_mapPlayerBotSidekickOwner.end())
-			return;
+		{
+			if (s_mapPlayerBotSidekicks.find(attacker->GetPlayerID()) == s_mapPlayerBotSidekicks.end() ||
+					s_mapPlayerBotSidekickOwner.find(pid) != s_mapPlayerBotSidekickOwner.end())
+				return;
+			pid = attacker->GetPlayerID();	// the owner struck: the struck is its foe
+			foe = victim;
+		}
 		if (s_mapPlayerBotSidekickDefendBlows.size() >= 256)
 			for (std::map<DWORD, std::map<DWORD, TPlayerBotSidekickDefendBlow> >::iterator it =
 					s_mapPlayerBotSidekickDefendBlows.begin(); it != s_mapPlayerBotSidekickDefendBlows.end();)
@@ -8035,10 +8326,10 @@ namespace
 			}
 		std::map<DWORD, TPlayerBotSidekickDefendBlow>& blows = s_mapPlayerBotSidekickDefendBlows[pid];
 		PrunePlayerBotSidekickDefendBlows(blows, dwNow);
-		if (blows.size() >= PLAYERBOT_SIDEKICK_DEFEND_MAX && blows.find(attacker->GetPlayerID()) == blows.end())
+		if (blows.size() >= PLAYERBOT_SIDEKICK_DEFEND_MAX && blows.find(foe->GetPlayerID()) == blows.end())
 			return;
-		TPlayerBotSidekickDefendBlow& blow = blows[attacker->GetPlayerID()];
-		blow.dwVID = (DWORD)attacker->GetVID();
+		TPlayerBotSidekickDefendBlow& blow = blows[foe->GetPlayerID()];
+		blow.dwVID = (DWORD)foe->GetVID();
 		blow.dwAt = dwNow;
 	}
 
@@ -8084,9 +8375,8 @@ namespace
 					onOwner.size() + onSelf.size() >= PLAYERBOT_SIDEKICK_DEFEND_MAX * 2)
 				return;
 			LPCHARACTER c = (LPCHARACTER)ent;
-			if (c == self || c == owner || !c->IsPC() || c->IsDead() || !c->GetDesc() || !c->GetDesc()->IsBot() ||
-					c->GetEmpire() == self->GetEmpire())
-				return;
+			if (c == self || c == owner || !c->IsPC() || c->IsDead() || !c->GetDesc() || !c->GetDesc()->IsBot())
+				return;	// MT2009_PLUS_SIDEKICK_DEFEND_V2: any kingdom
 			TPlayerBotAIStateMap::const_iterator it = s_mapPlayerBotAIStates.find(c->GetPlayerID());
 			if (it == s_mapPlayerBotAIStates.end())
 				return;
@@ -8109,9 +8399,8 @@ namespace
 				foe->GetMapIndex() != ch->GetMapIndex() || !foe->GetSectree() ||
 				IsPlayerBotPersonUnseen(foe))	// MT2009_PLUS_BOT_RESPECT_STEALTH_V1
 			return false;
-		// Another kingdom only: the owner's own - the companion's - never.
-		if (foe->GetEmpire() == ch->GetEmpire() || (owner && foe->GetEmpire() == owner->GetEmpire()))
-			return false;
+		// MT2009_PLUS_SIDEKICK_DEFEND_V2: any kingdom (the V1 answered another
+		// kingdom's only) - whether the blow may land is the engine's word below.
 		if (owner)
 		{
 			if ((owner->GetParty() && foe->GetParty() == owner->GetParty()) ||
@@ -8321,6 +8610,16 @@ namespace
 			LogPlayerBotSidekickDefend(ch, owner, defend, why, get_dword_time());
 			return defend;
 		}
+		// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: the archers and casters at the
+		// owner, at itself or at the party before the owner's target.
+		LPCHARACTER ranged = FindPlayerBotSidekickRangedFoe(ch, owner, stance, owner->GetSectree(), owner->GetX(),
+				owner->GetY(), owner->GetMapIndex(), why);
+		if (ranged)
+		{
+			if (why == PLAYERBOT_SIDEKICK_FOE_AT_OWNER)
+				ownerFighting = true;
+			return ranged;
+		}
 		LPCHARACTER target = stance == PLAYERBOT_SIDEKICK_STANCE_PASSIVE ? NULL : owner->GetTarget();
 		// MT2009_PLUS_AREZZO_BOTS_V1 (events): the owner's Easter metin is the owner's.
 		if (target && target->IsStone() && IsPlayerBotEventStone(target->GetRaceNum()))
@@ -8331,7 +8630,7 @@ namespace
 				DISTANCE_APPROX(target->GetX() - owner->GetX(), target->GetY() - owner->GetY()) <=
 						PLAYERBOT_SIDEKICK_ASSIST_RANGE &&
 				(stance == PLAYERBOT_SIDEKICK_STANCE_ATTACK || IsPlayerBotSidekickFightUnderWay(ch, owner, target)) &&
-				battle_is_attackable(ch, target))
+				IsPlayerBotAttackableTarget(ch, target))
 		{
 			why = PLAYERBOT_SIDEKICK_FOE_OWNER_TARGET;
 			return target;
@@ -8752,16 +9051,53 @@ namespace
 	// (HandlePostDeathRecovery walks away from lDeathX/lDeathY). No breaking
 	// off at a fifth of its health either: the owner is the one who retreats,
 	// and the companion goes with the owner.
+	// MT2009_PLUS_SIDEKICK_ZODIAC_V1: when the companion's rest after a death
+	// began (KeepPlayerBotSidekickAlive), and the longest it may last.
+	std::map<DWORD, DWORD> s_mapPlayerBotSidekickRestSince;
+	const DWORD PLAYERBOT_SIDEKICK_REST_MAX_MS = 90 * 1000;
+
 	bool KeepPlayerBotSidekickAlive(LPCHARACTER ch, TPlayerBotAIState& state, LPCHARACTER owner, DWORD dwNow)
 	{
 		UseHealthPotion(ch, state, dwNow);
 		UseManaPotion(ch, state, dwNow);
 		state.bTacticalRetreat = false;
 		if (!state.bRecoveringAfterDeath)
+		{
+			s_mapPlayerBotSidekickRestSince.erase(ch->GetPlayerID());
 			return false;
+		}
 		state.lDeathX = 0;
 		state.lDeathY = 0;
+		// MT2009_PLUS_SIDEKICK_ZODIAC_V1: the rest heals a twentieth of the
+		// health a second (RestHealPlayerBot) and is over in a quarter of a
+		// minute; one still going after a minute and a half is one the heal
+		// cannot end, and the companion stood "wracajac do sil" by itself for
+		// good ("stoi w miejscu i pisze odpoczywa, od 20 minut", 10 October).
+		// It ends there, on whatever health it has.
+		{
+			std::map<DWORD, DWORD>::iterator since = s_mapPlayerBotSidekickRestSince.find(ch->GetPlayerID());
+			if (since == s_mapPlayerBotSidekickRestSince.end())
+				s_mapPlayerBotSidekickRestSince[ch->GetPlayerID()] = dwNow;
+			else if (dwNow - since->second >= PLAYERBOT_SIDEKICK_REST_MAX_MS)
+			{
+				sys_log(0, "PLAYERBOT_SIDEKICK: rest ended by time pid=%u name=%s hp=%d/%d map=%ld stun=%d",
+						ch->GetPlayerID(), ch->GetName(), ch->GetHP(), ch->GetMaxHP(), ch->GetMapIndex(),
+						ch->IsStun() ? 1 : 0);
+				s_mapPlayerBotSidekickRestSince.erase(since);
+				s_setPlayerBotEmergencyRest.erase(ch->GetPlayerID());
+				EndPlayerBotRecovery(ch, state);
+				return false;
+			}
+		}
 		if (!HandlePostDeathRecovery(ch, state, dwNow))
+		{
+			s_mapPlayerBotSidekickRestSince.erase(ch->GetPlayerID());
+			return false;
+		}
+		// MT2009_PLUS_SIDEKICK_ZODIAC_V1: an owner on another map is followed
+		// at once and the rest goes on beside the owner - it waited out the
+		// rest where it had stood up, out of the temple the owner had left.
+		if (owner && owner->GetMapIndex() != ch->GetMapIndex() && !IsPlayerBotSidekickHolding(ch))
 			return false;
 		// One told to wait heals where it fell and walks back to its spot after.
 		if (!owner || IsPlayerBotSidekickHolding(ch))
@@ -10243,6 +10579,20 @@ namespace
 		}
 		else if (foes.idle && rec.bStance == PLAYERBOT_SIDEKICK_STANCE_ATTACK)
 			foe = foes.idle;
+		// MT2009_PLUS_SIDEKICK_RANGED_FIRST_V1: waiting too, the archers and
+		// casters at the owner near the spot, at itself or at the party first.
+		{
+			int rangedWhy = PLAYERBOT_SIDEKICK_FOE_AT_SELF;
+			LPCHARACTER ranged = FindPlayerBotSidekickRangedFoe(ch, sameMapOwner, rec.bStance, ch->GetSectree(),
+					rt.lHoldX, rt.lHoldY, rt.lHoldMap, rangedWhy);
+			if (ranged)
+			{
+				foe = ranged;
+				why = rangedWhy;
+				if (why == PLAYERBOT_SIDEKICK_FOE_AT_OWNER)
+					rt.dwOwnerFightSeenAt = dwNow;
+			}
+		}
 		// MT2009_PLUS_SIDEKICK_DEFEND_V1: another kingdom's attackers of the
 		// owner near the spot, or of itself, before any monster.
 		{
@@ -11055,6 +11405,9 @@ namespace
 			FinishPlayerBotSidekickSetup(ch, *rec);
 		}
 		KeepPlayerBotSidekickPath(ch, *rec);
+		// MT2009_PLUS_SIDEKICK_ZODIAC_V1: standing, so no longer waiting for Prisms.
+		if (!s_mapPlayerBotSidekickZodiacDown.empty())
+			s_mapPlayerBotSidekickZodiacDown.erase(ch->GetPlayerID());
 		TopUpPlayerBotSidekickSkillPoints(ch);
 		TPlayerBotSidekickRuntime& rt = s_mapPlayerBotSidekickRuntime[ch->GetPlayerID()];
 		ResendPlayerBotSidekickView(ch, rt, dwNow);	// MT2009_PLUS_SIDEKICK_REDRESS_V1
@@ -11078,9 +11431,22 @@ namespace
 			// MT2009_PLUS_SIDEKICK_PLAN_V1: off the leash, one plan; sent
 			// fishing ("Na ryby"), the water is the plan and the plan stands back.
 			if (rt.bFishing)
+			{
 				EndPlayerBotSidekickPlan(ch, "fishing");
-			else
-				ManagePlayerBotSidekickPlan(ch, state, *rec, dwNow);
+				// MT2009_PLUS_SIDEKICK_FISHING_STAY_V1 (the owner, 10 October: sent
+				// "Na ryby" with a card, it left the bank after 3-5 minutes for the
+				// exp map of its level): no trip is watched while it fishes - the
+				// trip watch planned the frontier map and the travel took it there
+				// - and a trip already set is dropped. The card running out ends
+				// the fishing (KeepPlayerBotSidekickFishing) and the trips with it.
+				std::map<DWORD, TPlayerBotSidekickTrip>::iterator trip = s_mapPlayerBotSidekickTrips.find(ch->GetPlayerID());
+				if (trip != s_mapPlayerBotSidekickTrips.end())
+					trip->second.lMap = 0;
+				if (!state.bFishingSession)
+					state.dwNextFishingCheckTime = 0;
+				return false;
+			}
+			ManagePlayerBotSidekickPlan(ch, state, *rec, dwNow);
 			WatchPlayerBotSidekickTrip(ch, state, *rec, dwNow);	// MT2009_PLUS_SIDEKICK_TRIP_V1
 			return false;
 		}
@@ -11222,6 +11588,10 @@ namespace
 			state.dwTargetVID = 0;
 			ch->SetVictim(NULL);
 		}
+		// MT2009_PLUS_BOT_SMITHY_V1, point 9: its turn at the Demon Tower's
+		// smith (playerbot_demon_tower.h).
+		if (ManagePlayerBotSidekickTowerSmith(ch, state, dwNow))
+			return true;
 		// Beside a fight it is not to take part in, the owner's buffs are all it
 		// does there, and they come before the loot and the walk after the owner.
 		if (IsPlayerBotSidekickOwnerFighting(rt, dwNow) &&

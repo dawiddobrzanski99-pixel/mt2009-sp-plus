@@ -218,6 +218,13 @@ class CPlayerBotManager : public singleton<CPlayerBotManager>
 		// own. False when it cannot apply (not this core's bot, already there,
 		// no table).
 		bool	RequestShopChannel(DWORD dwPlayerID);
+		// MT2009_PLUS_GUILD_WAR_CHANNEL_V1: a bot of a guild at war that plays
+		// on another channel goes to channel 1, where the bots' wars are
+		// fought - moved at once, past the shop channel's cap and its gates
+		// (a war lasts half an hour), queued like the shop requests. And how
+		// many bots of a guild play on a channel now, by the P2P list.
+		bool	RequestWarChannel(DWORD dwPlayerID);
+		int	CountGuildBotsOnChannel(CGuild* guild, BYTE bChannel) const;
 		bool	IsChannelTableMode() const { return m_bChannelTable; }
 		// The machinery's turn on a core no bot has woken yet (the world clock
 		// calls it): a channel that starts with nobody still learns who is
@@ -305,6 +312,7 @@ class CPlayerBotManager : public singleton<CPlayerBotManager>
 		DWORD			m_dwNextChannelFlushTime = 0;
 		DWORD			m_dwChannelCoordinatorSince = 0;
 		std::set<DWORD>		m_setChannelRequests;
+		std::set<DWORD>		m_setWarChannelRequests; // MT2009_PLUS_GUILD_WAR_CHANNEL_V1
 		std::set<DWORD>		m_setChannelArrivals;
 		// Arrivals on the shop channel, until they load (OnPlayerLoaded).
 		std::set<DWORD>		m_setChannelMovedIn;

@@ -300,7 +300,10 @@ namespace
 				// Nor a Stalki: the Baroness drops them for a crowd whose best is
 				// past sixty-six, and outgrown they are still a counter's second
 				// prize (PLAYERBOT_SHOP_STALKI_SCORE), never the merchant's.
-				if (item->GetRefineLevel() >= PLAYERBOT_PRECIOUS_REFINE ||
+				// MT2009_PLUS_BOT_LOOT_ROOM_V1: nor a piece with any line on it -
+				// a Smiert. Zbroja Plytowa+3 with lines lay on a floor while bots of
+				// forty-four and up walked past it (the owner, 12 October).
+				if (item->GetRefineLevel() >= PLAYERBOT_PRECIOUS_REFINE || item->GetAttributeCount() > 0 ||
 						IsPlayerBotPrizeItem(item) || IsPlayerBotSpecialLevel30Weapon(item) ||
 						IsPlayerBotStalkiItem(item))
 					return false;
@@ -445,6 +448,112 @@ namespace
 	std::map<DWORD, TPlayerBotLootReturn> s_mapPlayerBotLootReturn;
 	std::map<DWORD, DWORD> s_mapPlayerBotLootQueued;	// bot pid -> item vid
 
+	// MT2009_PLUS_BOT_LOOT_ROOM_V1 (the owner, 12 October, Wzgorze Wukonga on
+	// the supporters' world: "boty nie podnosza eq z bonusami, bo maja za duzo
+	// przedmiotow w EQ - powinny wyrzucic jakis syf i podniesc eq z bonusami").
+	// Who the engine's pickup puts a drop into (CHARACTER::PickupItem): the bot
+	// for its own or an ownerless drop, the owning member for a party drop.
+	// The room test asked the bot's own bag for both, so a bot with a full bag
+	// left a party member's drop on the floor that would have gone to the member.
+	LPCHARACTER GetPlayerBotLootRecipient(LPCHARACTER ch, LPITEM item)
+	{
+		if (!ch || !item)
+			return NULL;
+		if (item->IsOwnership(ch) || !ch->GetParty())
+			return ch;
+		FPlayerBotPartyLootOwner finder(item);
+		ch->GetParty()->ForEachOnlineMember(finder);
+		return finder.Found() ? finder.Member() : NULL;
+	}
+
+	// A drop worth a cell the bag has not got: a weapon or armour piece with
+	// lines or prize lines, or anything the bots price at
+	// PLAYERBOT_LOOT_ROOM_MIN_VALUE and up - and for that the cheapest spare
+	// thing of the bag worth at most 1/PLAYERBOT_LOOT_ROOM_VALUE_RATIO of it is
+	// destroyed (never thrown on the floor: a dungeon would be left strewn with
+	// it, and another bot would pick it up again). Only what the bag-room rule
+	// would sell (GetPlayerBotBagRoomSaleKind: never worn, locked, a companion's,
+	// under a policy, Iwakura's list, a gambler's, the Awakening goods, the
+	// guild materials, a piece the bot could wear, a Stalki, a level-30 weapon,
+	// the books and stones it keeps) and of four kinds only - a weapon, an
+	// armour piece, a skill book, a stone: no material, scroll, potion, key,
+	// quest or ItemShop thing (ANTI_SELL / ANTI_GIVE). Once in
+	// PLAYERBOT_LOOT_ROOM_GAP_MS a bot.
+	const int PLAYERBOT_LOOT_ROOM_VALUE_RATIO = 4;
+	const long long PLAYERBOT_LOOT_ROOM_MIN_VALUE = 50000LL;
+	const DWORD PLAYERBOT_LOOT_ROOM_GAP_MS = 15000;
+	std::map<DWORD, DWORD> s_mapPlayerBotLootRoomAt;
+
+	bool IsPlayerBotLootRoomGapOpen(LPCHARACTER ch, DWORD dwNow)
+	{
+		if (!ch || IsPlayerBotSidekickServing(ch))
+			return false;
+		std::map<DWORD, DWORD>::const_iterator at = s_mapPlayerBotLootRoomAt.find(ch->GetPlayerID());
+		return at == s_mapPlayerBotLootRoomAt.end() || dwNow - at->second >= PLAYERBOT_LOOT_ROOM_GAP_MS;
+	}
+
+	// The drop's worth to this pass, 0 when it is none of the above.
+	long long GetPlayerBotLootRoomValue(LPITEM item)
+	{
+		if (!item || !item->GetProto() || IsPlayerBotMoneyDrop(item) || item->IsStackable())
+			return 0;
+#if defined(PLAYERBOT_ENGINE_MT2009)
+		// A drop the special pages take gains nothing from a cell of the bag.
+		if (item->GetWindowInventoryEx() != INVENTORY)
+			return 0;
+#endif
+		const long long value = std::max<long long>(GetPlayerBotJunkSalePrice(item),
+				(long long)GetPlayerBotShopAskingPrice(item));
+		const bool gear = (item->GetType() == ITEM_WEAPON && item->GetSubType() != WEAPON_ARROW) ||
+				item->GetType() == ITEM_ARMOR;
+		if (gear && (item->GetAttributeCount() > 0 || IsPlayerBotPrizeItem(item)))
+			return std::max<long long>(value, 1);
+		return value >= PLAYERBOT_LOOT_ROOM_MIN_VALUE ? value : 0;
+	}
+
+	bool MakePlayerBotLootRoom(LPCHARACTER ch, LPITEM drop, long long dropValue, DWORD dwNow)
+	{
+		if (!ch || !drop || dropValue <= 0 || !ch->IsItemLoaded() || !IsPlayerBotLootRoomGapOpen(ch, dwNow))
+			return false;
+		s_mapPlayerBotLootRoomAt[ch->GetPlayerID()] = dwNow ? dwNow : 1;
+		LPITEM victim = NULL;
+		long long victimValue = 0;
+		for (WORD cell = 0; cell < PLAYERBOT_BAG_CELLS; ++cell)
+		{
+			LPITEM item = ch->GetInventoryItem(cell);
+			if (!item || item->GetCell() != cell || item->GetWindow() != INVENTORY ||
+					(int)item->GetSize() < (int)drop->GetSize() ||
+					IS_SET(item->GetAntiFlag(), ITEM_ANTIFLAG_SELL | ITEM_ANTIFLAG_GIVE))
+				continue;
+			const BYTE type = item->GetType();
+			if (type != ITEM_WEAPON && type != ITEM_ARMOR && type != ITEM_SKILLBOOK && type != ITEM_METIN)
+				continue;
+			long long value = 0;
+			if (GetPlayerBotBagRoomSaleKind(ch, item, value) == 0)
+				continue;
+			value = std::max<long long>(0, value);
+			if (value * PLAYERBOT_LOOT_ROOM_VALUE_RATIO > dropValue)
+				continue;
+			if (victim && value >= victimValue)
+				continue;
+			victim = item;
+			victimValue = value;
+		}
+		if (!victim)
+		{
+			PlayerBotLogThrottled("loot_room_none", dwNow,
+					"PLAYERBOT_LOOT: no room to make pid=%u name=%s map=%ld drop=%u value=%lld",
+					ch->GetPlayerID(), ch->GetName(), ch->GetMapIndex(), drop->GetVnum(), dropValue);
+			return false;
+		}
+		sys_log(0, "PLAYERBOT_LOOT: make room pid=%u name=%s map=%ld destroyed=%u count=%u value=%lld for=%u value=%lld attrs=%d",
+				ch->GetPlayerID(), ch->GetName(), ch->GetMapIndex(), victim->GetVnum(),
+				(unsigned int)victim->GetCount(), victimValue, drop->GetVnum(), dropValue,
+				(int)drop->GetAttributeCount());
+		ITEM_MANAGER::instance().RemoveItem(victim, "PLAYERBOT_LOOT_ROOM");
+		return true;
+	}
+
 	class CCollectPlayerBotLoot
 	{
 		public:
@@ -477,7 +586,10 @@ namespace
 				m_lootOff(IsPlayerBotSidekickLootOff(owner)),
 				m_scanThreats(scanThreats),
 				m_selfHeld(false),
-				m_partyHeld(false)
+				m_partyHeld(false),
+				m_roomGapOpen(IsPlayerBotLootRoomGapOpen(owner, dwNow)),	// MT2009_PLUS_BOT_LOOT_ROOM_V1
+				m_roomItem(NULL),
+				m_roomValue(0)
 			{
 			}
 
@@ -542,9 +654,31 @@ namespace
 				// world), and the bot stood at the drop asking every five seconds
 				// until the watchdog moved it.
 				// Yang takes no cell, a full bag or not.
-				if (m_bagFull ? !(IsPlayerBotMoneyDrop(item) || PlayerBotLootMergesIntoStack(m_owner, item))
-						: !PlayerBotBagTakesDrop(m_owner, item))
+				// MT2009_PLUS_BOT_LOOT_ROOM_V1: a party drop goes into its owning
+				// member's bag, so that bag's room is asked (GetPlayerBotLootRecipient).
+				LPCHARACTER recipient = GetPlayerBotLootRecipient(m_owner, item);
+				if (recipient && recipient != m_owner)
 				{
+					if (!PlayerBotBagTakesDrop(recipient, item))
+					{
+						++m_skippedNoRoom;
+						return true;
+					}
+				}
+				else if (!recipient || (m_bagFull ? !(IsPlayerBotMoneyDrop(item) || PlayerBotLootMergesIntoStack(m_owner, item))
+						: !PlayerBotBagTakesDrop(m_owner, item)))
+				{
+					// MT2009_PLUS_BOT_LOOT_ROOM_V1: the most valuable drop of the
+					// bot's own the bag has no room for (MakePlayerBotLootRoom).
+					if (recipient && m_roomGapOpen)
+					{
+						const long long value = GetPlayerBotLootRoomValue(item);
+						if (value > m_roomValue)
+						{
+							m_roomValue = value;
+							m_roomItem = item;
+						}
+					}
 					++m_skippedNoRoom;
 					return true;
 				}
@@ -563,6 +697,8 @@ namespace
 			int SkippedCheap() const { return m_skippedCheap; }
 			bool SelfHeld() const { return m_selfHeld; }
 			bool PartyHeld() const { return m_partyHeld; }
+			LPITEM RoomItem() const { return m_roomItem; }		// MT2009_PLUS_BOT_LOOT_ROOM_V1
+			long long RoomValue() const { return m_roomValue; }
 
 		private:
 			void NoteThreat(LPCHARACTER mob)
@@ -597,6 +733,9 @@ namespace
 			bool m_scanThreats;
 			bool m_selfHeld;
 			bool m_partyHeld;
+			bool m_roomGapOpen;
+			LPITEM m_roomItem;
+			long long m_roomValue;
 			std::vector<std::pair<int, LPITEM> > m_items;
 	};
 
@@ -898,7 +1037,9 @@ namespace
 		if (ch->IsDead() || state.bTacticalRetreat || IsPlayerBotSidekickLootOff(ch))
 			return;
 		LPITEM item = ITEM_MANAGER::instance().FindByVID(vid);
-		if (!item || !item->GetSectree() || !IsPlayerBotPartyLoot(ch, item) || !PlayerBotBagTakesDrop(ch, item) ||
+		LPCHARACTER recipient = item ? GetPlayerBotLootRecipient(ch, item) : NULL;	// MT2009_PLUS_BOT_LOOT_ROOM_V1
+		if (!item || !item->GetSectree() || !IsPlayerBotPartyLoot(ch, item) || !recipient ||
+				!PlayerBotBagTakesDrop(recipient, item) ||
 				DISTANCE_APPROX(ch->GetX() - item->GetX(), ch->GetY() - item->GetY()) > PLAYERBOT_LOOT_CHAIN_RANGE)
 			return;
 		std::map<DWORD, DWORD>::iterator seen = state.mapLootSeenSince.find(vid);
@@ -1175,6 +1316,14 @@ namespace
 		const std::vector<std::pair<int, LPITEM> >& items = collector.GetItems();
 		if (items.empty())
 		{
+			// MT2009_PLUS_BOT_LOOT_ROOM_V1: a drop worth a cell - the bag's
+			// cheapest spare thing makes way, and the next scan takes the drop.
+			if (collector.SkippedNoRoom() > 0 && collector.RoomItem() &&
+					MakePlayerBotLootRoom(ch, collector.RoomItem(), collector.RoomValue(), dwNow))
+			{
+				state.dwNextLootSearchTime = 0;
+				return false;
+			}
 			// Drops in reach and no cell to put one in. Said once a minute per
 			// bot with the count, so the next "boty maja zapchane eq" report
 			// carries a number; the town errand for a full bag is the

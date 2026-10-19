@@ -779,6 +779,7 @@ namespace
 	// A melee skill's hits as a player's client sends them, in
 	// playerbot_targeting.h beside the swing's (the collector is there).
 	DWORD ApplyPlayerBotSkillHits(LPCHARACTER ch, DWORD skillVnum, LPCHARACTER target);
+	int GetPlayerBotSkillHitsPerTarget(DWORD skillVnum);
 
 	// The character this bot agreed to duel, if it is still standing where the
 	// bot can reach it. Resolved here rather than in the policy header because
@@ -880,6 +881,29 @@ namespace
 	// before the challenge. When the other side is a bot its memory of the
 	// duel goes too, or it would first be refused its blows for
 	// PLAYERBOT_PVP_REFUSED_GIVE_UP.
+	// Keep the canonical CPVP record through lethal Stun -> Dead so the
+	// engine still recognises an agreed duel and applies its normal win rules.
+	// Only deletion is deferred; this is not another duel/combat state.
+	EVENTINFO(playerbot_duel_pair_cleanup_info)
+	{
+		DWORD botPid = 0, foePid = 0;
+	};
+	EVENTFUNC(playerbot_duel_pair_cleanup)
+	{
+		auto* info = dynamic_cast<playerbot_duel_pair_cleanup_info*>(event->info);
+		if (!info) return 0;
+		CPVP key(info->botPid,info->foePid);
+		CPVP* pair = CPVPManager::instance().Find(key.GetCRC());
+		if (!pair) return 0;
+		LPCHARACTER bot = CHARACTER_MANAGER::instance().FindByPID(info->botPid);
+		LPCHARACTER foe = CHARACTER_MANAGER::instance().FindByPID(info->foePid);
+		// A privileged early restart/new fight must not be removed by old cleanup.
+		if (pair->IsFight() && bot && foe && !bot->IsDead() && !foe->IsDead() &&
+			bot->GetHP()>0 && foe->GetHP()>0) return 0;
+		pair->Packet(true);
+		CPVPManager::instance().Delete(pair);
+		return 0;
+	}
 	void EndPlayerBotDuel(LPCHARACTER ch, TPlayerBotAIState& state, DWORD dwNow, const char* szReason)
 	{
 		if (!ch)
@@ -892,22 +916,37 @@ namespace
 		LPCHARACTER foe = CHARACTER_MANAGER::instance().FindByPID(foePid);
 		CPVP key(pid, foePid);
 		CPVP* pair = CPVPManager::instance().Find(key.GetCRC());
-		const bool pairRemoved = pair != NULL;
+		const bool lethalPending = !playerbot_duel::CanClearEngineVictim(ch->IsDead(),ch->GetHP()) ||
+			(foe && !playerbot_duel::CanClearEngineVictim(foe->IsDead(),foe->GetHP()));
+		const bool pairRemoved = pair != NULL && !lethalPending;
 		if (pair)
 		{
-			pair->Packet(true);
-			CPVPManager::instance().Delete(pair);
+			if (lethalPending)
+			{
+				auto* info = AllocEventInfo<playerbot_duel_pair_cleanup_info>();
+				info->botPid=pid;info->foePid=foePid;
+				event_create(playerbot_duel_pair_cleanup,info,PASSES_PER_SEC(4));
+			}
+			else
+			{
+				pair->Packet(true);
+				CPVPManager::instance().Delete(pair);
+			}
 		}
 		if (foe)
 		{
-			if (ch->GetVictim() == foe)
+			if (ch->GetVictim() == foe && playerbot_duel::CanClearEngineVictim(ch->IsDead(),ch->GetHP()))
 				ch->SetVictim(NULL);
 			if (state.dwTargetVID == (DWORD)foe->GetVID())
 				state.dwTargetVID = 0;
-			if ((DWORD)playerbot_pvp::GetDuelOpponent(foePid, dwNow) == pid)
+			// MT2009_PLUS_BOT_DUEL_AI_V1: a prepared bot-v-bot opponent ends its
+			// own side on its next tick (result, alchemy, state), once.
+			auto foeDuel = playerbot_pvp::duels.find(foePid);
+			const bool foePrepared = foeDuel != playerbot_pvp::duels.end() && foeDuel->second.prepared;
+			if (!foePrepared && (DWORD)playerbot_pvp::GetDuelOpponent(foePid, dwNow) == pid)
 			{
 				playerbot_pvp::EndDuel(foePid);
-				if (foe->GetVictim() == ch)
+				if (foe->GetVictim() == ch && playerbot_duel::CanClearEngineVictim(foe->IsDead(),foe->GetHP()))
 					foe->SetVictim(NULL);
 				TPlayerBotAIStateMap::iterator foeState = s_mapPlayerBotAIStates.find(foePid);
 				if (foeState != s_mapPlayerBotAIStates.end() &&
@@ -995,7 +1034,8 @@ namespace
 		return true;
 	}
 
-	bool ExecutePlayerBotAttackSkill(LPCHARACTER ch, LPCHARACTER target, TPlayerBotAIState& state, DWORD dwNow)
+	bool ExecutePlayerBotAttackSkill(LPCHARACTER ch, LPCHARACTER target, TPlayerBotAIState& state, DWORD dwNow,
+			DWORD selectedDuelSkill = 0)
 	{
 		// Under a polymorph marble the engine refuses every skill - five
 		// separate IsPolymorphed() returns in char_skill.cpp - so a bot that
@@ -1037,7 +1077,14 @@ namespace
 				return false;
 		}
 
-		const TJobSkillBuild build = GetPlayerBotSkillBuild(ch->GetJob(), ch->GetSkillGroup(), ch->GetPlayerID());
+		TJobSkillBuild build = GetPlayerBotSkillBuild(ch->GetJob(), ch->GetSkillGroup(), ch->GetPlayerID());
+		// The duel selector may choose a learned utility attack absent from the
+		// shared PvE rotation (WP Dispel). Execute exactly its selected skill.
+		if (selectedDuelSkill)
+		{
+			for (DWORD& skill : build.dwOffensiveSkills) skill = 0;
+			build.dwOffensiveSkills[0] = selectedDuelSkill;
+		}
 		const int distance = DISTANCE_APPROX(ch->GetX() - target->GetX(), ch->GetY() - target->GetY());
 		// MT2009_PLUS_BOT_METIN_PLAIN_V1: at a Metin, a skill only for a pack.
 		const bool stonePlainOnly = IsPlayerBotStonePlainOnly(ch, target, dwNow);
@@ -1059,7 +1106,13 @@ namespace
 		{
 			const size_t i = skillOrder[k];
 			const DWORD skillVnum = build.dwOffensiveSkills[i];
+			if (selectedDuelSkill && skillVnum != selectedDuelSkill) continue;
 			if (skillVnum == 0 || ch->GetSkillLevel(skillVnum) == 0)
+				continue;
+			// Revalidate at the executor as well as at duel selection. Do not
+			// spend mana/cooldown on a client-driven gap closer from 800 units.
+			if (selectedDuelSkill == SKILL_FAST_ATTACK &&
+				!playerbot_duel::SkillInRange(distance,playerbot_duel::fastAttackContactRange,0,false,false,0))
 				continue;
 			if (stonePlainOnly &&
 					!IsPlayerBotPackInSkillReach(ch, target, skillVnum, PLAYERBOT_STONE_SKILL_CROWD_MIN))
@@ -1076,9 +1129,26 @@ namespace
 			if (!IsPlayerBotSkillReady(state, skillVnum, dwNow))
 				continue;
 
-			if (PlayerBotUseSkill(ch, state, skillVnum, target, dwNow))
+			const DWORD plannedVictimVID = (DWORD)target->GetVID();
+			const bool plannedStone = target->IsStone();
+			const bool ownRoar = selectedDuelSkill == SKILL_DRAGON_ROAR;
+			const DWORD previousTargetVID = ownRoar && ch->GetTarget() ? (DWORD)ch->GetTarget()->GetVID() : 0;
+			// The local engine redirects even UseSkill(Roar,self) through GetTarget.
+			// Temporarily clear that target for the duel's caster-centred version.
+			if (ownRoar) ch->SetTarget(NULL);
+			const bool usedSkill = PlayerBotUseSkill(ch, state, skillVnum, ownRoar ? ch : target, dwNow);
+			if (ownRoar) ch->SetTarget(previousTargetVID ? CHARACTER_MANAGER::instance().Find(previousTargetVID) : NULL);
+			if (usedSkill)
 			{
-				if (ch->GetJob() == JOB_ASSASSIN && ch->GetSkillGroup() == 2)
+				target = CHARACTER_MANAGER::instance().Find(plannedVictimVID);
+				// The installed client registers Roar as NEED_TARGET. The duel
+				// computes its splash at the caster, so its visual destination must
+				// also be the caster, before the skill motion consumes the target.
+				// This is only a visual packet, not FlyTarget()/Shoot() or damage.
+				if (ownRoar)
+					SendPlayerBotFlyTargetPacket(ch, ch);
+				else if (target && ((ch->GetJob() == JOB_ASSASSIN && ch->GetSkillGroup() == 2) ||
+					(selectedDuelSkill && ch->GetJob() == JOB_SHAMAN) || selectedDuelSkill == SKILL_FAST_ATTACK))
 					SendPlayerBotFlyTargetPacket(ch, target);
 
 				// Keep the single, proven server-side damage path.  Shoot() would
@@ -1090,11 +1160,39 @@ namespace
 				// monster whose kill trigger purges the rest of the wave
 				// (d.purge_area), the target with it - freed memory from here
 				// on. The target is asked for again by its VID.
-				const DWORD dwTargetVID = (DWORD)target->GetVID();
-				const bool bTargetStone = target->IsStone();
-				const DWORD hits = ApplyPlayerBotSkillHits(ch, skillVnum, target);
+				const DWORD dwTargetVID = plannedVictimVID;
+				const bool bTargetStone = plannedStone;
+				// In a prepared duel, mirror UseSkill's real dispatch: self-only,
+				// Charge and Summon Lightning already computed their hit inside it.
+				// The default PvE/Guild War executor retains its existing path.
+				const CSkillProto* castProto = CSkillManager::instance().Get(skillVnum);
+				const bool engineHit = selectedDuelSkill && castProto && playerbot_duel::EngineComputesSkill(
+					IS_SET(castProto->dwFlag, SKILL_FLAG_SELFONLY), !IS_SET(castProto->dwFlag, SKILL_FLAG_ATTACK),
+					skillVnum == SKILL_CHARGE, skillVnum == SKILL_SUMMON_LIGHTNING, skillVnum == SKILL_FLAME_SPIRIT);
+				// Player attack packets supply the three contacts of Three-Way
+				// Cut/Rolling Dagger. Queue their contacts inside the existing Duel,
+				// rather than a single hit against a PC or three instant damage calls.
+				auto activeDuel = playerbot_pvp::duels.find(ch->GetPlayerID());
+				const int contacts = selectedDuelSkill && castProto ? playerbot_duel::DuelSkillHitCount(
+					GetPlayerBotSkillHitsPerTarget(skillVnum),GetMaxAttackCountForSkill(skillVnum,ch->GetSkillPower(skillVnum)),castProto->lMaxHit) : 1;
+				const bool motionHits = selectedDuelSkill && !engineHit && contacts>1 && target && target->IsPC() &&
+					castProto && IS_SET(castProto->dwFlag,SKILL_FLAG_USE_MELEE_DAMAGE) &&
+					!IS_SET(castProto->dwFlag,SKILL_FLAG_SPLASH) &&
+					activeDuel!=playerbot_pvp::duels.end() && activeDuel->second.prepared &&
+					activeDuel->second.opponentPid==target->GetPlayerID();
+				if (motionHits)
+				{
+					auto& sequence=activeDuel->second.skillHits;
+					playerbot_duel::StartSkillHits(sequence,skillVnum,contacts,dwNow,PLAYERBOT_SKILL_ANIMATION_LOCK);
+					sequence.originX=ch->GetX();sequence.originY=ch->GetY();
+					if(playerbot_duel::debug) sys_log(0,"PLAYERBOT_DUEL: skill contacts queued pid=%u skill=%u count=%d",ch->GetPlayerID(),skillVnum,contacts);
+				}
+				const DWORD hits = motionHits ? 0 : engineHit ? 1 : ApplyPlayerBotSkillHits(ch, skillVnum, target);
 				target = CHARACTER_MANAGER::instance().Find(dwTargetVID);
 				SendPlayerBotSkillPacket(ch, skillVnum);
+				if (ownRoar && playerbot_duel::debug)
+					sys_log(0,"PLAYERBOT_DUEL: roar visual pid=%u target=self motion=%u mastery=%d",
+						ch->GetPlayerID(),GetPlayerBotSkillMotionIndex(ch,skillVnum),ch->GetSkillMasterType(skillVnum));
 				// The arrow is needed in the slot and never spent: a bot's quiver
 				// never empties (ExecutePlayerBotBasicAttack).
 				state.dwLastBotSkillTime = dwNow;

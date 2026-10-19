@@ -1,0 +1,157 @@
+--[[
+	Quest to get Prism of Revival
+	Dev: WLsj24
+--]]
+quest zodiac_prism_mission begin
+	state start begin
+		when login or levelup with pc.level >= 20 begin
+			set_state(information)
+		end
+	end
+
+	state information begin
+		when letter begin
+			local v=find_npc_by_vnum(20438)
+			if 0!=v then
+				target.vid("__TARGET__", v, mob_name(20438))
+			end
+			send_letter("Si³y ¿ywio³owe") --719
+		end
+		when button or info begin
+			say_title("Si³y ¿ywio³owe") --719
+			say(string.format("%s ciê szuka. Wydaje siê, ¿e chce ci powiedzieæ[ENTER]coœ wa¿nego.", mob_name(20438))) --720
+			say("IdŸ do teleportera i przenieœ siê do Œwi¹tyni[ENTER]Zodiaku. Mnich Milbon czeka tam ju¿ na ciebie.") --733
+		end
+		when __TARGET__.click or 20438.chat."Si³y ¿ywio³owe" begin --719
+			target.delete("__TARGET__")
+			say_title(mob_name(20438))
+			say("Witam! Dobrze, ¿e jesteœ.") --721
+			say("Czy znasz legendê o Œwi¹tyni Zodiaku?") --722
+			wait()
+			say_size(350, 365)
+			say_title(mob_name(20438))
+			say("Mówi siê, ¿e ¯elazny Smok wzniós³ œwi¹tyniê[ENTER]jedynym ognistym oddechem na czeœæ 12 stra¿ników[ENTER]Zodiaku. Œmia³ków, którzy powróc¹ ze œwiêtych[ENTER]komnat stra¿ników oczekuje s³awa, honor i[ENTER]niezmierzone bogactwa.") --723
+			say("Œwi¹tynia ka¿dego ze stra¿ników otwiera swoje[ENTER]podwoje tylko w okreœlonych dniach. Nie zapominaj[ENTER]o tym.") --724
+			say("Widzisz tê niewielk¹ kulkê na górze po lewej[ENTER]stronie minimapy? Tam w³aœnie liczone s¹[ENTER]Animosfery. Pamiêtaj, ¿e bez tej skoncentrowanej[ENTER]energii ¿ycia nie mo¿esz przejœæ przez bramy[ENTER]stra¿ników. Otar³o mi siê o uszy, ¿e potrzeba 12[ENTER]Animosfer do Œwi¹tyni Zodiaku. Czy chcesz stawiæ[ENTER]czo³o temu wyzwaniu?") --725
+			local option = select("Tak, oczywiœcie!", "Nie, dzisiaj nie.") --726, 727
+			if option == 2 then return end
+			set_state(first_mission)
+		end
+	end
+
+	state first_mission begin
+		when letter begin
+			local v=find_npc_by_vnum(20438)
+			if 0!=v then
+				target.vid("__TARGET2__", v, mob_name(20438))
+			end
+			send_letter("Si³y ¿ywio³owe") --719
+		end
+		when button or info begin
+			say_title("Si³y ¿ywio³owe") --719
+			if pc.getf("12zi_temple", "completed_floor") < 1 then
+				say("Nie uda³o ci siê jeszcze? Na co czekasz? Ruszaj w[ENTER]drogê i oczyœæ 1. poziom.") --728
+				return
+			end
+			say(string.format("Porozmawiaj z %s.", mob_name(20438))) --729
+		end
+		when __TARGET2__.click or 20438.chat."Si³y ¿ywio³owe" begin
+			target.delete("__TARGET2__")
+			say_title(mob_name(20438))
+			if pc.getf("12zi_temple", "completed_floor") < 1 then
+				say("Nie uda³o ci siê jeszcze? Na co czekasz? Ruszaj w[ENTER]drogê i oczyœæ 1. poziom.") --728
+				return
+			end
+			say("Witaj. Jak widzê z pierwszym poziomem nie by³o[ENTER]problemów.") --730
+			say("Zabierz to w nagrodê za swoje czyny. Mam[ENTER]nadziejê, ¿e to ci siê naprawdê przyda.") --731
+			pc.give_item2(33032, 200) --Prism of Revival (Q)
+			pc.setf("zodiac_prism_mission", "prism_timestamp", 0)
+			set_state(repeatable_mission)
+		end
+	end
+
+	state repeatable_mission begin
+		when letter begin
+			local v=find_npc_by_vnum(20438)
+			if 0!=v then
+				target.vid("__TARGET3__", v, mob_name(20438))
+			end
+			send_letter("Pryzmat O¿ywienia") --734
+		end
+		when button or info begin
+			local today = math.floor(get_global_time() / 86400)
+			if today == pc.getf("zodiac_prism_mission", "prism_timestamp") then
+				say(string.format("OdwiedŸ mnie jutro, po tym jak zniszczysz %s.", mob_name(2900))) --735
+			else
+				say(string.format("Niech ci %s wyjaœni, jak stworzyæ pryzmat[ENTER]o¿ywienia.", mob_name(20438))) --736
+				say_reward("Strza³ka nad NPC oznacza, ¿e chce on z tob¹[ENTER]porozmawiaæ. Jeœli nie zobaczysz NPC na swoim[ENTER]ekranie, pod¹¿aj za migaj¹cym punktem na[ENTER]mini-mapie.") --5642
+			end
+		end
+		when __TARGET3__.click or 20438.chat."Pryzmat O¿ywienia" begin --734
+			target.delete("__TARGET3__")
+			say_title(mob_name(20438))
+			local today = math.floor(get_global_time() / 86400)
+			if today == pc.getf("zodiac_prism_mission", "prism_timestamp") then
+				say(string.format("OdwiedŸ mnie jutro, po tym jak zniszczysz %s.", mob_name(2900))) --735
+			else
+				say("Witam! Czy chcesz dowiedzieæ siê czegoœ wiêcej o[ENTER]pryzmacie o¿ywienia?") --737
+				say(string.format("Za pomoc¹ tego potê¿nego kryszta³u mo¿esz o¿ywiæ[ENTER]w Œwi¹tyni Zodiaku innego gracza lub samego[ENTER]siebie. %s posiada magiczn¹ duszê, przy pomocy[ENTER]której mo¿na stworzyæ pryzmat o¿ywienia. W[ENTER]jednym%s znajdziesz wystarczaj¹co du¿o materia³u[ENTER]do stworzenia dwóch pryzmatów.", mob_name(2900), mob_name(2900))) --738
+				say(string.format("IdŸ ju¿ i znajdŸ jeden %s!", mob_name(2900))) --739
+				local option = select("Tak, natychmiast!", "Nie, lepiej póŸniej.") --740, 741
+				if option == 2 then return end
+				set_state(next_mission)
+			end
+		end
+	end
+
+	state next_mission begin
+		when letter begin
+			q.set_title("Pryzmat O¿ywienia") --734
+			q.set_counter("Pozosta³a iloœæ ", 10-pc.getqf("kill_count")) --742
+		end
+		when button or info begin
+			say_title("Pryzmat O¿ywienia")
+			say(string.format("Zniszcz %s-razy %d w Œwi¹tyni Zodiaku.", mob_name(2900), 10)) --743
+		end
+		when 2900.kill begin
+			if pc.getqf("kill_count") >= 9 then
+				pc.setqf("kill_count", pc.getqf("kill_count")+1)
+				q.set_counter("Pozosta³a iloœæ ", 10-pc.getqf("kill_count")) --742
+				setstate(report)
+			else
+				pc.setqf("kill_count", pc.getqf("kill_count")+1)
+				q.set_counter("Pozosta³a iloœæ ", 10-pc.getqf("kill_count")) --742
+			end
+		end
+		when 20438.chat."Pryzmat O¿ywienia" begin --734
+			say_title(mob_name(20438))
+			say(string.format("Jeszcze nie uda³o ci siê zniszczyæ wszystkich %d[ENTER]kamieni Metin. Wróæ do mnie, gdy ju¿ wykonasz to[ENTER]zadanie.", 10)) --744
+		end
+	end
+
+	state report begin
+		when letter begin
+			local v=find_npc_by_vnum(20438)
+			if 0!=v then
+				target.vid("__TARGET4__", v, mob_name(20438))
+			end
+			send_letter("Pryzmat O¿ywienia") --734
+		end
+		when button or info begin
+			say_title("Pryzmat O¿ywienia") --734
+			say(string.format("Porozmawiaj z %s w Œwi¹tyni Zodiaku.", mob_name(20438))) --745
+			say_reward("Strza³ka nad NPC oznacza, ¿e chce on z tob¹[ENTER]porozmawiaæ. Jeœli nie zobaczysz NPC na swoim[ENTER]ekranie, pod¹¿aj za migaj¹cym punktem na[ENTER]mini-mapie.") --5642
+		end
+		when __TARGET4__.click or 20438.chat."Pryzmat O¿ywienia" begin --734
+			target.delete("__TARGET4__")
+			say("Ach, uda³o ci siê! Dobrze, teraz stworzê ci z[ENTER]tego pryzmat o¿ywienia.") --746
+			say("Nie wystarczy ci to? No, no mój przyjacielu. Nie[ENTER]mam ju¿ mocy. Dopiero jutro mogê ci znowu pomóc.") --747
+			pc.give_item2(33032, 20) --Prism of Revival (Q)
+			pc.setqf("kill_count", 0)
+			local today = math.floor(get_global_time() / 86400)
+			pc.setf("zodiac_prism_mission", "prism_timestamp", today)
+			set_state(repeatable_mission)
+		end
+	end
+
+end

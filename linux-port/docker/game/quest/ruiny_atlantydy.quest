@@ -38,10 +38,10 @@ quest ruiny_atlantydy begin
 				-- into a new instance; Mag Atlantydy sells it for ticket_price (the bots' own runs pay the same
 				-- in yang in the core, playerbot_dungeon_runs.h). No yang fee besides.
 				ticket = 30919,
-				ticket_price = 6000000, ticket_text = "6 000 000",
+				ticket_price = 12000000, ticket_text = "12 000 000",
 				key = 30920,
 				chest = 30921,
-				daily = 5,
+				daily = 10,
 				wave_kills = 45, -- 30 before 8 October; the waves keep 24 alive (were 15/14)
 				pillars = 4,
 				hearts = 4,
@@ -64,8 +64,7 @@ quest ruiny_atlantydy begin
 		end
 
 		function over_limit()
-			local c = ruiny_atlantydy.cfg()
-			return not pc.is_gm() and ruiny_atlantydy.runs_today() >= c.daily
+			return false -- No daily entry limit.
 		end
 
 		function no_ticket()
@@ -95,7 +94,7 @@ quest ruiny_atlantydy begin
 				pc.setf("ruiny_atlantydy", "runs", 0)
 			end
 			pc.setf("ruiny_atlantydy", "runs", pc.getf("ruiny_atlantydy", "runs") + 1)
-			syschat("Bilet do Atlantydy zu¿yty. Dzisiejsza wyprawa "..pc.getf("ruiny_atlantydy", "runs").."/"..c.daily..".")
+			syschat("Bilet do Atlantydy zuzyty. Bez limitu dobowego.")
 			return true
 		end
 
@@ -406,7 +405,7 @@ quest ruiny_atlantydy begin
 			say("")
 			say_reward("Wymagany poziom: "..c.min_level..". Limit "..c.limit_min.." minut, bez czekania miêdzy wyprawami.")
 			say_reward("Wejœcie: Bilet do Atlantydy - jeden za ka¿d¹ osobê (u mnie "..c.ticket_text.." Yang).")
-			say_reward("Najwy¿ej "..c.daily.." wypraw dziennie (dziœ: "..ruiny_atlantydy.runs_today().."/"..c.daily..").")
+			say_reward("Bez limitu wypraw dziennie.")
 			say_reward("Mo¿esz wejœæ sam albo z dru¿yn¹; boty z dru¿yny wchodz¹ bez biletu.")
 			if select("WejdŸ do ruin", "Nie teraz") ~= 1 then
 				return

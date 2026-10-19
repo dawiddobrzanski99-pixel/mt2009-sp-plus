@@ -376,7 +376,8 @@ namespace
 	void LockPlayerBotArzDgExp(LPCHARACTER ch)
 	{
 #if defined(PLAYERBOT_ENGINE_MT2009)
-		if (ch && ch->FindAffect(AFFECT_EXP_BLOCK) == NULL)
+		// MT2009_PLUS_BOT_EXP_UNLOCK_V1: not a bot the operator let go on.
+		if (ch && ch->FindAffect(AFFECT_EXP_BLOCK) == NULL && ch->GetQuestFlag("playerbot.exp_unlocked") <= 0)
 			ch->AddAffect(AFFECT_EXP_BLOCK, POINT_NONE, 0, 0, INFINITE_AFFECT_DURATION, 0, true, true);
 #else
 		(void)ch;

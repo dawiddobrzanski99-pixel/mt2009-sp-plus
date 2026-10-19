@@ -743,6 +743,23 @@ namespace {
         // before 2.0.53 comes home to be opened - a resource trader's too since
         // blipu's report of 28 September, when the trader stopped selling them.
         const DWORD owner = shop->GetOwnerPID();
+        // MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: a line promised by hand to a
+        // person (playerbot_chat_deals.h) comes off before anything else.
+        {
+            TPlayerBotAIStateMap::iterator st = s_mapPlayerBotAIStates.find(owner);
+            if (st != s_mapPlayerBotAIStates.end() && st->second.offlineShop.dealPullVnum != 0) {
+                playerbot_offline::State& o = st->second.offlineShop;
+                if ((int)(get_dword_time() - o.dealPullUntil) >= 0)
+                    o.dealPullVnum = o.dealPullSkill = o.dealPullUntil = 0;
+                else
+                    for (const auto& [lid, l] : shop->GetItems()) {
+                        if (!l || l->GetInfo().vnum != o.dealPullVnum) continue;
+                        if (o.dealPullSkill && (DWORD)l->GetInfo().alSockets[0] != o.dealPullSkill) continue;
+                        if (why) *why = "deal";
+                        return lid;
+                    }
+            }
+        }
         const bool sellsChests = IsPlayerBotMoonlightChestSeller(owner);
         // The mission books past the thirty its village's counters hold
         // (Iwakura's Patch 4, point 13) come home a line a visit; the ledger is
@@ -1112,6 +1129,9 @@ namespace {
         if (!Begin(ch->GetPlayerID(), Remove, itemid, now)) return false;
         ikashop::GetManager().RecvShopRemoveItemClientPacket(ch, itemid);
         if (!EndCall(ch->GetPlayerID())) return false;
+        // MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: the promised line is off.
+        if (why && strcmp(why, "deal") == 0)
+            state.offlineShop.dealPulled = true;
         RemovePlayerBotMarketSupply(lineVnum, lineCount, lineMap);
         NotePlayerBotMissionBooksOnCounter(lineMap, lineVnum, -(int)lineCount);
         // MT2009_PLUS_BOT_ENERGY_SHARDS_V1: off the shards' count at once too.
@@ -1920,11 +1940,163 @@ namespace {
         out.standing = standing;
         return out;
     }
+    // MT2009_PLUS_MARKET_LIFE_V1, point 7 (the owner's list, 9 October; a test
+    // option, MATERIAL_MARKET, off by default): "zalegajace najtansze materialy
+    // powoli schodza z rynku". A keeper with goods and no free cell for them
+    // takes home the line of the lowest total price among its refine materials
+    // and skill books - never a kind the world lacks (GetPlayerBotMarketSupplyState),
+    // a slipped price, a safe scroll or an item the operator's policy rules on
+    // - and owes a quarter of it (up, one at least) to the merchant
+    // (NotePlayerBotShopRoomOwed, sold at the next General Store visit); the
+    // rest goes back up at the next restock. One cut a keeper every
+    // PLAYERBOT_SHOP_ROOM_BOT_GAP_MS and a few a core a minute
+    // (PlayerBotMayCutShopRoom, playerbot_market_life.h).
+    void NotePlayerBotShopRoomOwed(DWORD pid, DWORD vnum, long skill, int units);
+    bool PlayerBotMayCutShopRoom(DWORD pid, DWORD now);
+    bool BotOfflineRoomCut(LPCHARACTER ch, TPlayerBotAIState& state, NativeShop shop, DWORD now) {
+        if (!ch || !shop || !IsPlayerBotMaterialMarketTestOn() || !PlayerBotMayCutShopRoom(ch->GetPlayerID(), now))
+            return false;
+        const std::set<DWORD>& materials = GetPlayerBotRefineMaterialVnums();
+        DWORD bestId = 0, bestVnum = 0;
+        long bestSkill = 0;
+        long long bestValue = -1;
+        int bestCount = 0;
+        for (const auto& [id, line] : shop->GetItems()) {
+            if (!line || !line->GetTable()) continue;
+            const DWORD vnum = line->GetInfo().vnum;
+            const bool book = line->GetTable()->bType == ITEM_SKILLBOOK;
+            const bool material = materials.find(vnum) != materials.end() && !IsPlayerBotNonGearMaterial(vnum) &&
+                !IsPlayerBotSafeRefineScroll(vnum);
+            if (!book && !material) continue;
+            if (s_setPlayerBotPriceSlips.count(id) || GetPlayerBotMarketSupplyState(vnum) < 0) continue;
+            const long long value = (long long)line->GetPrice().GetTotalYangAmount();
+            if (bestValue >= 0 && value >= bestValue) continue;
+            auto preview = BotOfflinePreview(*line);
+            if (!preview) continue;
+            const bool ruled = GetPlayerBotItemPolicy(preview) != PLAYERBOT_ITEM_POLICY_NONE;
+            M2_DELETE(preview);
+            if (ruled) continue;
+            bestId = id;
+            bestVnum = vnum;
+            bestSkill = book ? (long)line->GetInfo().alSockets[0] : 0;
+            bestValue = value;
+            bestCount = (int)line->GetInfo().count;
+        }
+        if (!bestId) return false;
+        const int owed = std::max(1, (bestCount + 3) / 4);
+        if (!BotOfflineTakeOff(ch, state, bestId, 0, now, "shop_room")) return false;
+        NotePlayerBotShopRoomOwed(ch->GetPlayerID(), bestVnum, bestSkill, owed);
+        return true;
+    }
+    // MT2009_PLUS_BOT_BAG_HOARD_FIX_V2 (the owner, 12 October: "niech chetniej
+    // je wystawiaja"): a spare at +5..+9 the bot has no use for - not worn, not
+    // the backup, not its next tier, not Iwakura's list, the companion's gift
+    // or the operator's word - that the counter takes but has no cell for. The
+    // merchant may never have it (PLAYERBOT_MERCHANT_MAX_REFINE), so a full
+    // counter kept it in the bag for good. The counter's cheapest line instead
+    // - at most a quarter of the spare's asking price, of at least its cells,
+    // standing half an hour or more (the cheapest first, the oldest of equals)
+    // - comes home, and the spare goes up in its place on the next step at the
+    // bots' own asking price. Never an operator-priced line (Materialy, Cor, a
+    // Dragon Stone, a sash), a slipped price, a rare kind, another such spare
+    // or a line under a policy.
+    bool IsPlayerBotSwapSpareGear(LPCHARACTER ch, LPITEM item) {
+        if (!ch || !item || item->IsEquipped() || item->isLocked() || item->GetWindow() != INVENTORY ||
+                (item->GetType() != ITEM_WEAPON && item->GetType() != ITEM_ARMOR) ||
+                item->GetRefineLevel() <= PLAYERBOT_MERCHANT_MAX_REFINE || GetPlayerBotSaleGearKind(item) == 0 ||
+                GetPlayerBotItemPolicy(item) != PLAYERBOT_ITEM_POLICY_NONE)
+            return false;
+        return !IsPlayerBotSidekickGift(ch, item) && !IsPlayerBotSidekickPinned(ch, item) &&
+                !IsPlayerBotUpgradeForSelf(ch, item) && !IsPlayerBotHigherTierSpare(ch, item) &&
+                !IsPlayerBotWearableUpgrade(ch, item, item->GetCell()) && !IsPlayerBotLppKeptItem(ch, item) &&
+                !(item->GetType() == ITEM_WEAPON ? IsPlayerBotKeptBackupWeapon(ch, item)
+                    : IsPlayerBotKeptBackupArmour(ch, item));
+    }
+    bool BotOfflineSpareGearSwap(LPCHARACTER ch, TPlayerBotAIState& state, NativeShop shop,
+            const std::vector<std::pair<int, WORD> >& scored, DWORD now) {
+        if (!ch || !shop) return false;
+        LPITEM spare = NULL;
+        for (const auto& [score, cell] : scored) {
+            LPITEM item = ch->GetInventoryItem(cell);
+            if (score <= 0 || !item || item->GetCell() != cell || !IsPlayerBotSwapSpareGear(ch, item)) continue;
+            if (BotOfflineCounterRefuses(shop, item)) continue;
+            if (BotOfflineSlot(ch, shop, item) >= 0) return false;   // it has a cell: the add takes it
+            spare = item;
+            break;
+        }
+        if (!spare) return false;
+        const long long asking = (long long)GetPlayerBotShopAskingPrice(spare);
+        if (asking <= 0) return false;
+        int spareLines = 0;
+        for (const auto& [id, line] : shop->GetItems())
+            if (line && line->GetTable() && GetPlayerBotSaleGearKindOf(line->GetTable(), line->GetInfo().vnum) != 0 &&
+                    (int)(line->GetInfo().vnum % 10) > PLAYERBOT_MERCHANT_MAX_REFINE)
+                ++spareLines;
+        if (spareLines >= PLAYERBOT_SPARE_SWAP_COUNTER_LINES) return false;
+        const auto& listed = state.offlineShop.listed;
+        DWORD bestId = 0, bestVnum = 0;
+        long long bestValue = -1;
+        uint32_t bestSince = 0;
+        for (const auto& [id, line] : shop->GetItems()) {
+            // Of at least the spare's cells, so its place takes the spare, and
+            // with a bag cell for it to come home to.
+            if (!line || !line->GetTable() || (int)line->GetTable()->bSize < (int)spare->GetSize() ||
+                    ch->GetEmptyInventory(line->GetTable()->bSize) < 0) continue;
+            const DWORD vnum = line->GetInfo().vnum;
+            const TItemTable* table = line->GetTable();
+            if ((GetPlayerBotSaleGearKindOf(table, vnum) != 0 && (int)(vnum % 10) > PLAYERBOT_MERCHANT_MAX_REFINE) ||
+                    vnum == PLAYERBOT_CRAFT_MATERIAL_VNUM_PRICED || IsPlayerBotCorVnum(vnum) ||
+                    (vnum >= 110000 && vnum <= 175499) ||
+                    (table->bType == ITEM_COSTUME && IsPlayerBotSashVnum(vnum)) ||
+                    GetPlayerBotRareGoodsKind(vnum) != PLAYERBOT_RARE_GOODS_NONE ||
+                    s_setPlayerBotPriceSlips.count(id))
+                continue;
+            const long long value = (long long)line->GetPrice().GetTotalYangAmount();
+            if (value <= 0 || value * PLAYERBOT_SPARE_SWAP_PRICE_RATIO > asking) continue;
+            uint32_t since = 0;
+            const auto known = listed.find(id);
+            if (known != listed.end())
+                since = known->second.when ? known->second.when : known->second.observedSince;
+            // A line this core saw go up lately stays; one of unknown age
+            // (put up before a restart) has stood long enough.
+            if (since != 0 && now - since < PLAYERBOT_SPARE_SWAP_MIN_STAND_MS) continue;
+            // The cheapest, and of two equal the older (an unknown age, 0, the oldest).
+            if (bestValue >= 0 && (value > bestValue || (value == bestValue && since >= bestSince)))
+                continue;
+            auto preview = BotOfflinePreview(*line);
+            if (!preview) continue;
+            const bool ruled = GetPlayerBotItemPolicy(preview) != PLAYERBOT_ITEM_POLICY_NONE;
+            M2_DELETE(preview);
+            if (ruled) continue;
+            bestId = id;
+            bestVnum = vnum;
+            bestValue = value;
+            bestSince = since;
+        }
+        if (!bestId) return false;
+        const DWORD spareVnum = spare->GetVnum();
+        if (!BotOfflineTakeOff(ch, state, bestId, 0, now, "spare_gear_room")) return false;
+        sys_log(0, "PLAYERBOT_OFFLINE: room for a spare pid=%u name=%s spare=%u asking=%lld took_off=%u value=%lld spare_lines=%d",
+                ch->GetPlayerID(), ch->GetName(), spareVnum, asking, bestVnum, bestValue, spareLines);
+        return true;
+    }
+
     bool ManagePlayerBotOfflineService(LPCHARACTER ch, TPlayerBotAIState& state, DWORD now) {
         using namespace playerbot_offline;
         if (!ch) return false;
         BotOfflineDrainSales(ch, state, now);
         auto& o = state.offlineShop;
+        // MT2009_PLUS_BOT_DEAL_FROM_STALL_V1: the promised piece is off the
+        // counter and in the bag for a person - no visit puts it back up
+        // before the deal is over (EndPlayerBotDeal clears it) or lapses.
+        if (o.dealPulled) {
+            if (o.dealPullUntil && (int)(now - o.dealPullUntil) < 0) {
+                if (o.visiting) BotOfflineFinishVisit(ch, state, now);
+                return false;
+            }
+            o.dealPulled = false;
+            o.dealPullVnum = o.dealPullSkill = o.dealPullUntil = 0;
+        }
         auto& manager = ikashop::GetManager();
         auto shop = manager.GetShopByOwnerID(ch->GetPlayerID());
         ch->SetIkarusShop(shop); // boot/relog: native PID map is authoritative
@@ -2476,13 +2648,14 @@ namespace {
         // The candidates' ranks for the explanation: the line cut before the
         // board opened is counted where its own visit found it.
         int addRank = preparedCell >= 0 ? -2 : -1, addRefused = 0;
+        int addNoRoom = 0;   // MT2009_PLUS_MARKET_LIFE_V1, point 7
         if (!sent)
         for (auto [score, cell] : scored) {
             if (!allowRestock && Due(now, o.nextReprice) && !shop->GetItems().empty()) break;
             ++addRank;
             auto item = ch->GetInventoryItem(cell);
             int pos = BotOfflineSlot(ch, shop, item);
-            if (pos < 0) { ++addRefused; continue; }
+            if (pos < 0) { ++addRefused; ++addNoRoom; continue; }
             if (BotOfflineCounterRefuses(shop, item)) { ++addRefused; continue; }
             // Why this one, read off the stack before the cut (playerbot_explain.h);
             // the prepared line brings what its own visit read.
@@ -2607,6 +2780,23 @@ namespace {
                 }
             }
             break; // one item a step; a step that added one chains the next
+        }
+        // MT2009_PLUS_MARKET_LIFE_V1, point 7 (test option): goods with no cell
+        // left for them - the cheapest stack of materials or books comes off
+        // for a quarter of it to go to the merchant (BotOfflineRoomCut).
+        if (!sent && addNoRoom > 0 && BotOfflineRoomCut(ch, state, shop, now)) {
+            BotOfflineFinishVisit(ch, state, now);
+            BotOfflineChainVisit(state, now);
+            return false;
+        }
+        // MT2009_PLUS_BOT_BAG_HOARD_FIX_V2: a spare at +5..+9 with no cell
+        // takes the place of the counter's cheapest line (BotOfflineSpareGearSwap),
+        // on a restock step, and the next step puts it up.
+        if (!sent && addNoRoom > 0 && (allowRestock || !Due(now, o.nextReprice) || shop->GetItems().empty()) &&
+                BotOfflineSpareGearSwap(ch, state, shop, scored, now)) {
+            BotOfflineFinishVisit(ch, state, now);
+            BotOfflineChainVisit(state, now);
+            return false;
         }
         if (!sent && Due(now, o.nextReprice)) {
             if (o.repriceSteps == 0) o.repriceSteps = PLAYERBOT_OFFLINE_REPRICE_SLICE;

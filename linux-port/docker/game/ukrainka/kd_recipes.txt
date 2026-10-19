@@ -1,0 +1,90 @@
+
+section
+npc	30099
+item	28430	2
+item	28437	2
+item	30360	50
+reward	28537	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28431	1
+item	28432	1
+item	30360	50
+reward	28531	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28437	1
+item	28431	1
+item	30360	50
+reward	28500	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28433	1
+item	28434	1
+item	30360	50
+reward	28533	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28435	1
+item	28436	1
+item	30360	50
+reward	28535	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28533	1
+item	28535	1
+item	30360	50
+reward	28508	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28442	1
+item	28438	1
+item	30360	50
+reward	28512	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28443	1
+item	28441	1
+item	30360	50
+reward	28543	1
+percent	50
+gold	3000000
+end
+
+section
+npc	30099
+item	28439	1
+item	28440	1
+item	30360	50
+reward	28540	1
+percent	50
+gold	3000000
+end
