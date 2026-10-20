@@ -68,6 +68,7 @@ inline DWORD LYCAN_CREATE_START_Y(BYTE e, BYTE job)
 #ifdef ENABLE_IKASHOP_RENEWAL
 #include "ikarus_shop.h"
 #include "ikarus_shop_manager.h"
+#include "seban_client_sync.h" // MT2009_NASZE_KLIENT_Z_SERWERA_V1
 #endif
 
 static void _send_bonus_info(LPCHARACTER ch)
@@ -789,6 +790,7 @@ void CInputLogin::Entergame(LPDESC d, const char * data)
 		ch->ChatPacket(CHAT_TYPE_COMMAND, "GameMaster %s", gmPanelUrl);
 	}
 
+	SebanClientSync::Send(ch); // MT2009_NASZE_KLIENT_Z_SERWERA_V1
 	ch->ChangeGold(0, false);
 	if (ch->GetMapIndex() >= 10000)
 	{

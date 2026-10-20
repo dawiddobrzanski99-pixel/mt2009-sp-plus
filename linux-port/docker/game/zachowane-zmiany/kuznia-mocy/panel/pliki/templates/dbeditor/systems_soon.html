@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_SYSTEMY_V1: strona systemu w przygotowaniu (nic nie zapisuje) #}
+{% block title %}{{ system[3] }} · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.sys-page{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:16px;padding:26px 28px}
+.sys-page h1{margin:0 0 8px;font:700 28px/1.2 system-ui}
+.sys-page p{color:var(--sy-muted)}
+.sys-subtabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.sys-subtabs a{padding:10px 16px;border-radius:10px;border:1px solid var(--sy-line);background:#151d29;color:var(--sy-muted);text-decoration:none;font-weight:600}
+.sys-subtabs a.is-active{border-color:var(--sy-gold);color:var(--sy-gold);background:#edbd6914}
+.sys-plan{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}
+.sys-plan li{padding:12px 16px;border:1px solid var(--sy-line);border-radius:10px;background:#151d29}
+.sys-plan li::before{content:"⏳ ";}
+.sys-status{display:inline-block;margin:6px 0 4px;padding:4px 12px;border-radius:20px;background:#2c3b51;color:var(--sy-muted);font-weight:700;font-size:13px}
+.sys-src{font-size:13px;color:var(--sy-muted)}
+.sys-src code{color:var(--sy-text)}
+</style>
+<section class="sys-page">
+ <h1>{{ system[2] }} {{ system[3] }}</h1>
+ <span class="sys-status">⏳ W przygotowaniu — kolejny etap edytora</span>
+ <p>{{ system[4] }}</p>
+ {% if tabs %}
+ <nav class="sys-subtabs" aria-label="Rodzaje misji">
+ {% for key, icon, title, items in tabs %}<a href="{{ url_for('dbeditor.systems_misje', tab=key) }}" class="{% if tab[0]==key %}is-active{% endif %}">{{ icon }} {{ title }}</a>{% endfor %}
+ </nav>
+ <h2>{{ tab[1] }} {{ tab[2] }} — co będzie można ustawić</h2>
+ <ul class="sys-plan">{% for item in tab[3] %}<li>{{ item }}</li>{% endfor %}</ul>
+ {% else %}
+ <h2>Co będzie można ustawić</h2>
+ <ul class="sys-plan">{% for item in planned %}<li>{{ item }}</li>{% endfor %}</ul>
+ {% endif %}
+ <p class="sys-src">Na razie wartości działają tak jak dotąd, z kodu serwera (<code>{{ system[6] }}</code>). Ta strona niczego nie zmienia. Domyślne ustawienia edytora będą równe obecnym wartościom.</p>
+</section>
+</div>
+{% endblock %}

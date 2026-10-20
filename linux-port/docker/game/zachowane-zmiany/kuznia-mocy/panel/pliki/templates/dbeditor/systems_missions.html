@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_MISJE_V1 - edytor misji Ctrl+N; caly projekt wysylany jako JSON (pole payload). #}
+{% block title %}Misje (Ctrl+N) · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+#poly-ui{color:var(--sy-text)}
+#poly-ui *{box-sizing:border-box}
+#poly-ui h2{color:var(--sy-gold);margin:0 0 12px;font-family:inherit}
+#poly-ui p{color:var(--sy-muted);margin:10px 0}
+#poly-ui .pu-hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#1f2a3b,#151c27);border:1px solid var(--sy-line);border-radius:16px;padding:22px 26px}
+#poly-ui .pu-hero h1{margin:0;font:700 28px/1.2 system-ui}
+#poly-ui .pu-hero p{margin:4px 0 0}
+#poly-ui .pu-big{font-size:52px;line-height:1}
+#poly-ui .pu-chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+#poly-ui .pu-chip{padding:6px 12px;border-radius:20px;border:1px solid var(--sy-line);background:#111a26;font-size:13px;font-weight:600}
+#poly-ui .pu-chip.ok{border-color:#396e56;color:#5fd39a}#poly-ui .pu-chip.off{border-color:#85534c;color:#ff9d8f}
+#poly-ui .pu-tabs{display:flex;gap:4px;border-bottom:1px solid var(--sy-line);margin:20px 0 18px;flex-wrap:wrap}
+#poly-ui .pu-tabs button{background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:10px 16px;color:var(--sy-muted)}
+#poly-ui .pu-tabs button:hover{background:transparent;color:var(--sy-text)}
+#poly-ui .pu-tabs button.is-active{color:var(--sy-gold);border-bottom-color:var(--sy-gold)}
+#poly-ui .pu-pane[hidden]{display:none!important}
+#poly-ui .pu-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:20px;margin:0 0 18px}
+#poly-ui input[type=checkbox]{appearance:auto!important;position:static!important;opacity:1!important;width:18px!important;height:18px!important;accent-color:#edbd69}
+#poly-ui input[type=number],#poly-ui input[type=search]{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit;max-width:100%}
+#poly-ui button{background:#2c3b51;color:var(--sy-text);border:1px solid #52657f;border-radius:8px;padding:9px 15px;font:600 14px system-ui;cursor:pointer}
+#poly-ui button:hover{background:#3d506b}
+#poly-ui button[value=save_apply]{background:var(--sy-gold);color:#20180d;border-color:var(--sy-gold)}
+#poly-ui button[value=undo],#poly-ui button[value=defaults]{background:transparent}
+#poly-ui .pu-workspace{display:grid;grid-template-columns:minmax(290px,380px) minmax(0,1fr);gap:18px}
+#poly-ui .pu-list,#poly-ui .pu-editor{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:16px;min-width:0}
+#poly-ui .pu-filter{width:100%}
+#poly-ui .pu-scroll{max-height:640px;overflow:auto;margin-top:12px;padding-right:4px}
+#poly-ui .pu-group{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--sy-gold);margin:12px 4px 6px}
+#poly-ui .pu-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;width:100%;text-align:left;background:#151d29;border:1px solid transparent;border-radius:10px;padding:9px 12px;margin:0 0 6px;font-weight:400}
+#poly-ui .pu-row:hover{background:#202b3c;border-color:var(--sy-line)}
+#poly-ui .pu-row.is-selected{border-color:var(--sy-gold);background:#2a2b24}
+#poly-ui .pu-row[hidden]{display:none}
+#poly-ui .pu-num{display:grid;place-items:center;width:44px;height:38px;border-radius:10px;background:#101722;border:2px solid var(--sy-line);font-weight:700}
+#poly-ui .pu-row.is-dirty .pu-num{border-color:var(--sy-gold)}
+#poly-ui .pu-name{font-weight:700}
+#poly-ui .pu-sum{font-size:12px;color:var(--sy-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#poly-ui .pu-level[hidden]{display:none}
+#poly-ui .pu-level h3{margin:0 0 4px;font-size:22px;color:var(--sy-gold)}
+#poly-ui .pu-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:16px}
+#poly-ui .pu-field{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid var(--sy-line);border-radius:10px;background:#151d29}
+#poly-ui .pu-field span{font-size:13px;color:var(--sy-muted)}
+#poly-ui .pu-field small{font-size:11px;color:#7d8ba0}
+#poly-ui .pu-field input{width:100%}
+#poly-ui .pu-field input.changed{border-color:var(--sy-gold);background:#2a2618}
+#poly-ui .pu-field.zero{opacity:.65}
+#poly-ui .pu-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#poly-ui .pu-stepper{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--sy-line)}
+#poly-ui .pu-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:sticky;bottom:12px;background:#1b2432f2;padding:14px;border:1px solid var(--sy-line);border-radius:12px;z-index:5;margin-top:18px}
+#poly-ui .pu-dirty{margin-left:auto;color:var(--sy-gold);font-weight:700;font-size:13px}
+#poly-ui .pu-dirty[hidden]{display:none}
+#poly-ui .pu-switch{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--sy-line)}
+#poly-ui .pu-switch:last-child{border-bottom:0}
+#poly-ui .pu-switch b{display:block;color:var(--sy-text)}
+#poly-ui .pu-switch small{color:var(--sy-muted)}
+#poly-ui #pu-state{font-weight:700;color:var(--sy-text);font-size:16px}
+#poly-ui #pu-cores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;list-style:none;padding:0}
+#poly-ui #pu-cores li{padding:10px 12px;border:1px solid var(--sy-line);border-radius:8px;background:#111a26;font-size:13px}
+#poly-ui #pu-cores li[data-state=applied],#poly-ui #pu-cores li[data-state=ready]{border-color:#396e56;color:#9de0b8}
+#poly-ui #pu-cores li[data-state=missing],#poly-ui #pu-cores li[data-state=error]{border-color:#85534c;color:#ffc0b2}
+#poly-ui .pu-hint{font-size:13px;padding:12px 14px;border-left:4px solid var(--sy-gold);background:#edbd6914;border-radius:8px}
+@media(max-width:900px){ #poly-ui .pu-workspace{grid-template-columns:1fr}#poly-ui .pu-scroll{max-height:300px}#poly-ui #pu-cores{grid-template-columns:repeat(2,minmax(0,1fr))}#poly-ui .pu-chips{margin-left:0}}
+@media(max-width:520px){ #poly-ui #pu-cores{grid-template-columns:1fr}}
+</style>
+<style>
+#poly-ui .pu-duration{margin-top:14px;border-color:#5a4a2a;background:#1f1b12}
+#poly-ui .pu-bonus-head{display:grid;grid-template-columns:minmax(0,1fr) 120px 80px;gap:10px;font-size:12px;color:var(--sy-muted);margin:18px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+#poly-ui .pu-bonus{display:grid;grid-template-columns:minmax(0,1fr) 120px 80px;gap:10px;margin:8px 0}
+#poly-ui .pu-bonus select{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit;width:100%}
+#poly-ui .pu-bonus input{width:100%}
+#poly-ui .pu-remove{color:#ffb8b8;border-color:#78505a;background:#38272e;padding:9px 8px}
+#poly-ui .pu-add{border-style:dashed}
+#poly-ui .pu-empty{padding:14px;border:1px dashed var(--sy-line);border-radius:10px;color:var(--sy-muted);text-align:center;margin-top:8px}
+@media(max-width:520px){ #poly-ui .pu-bonus,#poly-ui .pu-bonus-head{grid-template-columns:minmax(0,1fr) 90px}#poly-ui .pu-remove{grid-column:1/-1}}
+</style>
+<style>
+#poly-ui .mi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+#poly-ui .mi-grid .pu-field input,#poly-ui .mi-grid .pu-field select{width:100%;background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit}
+#poly-ui .mi-wide{grid-column:1/-1}
+#poly-ui .mi-mob{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#poly-ui .mi-mob b{color:var(--sy-gold)}
+#poly-ui .mi-results{display:grid;gap:4px;margin-top:6px;max-height:220px;overflow:auto}
+#poly-ui .mi-results button{text-align:left;font-weight:400;padding:6px 10px}
+#poly-ui .mi-rowtools{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+#poly-ui .mi-rowtools button{padding:6px 10px}
+#poly-ui .mi-sec{margin:20px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--sy-gold)}
+#poly-ui .mi-new{border-style:dashed;width:100%;margin-top:6px}
+#poly-ui .mi-warn{font-size:13px;padding:10px 14px;border-left:4px solid #e0705a;background:#e0705a14;border-radius:8px;margin:10px 0}
+#poly-ui .mi-skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:12px;margin-top:12px}
+#poly-ui .mi-skin{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--sy-line);border-radius:10px;background:#151d29}
+#poly-ui .mi-skin-prev{width:120px;height:80px;display:grid;place-items:center;background:repeating-conic-gradient(#222 0 25%,#333 0 50%) 0 0/12px 12px;border-radius:6px;overflow:hidden;flex:none}
+#poly-ui .mi-skin-prev canvas{max-width:120px;max-height:80px}
+#poly-ui .mi-skin small{color:var(--sy-muted)}
+#poly-ui .mi-items{display:grid;gap:6px;margin-top:10px}
+#poly-ui .mi-item{display:flex;gap:6px;align-items:center;padding:6px 10px;border:1px solid var(--sy-line);border-radius:8px;background:#151d29}
+#poly-ui .mi-item input{width:70px;background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:5px;border-radius:6px}
+#poly-ui .mi-item button{margin-left:auto;padding:4px 9px;color:#ffb8b8}
+#poly-ui .mi-itemq{background:#101722;color:var(--sy-text);border:1px dashed #53627a;padding:8px 12px;border-radius:8px;font:inherit}
+#poly-ui .mi-badge{font-size:11px;padding:1px 7px;border-radius:10px;background:#2c3b51;color:var(--sy-muted);margin-left:6px}
+</style>
+<div id="poly-ui">
+<header class="pu-hero">
+ <span class="pu-big" aria-hidden="true">📜</span>
+ <div><h1>Misje (Ctrl+N)</h1>
+ <p>Polowania, Metinologia i Bossologia: etapy po kolei, cele, ilości, wymagany poziom, bonusy i nagrody. Okno w grze bierze wszystko z serwera — bez ROOT.</p></div>
+ <div class="pu-chips">
+  <span class="pu-chip {{ 'ok' if config.master_enabled and config.enabled else 'off' }}">Misje z panelu: {{ 'włączone' if config.master_enabled and config.enabled else 'wyłączone' }}</span>
+  <span class="pu-chip" id="pu-chip">Kanały: …</span>
+ </div>
+</header>
+{% if error %}<p class="mi-warn">{{ error }}</p>{% endif %}
+<nav class="pu-tabs">
+ <button type="button" data-tab="hunts">🏹 Polowania</button>
+ <button type="button" data-tab="metin">🪨 Metinologia</button>
+ <button type="button" data-tab="boss">👹 Bossologia</button>
+ <button type="button" data-tab="final">🏁 Nagrody za całą ścieżkę</button>
+ <button type="button" data-tab="biolog">🧪 Biolog</button>
+ <button type="button" data-tab="wyglad">🎨 Wygląd okna</button>
+ <button type="button" data-tab="ustawienia">⚙️ Ustawienia</button>
+ <button type="button" data-tab="stan">📡 Stan serwera</button>
+</nav>
+<form method="post" id="poly-form">
+<input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><input type="hidden" name="revision" value="{{ revision }}"><input type="hidden" name="payload" id="mi-payload">
+{% for kind, title, what in [('hunts','Polowania','potwora'),('metin','Metinologia','metina'),('boss','Bossologia','bossa')] %}
+<div class="pu-pane" data-pane="{{ kind }}" hidden>
+ <p class="pu-hint">Gracz robi etapy <b>po kolei</b> (od góry). Nowe etapy dodawaj na końcu — gracze, którzy skończyli wcześniejsze, dostaną je jako kolejne. Usunięcie etapu nie zabiera graczom zdobytych już bonusów z innych etapów, ale bonus usuniętego etapu znika.</p>
+ <div class="pu-workspace">
+  <div class="pu-list"><h2>Etapy</h2><div class="pu-scroll mi-list" data-kind="{{ kind }}"></div><button type="button" class="mi-new" data-kind="{{ kind }}">＋ Dodaj nowy etap</button></div>
+  <div class="pu-editor mi-editor" data-kind="{{ kind }}"></div>
+ </div>
+</div>
+{% endfor %}
+<div class="pu-pane" data-pane="final" hidden>
+ <div class="pu-card"><h2>🪨 Metinologia — nagroda po ukończeniu wszystkich etapów</h2><div class="pu-bonuses" id="mi-final-metin"></div><div class="pu-tools"><button type="button" class="pu-add" data-final="metin">＋ Dodaj bonus</button></div></div>
+ <div class="pu-card"><h2>👹 Bossologia — nagroda po ukończeniu wszystkich etapów</h2><div class="pu-bonuses" id="mi-final-boss"></div><div class="pu-tools"><button type="button" class="pu-add" data-final="boss">＋ Dodaj bonus</button></div></div>
+</div>
+<div class="pu-pane" data-pane="biolog" hidden>
+ <div class="pu-card"><h2>🧪 Biolog</h2><p>Biolog działa na questach <b>collect_quest_lv30 … lv90</b>: przedmiot, ilość, szansa i nagrody są w questach. Bonusy Biologa zmienisz w edytorze questów (nagrody questów) — okno Ctrl+N pokaże je automatycznie.</p></div>
+</div>
+<div class="pu-pane" data-pane="ustawienia" hidden>
+ <div class="pu-card"><h2>Ustawienia modułu</h2>
+  <label class="pu-switch"><input type="checkbox" name="master_enabled" value="1" {% if config.master_enabled %}checked{% endif %}><span><b>Moduł włączony</b><small>Wyłączony po zastosowaniu = brak etapów i bonusów misji (Polowania, Metinologia, Bossologia).</small></span></label>
+  <label class="pu-switch"><input type="checkbox" name="enabled" value="1" {% if config.enabled %}checked{% endif %}><span><b>Misje włączone</b><small>Wyłączenie nie kasuje tabel.</small></span></label>
+  <label class="pu-switch"><input type="checkbox" name="bots" value="1" {% if config.bots %}checked{% endif %}><span><b>Boty też robią misje</b><small>Boty przechodzą Polowania, Metinologię i Bossologię i dostają stałe bonusy. Nagrody jednorazowe (Yang, przedmioty) dostają tylko prawdziwi gracze.</small></span></label>
+ </div>
+</div>
+<div class="pu-actions">
+ <button name="action" value="save">Zapisz projekt</button>
+ <button name="action" value="save_apply">Zapisz i zastosuj</button>
+ <button name="action" value="undo" formnovalidate>Przywróć poprzedni projekt</button>
+ <button name="action" value="defaults" formnovalidate onclick="return confirm('Wczytać wartości z gry (obecne misje) do projektu?')">Wartości z gry</button>
+ <span class="pu-dirty" id="pu-dirty" hidden>● Niezapisane zmiany</span>
+</div>
+</form>
+<div class="pu-pane" data-pane="wyglad" hidden>
+ <form class="pu-card" method="post" enctype="multipart/form-data" action="{{ url_for('dbeditor.systems_misje_skin') }}">
+  <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+  <h2>🎨 Własna grafika okna Ctrl+N</h2>
+  <p class="pu-hint">Każdy plik: <b>TGA nieskompresowany 32-bit</b> (z przezroczystością) i <b>dokładnie</b> podany rozmiar — inny plik panel odrzuci. Po wgraniu zbuduj ROOT na <a href="{{ url_for('dbeditor.systems_index') }}">Przeglądzie</a> i podmień go w kliencie. Bez własnej grafiki zostaje obecna z gry.</p>
+  <div class="mi-skins">
+  {% for s in skins %}
+   <div class="mi-skin">
+    <div class="mi-skin-prev"><canvas width="1" height="1"{% if s.custom %} data-url="{{ url_for('dbeditor.systems_misje_skin_file', key=s.key) }}"{% endif %}></canvas></div>
+    <div><b>{{ s.label }}</b><br><small>wymagany rozmiar: <b>{{ s.w }}×{{ s.h }} px</b> · plik w grze: {{ s.key }}.tga</small><br>
+     <small class="mi-skin-state">{{ '✔ własna grafika' if s.custom else 'grafika z gry' }}</small><br>
+     <input type="file" accept=".tga" name="skin_{{ s.key }}" data-w="{{ s.w }}" data-h="{{ s.h }}">
+     {% if s.custom %}<label><input type="checkbox" name="clear_{{ s.key }}" value="1"> przywróć grafikę z gry</label>{% endif %}</div>
+   </div>
+  {% endfor %}
+  </div>
+  <div class="pu-tools"><button>💾 Zapisz grafikę</button></div>
+ </form>
+</div>
+<div class="pu-pane" data-pane="stan" hidden>
+ <section class="pu-card" aria-live="polite"><h2>Wynik zastosowania</h2><p id="pu-state"></p><ul id="pu-cores"></ul>
+ <p><small>Test w grze: Ctrl+N — okno pokaże nowe etapy po ponownym otwarciu. Bonusy zdobytych etapów przeliczają się od razu.</small></p></section>
+</div>
+</div>
+<template id="pu-bonus-template"><div class="pu-bonus"><select aria-label="Rodzaj bonusu">{% for o in opts %}<option value="{{ o.k }}">{{ o.l }}</option>{% endfor %}</select><input type="number" inputmode="numeric" min="0" max="1000000" value="0" required aria-label="Wartość"><button type="button" class="pu-remove">Usuń</button></div></template>
+<script id="mi-data" type="application/json">{{ config|tojson }}</script>
+<script>
+(function(){
+'use strict';
+const root=document.getElementById('poly-ui'),form=document.getElementById('poly-form');let dirty=false;
+const S=JSON.parse(document.getElementById('mi-data').textContent);
+const MAPS={{ maps|tojson }},GIFTS={{ gifts|tojson }},ITEMS={{ item_names|tojson }};
+const sel={hunts:0,metin:0,boss:0};
+function markDirty(){dirty=true;document.getElementById('pu-dirty').hidden=false;}
+const tabs=root.querySelectorAll('.pu-tabs button');
+function showTab(n){tabs.forEach(function(b){b.classList.toggle('is-active',b.dataset.tab===n);});root.querySelectorAll('.pu-pane').forEach(function(p){p.hidden=p.dataset.pane!==n;});root.querySelector('.pu-actions').hidden=n==='stan'||n==='biolog'||n==='wyglad';try{sessionStorage.setItem('mi-tab',n);}catch(e){}}
+tabs.forEach(function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
+function el(tag,attrs,text){const e=document.createElement(tag);if(attrs)for(const k in attrs){if(k==='class')e.className=attrs[k];else e.setAttribute(k,attrs[k]);}if(text!=null)e.textContent=text;return e;}
+function bonusBox(box,obj){
+ box.textContent='';
+ Object.keys(obj).forEach(function(p){addBonus(box,obj,p,obj[p]);});
+ if(!box.children.length){box.appendChild(el('div',{class:'pu-empty'},'Brak bonusów.'));}
+}
+function addBonus(box,obj,p,v){
+ const empty=box.querySelector('.pu-empty');if(empty)empty.remove();
+ const t=document.getElementById('pu-bonus-template').content.cloneNode(true);const row=t.querySelector('.pu-bonus'),s=t.querySelector('select'),i=t.querySelector('input');
+ s.value=String(p);i.value=v;let cur=String(p);
+ s.addEventListener('change',function(){if(obj[s.value]!==undefined&&s.value!==cur){alert('Ten bonus już jest na liście.');s.value=cur;return;}const val=obj[cur];delete obj[cur];cur=s.value;obj[cur]=val;markDirty();refreshList();});
+ i.addEventListener('input',function(){obj[cur]=parseInt(i.value||'0',10)||0;markDirty();refreshList();});
+ t.querySelector('.pu-remove').addEventListener('click',function(){delete obj[cur];row.remove();markDirty();refreshList();});
+ box.appendChild(t);
+}
+function freeBonus(obj){const opts=document.getElementById('pu-bonus-template').content.querySelector('select').options;for(let k=0;k<opts.length;k++)if(obj[opts[k].value]===undefined)return opts[k].value;return null;}
+function summary(r){const n=Object.keys(r.bonus).length;return (r.kills||0)+'× · '+(n?n+' bonus(y)':'bez bonusów')+(r.level?' · od '+r.level+' poz.':'');}
+function refreshList(){['hunts','metin','boss'].forEach(function(kind){
+ const list=root.querySelector('.mi-list[data-kind='+kind+']');list.textContent='';
+ S[kind].forEach(function(r,i){const b=el('button',{type:'button',class:'pu-row'+(i===sel[kind]?' is-selected':'')});
+  b.appendChild(el('span',{class:'pu-num'},String(i+1)));const t=el('span',{style:'min-width:0'});t.appendChild(el('div',{class:'pu-name'},r.name||'(bez nazwy)'));t.appendChild(el('div',{class:'pu-sum'},summary(r)));b.appendChild(t);
+  b.addEventListener('click',function(){sel[kind]=i;refreshList();editor(kind);});list.appendChild(b);});
+ if(!S[kind].length)list.appendChild(el('div',{class:'pu-empty'},'Brak etapów — dodaj pierwszy.'));
+});}
+function field(grid,label,value,type,onset,extra){const l=el('label',{class:'pu-field'+(extra&&extra.wide?' mi-wide':'')});l.appendChild(el('span',null,label));
+ const i=el('input',{type:type||'number'});if((type||'number')==='number'){i.min=extra&&extra.min!=null?extra.min:0;i.inputMode='numeric';}else{i.maxLength=extra&&extra.max||40;}i.value=value;i.addEventListener('input',function(){onset(type==='text'?i.value:(parseInt(i.value||'0',10)||0));markDirty();refreshList();});
+ l.appendChild(i);if(extra&&extra.hint)l.appendChild(el('small',null,extra.hint));grid.appendChild(l);return i;}
+function mobPicker(grid,r,kind){
+ const l=el('div',{class:'pu-field mi-wide'});l.appendChild(el('span',null,kind==='hunts'?'Potwór do zabicia':'Boss do zabicia'));
+ const row=el('div',{class:'mi-mob'});const num=el('input',{type:'number',min:'1'});num.value=r.race;num.style.width='130px';const nm=el('b',null,'');
+ const q=el('input',{type:'search',placeholder:'🔍 szukaj po nazwie lub numerze (np. dziki pies, 101)'});q.style.flex='1';
+ row.appendChild(num);row.appendChild(nm);l.appendChild(row);l.appendChild(q);const res=el('div',{class:'mi-results'});l.appendChild(res);
+ async function name(){try{const x=await (await fetch({{ url_for('dbeditor.systems_misje_mobs')|tojson }}+'?q='+num.value,{credentials:'same-origin'})).json();nm.textContent=x.length?x[0].name+' (poz. '+x[0].level+')':'— nie znaleziono w mob_proto';}catch(e){}}
+ num.addEventListener('change',function(){r.race=parseInt(num.value||'0',10)||0;markDirty();name();});
+ let timer=null;q.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(async function(){res.textContent='';if(!q.value.trim())return;
+  try{const x=await (await fetch({{ url_for('dbeditor.systems_misje_mobs')|tojson }}+'?q='+encodeURIComponent(q.value),{credentials:'same-origin'})).json();
+   x.forEach(function(m){const b=el('button',{type:'button'},'#'+m.vnum+' — '+m.name+' (poz. '+m.level+(m.rank>=4?', boss':'')+')');b.addEventListener('click',function(){r.race=m.vnum;num.value=m.vnum;if(!r.name)r.name=m.name.slice(0,40);markDirty();editor(kind);refreshList();});res.appendChild(b);});
+   if(!x.length)res.appendChild(el('small',null,'Nic nie znaleziono.'));}catch(e){}},300);});
+ grid.appendChild(l);if(r.race)name();
+}
+function editor(kind){
+ const box=root.querySelector('.mi-editor[data-kind='+kind+']');box.textContent='';const r=S[kind][sel[kind]];
+ if(!r){box.appendChild(el('div',{class:'pu-empty'},'Wybierz etap z listy albo dodaj nowy.'));return;}
+ box.appendChild(el('h3',null,'Etap '+(sel[kind]+1)+': '+(r.name||'(bez nazwy)')));
+ const p=el('p',null,'Id etapu: '+r.id+' ');p.appendChild(el('span',{class:'mi-badge'},'postęp graczy liczony po id — nie zmienia się'));box.appendChild(p);
+ const tools=el('div',{class:'mi-rowtools'});
+ [['↑ Wyżej',-1],['↓ Niżej',1]].forEach(function(a){const b=el('button',{type:'button'},a[0]);b.addEventListener('click',function(){const i=sel[kind],j=i+a[1];if(j<0||j>=S[kind].length)return;const t=S[kind][i];S[kind][i]=S[kind][j];S[kind][j]=t;sel[kind]=j;markDirty();refreshList();editor(kind);});tools.appendChild(b);});
+ const del=el('button',{type:'button'},'🗑 Usuń etap');del.addEventListener('click',function(){if(!confirm('Usunąć ten etap?'))return;S[kind].splice(sel[kind],1);sel[kind]=Math.max(0,sel[kind]-1);markDirty();refreshList();editor(kind);});tools.appendChild(del);
+ box.appendChild(tools);
+ const grid=el('div',{class:'mi-grid'});box.appendChild(grid);
+ field(grid,'Nazwa w oknie',r.name,'text',function(v){r.name=v;},{wide:true});
+ if(kind==='metin'){field(grid,'Poziom metinów do niszczenia',r.target,'number',function(v){r.target=v;},{min:1,hint:'liczą się wszystkie metiny tego poziomu'});}
+ else mobPicker(grid,r,kind);
+ field(grid,kind==='hunts'?'Ile zabić':kind==='metin'?'Ile zniszczyć':'Ile razy zabić',r.kills,'number',function(v){r.kills=v;},{min:1});
+ field(grid,'Wymagany poziom gracza',r.level,'number',function(v){r.level=v;},{hint:'0 = bez wymagania'});
+ field(grid,'Miejsce (tekst w oknie)',r.location,'text',function(v){r.location=v;});
+ if(kind==='hunts'){
+  const l=el('label',{class:'pu-field'});l.appendChild(el('span',null,'Mapa, na której się liczy'));const s=el('select');
+  const o0=el('option',{value:'0'},'dowolna mapa');s.appendChild(o0);Object.keys(MAPS).forEach(function(k){s.appendChild(el('option',{value:k},k+' — '+MAPS[k]));});
+  if(!MAPS[r.map]&&r.map)s.appendChild(el('option',{value:String(r.map)},String(r.map)));s.value=String(r.map);s.addEventListener('change',function(){r.map=parseInt(s.value,10);markDirty();});l.appendChild(s);grid.appendChild(l);
+  field(grid,'Opis nagrody (czat po ukończeniu)',r.label,'text',function(v){r.label=v;},{wide:true,max:90});
+ }
+ box.appendChild(el('div',{class:'mi-sec'},'Stałe bonusy za ukończenie (do 8)'));
+ const bb=el('div',{class:'pu-bonuses'});box.appendChild(bb);bonusBox(bb,r.bonus);
+ const add=el('button',{type:'button',class:'pu-add'},'＋ Dodaj bonus');add.addEventListener('click',function(){if(Object.keys(r.bonus).length>=8){alert('Najwyżej 8 bonusów na etap.');return;}const f=freeBonus(r.bonus);if(!f)return;r.bonus[f]=0;addBonus(bb,r.bonus,f,0);markDirty();refreshList();});
+ const t2=el('div',{class:'pu-tools'});t2.appendChild(add);box.appendChild(t2);
+ box.appendChild(el('div',{class:'mi-sec'},'🎁 Nagrody jednorazowe (gracz dostaje raz, po ukończeniu etapu)'));const g=el('div',{class:'mi-grid'});box.appendChild(g);
+ if(kind!=='hunts'){
+  field(g,'Yang',r.yang,'number',function(v){r.yang=v;});
+  GIFTS.forEach(function(x){field(g,x[2]+' (szt.)',r[x[0]],'number',function(v){r[x[0]]=v;});});
+ } else field(g,'Yang',r.ryang||0,'number',function(v){r.ryang=v;});
+ r.items=r.items||[];
+ const ib=el('div',{class:'mi-items'});box.appendChild(ib);
+ function drawItems(){ib.textContent='';
+  r.items.forEach(function(it,idx){const d=el('div',{class:'mi-item'});d.appendChild(el('b',null,ITEMS[it[0]]||('#'+it[0])));
+   const n=el('input',{type:'number',min:'1',max:'200'});n.value=it[1];n.addEventListener('input',function(){it[1]=parseInt(n.value||'1',10)||1;markDirty();});d.appendChild(el('span',null,' × '));d.appendChild(n);
+   const x=el('button',{type:'button'},'✕');x.addEventListener('click',function(){r.items.splice(idx,1);markDirty();drawItems();});d.appendChild(x);ib.appendChild(d);});
+  if(r.items.length<10){const q=el('input',{type:'search',placeholder:'＋ dodaj przedmiot: wpisz nazwę lub numer (np. zwój, 71084)'});q.className='mi-itemq';const res=el('div',{class:'mi-results'});ib.appendChild(q);ib.appendChild(res);let t=null;
+   q.addEventListener('input',function(){clearTimeout(t);t=setTimeout(async function(){res.textContent='';if(!q.value.trim())return;
+    try{const x=await (await fetch({{ url_for('dbeditor.api_items')|tojson }}+'?q='+encodeURIComponent(q.value),{credentials:'same-origin'})).json();
+     (x.items||[]).forEach(function(it){const b=el('button',{type:'button'},'#'+it.vnum+' — '+it.name);b.addEventListener('click',function(){if(r.items.some(function(o){return o[0]===it.vnum;})){alert('Ten przedmiot już jest w nagrodzie.');return;}ITEMS[it.vnum]=it.name;r.items.push([it.vnum,1]);markDirty();drawItems();});res.appendChild(b);});
+     if(!(x.items||[]).length)res.appendChild(el('small',null,'Nic nie znaleziono.'));}catch(e){}},300);});}
+ }
+ drawItems();
+}
+root.querySelectorAll('.mi-new').forEach(function(b){b.addEventListener('click',function(){const kind=b.dataset.kind;let id=0;S[kind].forEach(function(r){id=Math.max(id,r.id);});
+ if(kind!=='hunts'&&id<1000)id=Math.max(id,1000);id+=1;if(id===99999)id+=1;
+ const r={id:id,level:0,race:0,kills:kind==='hunts'?100:20,name:'',location:'',bonus:{}};
+ if(kind==='hunts'){r.map=0;r.label='';}else{r.target=kind==='metin'?(S[kind].length?S[kind][S[kind].length-1].target+5:25):0;r.yang=0;GIFTS.forEach(function(x){r[x[0]]=0;});}
+ S[kind].push(r);sel[kind]=S[kind].length-1;markDirty();refreshList();editor(kind);});});
+['metin','boss'].forEach(function(k){const box=document.getElementById('mi-final-'+k);bonusBox(box,S.final[k]);});
+root.querySelectorAll('[data-final]').forEach(function(b){b.addEventListener('click',function(){const o=S.final[b.dataset.final];const f=freeBonus(o);if(!f)return;o[f]=0;addBonus(document.getElementById('mi-final-'+b.dataset.final),o,f,0);markDirty();});});
+refreshList();['hunts','metin','boss'].forEach(editor);
+form.addEventListener('change',function(e){if(e.target.type==='checkbox')markDirty();});
+form.addEventListener('submit',function(){S.master_enabled=form.querySelector('[name=master_enabled]').checked;S.enabled=form.querySelector('[name=enabled]').checked;S.bots=form.querySelector('[name=bots]').checked;document.getElementById('mi-payload').value=JSON.stringify(S);dirty=false;});
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+const labels={not_requested:'Nie zlecono zastosowania — gra używa wkompilowanych misji.',waiting:'⏳ Oczekiwanie na wszystkie kanały…',applied:'✔ Wszystkie kanały zastosowały misje.',error:'✖ Błąd zastosowania — sprawdź kanały.',unavailable:'Brak odczytu stanu.',topology_changed:'Zmienił się plan kanałów. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
+const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak obsługi',applying:'Przeliczanie',waiting:'Czeka',error:'Błąd'};
+function show(s){
+ document.getElementById('pu-state').textContent=(labels[s.state]||'Nieznany stan.')+(s.draft_pending&&s.state!=='not_requested'?' Zapisany projekt różni się od zastosowanego.':'');
+ const list=document.getElementById('pu-cores');list.textContent='';let ok=0;
+ (s.cores||[]).forEach(function(c){const li=document.createElement('li');li.dataset.state=c.state;li.textContent=c.name+': '+(names[c.state]||c.state);list.appendChild(li);if(c.state==='applied'||c.state==='ready')ok++;});
+ const chip=document.getElementById('pu-chip'),n=(s.cores||[]).length;chip.textContent='Kanały: '+ok+'/'+n;chip.className='pu-chip '+(n&&ok===n?'ok':'off');
+}
+show({{ status|tojson }});
+setInterval(async function(){try{const r=await fetch({{ url_for('dbeditor.systems_misje_status')|tojson }},{cache:'no-store',credentials:'same-origin'});if(r.ok)show(await r.json());}catch(e){}},5000);
+function tga(canvas,buf){const d=new DataView(buf);if(d.getUint8(2)!==2)return null;const id=d.getUint8(0),w=d.getUint16(12,true),h=d.getUint16(14,true),bpp=d.getUint8(16),top=(d.getUint8(17)&32)!==0,px=bpp/8;
+ if(bpp!==24&&bpp!==32)return null;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d'),img=ctx.createImageData(w,h);let o=18+id;
+ for(let y=0;y<h;y++){const row=top?y:h-1-y;for(let x=0;x<w;x++){const i=(row*w+x)*4;img.data[i]=d.getUint8(o+2);img.data[i+1]=d.getUint8(o+1);img.data[i+2]=d.getUint8(o);img.data[i+3]=px===4?d.getUint8(o+3):255;o+=px;}}
+ ctx.putImageData(img,0,0);return [w,h,bpp];}
+root.querySelectorAll('.mi-skin').forEach(function(s){const c=s.querySelector('canvas'),inp=s.querySelector('input[type=file]'),st=s.querySelector('.mi-skin-state');
+ if(c.dataset.url)fetch(c.dataset.url,{credentials:'same-origin'}).then(function(r){return r.arrayBuffer();}).then(function(b){tga(c,b);}).catch(function(){});
+ inp.addEventListener('change',async function(){const f=inp.files[0];if(!f)return;const r=tga(c,await f.arrayBuffer());const W=+inp.dataset.w,H=+inp.dataset.h;
+  if(!r){st.textContent='✖ to nie jest nieskompresowany TGA';st.style.color='#ff9d8f';return;}
+  const ok=r[0]===W&&r[1]===H&&r[2]===32;st.textContent=(ok?'✔ ':'✖ ')+r[0]+'×'+r[1]+' px, '+r[2]+'-bit'+(ok?' — pasuje':' — wymagany '+W+'×'+H+' px 32-bit');st.style.color=ok?'#9de0b8':'#ff9d8f';});});
+let start={{ tab|tojson }};try{start=sessionStorage.getItem('mi-tab')||start;}catch(e){}
+showTab(start);
+})();
+</script>
+</div>
+{% endblock %}

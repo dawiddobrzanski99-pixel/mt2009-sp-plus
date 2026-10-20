@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_ULEPSZANIE_V2 - edytor krokow ulepszania; pola jak w refine_edit.html (set_/create_/cost_/prob_/mv_/mc_/scope_). #}
+{% block title %}{{ family }} · Ulepszanie · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.ue-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:radial-gradient(circle at 10% 50%,#5a3a1466,transparent 45%),linear-gradient(135deg,#2a1d14,#151c27 60%);border:1px solid #6a4a2a;border-radius:16px;padding:20px 24px;margin-bottom:14px}
+.ue-hero h1{margin:0;font:800 28px/1.2 Georgia,serif;color:#ffd27a}
+.ue-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.ue-hero a{color:var(--sy-muted)}
+.ue-chain{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.ue-chain span{font-size:12px;padding:3px 9px;border-radius:12px;background:#1d1610;border:1px solid #6a4a2a;color:#f3d7a6}
+.ue-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.ue-card h2{margin:0 0 10px;font-size:16px;color:var(--sy-gold)}
+.ue-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ue-tools input,.ue-tools select{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:7px 10px;border-radius:8px;font:inherit;width:90px}
+.ue-tools select{width:auto}
+.ue-tools button,.ue-btn{background:#2c3b51;color:var(--sy-text);border:1px solid #52657f;border-radius:8px;padding:7px 12px;font:600 13px system-ui;cursor:pointer}
+.ue-tools button:hover,.ue-btn:hover{border-color:var(--sy-gold)}
+.ue-scope label{display:flex;gap:8px;align-items:center;margin:4px 0;color:var(--sy-text)}
+.ue-scope input{appearance:auto!important;width:16px;height:16px;accent-color:#edbd69}
+.ue-table{width:100%;border-collapse:separate;border-spacing:0 6px}
+.ue-table th{font-size:12px;color:var(--sy-muted);text-align:left;font-weight:600;padding:0 8px}
+.ue-table td{background:#151d29;padding:8px;vertical-align:middle}
+.ue-table td:first-child{border-radius:10px 0 0 10px}.ue-table td:last-child{border-radius:0 10px 10px 0}
+.ue-table tr.is-changed td{background:#2a2618}
+.ue-lvl{font-weight:800;color:var(--sy-gold);white-space:nowrap;font-size:15px}
+.ue-yang{width:130px;background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:8px 10px;border-radius:8px;font:inherit}
+.ue-prob{display:flex;gap:8px;align-items:center;min-width:220px}
+.ue-prob input[type=range]{flex:1;accent-color:#edbd69}
+.ue-prob input[type=number]{width:64px;background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:8px;border-radius:8px;font:inherit}
+.ue-pct{font-weight:800;min-width:14px}
+.ue-mats{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ue-mat{display:flex;gap:6px;align-items:center;padding:4px 6px 4px 4px;border-radius:9px;background:#101722;border:1px solid #3d4b61}
+.ue-mat img{width:24px;height:24px}
+.ue-mat input{width:56px;background:#0d131c;color:var(--sy-text);border:1px solid #3d4b61;border-radius:6px;padding:4px;font:inherit}
+.ue-mat button{background:none;border:0;color:#ff9d8f;cursor:pointer;font-size:15px}
+.ue-add{background:#1b2432;border:1px dashed #52657f;color:var(--sy-muted);border-radius:9px;padding:6px 10px;cursor:pointer}
+.ue-pick{position:relative}
+.ue-pick input{background:#101722;color:var(--sy-text);border:1px solid var(--sy-gold);border-radius:8px;padding:6px 10px;font:inherit;width:240px}
+.ue-res{position:absolute;z-index:20;top:100%;left:0;width:320px;max-height:260px;overflow:auto;background:#101722;border:1px solid #53627a;border-radius:10px;margin-top:4px}
+.ue-res button{display:flex;gap:8px;align-items:center;width:100%;text-align:left;background:none;border:0;color:var(--sy-text);padding:6px 10px;cursor:pointer}
+.ue-res button:hover{background:#243045}
+.ue-res img{width:24px;height:24px}
+.ue-none{font-size:13px;color:var(--sy-muted)}
+.ue-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:sticky;bottom:12px;background:#1b2432f2;padding:14px;border:1px solid var(--sy-line);border-radius:12px;z-index:5}
+.ue-actions .save{background:var(--sy-gold);color:#20180d;border:0;border-radius:8px;padding:10px 18px;font:700 14px system-ui;cursor:pointer}
+.ue-dirty{margin-left:auto;color:var(--sy-gold);font-weight:700;font-size:13px}
+@media(max-width:800px){.ue-table thead{display:none}.ue-table tr{display:block;margin-bottom:8px}.ue-table td{display:block;border-radius:0!important}.ue-table td:first-child{border-radius:10px 10px 0 0!important}.ue-table td:last-child{border-radius:0 0 10px 10px!important}}
+</style>
+<header class="ue-hero">
+ <div><p><a href="{{ url_for('dbeditor.systems_ulepszanie', q=family) }}">← Ulepszanie</a></p><h1>🔨 {{ family }}</h1>
+ <div class="ue-chain">{% for it in chain %}<span>{{ it.name }}</span>{% endfor %}</div></div>
+</header>
+<form method="post" id="ue-form">
+<input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><input type="hidden" name="action" value="save">
+<section class="ue-card">
+ <h2>⚡ Szybkie ustawianie</h2>
+ <div class="ue-tools">
+  <span>Szansa od +</span><input type="number" id="t-from" min="0" max="20" value="0"><span>do +</span><input type="number" id="t-to" min="1" max="21" value="{{ steps|length }}">
+  <span>=</span><input type="number" id="t-prob" min="1" max="100" value="50"><span>%</span><button type="button" id="t-set">Ustaw</button>
+  <span style="margin-left:14px">Yang ×</span><input type="number" id="t-mul" step="0.1" min="0" value="1.5"><button type="button" id="t-yang">Pomnóż</button>
+ </div>
+ <div class="ue-tools" style="margin-top:10px"><span>Gotowe krzywe szansy:</span>
+  <button type="button" data-curve="95,95,90,90,85,80,70,60,50">🙂 Łagodna</button>
+  <button type="button" data-curve="90,90,90,90,80,60,50,40,30">⚖️ Normalna (jak w grze)</button>
+  <button type="button" data-curve="80,75,70,60,50,40,30,20,10">💀 Trudna</button>
+  <button type="button" data-curve="100,100,100,100,100,100,100,100,100">✅ Zawsze 100%</button>
+ </div>
+</section>
+{% if shared %}
+<section class="ue-card ue-scope">
+ <h2>🔗 Wspólne przepisy</h2>
+ <p class="ue-none">Niektóre kroki używają przepisu, który mają też inne przedmioty (np. ta sama broń innej klasy). Zmiana dotyczy:</p>
+ <label><input type="radio" name="ue-scope" value="family" checked> <b>tylko tej rodziny</b> — panel utworzy dla niej osobny przepis (bezpiecznie)</label>
+ <label><input type="radio" name="ue-scope" value="all"> <b>wszystkich przedmiotów</b> z tymi samymi przepisami</label>
+ {% for s in shared %}<input type="hidden" name="scope_{{ s }}" value="family" class="ue-scope-field">{% endfor %}
+</section>
+{% endif %}
+<section class="ue-card">
+ <h2>📈 Kroki ulepszania</h2>
+ <table class="ue-table">
+  <thead><tr><th>Krok</th><th>Koszt (Yang)</th><th>Szansa</th><th>Ulepszacze / materiały</th></tr></thead>
+  <tbody>
+  {% for s in steps %}
+  <tr data-i="{{ s.index }}" data-level="{{ s.level }}">
+   <td class="ue-lvl">+{{ s.level - 1 }} → +{{ s.level }}<input type="hidden" name="set_{{ s.index }}" value="{{ s.set }}">{% if not s.vals %}<br><label class="ue-none"><input type="checkbox" name="create_{{ s.index }}" value="1"> utwórz przepis</label>{% endif %}</td>
+   <td><input class="ue-yang" type="number" min="0" max="2000000000" name="cost_{{ s.index }}" value="{{ s.vals.cost if s.vals else 0 }}" required></td>
+   <td><div class="ue-prob"><input type="range" min="1" max="100" value="{{ s.vals.prob if s.vals else 50 }}"><input type="number" min="1" max="100" name="prob_{{ s.index }}" value="{{ s.vals.prob if s.vals else 50 }}" required><span class="ue-pct">%</span></div></td>
+   <td><div class="ue-mats" data-init="{{ s.mats|tojson|forceescape }}"></div>
+    {% for k in range(slots) %}<input type="hidden" name="mv_{{ s.index }}_{{ k }}" value=""><input type="hidden" name="mc_{{ s.index }}_{{ k }}" value="">{% endfor %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+ </table>
+</section>
+<div class="ue-actions"><button class="save" name="zastosuj" value="1" onclick="return confirm('Zapisać i od razu zastosować? Kanały gry zrestartują się (ok. minuty, gracze online zostaną rozłączeni), a potem pobiorą się pliki klienta (dbdata).')">💾 Zapisz i zastosuj (restart + pliki klienta)</button>
+ <button class="save" name="zastosuj" value="0" style="background:transparent;border:1px solid var(--sy-line);color:var(--sy-text)">Tylko zapisz</button>
+ <span class="ue-none">„Zapisz i zastosuj” = jak „Zastosuj” w panelu: krótki restart kanałów i pobranie zmienionych plików klienta.{% if pending_total %} Oczekujące zmiany: <b>{{ pending_total }}</b>.{% endif %}</span><span class="ue-dirty" id="ue-dirty" hidden>● Niezapisane zmiany</span></div>
+</form>
+{% if request.args.get('pobierz') == '1' %}{# MT2009_NASZE_ULEPSZANIE_ZASTOSUJ_V1: pliki klienta po restarcie #}
+<p class="ue-none" style="margin-top:10px">⬇ Pliki klienta (dbdata) pobierają się automatycznie. Jeśli nie — <a href="{{ url_for('dbeditor.clientdata_zip') }}">kliknij tutaj</a>, rozpakuj i podmień w kliencie.</p>
+<iframe src="{{ url_for('dbeditor.clientdata_zip') }}" style="display:none" title="pobieranie"></iframe>
+{% endif %}
+<script id="ue-names" type="application/json">{{ names|tojson }}</script>
+<script>
+(function(){
+'use strict';
+const form=document.getElementById('ue-form'),NAMES=JSON.parse(document.getElementById('ue-names').textContent),SLOTS={{ slots }};
+const API={{ url_for('dbeditor.api_items')|tojson }};let dirty=false;
+function mark(tr){dirty=true;document.getElementById('ue-dirty').hidden=false;if(tr)tr.classList.add('is-changed');}
+function color(p){return p>=70?'#7fe0a8':p>=40?'#ffd27a':'#ff9d8f';}
+const rows=Array.from(form.querySelectorAll('tbody tr'));
+function el(t,a,x){const e=document.createElement(t);if(a)for(const k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function icon(v){return '/db/item-icon/'+v;}
+function sync(tr){
+ const i=tr.dataset.i,chips=Array.from(tr.querySelectorAll('.ue-mat'));
+ for(let k=0;k<SLOTS;k++){const c=chips[k];form.querySelector('[name=mv_'+i+'_'+k+']').value=c?c.dataset.v:'';form.querySelector('[name=mc_'+i+'_'+k+']').value=c?c.querySelector('input').value:'';}
+ const add=tr.querySelector('.ue-add');if(add)add.hidden=chips.length>=SLOTS;
+}
+function chip(tr,v,c,name,img){
+ const box=tr.querySelector('.ue-mats'),d=el('span',{class:'ue-mat'});d.dataset.v=v;
+ if(img){const im=el('img',{alt:''});im.src=img;im.onerror=function(){im.remove();};d.appendChild(im);}
+ d.appendChild(el('span',null,name||('#'+v)));const n=el('input',{type:'number',min:'1',max:'32767'});n.value=c;n.title='ilość';d.appendChild(n);
+ const x=el('button',{type:'button',title:'usuń'},'✕');d.appendChild(x);
+ n.addEventListener('input',function(){sync(tr);mark(tr);});x.addEventListener('click',function(){d.remove();sync(tr);mark(tr);});
+ box.insertBefore(d,box.querySelector('.ue-add'));sync(tr);
+}
+function picker(tr){
+ const box=tr.querySelector('.ue-mats');const add=el('button',{type:'button',class:'ue-add'},'＋ materiał');box.appendChild(add);
+ add.addEventListener('click',function(){
+  if(tr.querySelector('.ue-pick'))return;
+  const w=el('span',{class:'ue-pick'}),q=el('input',{type:'search',placeholder:'🔍 nazwa lub numer przedmiotu'}),res=el('div',{class:'ue-res'});res.hidden=true;w.appendChild(q);w.appendChild(res);box.insertBefore(w,add);q.focus();
+  let timer=null;
+  q.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(async function(){res.textContent='';if(!q.value.trim()){res.hidden=true;return;}
+   try{const x=await (await fetch(API+'?q='+encodeURIComponent(q.value),{credentials:'same-origin'})).json();res.hidden=false;
+    (x.items||[]).forEach(function(it){const b=el('button',{type:'button'});if(it.icon){const im=el('img',{alt:''});im.src=it.icon;im.onerror=function(){im.remove();};b.appendChild(im);}b.appendChild(el('span',null,'#'+it.vnum+' '+it.name));
+     b.addEventListener('click',function(){if(tr.querySelector('.ue-mat[data-v="'+it.vnum+'"]')){alert('Ten materiał już jest w tym kroku.');return;}chip(tr,it.vnum,1,it.name,it.icon);w.remove();mark(tr);});res.appendChild(b);});
+    if(!(x.items||[]).length)res.appendChild(el('div',{class:'ue-none',style:'padding:8px'},'Nic nie znaleziono.'));}catch(e){}},250);});
+  q.addEventListener('keydown',function(e){if(e.key==='Escape')w.remove();if(e.key==='Enter')e.preventDefault();});
+  document.addEventListener('click',function out(e){if(!w.contains(e.target)&&e.target!==add){w.remove();document.removeEventListener('click',out);}});
+ });
+}
+rows.forEach(function(tr){
+ picker(tr);
+ JSON.parse(tr.querySelector('.ue-mats').dataset.init||'[]').forEach(function(m){const n=NAMES[m[0]]||NAMES[String(m[0])];chip(tr,m[0],m[1],n?n.name:null,n&&n.icon);});
+ sync(tr);tr.classList.remove('is-changed');
+ const r=tr.querySelector('input[type=range]'),p=tr.querySelector('input[name^=prob_]'),pc=tr.querySelector('.ue-pct');
+ function paint(){pc.style.color=color(+p.value);p.style.color=color(+p.value);}
+ r.addEventListener('input',function(){p.value=r.value;paint();mark(tr);});p.addEventListener('input',function(){r.value=p.value;paint();mark(tr);});paint();
+ tr.querySelector('.ue-yang').addEventListener('input',function(){mark(tr);});
+});
+function setProb(tr,v){const p=tr.querySelector('input[name^=prob_]');p.value=v;tr.querySelector('input[type=range]').value=v;p.dispatchEvent(new Event('input'));}
+document.getElementById('t-set').addEventListener('click',function(){const a=+document.getElementById('t-from').value,b=+document.getElementById('t-to').value,v=Math.max(1,Math.min(100,+document.getElementById('t-prob').value||1));
+ rows.forEach(function(tr){const from=+tr.dataset.level-1;if(from>=a&&from<b)setProb(tr,v);});});
+document.getElementById('t-yang').addEventListener('click',function(){const m=+document.getElementById('t-mul').value||1,a=+document.getElementById('t-from').value,b=+document.getElementById('t-to').value;
+ rows.forEach(function(tr){const from=+tr.dataset.level-1;if(from>=a&&from<b){const y=tr.querySelector('.ue-yang');y.value=Math.min(2000000000,Math.round((+y.value||0)*m));mark(tr);}});});
+form.querySelectorAll('[data-curve]').forEach(function(b){b.addEventListener('click',function(){const c=b.dataset.curve.split(',').map(Number);rows.forEach(function(tr,i){setProb(tr,c[Math.min(i,c.length-1)]);});});});
+form.querySelectorAll('input[name=ue-scope]').forEach(function(r){r.addEventListener('change',function(){form.querySelectorAll('.ue-scope-field').forEach(function(f){f.value=r.value;});mark();});});
+form.addEventListener('submit',function(){rows.forEach(sync);dirty=false;});
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+})();
+</script>
+</div>
+{% endblock %}

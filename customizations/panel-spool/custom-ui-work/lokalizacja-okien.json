@@ -1,0 +1,14 @@
+[
+  {
+    "pack": "root",
+    "path": "uiscript/dungeoninfowindow.py"
+  },
+  {
+    "pack": "root",
+    "path": "uiscript/dungeonrankingwindow.py"
+  },
+  {
+    "pack": "root",
+    "path": "d:/ymir work/ui/game/mission_panel/background.tga"
+  }
+]

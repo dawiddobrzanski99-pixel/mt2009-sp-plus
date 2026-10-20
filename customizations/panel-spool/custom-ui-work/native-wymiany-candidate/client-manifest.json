@@ -1,0 +1,11 @@
+{
+  "status": "prepared-not-published",
+  "base_root": {
+    "root.index": "df0c36494a7e348ae1cb1c34881d8db31c498e296d35eb41f6fa56d8d79450c4",
+    "root.data": "2875942b8925c348c733649de9932faebbfcb5f6e2af1450597ecf438dd4959f"
+  },
+  "prepared_root": {
+    "root.index": "85abf0c55bd35dd3fe7e0ea2585128a7d6bd217b17a5ed3170081c1add77d607",
+    "root.data": "6c335762969ebf00e5262320d57dfa657c22ee9a3609a51dda209c3f730d3708"
+  }
+}

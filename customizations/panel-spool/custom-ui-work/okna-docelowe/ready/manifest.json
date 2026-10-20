@@ -1,0 +1,13 @@
+{
+  "status": "ready-for-client-test",
+  "base_hashes": {
+    "root.index": "8497e589a5c4e095c2d1db3b0affc7bf584588f6f2601a0484857851c44b7c1e",
+    "root.data": "e376bf3afe01b9687b83da4d267c78523c7b716e5000fe009d049eaf3ac571c2"
+  },
+  "prepared_hashes": {
+    "root.index": "e2742ba054cb573b2a499e857136f3b1a5b705f8ee2064f9eea911a4c68493f3",
+    "root.data": "0560ad0ee53febb4c01c828c6c07f74d20e14454e6559a01a7b9ba13a052a080"
+  },
+  "preserved_ukrainka_and_ku": true,
+  "changed_entries": 38
+}

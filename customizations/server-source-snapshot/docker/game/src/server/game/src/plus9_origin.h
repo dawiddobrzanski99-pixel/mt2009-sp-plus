@@ -14,6 +14,9 @@
 #include "item.h"
 #include "desc.h"
 
+#include <fstream>
+#include <cstring>
+#include <cstdio>
 namespace mt2009_plus9 {
 std::unique_ptr<SQLMsg> Query(const std::string& text)
 {
@@ -56,8 +59,41 @@ bool SeedReady()
     MYSQL_ROW row=mysql_fetch_row(m->Get()->pSQLResult);
     return row && row[0] && atoi(row[0])==1;
 }
+// MT2009_NASZE_PLUS9_USTAWIENIA_V1: ustawienia ogloszenia z panelu (Kuznia Mocy -> Ulepszanie).
+void SebanPlus9Announce(LPCHARACTER ch, LPITEM item, unsigned long ordinal)
+{
+    bool announce=true; unsigned long first=0;
+    std::string text="[Ulepszenie +9] {gracz} ulepszyl {przedmiot} jako {nr}. osoba na serwerze!";
+    const char* spool=getenv("M2_RATES_SPOOL");
+    std::ifstream f((std::string(spool && *spool ? spool : "/opt/m2spool")+"/systems/plus9/config.txt").c_str());
+    std::string key, value;
+    while (f >> key >> value) {
+        if (key=="announce") announce=value=="1";
+        else if (key=="first") first=strtoul(value.c_str(),NULL,10);
+        else if (key=="text" && value.size()%2==0 && value.size()<=400) {
+            std::string out; bool good=true;
+            for (size_t i=0;i<value.size();i+=2){ int v=0; if (sscanf(value.substr(i,2).c_str(),"%2x",&v)!=1 || v<32){good=false;break;} out+=static_cast<char>(v); }
+            if (good && !out.empty()) text=out;
+        }
+    }
+    if (!announce || (first && ordinal>first)) return;
+    const std::pair<const char*,std::string> fields[3]={{"{gracz}",ch->GetName()},{"{przedmiot}",item->GetName()},{"{nr}",std::to_string(ordinal)}};
+    for (const auto& field : fields) for (size_t at; (at=text.find(field.first))!=std::string::npos;) text.replace(at,strlen(field.first),field.second);
+    if (text.size()>240) text.resize(240);
+    BroadcastNotice(text.c_str());
+}
+// MT2009_NASZE_PLUS9_USTAWIENIA_V2: glowny wylacznik (czytany przy kazdym +9 i kazdym zapytaniu o nick).
+bool SebanPlus9Enabled()
+{
+    const char* spool=getenv("M2_RATES_SPOOL");
+    std::ifstream f((std::string(spool && *spool ? spool : "/opt/m2spool")+"/systems/plus9/config.txt").c_str());
+    std::string key, value;
+    while (f >> key >> value) if (key=="enabled") return value!="0";
+    return true;
+}
 void Register(LPCHARACTER ch, LPITEM item)
 {
+    if (!SebanPlus9Enabled()) return; // MT2009_NASZE_PLUS9_USTAWIENIA_V2
     if (!ch || !ch->IsPC() || !IsNine(item) || !item->GetID() || !ch->GetPlayerID()) return;
     Lock lock;
     if (!lock.held || !SeedReady()) { sys_err("PLUS9_ORIGIN: seed/lock not ready item=%u",item->GetID()); return; }
@@ -90,9 +126,7 @@ void Register(LPCHARACTER ch, LPITEM item)
     if(!ok) Execute("ROLLBACK");
     else {
         sys_log(0,"PLUS9_ORIGIN: refined pid=%u name=%s item=%u vnum=%u person=%lu",ch->GetPlayerID(),ch->GetName(),item->GetID(),item->GetVnum(),ordinal);
-        char notice[256];
-        snprintf(notice,sizeof(notice),"[Ulepszenie +9] %s ulepszyl %s jako %lu. osoba na serwerze!",ch->GetName(),item->GetName(),ordinal);
-        BroadcastNotice(notice);
+        SebanPlus9Announce(ch,item,ordinal); // MT2009_NASZE_PLUS9_USTAWIENIA_V1
     }
 }
 void Copy(LPITEM oldItem, LPITEM newItem)
@@ -102,6 +136,7 @@ void Copy(LPITEM oldItem, LPITEM newItem)
 }
 void Reply(LPCHARACTER ch, unsigned int token, DWORD id, DWORD vnum, bool publicShop)
 {
+    if(!SebanPlus9Enabled()){ch->ChatPacket(CHAT_TYPE_COMMAND,"Plus9Origin %u %u 0 -",token,vnum);return;} // MT2009_NASZE_PLUS9_USTAWIENIA_V2
     std::string sql="SELECT HEX(o.author_name),o.ordinal FROM player.mt2009_plus9_items o";
     if(publicShop) sql+=" JOIN player.item i ON i.id=o.item_id AND i.vnum=o.vnum AND i.window='IKASHOP_OFFLINESHOP'";
     sql+=" WHERE o.item_id="+Number(id)+" AND o.vnum="+Number(vnum);

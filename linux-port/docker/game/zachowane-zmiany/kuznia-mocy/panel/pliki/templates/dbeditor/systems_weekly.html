@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_RANKING_V1 - wyglad jak kon/polimorfia. Pola: bk_<slot>, bv_<slot>; slot = (kategoria-1)*3+miejsce. #}
+{% block title %}Ranking tygodnia · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+#poly-ui{color:var(--sy-text)}
+#poly-ui *{box-sizing:border-box}
+#poly-ui h2{color:var(--sy-gold);margin:0 0 12px;font-family:inherit}
+#poly-ui p{color:var(--sy-muted);margin:10px 0}
+#poly-ui .pu-hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#1f2a3b,#151c27);border:1px solid var(--sy-line);border-radius:16px;padding:22px 26px}
+#poly-ui .pu-hero h1{margin:0;font:700 28px/1.2 system-ui}
+#poly-ui .pu-hero p{margin:4px 0 0}
+#poly-ui .pu-big{font-size:52px;line-height:1}
+#poly-ui .pu-chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+#poly-ui .pu-chip{padding:6px 12px;border-radius:20px;border:1px solid var(--sy-line);background:#111a26;font-size:13px;font-weight:600}
+#poly-ui .pu-chip.ok{border-color:#396e56;color:#5fd39a}#poly-ui .pu-chip.off{border-color:#85534c;color:#ff9d8f}
+#poly-ui .pu-tabs{display:flex;gap:4px;border-bottom:1px solid var(--sy-line);margin:20px 0 18px;flex-wrap:wrap}
+#poly-ui .pu-tabs button{background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:10px 16px;color:var(--sy-muted)}
+#poly-ui .pu-tabs button:hover{background:transparent;color:var(--sy-text)}
+#poly-ui .pu-tabs button.is-active{color:var(--sy-gold);border-bottom-color:var(--sy-gold)}
+#poly-ui .pu-pane[hidden]{display:none!important}
+#poly-ui .pu-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:20px;margin:0 0 18px}
+#poly-ui input[type=checkbox]{appearance:auto!important;position:static!important;opacity:1!important;width:18px!important;height:18px!important;accent-color:#edbd69}
+#poly-ui input[type=number],#poly-ui input[type=search]{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit;max-width:100%}
+#poly-ui button{background:#2c3b51;color:var(--sy-text);border:1px solid #52657f;border-radius:8px;padding:9px 15px;font:600 14px system-ui;cursor:pointer}
+#poly-ui button:hover{background:#3d506b}
+#poly-ui button[value=save_apply]{background:var(--sy-gold);color:#20180d;border-color:var(--sy-gold)}
+#poly-ui button[value=undo],#poly-ui button[value=defaults]{background:transparent}
+#poly-ui .pu-workspace{display:grid;grid-template-columns:minmax(290px,380px) minmax(0,1fr);gap:18px}
+#poly-ui .pu-list,#poly-ui .pu-editor{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:16px;min-width:0}
+#poly-ui .pu-filter{width:100%}
+#poly-ui .pu-scroll{max-height:640px;overflow:auto;margin-top:12px;padding-right:4px}
+#poly-ui .pu-group{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--sy-gold);margin:12px 4px 6px}
+#poly-ui .pu-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;width:100%;text-align:left;background:#151d29;border:1px solid transparent;border-radius:10px;padding:9px 12px;margin:0 0 6px;font-weight:400}
+#poly-ui .pu-row:hover{background:#202b3c;border-color:var(--sy-line)}
+#poly-ui .pu-row.is-selected{border-color:var(--sy-gold);background:#2a2b24}
+#poly-ui .pu-row[hidden]{display:none}
+#poly-ui .pu-num{display:grid;place-items:center;width:44px;height:38px;border-radius:10px;background:#101722;border:2px solid var(--sy-line);font-weight:700}
+#poly-ui .pu-row.is-dirty .pu-num{border-color:var(--sy-gold)}
+#poly-ui .pu-name{font-weight:700}
+#poly-ui .pu-sum{font-size:12px;color:var(--sy-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#poly-ui .pu-level[hidden]{display:none}
+#poly-ui .pu-level h3{margin:0 0 4px;font-size:22px;color:var(--sy-gold)}
+#poly-ui .pu-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:16px}
+#poly-ui .pu-field{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid var(--sy-line);border-radius:10px;background:#151d29}
+#poly-ui .pu-field span{font-size:13px;color:var(--sy-muted)}
+#poly-ui .pu-field small{font-size:11px;color:#7d8ba0}
+#poly-ui .pu-field input{width:100%}
+#poly-ui .pu-field input.changed{border-color:var(--sy-gold);background:#2a2618}
+#poly-ui .pu-field.zero{opacity:.65}
+#poly-ui .pu-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#poly-ui .pu-stepper{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--sy-line)}
+#poly-ui .pu-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:sticky;bottom:12px;background:#1b2432f2;padding:14px;border:1px solid var(--sy-line);border-radius:12px;z-index:5;margin-top:18px}
+#poly-ui .pu-dirty{margin-left:auto;color:var(--sy-gold);font-weight:700;font-size:13px}
+#poly-ui .pu-dirty[hidden]{display:none}
+#poly-ui .pu-switch{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--sy-line)}
+#poly-ui .pu-switch:last-child{border-bottom:0}
+#poly-ui .pu-switch b{display:block;color:var(--sy-text)}
+#poly-ui .pu-switch small{color:var(--sy-muted)}
+#poly-ui #pu-state{font-weight:700;color:var(--sy-text);font-size:16px}
+#poly-ui #pu-cores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;list-style:none;padding:0}
+#poly-ui #pu-cores li{padding:10px 12px;border:1px solid var(--sy-line);border-radius:8px;background:#111a26;font-size:13px}
+#poly-ui #pu-cores li[data-state=applied],#poly-ui #pu-cores li[data-state=ready]{border-color:#396e56;color:#9de0b8}
+#poly-ui #pu-cores li[data-state=missing],#poly-ui #pu-cores li[data-state=error]{border-color:#85534c;color:#ffc0b2}
+#poly-ui .pu-hint{font-size:13px;padding:12px 14px;border-left:4px solid var(--sy-gold);background:#edbd6914;border-radius:8px}
+@media(max-width:900px){ #poly-ui .pu-workspace{grid-template-columns:1fr}#poly-ui .pu-scroll{max-height:300px}#poly-ui #pu-cores{grid-template-columns:repeat(2,minmax(0,1fr))}#poly-ui .pu-chips{margin-left:0}}
+@media(max-width:520px){ #poly-ui #pu-cores{grid-template-columns:1fr}}
+</style>
+<div id="poly-ui">
+<header class="pu-hero">
+ <span class="pu-big" aria-hidden="true">🏆</span>
+ <div><h1>Ranking tygodnia — bonusy tytułów</h1>
+ <p>Top 3 każdej z 8 kategorii dostaje tytuł na cały następny tydzień. Kilka tytułów = suma bonusów. Zmiana działa od razu po zastosowaniu.</p></div>
+ <div class="pu-chips">
+  <span class="pu-chip {{ 'ok' if config.master_enabled and config.enabled else 'off' }}">Bonusy: {{ 'włączone' if config.master_enabled and config.enabled else 'wyłączone' }}</span>
+  <span class="pu-chip" id="pu-chip">Kanały: …</span>
+ </div>
+</header>
+<nav class="pu-tabs">
+ <button type="button" data-tab="poziomy" class="is-active">📊 Tytuły i bonusy</button>
+ <button type="button" data-tab="ustawienia">⚙️ Ustawienia</button>
+ <button type="button" data-tab="stan">📡 Stan serwera</button>
+</nav>
+<form method="post" id="poly-form">
+<input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><input type="hidden" name="revision" value="{{ revision }}">
+<div class="pu-pane" data-pane="ustawienia" hidden>
+ <div class="pu-card">
+  <h2>Ustawienia modułu</h2>
+  <label class="pu-switch"><input type="checkbox" name="master_enabled" value="1" {% if config.master_enabled %}checked{% endif %}><span><b>Moduł włączony</b><small>Wyłączony = tytuły nie dają bonusów z tej tabeli (ranking i tytuły działają dalej).</small></span></label>
+  <label class="pu-switch"><input type="checkbox" name="enabled" value="1" {% if config.enabled %}checked{% endif %}><span><b>Bonusy tytułów włączone</b><small>Wyłączenie nie kasuje tabeli.</small></span></label>
+ </div>
+ <p class="pu-hint">Wartości domyślne = dotychczasowe bonusy tytułów z gry. Nazwy tytułów i kategorii są w ROOT klienta.</p>
+</div>
+<div class="pu-pane" data-pane="poziomy">
+<div class="pu-workspace">
+ <div class="pu-list">
+  <h2>Tytuły</h2>
+  <input class="pu-filter" type="search" placeholder="Szukaj tytułu…" aria-label="Szukaj tytułu">
+  <div class="pu-scroll">
+   {% for c, items in groups %}<div class="pu-group">{{ c[2] }} {{ c[1] }}</div>{% for s in items %}<button type="button" class="pu-row" data-level="{{ s.n }}"><span class="pu-num">{{ s.roman }}</span><span style="min-width:0"><div class="pu-name">{{ c[0] }} {{ s.roman }}</div><div class="pu-sum"></div></span></button>{% endfor %}{% endfor %}
+  </div>
+ </div>
+ <div class="pu-editor">
+ {% for c, items in groups %}{% for s in items %}{% set n = s.n %}
+  <div class="pu-level" data-level="{{ n }}" hidden>
+   <h3>{{ c[2] }} {{ c[0] }} {{ s.roman }}</h3><p>Kategoria {{ c[1] }} — miejsce {{ s.place }} w poprzednim tygodniu.</p>
+   <div class="pu-bonus-head"><span>Rodzaj bonusu</span><span>Wartość</span><span></span></div>
+   <div class="pu-bonuses" data-init="{{ init[n]|tojson|forceescape }}"></div>
+   <div class="pu-tools"><button type="button" class="pu-add">＋ Dodaj bonus</button><button type="button" class="pu-copy">⧉ Kopiuj z poprzedniego tytułu</button><button type="button" class="pu-clear">Usuń wszystkie bonusy</button></div>
+   <div class="pu-stepper"><button type="button" data-step="-1">← Poprzedni tytuł</button><button type="button" data-step="1">Następny tytuł →</button></div>
+  </div>
+ {% endfor %}{% endfor %}
+ </div>
+</div>
+</div>
+<div class="pu-actions">
+ <button name="action" value="save">Zapisz projekt</button>
+ <button name="action" value="save_apply">Zapisz i zastosuj</button>
+ <button name="action" value="undo" formnovalidate>Przywróć poprzedni projekt</button>
+ <button name="action" value="defaults" formnovalidate onclick="return confirm('Wczytać wartości domyślne (obecne z gry) do projektu?')">Wartości domyślne</button>
+ <span class="pu-dirty" id="pu-dirty" hidden>● Niezapisane zmiany</span>
+</div>
+</form>
+<div class="pu-pane" data-pane="stan" hidden>
+ <section class="pu-card" aria-live="polite"><h2>Wynik zastosowania</h2><p id="pu-state"></p><ul id="pu-cores"></ul>
+ <p><small>Test w grze: <b>/ranking info</b> pokazuje tytuły; <b>/diag_potwory</b> sumę bonusów na potwory.</small></p></section>
+</div>
+</div>
+<template id="pu-bonus-template"><div class="pu-bonus"><select aria-label="Rodzaj bonusu">{% for o in opts %}<option value="{{ o.k }}" data-limit="{{ limit }}" data-short="{{ o.s }}">{{ o.l }}</option>{% endfor %}</select><input type="number" inputmode="numeric" min="0" value="0" required aria-label="Wartość"><button type="button" class="pu-remove">Usuń</button></div></template>
+<style>
+#poly-ui .pu-duration{margin-top:14px;border-color:#5a4a2a;background:#1f1b12}
+#poly-ui .pu-bonus-head{display:grid;grid-template-columns:minmax(0,1fr) 120px 80px;gap:10px;font-size:12px;color:var(--sy-muted);margin:18px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+#poly-ui .pu-bonus{display:grid;grid-template-columns:minmax(0,1fr) 120px 80px;gap:10px;margin:8px 0}
+#poly-ui .pu-bonus select{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit;width:100%}
+#poly-ui .pu-bonus input{width:100%}
+#poly-ui .pu-remove{color:#ffb8b8;border-color:#78505a;background:#38272e;padding:9px 8px}
+#poly-ui .pu-add{border-style:dashed}
+#poly-ui .pu-empty{padding:14px;border:1px dashed var(--sy-line);border-radius:10px;color:var(--sy-muted);text-align:center;margin-top:8px}
+@media(max-width:520px){ #poly-ui .pu-bonus,#poly-ui .pu-bonus-head{grid-template-columns:minmax(0,1fr) 90px}#poly-ui .pu-remove{grid-column:1/-1}}
+</style>
+<script>
+(function(){
+'use strict';
+const root=document.getElementById('poly-ui'),form=document.getElementById('poly-form');let dirty=false;
+function markDirty(){dirty=true;document.getElementById('pu-dirty').hidden=false;}
+const tabs=root.querySelectorAll('.pu-tabs button');
+function showTab(n){tabs.forEach(function(b){b.classList.toggle('is-active',b.dataset.tab===n);});root.querySelectorAll('.pu-pane').forEach(function(p){p.hidden=p.dataset.pane!==n;});root.querySelector('.pu-actions').hidden=n==='stan';try{sessionStorage.setItem('wr-tab',n);}catch(e){}}
+tabs.forEach(function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
+const rows=Array.from(root.querySelectorAll('.pu-row')),levels=Array.from(root.querySelectorAll('.pu-level'));
+function summary(i){
+ const lv=levels[i],parts=[];
+ lv.querySelectorAll('.pu-bonus').forEach(function(b){const o=b.querySelector('select').selectedOptions[0];parts.push(o.dataset.short+' +'+b.querySelector('input').value);});
+ rows[i].querySelector('.pu-sum').textContent=parts.length?parts.join(' · '):'brak bonusów';
+ let empty=lv.querySelector('.pu-empty');
+ if(!lv.querySelector('.pu-bonus')&&!empty){empty=document.createElement('div');empty.className='pu-empty';empty.textContent='Brak bonusów — kliknij „Dodaj bonus” albo skopiuj z poprzedniego poziomu.';lv.querySelector('.pu-bonuses').after(empty);}
+ if(lv.querySelector('.pu-bonus')&&empty)empty.remove();
+}
+function addRow(lv,key,value){
+ const n=lv.dataset.level,tpl=document.getElementById('pu-bonus-template').content.cloneNode(true);
+ const sel=tpl.querySelector('select'),inp=tpl.querySelector('input');sel.name='bk_'+n;inp.name='bv_'+n;sel.value=key;inp.max=sel.selectedOptions[0].dataset.limit;inp.value=value;
+ lv.querySelector('.pu-bonuses').appendChild(tpl);
+}
+function select(i){
+ if(i<0||i>=levels.length)return;
+ levels.forEach(function(l,j){l.hidden=j!==i;});rows.forEach(function(r,j){r.classList.toggle('is-selected',j===i);});
+ rows[i].scrollIntoView({block:'nearest'});
+}
+levels.forEach(function(lv){JSON.parse(lv.querySelector('.pu-bonuses').dataset.init||'[]').forEach(function(p){addRow(lv,p[0],p[1]);});});
+rows.forEach(function(r,i){r.addEventListener('click',function(){select(i);});summary(i);});
+levels.forEach(function(lv,i){
+ function touched(){rows[i].classList.add('is-dirty');summary(i);markDirty();}
+ lv.addEventListener('input',touched);
+ lv.addEventListener('change',function(e){if(e.target.matches('.pu-bonus select'))e.target.closest('.pu-bonus').querySelector('input').max=e.target.selectedOptions[0].dataset.limit;touched();});
+ new MutationObserver(function(){summary(i);}).observe(lv.querySelector('.pu-bonuses'),{childList:true});
+ lv.querySelector('.pu-stepper').addEventListener('click',function(e){const d=+e.target.dataset.step;if(d)select(i+d);});
+ lv.addEventListener('click',function(e){if(e.target.classList.contains('pu-remove')){e.target.closest('.pu-bonus').remove();touched();}});
+ lv.querySelector('.pu-add').addEventListener('click',function(){
+  const used=Array.from(lv.querySelectorAll('.pu-bonus select')).map(function(s){return s.value;});
+  const opts=Array.from(document.getElementById('pu-bonus-template').content.querySelector('select').options);
+  const free=opts.find(function(o){return used.indexOf(o.value)<0;});
+  if(!free){alert('Wszystkie rodzaje bonusów są już dodane.');return;}
+  addRow(lv,free.value,0);touched();
+ });
+ lv.querySelector('.pu-copy').addEventListener('click',function(){
+  if(i<1){alert('To pierwszy tytuł.');return;}
+  if(lv.querySelector('.pu-bonus')&&!confirm('Zastąpić bonusy tego tytułu wartościami z poprzedniego?'))return;
+  lv.querySelector('.pu-bonuses').textContent='';
+  levels[i-1].querySelectorAll('.pu-bonus').forEach(function(b){addRow(lv,b.querySelector('select').value,b.querySelector('input').value);});touched();
+ });
+ lv.querySelector('.pu-clear').addEventListener('click',function(){
+  if(!confirm('Usunąć wszystkie bonusy tego tytułu?'))return;
+  lv.querySelector('.pu-bonuses').textContent='';touched();
+ });
+});
+root.querySelector('.pu-filter').addEventListener('input',function(e){const v=e.target.value.toLowerCase();rows.forEach(function(r){r.hidden=r.textContent.toLowerCase().indexOf(v)<0;});});
+form.addEventListener('change',function(e){if(e.target.type==='checkbox')markDirty();});
+form.addEventListener('invalid',function(e){const lv=e.target.closest('.pu-level');if(lv){showTab('poziomy');select(levels.indexOf(lv));}},true);
+form.addEventListener('submit',function(){dirty=false;});
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+const labels={not_requested:'Nie zlecono zastosowania — gra używa wartości domyślnych.',waiting:'⏳ Oczekiwanie na wszystkie kanały…',applied:'✔ Wszystkie kanały zastosowały tabelę.',error:'✖ Błąd zastosowania — sprawdź kanały.',unavailable:'Brak odczytu stanu.',topology_changed:'Zmienił się plan kanałów. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
+const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak obsługi',applying:'Przeliczanie',waiting:'Czeka',error:'Błąd'};
+function show(s){
+ document.getElementById('pu-state').textContent=(labels[s.state]||'Nieznany stan.')+(s.draft_pending&&s.state!=='not_requested'?' Zapisany projekt różni się od zastosowanego.':'');
+ const list=document.getElementById('pu-cores');list.textContent='';let ok=0;
+ (s.cores||[]).forEach(function(c){const li=document.createElement('li');li.dataset.state=c.state;li.textContent=c.name+': '+(names[c.state]||c.state);list.appendChild(li);if(c.state==='applied'||c.state==='ready')ok++;});
+ const chip=document.getElementById('pu-chip'),n=(s.cores||[]).length;chip.textContent='Kanały: '+ok+'/'+n;chip.className='pu-chip '+(n&&ok===n?'ok':'off');
+}
+show({{ status|tojson }});
+setInterval(async function(){try{const r=await fetch({{ url_for('dbeditor.systems_ranking_status')|tojson }},{cache:'no-store',credentials:'same-origin'});if(r.ok)show(await r.json());}catch(e){}},5000);
+let start='poziomy';try{start=sessionStorage.getItem('wr-tab')||'poziomy';}catch(e){}
+showTab(start);select(0);
+})();
+</script>
+</div>
+{% endblock %}

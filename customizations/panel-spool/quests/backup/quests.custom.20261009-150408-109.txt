@@ -1,0 +1,11 @@
+# MT2009_PLUS_DB_EDITOR_QUESTS_V1: questy z panelu Sebana (Edytor bazy danych -> Questy)
+# off/item/gold/exp/bonus/extra <TAB> quest ... - opis w dbeditor/quests.py i bin/m2-quests
+# collect_quest_lv30 - Biolog ? Z?by Orka (poz. 30)
+extra	collect_quest_lv30	state:__complete	bonus	95	15
+extra	collect_quest_lv30	state:__complete	bonus	16	10
+# horse_upgrade - Ulepszenie konia
+extra	horse_upgrade	item:50052	bonus	122	5
+# konie - Trening konia (stajenny)
+bonus	konie	53	*	53	1
+bonus	konie	149	*	149	1
+bonus	konie	150	*	150	1

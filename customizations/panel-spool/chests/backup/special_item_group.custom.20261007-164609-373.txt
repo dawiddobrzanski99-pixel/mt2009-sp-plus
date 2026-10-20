@@ -1,0 +1,3 @@
+# MT2009_PLUS_CHEST_EDITOR_V1 - grupy special_item_group.txt zmienione w panelu Seban
+# zapis: 2026-10-07 16:39:32 - przywrocono grupe 1 z obrazu gry
+# Te grupy zastepuja grupy z obrazu gry o tym samym Vnum (m2-chests, przy starcie rdzeni).

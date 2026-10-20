@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_SKAN_V1 #}
+{% block title %}Skanuj serwer · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.sk-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#16261f,#151c27 70%);border:1px solid #2f6a52;border-radius:16px;padding:20px 24px;margin-bottom:16px}
+.sk-hero h1{margin:0;font:800 28px/1.2 Georgia,serif;color:#9de0b8}
+.sk-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.sk-hero form{margin-left:auto}
+.sk-hero button{background:#5fd39a;color:#0d2a1c;border:0;border-radius:10px;padding:11px 18px;font:700 14px system-ui;cursor:pointer}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.sk-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:16px 18px}
+.sk-card h2{margin:0 0 8px;font-size:17px;color:var(--sy-gold)}
+.sk-num{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 10px}
+.sk-num span{padding:4px 10px;border-radius:12px;font-weight:700;font-size:13px;background:#151d29;border:1px solid var(--sy-line)}
+.sk-num .add{color:#7fe0a8}.sk-num .chg{color:#ffd27a}.sk-num .del{color:#ff9d8f}
+.sk-list{list-style:none;margin:0;padding:0;max-height:220px;overflow:auto;font-size:13px}
+.sk-list li{padding:3px 0;border-bottom:1px solid #263142;color:var(--sy-muted)}
+.sk-list b{color:var(--sy-text)}
+.sk-todo{margin:0 0 16px;padding:14px 18px;border-left:4px solid var(--sy-gold);background:#edbd6914;border-radius:8px}
+.sk-todo li{margin:4px 0}
+</style>
+<header class="sk-hero"><span style="font-size:48px">🔄</span>
+ <div><h1>Skanuj serwer</h1><p>Co zmieniło się w bazie od ostatniego skanu{% if when %} ({{ when }}){% endif %}. Kuźnia Mocy czyta bazę na żywo — skan tylko pokazuje, co odświeżyć dla klienta.</p></div>
+ <form method="post"><input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><button>✔ Zapisz obecny stan jako punkt odniesienia</button></form>
+</header>
+{% if error %}<p class="sk-todo">Nie udało się odczytać bazy: {{ error }}</p>{% endif %}
+{% if not last %}
+ <p class="sk-todo">To pierwszy skan. Kliknij <b>„Zapisz obecny stan”</b> — następnym razem zobaczysz, co się zmieniło. Teraz w bazie: {% for k, n in counts.items() %}<b>{{ titles[k] }}</b>: {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}.</p>
+{% elif result %}
+ <div class="sk-todo"><b>Co zrobić:</b><ul>
+  {% if need_dbdata %}<li>📥 Zmieniły się przedmioty — <b>pobierz nowe dbdata z panelu</b> i podmień w kliencie. Nowe przedmioty potrzebują też ikon/modeli w Twoich plikach klienta.</li>{% endif %}
+  {% if need_restart %}<li>🔁 Zmieniły się potwory lub przepisy ulepszeń — kliknij <b>„Zastosuj”</b> w panelu (krótki restart kanałów), jeśli jeszcze tego nie zrobiłeś.</li>{% endif %}
+  {% if not need_dbdata and not need_restart %}<li>✅ Bez zmian wymagających odświeżenia klienta.</li>{% endif %}
+  <li>Nowe przedmioty i potwory są już widoczne w wyszukiwarkach Kuźni Mocy (ulepszanie, misje, nagrody).</li>
+  <li>Po sprawdzeniu kliknij „Zapisz obecny stan”, żeby następny skan liczył od teraz.</li>
+ </ul></div>
+ <div class="sk-grid">
+ {% for key, r in result.items() %}
+  <section class="sk-card"><h2>{{ r.title }} <small style="color:var(--sy-muted);font-weight:400">({{ r.total }})</small></h2>
+   <div class="sk-num"><span class="add">+{{ r.added|length }} nowe</span><span class="chg">~{{ r.changed|length }} zmienione</span><span class="del">−{{ r.removed|length }} usunięte</span></div>
+   {% if r.added or r.changed or r.removed %}<ul class="sk-list">
+    {% for k, n in r.added[:40] %}<li>🟢 <b>#{{ k }}</b> {{ n }}</li>{% endfor %}
+    {% for k, n in r.changed[:40] %}<li>🟡 <b>#{{ k }}</b> {{ n }}</li>{% endfor %}
+    {% for k, n in r.removed[:40] %}<li>🔴 <b>#{{ k }}</b> {{ n }}</li>{% endfor %}
+   </ul>{% else %}<p style="color:var(--sy-muted);margin:0">Bez zmian.</p>{% endif %}
+  </section>
+ {% endfor %}
+ </div>
+{% endif %}
+</div>
+{% endblock %}

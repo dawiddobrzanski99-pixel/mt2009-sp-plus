@@ -1,0 +1,50 @@
+# MT2009_PLUS_CHEST_EDITOR_V1 - grupy special_item_group.txt zmienione w panelu Seban
+# zapis: 2026-10-08 08:13:04 - zmieniono grupe 50122
+# Te grupy zastepuja grupy z obrazu gry o tym samym Vnum (m2-chests, przy starcie rdzeni).
+
+Group	PanelChest_3210
+{
+	Vnum	3210
+	1	27001	1	1	0	-- Czerwona Mikstura (M) - do zmiany
+}
+
+Group	MT2009_chest_30773
+{
+	Vnum	30773
+	Type	pct
+	1	s950731	1	100	0	-- Losowanie z grupy 950731 (MT2009_chest_biblioteka_gear)
+	2	s950732	1	100	0	-- Losowanie z grupy 950732 (MT2009_chest_biblioteka_misc)
+	3	s950732	1	40	0	-- Losowanie z grupy 950732 (MT2009_chest_biblioteka_misc)
+	4	s950733	1	30	0	-- Losowanie z grupy 950733 (MT2009_chest_biblioteka_pet)
+	5	s950734	1	100	0	-- Losowanie z grupy 950734 (MT2009_chest_biblioteka_sakwa)
+	6	s950735	1	40	0	-- Losowanie z grupy 950735 (MT2009_chest_biblioteka_mat)
+	7	s950736	1	15	0	-- Losowanie z grupy 950736 (MT2009_chest_biblioteka_val)
+	8	39030	1	5	0	-- Rada Pustelnika
+	9	39008	1	5	0	-- Zwój Egzorcyzmu
+}
+
+Group	알수없는상자
+{
+	Vnum	50033
+	1	25040	1	1	0	-- Zwój Błogosławieństwa
+	2	3210	1	1	0	-- Ostrze Z Czerw. Stali+0
+	3	290	1	1	0	-- Miecz Pełni Księżyca+0
+	4	7160	1	1	0	-- Wachlarz Jes. Wiatru+0
+	5	2150	1	1	0	-- Łuk Z Rogu Jelenia+0
+	6	5110	1	1	0	-- Antyczny Dzwon+0
+	7	1170	1	1	0	-- Kozik Czar. Liś.+0
+}
+
+Group	부서진_귀걸이_상자
+{
+	Vnum	50122
+	1	39028	1	1	0	-- Zaczarowanie Przedmiotu
+	2	71285	1	1	0	-- Wzmocnienie Przedmiotu
+}
+
+Group	eva_box
+{
+	Vnum	50124
+	1	71152	1	1	0	-- Zielona Siła
+	2	71151	1	1	0	-- Zielony Czar
+}

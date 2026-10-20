@@ -1,0 +1,21 @@
+Seban horse editor 2.0.0-preview.1 — SOURCE INSTALLER, NOT LIVE DEPLOYMENT.
+Reviewed base: 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103.
+PASS: 31 local automated tests, including C++11 protocol/clock harnesses,
+form/auth/CSRF, all-core acknowledgement, client conflicts/preservation,
+immutable full ZIP publication and verified HTTP download, configuration export,
+single-file check/apply/idempotence/rollback and injected partial failure.
+PASS: Python 2 grammar for three modified/generated client modules, tooltip fixtures.
+PASS: uploaded historical ROOT fixture: 1079 entries; 1077 untouched records byte-identical;
+original data prefix retained, repeated patch makes no changes.
+PASS: generated browser JavaScript syntax; shell syntax for integration scripts.
+NOT VERIFIED: full native engine or panel Docker build/link; live database export;
+VPS permissions; current Windows packs; browser rendering; actual game bonuses/relog.
+Clock tests compile the actual module header against game API stubs, not the full engine.
+A known general autodbdata test also failed on untouched baseline with no dbdata stamp.
+Personal editions publish a complete verified ZIP within the horse editor.
+The legacy global client ZIP and its existing external publisher remain unchanged.
+No VPS deployment, game restart, SQL/account/character writes, commit or push performed.
+FIRST VPS ACTION: python3 /root/seban-edytor-instalator.py --check
+--apply writes source files and small backups only; it does not activate the editor.
+Initial runtime integration requires a separately checked build/deployment.
+Windows ROOT must be protected separately; the VPS save command cannot fetch PC files.

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_KOPIA_V1 #}
+{% block title %}Kopia ustawień · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.kp-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#1d2a3d,#151c27 70%);border:1px solid var(--sy-line);border-radius:16px;padding:20px 24px;margin-bottom:16px}
+.kp-hero h1{margin:0;font:800 28px/1.2 Georgia,serif;color:#ffd27a}
+.kp-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.kp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:14px}
+.kp-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:18px 20px}
+.kp-card h2{margin:0 0 8px;font-size:18px;color:var(--sy-gold)}
+.kp-card p,.kp-card li{color:var(--sy-muted)}
+.kp-card button{border:0;border-radius:10px;padding:11px 18px;font:700 14px system-ui;cursor:pointer}
+.kp-dl{background:var(--sy-gold);color:#20180d}.kp-up{background:#5fd39a;color:#0d2a1c}
+.kp-card input[type=file]{margin:8px 0 12px;color:var(--sy-text)}
+.kp-sys{list-style:none;padding:0;margin:8px 0 14px;display:grid;gap:4px}
+.kp-rep li{margin:3px 0}
+.kp-ok{color:#9de0b8}.kp-skip{color:#ffd27a}.kp-err{color:#ffb0a0}
+</style>
+<header class="kp-hero"><span style="font-size:48px">💾</span>
+ <div><h1>Kopia ustawień Kuźni</h1><p>Zachowaj swoje ustawienia przed aktualizacją serwera i wgraj je z powrotem po ponownej instalacji Kuźni Mocy.</p></div></header>
+{% if author %}{# MT2009_NASZE_USTAWIENIA_AUTORA_V1 #}
+<form class="kp-card" style="margin-bottom:14px;border-color:#6a5326" method="post" action="{{ url_for('dbeditor.systems_kopia_author') }}" onsubmit="return confirm('Wgrać zaznaczone systemy z ustawień autora? Obecne ustawienia tych systemów zostaną zastąpione.')">
+ <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+ <h2>🐉 Ustawienia autora Kuźni ({{ author.created }})</h2>
+ <p>Każdy system możesz zacząć na <b>świeżo</b> (puste bonusy, rangi z Twojej gry) albo wziąć gotowe ustawienia autora.
+  Zaznacz, które systemy wziąć od autora — reszta zostaje bez zmian. Możesz to zrobić teraz albo później.</p>
+ <ul class="kp-sys">{% for k, n in author.systems %}<li><label><input type="checkbox" name="systemy" value="{{ k }}"{% if k == 'misje' %} checked{% endif %}> {{ n }}</label></li>{% endfor %}</ul>
+ <p><small>Misje (Polowania, Metinologia, Bossologia) są zawsze w zestawie autora — także przy świeżym starcie. Potwory i przedmioty, których nie masz w bazie, zostaną pominięte (raport niżej).</small></p>
+ <button class="kp-up">Wgraj zaznaczone od autora</button>
+</form>
+{% endif %}
+<div class="kp-grid">
+ <form class="kp-card" method="post" action="{{ url_for('dbeditor.systems_kopia_export') }}">
+  <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+  <h2>⬇ Pobierz kopię</h2>
+  <p>Jeden plik ZIP ze wszystkimi ustawieniami i grafikami:</p>
+  <ul class="kp-sys">{% for k, n, ok in have %}<li>{{ '✔' if ok else '—' }} {{ n }}{% if not ok %} <small>(jeszcze nie ustawiane)</small>{% endif %}</li>{% endfor %}<li>✔ Sława (ustawienia ogłoszeń)</li></ul>
+  <button class="kp-dl">⬇ Pobierz kopię ustawień</button>
+ </form>
+ <form class="kp-card" method="post" enctype="multipart/form-data" action="{{ url_for('dbeditor.systems_kopia_import') }}" onsubmit="return confirm('Wgrać kopię? Obecne ustawienia systemów z kopii zostaną zastąpione i od razu zastosowane na serwerze.')">
+  <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+  <h2>⬆ Wgraj kopię</h2>
+  <ol><li>Panel <b>czyta bazę od nowa</b> — nowe potwory i przedmioty są od razu dostępne.</li>
+   <li>Twoje ustawienia wracają i są stosowane na serwerze (bez restartu).</li>
+   <li>To, czego nowy serwer nie ma (np. usunięty potwór w etapie misji), jest pomijane i wypisane w raporcie.</li></ol>
+  <input type="file" name="kopia" accept=".zip" required>
+  <br><button class="kp-up">⬆ Wgraj i zastosuj</button>
+  <p><small>Po wgraniu zbuduj nowy ROOT na Przeglądzie, jeśli w kopii były grafiki (odznaki rang, okno Ctrl+N).</small></p>
+ </form>
+</div>
+{% if report %}
+<section class="kp-card" style="margin-top:14px"><h2>📋 Raport ostatniego wgrania ({{ report.time }})</h2>
+ <ul class="kp-rep">
+  {% for x in report.ok %}<li class="kp-ok">✔ {{ x }}</li>{% endfor %}
+  {% for x in report.skipped %}<li class="kp-skip">⚠ pominięto: {{ x }}</li>{% endfor %}
+  {% for x in report.errors %}<li class="kp-err">✖ {{ x }}</li>{% endfor %}
+ </ul></section>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+--[[
+	Quest to obtain Bag of Emotions
+	Dev: WLsj24
+--]]
+quest zodiac_emergency_mission begin
+	state start begin
+		when login or levelup with pc.level >= 20 begin
+			set_state(information)
+		end
+	end
+
+	state information begin
+		when letter begin
+			local v=find_npc_by_vnum(20438)
+			if 0!=v then
+				target.vid("__TARGET__", v, mob_name(20438))
+			end
+			send_letter("Alarm w Œwi¹tyni Zodiaku") --10163
+		end
+		when button or info begin
+			say_title("Alarm w Œwi¹tyni Zodiaku") --10163
+			local today = math.floor(get_global_time() / 86400)
+			if today == pc.getf("zodiac_emergency_mission", "animasphere_timestamp") then
+				say("Wróæ jutro, gdy ponownie zbierzesz 24 Animosfery.")
+				return
+			end
+			say("Szuka³ ciê Mnich Milbon. Chce ci coœ podarowaæ i[ENTER]czeka na ciebie w Œwi¹tyni Zodiaku. Przeniesie[ENTER]ciê tam teleporter.") --10164
+			say_reward("Zagadaj do NPC ze strza³k¹ nad g³ow¹. Migaj¹cy[ENTER]punkt na minimapie poka¿e ci, gdzie go mo¿esz[ENTER]znaleŸæ.") --10208
+		end
+		when __TARGET__.click or 20438.chat."Alarm w Œwi¹tyni Zodiaku" begin --10163
+			target.delete("__TARGET__")
+			say_title("Alarm w Œwi¹tyni Zodiaku") --10163
+			say(mob_name(20438))
+			local today = math.floor(get_global_time() / 86400)
+			if today == pc.getf("zodiac_emergency_mission", "animasphere_timestamp") then
+				say("Wróæ jutro, gdy ponownie zbierzesz 24 Animosfery.")
+				return
+			end
+			say("Witam! Mam dla ciebie prezent, ale najpierw muszê[ENTER]poprosiæ ciê o przys³ugê. W Œwi¹tyni Zodiaku[ENTER]gwa³townie wzros³a moc mrocznej energii. Na[ENTER]szczêœcie mo¿na j¹ absorbowaæ za pomoc¹[ENTER]Animosfer. Udaj siê do œwi¹tyni i u¿yj 24[ENTER]Animosfer, by ponownie obni¿yæ poziom energii.[ENTER]Uwaga: nie mo¿esz ukoñczyæ misji, jeœli masz[ENTER]aktywowany znak stra¿nika.") --10165
+			wait()
+			say_title("Alarm w Œwi¹tyni Zodiaku") --10163
+			if pc.get_animasphere() < 24 then
+				say(mob_name(20438))
+				say("Wróæ, gdy bêdziesz mia³ co najmniej 24 Animosfery.")
+				return
+			end
+			say(pc.get_name())
+			say("Wszystko jasne.") --10166
+			pc.setf("zodiac_emergency_mission", "animasphere_info", pc.get_animasphere()-24)
+			set_state(go_to_mission)
+		end
+	end
+
+	state go_to_mission begin
+		when letter begin
+			local v=find_npc_by_vnum(20438)
+			if 0!=v then
+				target.vid("__TARGET2__", v, mob_name(20438))
+			end
+			send_letter("Alarm w Œwi¹tyni Zodiaku") --10163
+		end
+		when login with (pc.get_animasphere() <= pc.getf("zodiac_emergency_mission", "animasphere_info")) begin
+			pc.setf("zodiac_emergency_mission", "animasphere_complete", 1)
+		end
+		when button or info begin
+			say_title("Alarm w Œwi¹tyni Zodiaku") --10163
+			if pc.getf("zodiac_emergency_mission", "animasphere_complete") == 1 then
+				say("Gotowe! Wróæ do Mnicha Milbon, by odebraæ prezent.") --10168
+				say_reward("Zagadaj do NPC ze strza³k¹ nad g³ow¹. Migaj¹cy[ENTER]punkt na minimapie poka¿e ci, gdzie go mo¿esz[ENTER]znaleŸæ.") --10208
+			else
+				say("U¿yj Animosfer, by obni¿yæ mroczn¹ energiê w[ENTER]Œwi¹tyni Zodiaku zanim bêdzie za póŸno. Wchodz¹c[ENTER]do œwi¹tyni, zu¿ywasz automatycznie Animosfery.[ENTER]Uwaga: nie mo¿esz ukoñczyæ misji, jeœli masz[ENTER]aktywowany znak stra¿nika.") --10167
+			end
+		end
+		when __TARGET2__.click or 20438.chat."Alarm w Œwi¹tyni Zodiaku" begin
+			target.delete("__TARGET2__")
+			say_title("Alarm w Œwi¹tyni Zodiaku") --10163
+			say(mob_name(20438))
+			if pc.getf("zodiac_emergency_mission", "animasphere_complete") == 1 then
+				say("Dziêkujê. Na razie œwi¹tynia jest bezpieczna. Oto[ENTER]twój prezent. Jednak energia znowu wzroœnie. Wróæ[ENTER]po 24 godzinach, by zmniejszyæ poziom energii za[ENTER]pomoc¹ Animosfer. Oczywiœcie, ¿e otrzymasz za to[ENTER]kolejn¹ nagrodê.") --10169
+				local today = math.floor(get_global_time() / 86400)
+				pc.setf("zodiac_emergency_mission", "animasphere_timestamp", today)
+				pc.setf("zodiac_emergency_mission", "animasphere_info", 0)
+				pc.setf("zodiac_emergency_mission", "animasphere_complete", 0)
+				pc.give_item2(38060, 1) --Bag of Emotions
+				set_state(information)
+			else
+				say("U¿yj Animosfer, by obni¿yæ mroczn¹ energiê w[ENTER]Œwi¹tyni Zodiaku zanim bêdzie za póŸno. Wchodz¹c[ENTER]do œwi¹tyni, zu¿ywasz automatycznie Animosfery.[ENTER]Uwaga: nie mo¿esz ukoñczyæ misji, jeœli masz[ENTER]aktywowany znak stra¿nika.") --10167
+			end
+		end
+	end
+
+end

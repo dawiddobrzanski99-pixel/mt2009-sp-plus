@@ -1,0 +1,4 @@
+@echo off
+rem Kuznia Mocy - instalator na PC. Docker Desktop musi byc uruchomiony.
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0instaluj.ps1" %*
+pause

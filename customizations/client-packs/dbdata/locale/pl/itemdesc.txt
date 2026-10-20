@@ -4541,3 +4541,4 @@
 59009	Skrzynia Skladnikow Mikstur	Sk³adniki mikstur	
 59011	Skrzynia z Od³amkami	Jeden losowy od³amek do bonusów 6. i 7. Szary 30%, Bia³y 23%, Zielony 17%, ¯ó³ty 12%, Niebieski 8%, Fioletowy 5%, Czerwony 3%, Têczowy 1,5%, Œwiêty 0,5%.	
 59010	Skrzynia Receptur	Zawiera jedna losowa recepture wywaru lub mikstury z dropu metinow.	
+70108	Marmur Czarnego Orka	Przemienia w Czarnego Orka. Mo¿esz zamieniæ siê w potwora ukrytego w marmurze.	

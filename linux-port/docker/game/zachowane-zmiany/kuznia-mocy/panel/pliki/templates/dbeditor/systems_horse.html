@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+{# SEBAN_HORSE_V2 + MT2009_NASZE_SYSTEMY_V1 (nowy wyglad) + MT2009_NASZE_KON_INSTRUKCJA_V1. Nazwy pol formularza bez zmian. #}
+{% block title %}Koń · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+{% set sys_active = 'kon' %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+#horse-ui{--hu-bg:#131923;--hu-card:#1b2432;--hu-card2:#151d29;--hu-line:#344154;--hu-text:#e9eef6;--hu-muted:#a9b7ca;--hu-gold:#edbd69;--hu-ok:#5fd39a;--hu-bad:#ff9d8f;
+ color:var(--hu-text);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+#horse-ui *{box-sizing:border-box}
+#horse-ui h2,#horse-ui h3{font-family:inherit;color:var(--hu-gold);margin:0 0 12px}
+#horse-ui p{color:var(--hu-muted);margin:10px 0}
+#horse-ui a{color:#8fcaff}
+#horse-ui label{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
+#horse-ui input:not([type=checkbox]):not([type=color]),#horse-ui select{background:#101722;color:var(--hu-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit;max-width:100%}
+#horse-ui input[type=checkbox]{appearance:auto!important;position:static!important;opacity:1!important;width:18px!important;height:18px!important;accent-color:#edbd69}
+#horse-ui input[type=color]{width:46px;height:38px;border:0;background:none;padding:0;cursor:pointer}
+#horse-ui input[type=file]{font-size:13px;max-width:100%}
+#horse-ui button{background:#2c3b51;color:var(--hu-text);border:1px solid #52657f;border-radius:8px;padding:9px 15px;font:600 14px system-ui;cursor:pointer}
+#horse-ui button:hover{background:#3d506b}
+#horse-ui button:focus-visible,#horse-ui input:focus-visible,#horse-ui select:focus-visible{outline:2px solid var(--hu-gold);outline-offset:3px}
+#horse-ui button[value=save_apply]{background:var(--hu-gold);color:#20180d;border-color:var(--hu-gold)}
+#horse-ui button[value=undo]{background:transparent}
+/* naglowek */
+#horse-ui .hu-hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#1f2a3b,#151c27);border:1px solid var(--hu-line);border-radius:16px;padding:22px 26px}
+#horse-ui .hu-hero .hu-big{font-size:52px;line-height:1}
+#horse-ui .hu-hero h1{margin:0;font:700 28px/1.2 system-ui;color:var(--hu-text)}
+#horse-ui .hu-hero p{margin:4px 0 0}
+#horse-ui .hu-chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+#horse-ui .hu-chip{padding:6px 12px;border-radius:20px;border:1px solid var(--hu-line);background:#111a26;font-size:13px;font-weight:600;white-space:nowrap}
+#horse-ui .hu-chip.ok{border-color:#396e56;color:var(--hu-ok)}
+#horse-ui .hu-chip.off{border-color:#85534c;color:var(--hu-bad)}
+/* zakladki */
+#horse-ui .hu-tabs{display:flex;gap:4px;border-bottom:1px solid var(--hu-line);margin:20px 0 18px;flex-wrap:wrap}
+#horse-ui .hu-tabs button{background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:10px 16px;color:var(--hu-muted)}
+#horse-ui .hu-tabs button:hover{background:transparent;color:var(--hu-text)}
+#horse-ui .hu-tabs button.is-active{color:var(--hu-gold);border-bottom-color:var(--hu-gold)}
+#horse-ui .hu-pane[hidden]{display:none!important}
+#horse-ui .hu-card{background:var(--hu-card);border:1px solid var(--hu-line);border-radius:14px;padding:20px;margin:0 0 18px}
+/* lista poziomow + edytor */
+#horse-ui .hu-workspace{display:grid;grid-template-columns:minmax(290px,380px) minmax(0,1fr);gap:18px}
+#horse-ui .hu-list,#horse-ui .hu-editor{background:var(--hu-card);border:1px solid var(--hu-line);border-radius:14px;padding:16px;min-width:0}
+#horse-ui .hu-filter{width:100%}
+#horse-ui .hu-scroll{max-height:640px;overflow:auto;margin-top:12px;padding-right:4px}
+#horse-ui .hu-row{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:center;width:100%;text-align:left;background:var(--hu-card2);border:1px solid transparent;border-radius:10px;padding:10px 12px;margin:0 0 6px;font-weight:400}
+#horse-ui .hu-row:hover{background:#202b3c;border-color:var(--hu-line)}
+#horse-ui .hu-row.is-selected{border-color:var(--hu-gold);background:#2a2b24}
+#horse-ui .hu-row[hidden]{display:none}
+#horse-ui .hu-num{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#101722;border:2px solid var(--hu-line);font-weight:700}
+#horse-ui .hu-row .hu-name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#horse-ui .hu-row .hu-sum{font-size:12px;color:var(--hu-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#horse-ui .hu-row.is-dirty .hu-num::after{content:"•";color:var(--hu-gold);position:relative;left:2px}
+#horse-ui .horse-level{border:0;padding:0;margin:0;background:transparent}
+#horse-ui .horse-level[hidden]{display:none!important}
+#horse-ui .horse-level>summary{list-style:none;pointer-events:none;font-size:22px;font-weight:700;color:var(--hu-gold);margin-bottom:6px}
+#horse-ui .horse-level>summary::-webkit-details-marker{display:none}
+#horse-ui .hu-field-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}
+#horse-ui .hu-preview{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;background:#101722;border:1px solid var(--hu-line);margin:12px 0}
+#horse-ui .hu-preview .name-preview{font-weight:700;font-size:16px}
+#horse-ui .icon-preview{border:1px solid var(--hu-line);border-radius:6px;background:#0c121b}
+#horse-ui .hu-bonus-head{display:grid;grid-template-columns:minmax(0,1fr) 110px 80px;gap:10px;font-size:12px;color:var(--hu-muted);margin:18px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+#horse-ui .bonus{display:grid;grid-template-columns:minmax(0,1fr) 110px 80px;gap:10px;margin:8px 0}
+#horse-ui .bonus select,#horse-ui .bonus input{width:100%;min-width:0}
+#horse-ui .remove-bonus{color:#ffb8b8;border-color:#78505a;background:#38272e;padding:9px 8px}
+#horse-ui .hu-level-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#horse-ui .add-bonus{border-style:dashed}
+#horse-ui .hu-empty{padding:14px;border:1px dashed var(--hu-line);border-radius:10px;color:var(--hu-muted);text-align:center}
+#horse-ui .hu-stepper{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--hu-line)}
+/* pasek akcji */
+#horse-ui .hu-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:sticky;bottom:12px;background:#1b2432f2;padding:14px;border:1px solid var(--hu-line);border-radius:12px;z-index:5;margin-top:18px;backdrop-filter:blur(4px)}
+#horse-ui .hu-dirty{margin-left:auto;color:var(--hu-gold);font-weight:700;font-size:13px}
+#horse-ui .hu-dirty[hidden]{display:none}
+/* ustawienia */
+#horse-ui .hu-switch{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--hu-line)}
+#horse-ui .hu-switch:last-child{border-bottom:0}
+#horse-ui .hu-switch b{display:block;color:var(--hu-text)}
+#horse-ui .hu-switch small{color:var(--hu-muted)}
+/* stan rdzeni */
+#horse-ui #apply-state{font-weight:700;color:var(--hu-text);font-size:16px}
+#horse-ui #core-state{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0;list-style:none}
+#horse-ui #core-state li{padding:10px 12px;border:1px solid var(--hu-line);border-radius:8px;background:#111a26;font-size:13px}
+#horse-ui #core-state li[data-state=ready],#horse-ui #core-state li[data-state=applied]{border-color:#396e56;color:#9de0b8}
+#horse-ui #core-state li[data-state=missing],#horse-ui #core-state li[data-state=error],#horse-ui #core-state li[data-state=stale]{border-color:#85534c;color:#ffc0b2}
+/* klient */
+#horse-ui .hu-howto table{width:100%;border-collapse:collapse;font-size:14px}
+#horse-ui .hu-howto th,#horse-ui .hu-howto td{text-align:left;padding:10px;border-bottom:1px solid var(--hu-line);vertical-align:top}
+#horse-ui .hu-howto th{color:var(--hu-muted);font-size:12px;text-transform:uppercase}
+#horse-ui .hu-steps{counter-reset:s;list-style:none;padding:0;margin:0}
+#horse-ui .hu-steps li{counter-increment:s;position:relative;padding:8px 0 8px 44px;color:var(--hu-muted)}
+#horse-ui .hu-steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:30px;height:30px;border-radius:50%;background:#2c3b51;color:var(--hu-gold);display:grid;place-items:center;font-weight:700}
+#horse-ui .hu-steps li b{color:var(--hu-text)}
+#horse-ui .hu-files{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+#horse-ui .hu-files label{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px;border:1px dashed #53627a;border-radius:10px;background:#101722}
+#horse-ui .hu-files label b{color:var(--hu-text)}
+#horse-ui .hu-hint{font-size:13px;padding:12px 14px;border-left:4px solid var(--hu-gold);background:#edbd6914;border-radius:8px}
+@media(max-width:900px){
+ #horse-ui .hu-workspace{grid-template-columns:1fr}
+ #horse-ui .hu-scroll{max-height:300px}
+ #horse-ui #core-state{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #horse-ui .hu-files{grid-template-columns:1fr}
+ #horse-ui .hu-chips{margin-left:0}
+}
+@media(max-width:520px){
+ #horse-ui .bonus,#horse-ui .hu-bonus-head{grid-template-columns:minmax(0,1fr) 90px}
+ #horse-ui .remove-bonus{grid-column:1/-1}
+ #horse-ui .hu-bonus-head span:last-child{display:none}
+ #horse-ui #core-state{grid-template-columns:1fr}
+}
+</style>
+<div id="horse-ui">
+
+<header class="hu-hero">
+ <span class="hu-big" aria-hidden="true">🐎</span>
+ <div>
+  <h1>Koń — bonusy poziomów</h1>
+  <p>Bonusy są stałe, także bez jazdy. Odporności w promilach: 50 = 5%.</p>
+ </div>
+ <div class="hu-chips">
+  <span class="hu-chip {{ 'ok' if config.master_enabled else 'off' }}">Moduł: {{ 'włączony' if config.master_enabled else 'wyłączony' }}</span>
+  <span class="hu-chip {{ 'ok' if config.enabled else 'off' }}">Bonusy: {{ 'włączone' if config.enabled else 'wyłączone' }}</span>
+  <span class="hu-chip" id="hu-cores-chip">Kanały: …</span>
+ </div>
+</header>
+
+<nav class="hu-tabs" role="tablist">
+ <button type="button" data-tab="poziomy" class="is-active">📊 Poziomy i bonusy</button>
+ <button type="button" data-tab="ustawienia">⚙️ Ustawienia</button>
+ <button type="button" data-tab="stan">📡 Stan serwera</button>
+</nav>
+
+<form method="post" enctype="multipart/form-data" id="horse-form">
+<input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><input type="hidden" name="revision" value="{{ revision }}">
+
+<div class="hu-pane" data-pane="ustawienia" hidden>
+ <div class="hu-card">
+  <h2>Ustawienia modułu</h2>
+  <label class="hu-switch"><input type="checkbox" name="master_enabled" value="1" {% if config.master_enabled %}checked{% endif %}><span><b>Moduł włączony</b><small>Główny przełącznik edytora konia.</small></span></label>
+  <label class="hu-switch"><input type="checkbox" name="enabled" value="1" {% if config.enabled %}checked{% endif %}><span><b>Bonusy konia włączone</b><small>Po zastosowaniu wyłączenie usuwa bonusy tego modułu. Konfiguracja, historia i poziomy koni zostają zachowane.</small></span></label>
+  <label class="hu-switch"><input type="checkbox" name="client_enabled" value="1" {% if config.client_enabled %}checked{% endif %}><span><b>Podgląd w kliencie</b><small>Nazwy, kolory i ikony w grze. Zmiana wyglądu wymaga nowego ROOT (Przegląd → Klient (ROOT)).</small></span></label>
+ </div>
+</div>
+
+<div class="hu-pane" data-pane="poziomy">
+{% for row in config.levels[1:] %}
+<details class="horse-level" data-level="{{row.level}}" {% if row.icon %}data-icon-url="{{url_for('dbeditor.systems_horse_asset',name=row.icon.rsplit('/',1)[-1])}}"{% endif %}><summary>Poziom {{row.level}} — {{row.name}}</summary>
+<div class="hu-field-row"><label>Nazwa <input name="name_{{row.level}}" value="{{row.name}}" maxlength="60" required></label>
+<label>Kolor <input type="color" name="color_{{row.level}}" value="{{row.color}}"></label></div>
+<div class="hu-field-row"><label>Grafika TGA 24/32-bit, do 256×256 <input type="file" name="icon_{{row.level}}" accept=".tga"></label>
+{% if row.icon %}<small>{{row.icon}}</small><label><input type="checkbox" name="clear_icon_{{row.level}}" value="1">Przywróć oryginalną ikonę</label>{% endif %}</div>
+<div class="hu-preview">Podgląd w grze: <canvas class="icon-preview" width="32" height="32"></canvas> <span class="name-preview" style="color:{{row.color}}">{{row.name}}</span></div>
+<div class="hu-bonus-head"><span>Rodzaj bonusu</span><span>Wartość</span><span></span></div>
+<div class="bonuses" data-init="{{ bonus_init[row.level]|tojson|forceescape }}"></div>
+<div class="hu-level-tools"><button type="button" class="add-bonus">＋ Dodaj bonus</button><button type="button" class="copy-prev">⧉ Kopiuj bonusy z poprzedniego poziomu</button></div>
+</details>{% endfor %}
+</div>
+
+<div class="hu-actions">
+ <button name="action" value="save">Zapisz konfigurację</button>
+ <button name="action" value="save_apply">Zapisz i zastosuj</button>
+ <button name="action" value="undo" formnovalidate>Przywróć poprzedni projekt</button>
+ <span class="hu-dirty" id="hu-dirty" hidden>● Niezapisane zmiany</span>
+</div>
+</form>
+
+
+<div class="hu-pane" data-pane="stan" hidden>
+ <section class="hu-card" aria-live="polite"><h2>Wynik zastosowania</h2><p id="apply-state"></p><ul id="core-state"></ul><p id="client-state"></p>
+ <p><small>Zastosowanie wymaga jednorazowo zainstalowanej obsługi w silniku. Późniejsze zmiany ustawień są odczytywane bez kompilacji i restartu.</small></p></section>
+</div>
+
+<template id="bonus-template"><div class="bonus"><select aria-label="Rodzaj bonusu"><optgroup label="Koń — podstawowe">{% for k,l,m in keys %}<option value="{{k}}" data-limit="{{m}}">{{l}}</option>{% endfor %}</optgroup><optgroup label="Wszystkie bonusy z gry">{% for k,l,m in extra_opts %}<option value="{{k}}" data-limit="{{m}}">{{l}}</option>{% endfor %}</optgroup></select><input aria-label="Wartość bonusu" type="number" min="0" value="0" required><button type="button" class="remove-bonus">Usuń</button></div></template>
+<script>
+(function(){
+'use strict';
+const root=document.getElementById('horse-ui');
+const form=document.getElementById('horse-form');
+let dirty=false;
+function markDirty(){dirty=true;document.getElementById('hu-dirty').hidden=false;}
+/* zakladki */
+const tabButtons=root.querySelectorAll('.hu-tabs button');
+function showTab(name){
+ tabButtons.forEach(function(b){b.classList.toggle('is-active',b.dataset.tab===name);});
+ root.querySelectorAll('.hu-pane').forEach(function(p){p.hidden=p.dataset.pane!==name;});
+ root.querySelector('.hu-actions').hidden=!(name==='poziomy'||name==='ustawienia');
+ try{sessionStorage.setItem('hu-tab',name);}catch(e){}
+}
+tabButtons.forEach(function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
+/* podglad TGA */
+function previewTga(level,buffer){
+ const b=new Uint8Array(buffer);if(b.length<18||b[1]||b[2]!==2||(b[16]!==24&&b[16]!==32))throw new Error('Nieobsługiwana grafika');
+ const w=b[12]+256*b[13],h=b[14]+256*b[15],step=b[16]/8,start=18+b[0];
+ if(w<1||h<1||w>256||h>256||b.length<start+w*h*step||(b[17]&192))throw new Error('Nieprawidłowy rozmiar grafiki');
+ const canvas=level.querySelector('.icon-preview');canvas.width=w;canvas.height=h;canvas.style.maxWidth='64px';canvas.style.maxHeight='64px';
+ const ctx=canvas.getContext('2d'),image=ctx.createImageData(w,h);
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+  const sx=(b[17]&16)?w-1-x:x,sy=(b[17]&32)?y:h-1-y,p=start+(sy*w+sx)*step,q=(y*w+x)*4;
+  image.data[q]=b[p+2];image.data[q+1]=b[p+1];image.data[q+2]=b[p];image.data[q+3]=step===4&&(b[17]&15)?b[p+3]:255;
+ }ctx.putImageData(image,0,0);
+}
+const levels=Array.from(form.querySelectorAll('.horse-level'));
+levels.forEach(function(level){
+ if(level.dataset.iconUrl)fetch(level.dataset.iconUrl,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error();return r.arrayBuffer();}).then(function(b){previewTga(level,b);}).catch(function(){level.querySelector('.name-preview').title='Nie udało się odczytać grafiki.';});
+ level.querySelector('input[type=file]').addEventListener('change',async function(event){try{const f=event.target.files[0];if(f){if(f.size>263000)throw new Error();previewTga(level,await f.arrayBuffer());}}catch(error){alert('Nie udało się wyświetlić TGA. Zapis sprawdzi format ponownie.');}});
+ level.querySelector('input[name^=name_]').addEventListener('input',function(e){level.querySelector('.name-preview').textContent=e.target.value;});
+ level.querySelector('input[type=color]').addEventListener('input',function(e){level.querySelector('.name-preview').style.color=e.target.value;});
+});
+function addBonusRow(level,key,value){
+ const n=level.dataset.level;
+ const fragment=document.getElementById('bonus-template').content.cloneNode(true), select=fragment.querySelector('select');
+ select.value=key;select.name='bonus_key_'+n;
+ const input=fragment.querySelector('input');input.name='bonus_value_'+n;input.max=select.selectedOptions[0].dataset.limit;input.value=value;
+ level.querySelector('.bonuses').appendChild(fragment);
+}
+levels.forEach(function(level){JSON.parse(level.querySelector('.bonuses').dataset.init||'[]').forEach(function(p){addBonusRow(level,p[0],p[1]);});}); // MT2009_NASZE_BONUSY_WSZYSTKIE_V1
+form.addEventListener('click',function(event){
+ const t=event.target;
+ if(t.classList.contains('remove-bonus')){t.closest('.bonus').remove();markDirty();return;}
+ const level=t.closest('.horse-level');
+ if(t.classList.contains('add-bonus')){
+  const used=Array.from(level.querySelectorAll('.bonus select')).map(function(s){return s.value;});
+  const options=Array.from(document.getElementById('bonus-template').content.querySelector('select').options);
+  const available=options.find(function(o){return used.indexOf(o.value)<0;});
+  if(!available){alert('Wszystkie rodzaje bonusów zostały już dodane.');return;}
+  addBonusRow(level,available.value,0);markDirty();return;
+ }
+ if(t.classList.contains('copy-prev')){
+  const i=levels.indexOf(level);
+  if(i<1){alert('To pierwszy poziom — nie ma poprzedniego.');return;}
+  if(level.querySelectorAll('.bonus').length&&!confirm('Zastąpić bonusy tego poziomu bonusami z poziomu '+levels[i-1].dataset.level+'?'))return;
+  level.querySelector('.bonuses').textContent='';
+  levels[i-1].querySelectorAll('.bonus').forEach(function(row){addBonusRow(level,row.querySelector('select').value,row.querySelector('input').value);});
+  markDirty();
+ }
+});
+form.addEventListener('change',function(event){
+ if(event.target.matches('.bonus select')){const s=event.target;s.closest('.bonus').querySelector('input').max=s.selectedOptions[0].dataset.limit;}
+ if(!event.target.matches('.hu-filter'))markDirty();
+});
+form.addEventListener('input',function(event){if(!event.target.matches('.hu-filter'))markDirty();});
+form.addEventListener('submit',function(){dirty=false;});
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+/* stan rdzeni */
+const labels={not_requested:'Nie zlecono zastosowania.',waiting:'⏳ Oczekiwanie na wszystkie kanały…',applied:'✔ Wszystkie kanały potwierdziły przeliczenie bonusów.',error:'✖ Błąd zastosowania — sprawdź kanały.',unavailable:'Brak wiarygodnego odczytu stanu.',topology_changed:'Zmienił się plan kanałów. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
+const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak potwierdzenia',stale:'Nieaktualny',applying:'Przeliczanie',error:'Błąd'};
+function show(status){
+ document.getElementById('apply-state').textContent=(labels[status.state]||'Nieznany stan.')+(status.draft_pending?' Zapisany projekt wymaga osobnego zastosowania.':'');
+ const list=document.getElementById('core-state');list.textContent='';
+ const cores=status.cores||[];let ok=0;
+ cores.forEach(function(core){const li=document.createElement('li');li.dataset.state=core.state;li.textContent=core.name+': '+(names[core.state]||core.state);list.appendChild(li);if(core.state==='applied'||core.state==='ready')ok++;});
+ const chip=document.getElementById('hu-cores-chip');
+ chip.textContent='Kanały: '+ok+'/'+cores.length+(status.state==='applied'?' ✔':'');
+ chip.className='hu-chip '+(cores.length&&ok===cores.length?'ok':'off');
+ document.getElementById('client-state').textContent=status.client_required?'Klient wymaga przygotowania lub potwierdzenia zgodnych paczek (zakładka „Klient”).':'Wersja klienta zgodna z odnotowaną publikacją. Działanie sprawdź w grze.';
+}
+show({{status|tojson}});
+async function poll(){try{const response=await fetch({{url_for('dbeditor.systems_horse_status')|tojson}},{cache:'no-store',credentials:'same-origin'});if(!response.ok)throw new Error();show(await response.json());}catch(error){document.getElementById('apply-state').textContent='Nie udało się odczytać potwierdzeń. Stan zastosowania niepotwierdzony.';}}
+setInterval(poll,5000);
+/* lista poziomow + edytor */
+const pane=root.querySelector('[data-pane=poziomy]');
+const workspace=document.createElement('div');workspace.className='hu-workspace';
+const list=document.createElement('div');list.className='hu-list';
+list.innerHTML='<h2>Poziomy konia</h2><input class="hu-filter" type="search" placeholder="Szukaj poziomu, nazwy lub bonusu…" aria-label="Szukaj poziomu"><div class="hu-scroll"></div>';
+const editor=document.createElement('div');editor.className='hu-editor';
+workspace.appendChild(list);workspace.appendChild(editor);pane.insertBefore(workspace,levels[0]);
+const scroll=list.querySelector('.hu-scroll');
+const records=[];
+function selectLevel(record){
+ records.forEach(function(r){const active=r===record;r.level.hidden=!active;r.level.open=active;r.row.classList.toggle('is-selected',active);r.row.setAttribute('aria-pressed',active?'true':'false');});
+ record.row.scrollIntoView({block:'nearest'});
+}
+levels.forEach(function(level,i){
+ editor.appendChild(level);
+ const stepper=document.createElement('div');stepper.className='hu-stepper';
+ stepper.innerHTML='<button type="button" data-step="-1">← Poprzedni poziom</button><button type="button" data-step="1">Następny poziom →</button>';
+ level.appendChild(stepper);
+ const row=document.createElement('button');row.type='button';row.className='hu-row';
+ row.innerHTML='<span class="hu-num"></span><span style="min-width:0"><div class="hu-name"></div><div class="hu-sum"></div></span>';
+ scroll.appendChild(row);
+ const record={level:level,row:row};records.push(record);
+ function update(){
+  const name=level.querySelector('input[name^="name_"]').value,color=level.querySelector('input[type=color]').value;
+  row.querySelector('.hu-num').textContent=level.dataset.level;
+  row.querySelector('.hu-num').style.borderColor=color;
+  const nm=row.querySelector('.hu-name');nm.textContent=name;nm.style.color=color;
+  const parts=Array.from(level.querySelectorAll('.bonus')).map(function(b){return b.querySelector('select').selectedOptions[0].textContent.trim()+' +'+b.querySelector('input').value;});
+  row.querySelector('.hu-sum').textContent=parts.length?parts.join(' · '):'brak bonusów';
+  row.title=parts.join('\n');
+  level.querySelector('summary').textContent='Poziom '+level.dataset.level+' — '+name;
+  const bonuses=level.querySelector('.bonuses');
+  let empty=level.querySelector('.hu-empty');
+  if(!parts.length&&!empty){empty=document.createElement('div');empty.className='hu-empty';empty.textContent='Ten poziom nie ma bonusów — dodaj bonus albo skopiuj z poprzedniego poziomu.';bonuses.after(empty);}
+  if(parts.length&&empty)empty.remove();
+ }
+ record.update=update;
+ level.addEventListener('input',function(){update();row.classList.add('is-dirty');});
+ level.addEventListener('change',function(){update();row.classList.add('is-dirty');});
+ new MutationObserver(function(){update();row.classList.add('is-dirty');}).observe(level.querySelector('.bonuses'),{childList:true});
+ row.addEventListener('click',function(){selectLevel(record);});
+ stepper.addEventListener('click',function(e){const d=+e.target.dataset.step;if(!d)return;const r=records[i+d];if(r)selectLevel(r);});
+ update();row.classList.remove('is-dirty');
+});
+list.querySelector('input').addEventListener('input',function(e){
+ const value=e.target.value.toLocaleLowerCase('pl');
+ records.forEach(function(r){r.row.hidden=r.row.textContent.toLocaleLowerCase('pl').indexOf(value)<0;});
+});
+form.addEventListener('invalid',function(e){
+ const record=records.find(function(r){return r.level.contains(e.target);});
+ if(record){showTab('poziomy');selectLevel(record);}
+},true);
+let start='poziomy';try{start=sessionStorage.getItem('hu-tab')||'poziomy';}catch(e){}
+showTab(start);
+if(records.length)selectLevel(records[0]);
+})();
+</script>
+</div>
+</div>
+{% endblock %}

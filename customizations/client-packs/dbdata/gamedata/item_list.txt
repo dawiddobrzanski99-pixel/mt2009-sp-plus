@@ -125250,7 +125250,7 @@
 
 70107	ETC	icon/item/70107.tga
 
-70108	ETC	icon/item/70038.tga
+70108	ETC	icon/item/70104.tga
 
 70109	ETC	icon/item/70025.tga
 

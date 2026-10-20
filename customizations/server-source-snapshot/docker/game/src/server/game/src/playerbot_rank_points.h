@@ -89,6 +89,9 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <list>
+#include <vector>
+#include "seban_rank_rewards.h" // MT2009_NASZE_RANGI_V1
 
 namespace mt2009_rankp
 {
@@ -221,8 +224,8 @@ namespace mt2009_rankp
 	int TierOf(int points)
 	{
 		int tier = 0;
-		for (int i = 1; i < TIER_COUNT; ++i)
-			if (points >= TIERS[i].from)
+		for (int i = 1; i < SebanRank::Count(TIER_COUNT); ++i) // MT2009_NASZE_RANGI_V2
+			if (points >= SebanRank::From(i, i < TIER_COUNT ? TIERS[i].from : 2000000000))
 				tier = i;
 		return tier;
 	}
@@ -374,6 +377,7 @@ namespace mt2009_rankp
 	const int REWARD_COUNT = sizeof(REWARD_POINTS) / sizeof(REWARD_POINTS[0]);
 	int RewardStage(int points)
 	{
+		if (SebanRank::Installed()) return TierOf(points); // MT2009_NASZE_RANGI_V1
 		int stage = 0;
 		for (int i = 0; i < 12; ++i)
 			if (points >= REWARD_THRESHOLDS[i]) stage = i + 1;
@@ -388,6 +392,28 @@ namespace mt2009_rankp
 	}
 
 	void EnsureTick();
+
+	// MT2009_NASZE_RANGI_V1: bonusy rangi z panelu - zdejmuje kazdy efekt rangi, ktorego nie ma w tabeli,
+	// i naklada brakujace (zmiana w panelu = stary bonus znika, nowy wchodzi).
+	void SebanSyncBonuses(LPCHARACTER ch, int stage)
+	{
+		const std::vector< std::pair<int, long> >& want = SebanRank::Row(stage);
+		std::vector<CAffect*> drop;
+		const std::list<CAffect*>& all = ch->GetAffectContainer();
+		for (std::list<CAffect*>::const_iterator it = all.begin(); it != all.end(); ++it)
+		{
+			CAffect* aff = *it;
+			if (aff->dwType != AFFECT_RANK_POINTS) continue;
+			bool keep = false;
+			for (size_t i = 0; i < want.size(); ++i)
+				if ((int)aff->bApplyOn == want[i].first && aff->lApplyValue == want[i].second) keep = true;
+			if (!keep) drop.push_back(aff);
+		}
+		for (size_t i = 0; i < drop.size(); ++i) ch->RemoveAffect(drop[i]);
+		for (size_t i = 0; i < want.size(); ++i)
+			if (!ch->FindAffect(AFFECT_RANK_POINTS, want[i].first))
+				ch->AddAffect(AFFECT_RANK_POINTS, want[i].first, want[i].second, 0, INFINITE_AFFECT_DURATION, 0, true, true);
+	}
 
 	// The tier's bonus on the character's affects: put on, changed or taken off.
 	void SyncBonuses(LPCHARACTER ch)
@@ -405,6 +431,7 @@ namespace mt2009_rankp
 			while (CAffect* aff = ch->FindAffect(AFFECT_RANK_POINTS, obsolete[i]))
 				ch->RemoveAffect(aff);
 		const int stage = Enabled() ? RewardStage(KnownPoints(ch)) : 0;
+		if (SebanRank::Installed()) { SebanSyncBonuses(ch, stage); return; } // MT2009_NASZE_RANGI_V1
 		for (int i = 0; i < REWARD_COUNT; ++i)
 		{
 			const long want = RewardValue(stage, i);
@@ -468,7 +495,7 @@ namespace mt2009_rankp
 		{
 			SendTailAround(ch);
 			if (tell && tier > before)
-				ch->ChatPacket(CHAT_TYPE_INFO, MSG_TIER_UP, TIERS[tier].name);
+				ch->ChatPacket(CHAT_TYPE_INFO, MSG_TIER_UP, SebanRank::Name(tier, (tier) < TIER_COUNT ? TIERS[tier].name : ""));
 			sys_log(0, "[RANGA_TIER] pid=%u name=%s points=%d alignment=%d extra=%d tier=%d->%d bot=%d",
 					ch->GetPlayerID(), ch->GetName(), points, AlignmentShown(ch), KnownExtra(ch), before, tier,
 					IsBot(ch) ? 1 : 0);
@@ -615,6 +642,7 @@ namespace mt2009_rankp
 	{
 		(void)tier;
 		const int stage = Enabled() ? RewardStage(KnownPoints(ch)) : 0;
+		if (SebanRank::Installed()) { ch->ChatPacket(CHAT_TYPE_INFO, "Bonus rangi: %d bonusow - szczegoly w oknie postaci (najedz na range).", (int)SebanRank::Row(stage).size()); return; } // MT2009_NASZE_RANGI_V1
 		ch->ChatPacket(CHAT_TYPE_INFO,
 			"Bonus rangi: obrona +%ld, sila kazdego zywiolu +%ld%%, odpornosc +%ld%%, szybkosc ataku +%ld%%, ruchu +%ld%%, metiny +%ld%%",
 			RewardValue(stage,0), RewardValue(stage,7), RewardValue(stage,1),
@@ -627,7 +655,7 @@ namespace mt2009_rankp
 		const int tier = TierOf(points);
 		if (tier)
 		{
-			ch->ChatPacket(CHAT_TYPE_INFO, MSG_INFO, TIERS[tier].name, points);
+			ch->ChatPacket(CHAT_TYPE_INFO, MSG_INFO, SebanRank::Name(tier, (tier) < TIER_COUNT ? TIERS[tier].name : ""), points);
 		}
 		else
 			ch->ChatPacket(CHAT_TYPE_INFO, MSG_INFO_NONE, points);
@@ -635,8 +663,8 @@ namespace mt2009_rankp
 		const SFruit* fruit = FruitForPoints(points);
 		if (points < 0)
 			ch->ChatPacket(CHAT_TYPE_INFO, MSG_NEGATIVE, points);
-		else if (tier + 1 < TIER_COUNT && fruit)
-			ch->ChatPacket(CHAT_TYPE_INFO, MSG_NEXT, TIERS[tier + 1].name, TIERS[tier + 1].from, fruit->name, fruit->gain);
+		else if (tier + 1 < SebanRank::Count(TIER_COUNT) && fruit)
+			ch->ChatPacket(CHAT_TYPE_INFO, MSG_NEXT, SebanRank::Name(tier + 1, (tier + 1) < TIER_COUNT ? TIERS[tier + 1].name : ""), SebanRank::From(tier + 1, tier + 1 < TIER_COUNT ? TIERS[tier + 1].from : 0), fruit->name, fruit->gain);
 		else if (!fruit)
 			ch->ChatPacket(CHAT_TYPE_INFO, "%s", MSG_NEXT_MAX);
 		const int extra = KnownExtra(ch);

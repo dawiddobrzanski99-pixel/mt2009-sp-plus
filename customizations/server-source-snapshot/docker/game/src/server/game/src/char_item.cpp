@@ -8518,6 +8518,10 @@ bool CHARACTER::ItemProcess_Polymorph(LPITEM item)
 	}
 
 	DWORD dwVnum = item->GetSocket(0);
+	// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_BEGIN
+	if (item->GetVnum() == 70108)
+		dwVnum = 636; // Marmur Czarnego Orka zawsze przemienia w Czarnego Orka
+	// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_END
 
 	if (dwVnum == 0)
 	{
@@ -8541,6 +8545,9 @@ bool CHARACTER::ItemProcess_Polymorph(LPITEM item)
 		case 70105 :
 		case 70106 :
 		case 70107 :
+		// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_BEGIN
+		case 70108 :
+		// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_END
 		case 71093 :
 			{
 				sys_log(0, "USE_POLYMORPH_BALL PID(%d) vnum(%d)", GetPlayerID(), dwVnum);

@@ -1,0 +1,110 @@
+-- MT2009_PLUS_BELTS_V1 - Odlamki Energii (51001), the belt recipes' material, at the
+-- Alchemist (20001). Autor: Digi Rasta (nowy-system v0.27.0, SYSTEMY/pasy.md), ported into
+-- MT2009 PLUS: the official energy_system.quest (quest/_unused of the package) without the
+-- Energy Crystal (51002 - the exe has no energy system). An item of level 35 or more dragged
+-- onto the Alchemist by a player of level 35 or more is dismantled into 0-15 shards by the
+-- item's level (the official tables). Weapons (no arrows) and armour / jewellery only - the
+-- original took any type with a level, e.g. the 500-yang "BETA: Buff" quest items of an NPC
+-- shop. Texts: translate.lua (gameforge.energy_system). No other quest of ours takes items
+-- at 20001 (the dragon soul quests only talk), so no "with" is needed.
+quest energia_alchemik begin
+	state start begin
+		when 20001.chat.gameforge.energy_system._001_npcChat begin
+			say_title(mob_name(20001))
+			say(gameforge.energy_system._010_say)
+			wait()
+			say_title(mob_name(20001))
+			say(gameforge.energy_system._030_say)
+			setstate(can_make)
+		end
+	end
+
+	state can_make begin
+		function setting()
+			return
+			{
+				["prob_acc_table"] =
+				{
+					["35to50"] = {30,55,70,80,90,95,97,98,99,100},
+					["51to70"] = {20,40,60,75,85,91,96,98,99,100},
+					["upto70"] = {10,25,45,65,80,88,94,97,99,100}
+				},
+				["item_num_table"] = {0,1,2,3,4,6,8,10,12,15},
+				["energy_stone"] = 51001
+			}
+		end
+
+		function getItemNum(str, r)
+			local setting = energia_alchemik.setting()
+			for i = 1, 10 do
+				if r < setting.prob_acc_table[str][i] then
+					return setting.item_num_table[i]
+				end
+			end
+			return 0
+		end
+
+		when 20001.chat.gameforge.energy_system._035_npcChat begin
+			say_title(mob_name(20001))
+			say(gameforge.energy_system._040_say)
+			wait()
+			say_title(mob_name(20001))
+			say(gameforge.energy_system._050_say)
+			wait()
+			if pc.get_level() < 35 then
+				say_title(mob_name(20001))
+				say(gameforge.energy_system._060_say)
+			else
+				say_title(mob_name(20001))
+				say(gameforge.energy_system._070_say)
+			end
+		end
+
+		when 20001.take begin
+			if pc.get_level() < 35 then
+				say_title(mob_name(20001))
+				say(gameforge.energy_system._080_say)
+				return
+			end
+			local item_vnum = item.vnum
+			local levelLimit = item.get_level_limit(item_vnum)
+			local setting = energia_alchemik.setting()
+
+			if levelLimit == nil or (item.get_type() ~= ITEM_WEAPON and item.get_type() ~= ITEM_ARMOR) then
+				say_title(mob_name(20001))
+				say(gameforge.energy_system._090_say)
+			elseif item.get_type() == ITEM_WEAPON and item.get_sub_type() == WEAPON_ARROW then
+				say_title(mob_name(20001))
+				say(gameforge.energy_system._090_say)
+			elseif levelLimit < 35 then
+				say_title(mob_name(20001))
+				say(gameforge.energy_system._100_say)
+			else
+				say_title(mob_name(20001))
+				say(item_name(item_vnum))
+				say(gameforge.energy_system._110_say)
+				local s = select(gameforge.energy_system._120_select, gameforge.energy_system._130_select)
+				if s == 1 then
+					item.remove()
+					local r = number(1, 100)
+					local n
+					if levelLimit <= 50 then
+						n = energia_alchemik.getItemNum("35to50", r)
+					elseif levelLimit <= 70 then
+						n = energia_alchemik.getItemNum("51to70", r)
+					else
+						n = energia_alchemik.getItemNum("upto70", r)
+					end
+					if n == 0 then
+						say_title(mob_name(20001))
+						say(gameforge.energy_system._140_say)
+					else
+						pc.give_item2(setting.energy_stone, n)
+						say_title(mob_name(20001))
+						say(string.format(gameforge.energy_system._150_say, n))
+					end
+				end
+			end
+		end
+	end
+end

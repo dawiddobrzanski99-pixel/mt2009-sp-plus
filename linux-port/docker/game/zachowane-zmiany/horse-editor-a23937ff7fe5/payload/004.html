@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Edytor konia · Seban{% endblock %}
+{% block content %}
+<h1>Systemy — koń</h1>
+<p>Ten etap obsługuje konia. Gildia, polowania, metinologia, polimorfia, rangi i tytuły tygodniowe wymagają kolejnych etapów.</p>
+<p>Bonusy są stałe, także bez jazdy. Odporności w promilach: 50 = 5%. Nazwa, kolor i grafika dotyczą podglądu konia w kliencie.</p>
+<section aria-live="polite"><h2>Wynik zastosowania</h2><p id="apply-state"></p><ul id="core-state"></ul><p id="client-state"></p></section>
+<form method="post" enctype="multipart/form-data" id="horse-form">
+<input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><input type="hidden" name="revision" value="{{ revision }}">
+<p><label><input type="checkbox" name="master_enabled" value="1" {% if config.master_enabled %}checked{% endif %}>Moduł włączony</label></p>
+<p><label><input type="checkbox" name="enabled" value="1" {% if config.enabled %}checked{% endif %}>Bonusy konia włączone</label></p>
+<p>Po zastosowaniu wyłączenie usuwa bonusy tego modułu. Konfiguracja, historia i poziomy koni pozostają zachowane.</p>
+<p><label><input type="checkbox" name="client_enabled" value="1" {% if config.client_enabled %}checked{% endif %}>Podgląd w kliencie</label> Zmiana wyglądu wymaga przygotowania paczki klienta.</p>
+{% for row in config.levels[1:] %}
+<details class="horse-level" data-level="{{row.level}}" {% if row.icon %}data-icon-url="{{url_for('dbeditor.systems_horse_asset',name=row.icon.rsplit('/',1)[-1])}}"{% endif %}><summary>Poziom {{row.level}} — {{row.name}}</summary>
+<p><label>Nazwa <input name="name_{{row.level}}" value="{{row.name}}" maxlength="60" required></label>
+<label>Kolor <input type="color" name="color_{{row.level}}" value="{{row.color}}"></label></p>
+<p><label>Grafika TGA 24/32-bit, do 256×256 <input type="file" name="icon_{{row.level}}" accept=".tga"></label>
+{% if row.icon %}<small>{{row.icon}}</small><label><input type="checkbox" name="clear_icon_{{row.level}}" value="1">Przywróć oryginalną ikonę</label>{% endif %}</p>
+<p>Podgląd: <canvas class="icon-preview" width="32" height="32"></canvas> <span class="name-preview" style="color:{{row.color}}">{{row.name}}</span></p>
+<div class="bonuses">
+{% for key,label,limit in keys %}{% if row.bonuses[key] %}
+<div class="bonus"><select aria-label="Rodzaj bonusu" name="bonus_key_{{row.level}}">{% for k,l,m in keys %}<option value="{{k}}" data-limit="{{m}}" {% if key==k %}selected{% endif %}>{{l}}</option>{% endfor %}</select>
+<input aria-label="Wartość bonusu" type="number" name="bonus_value_{{row.level}}" min="0" max="{{limit}}" value="{{row.bonuses[key]}}" required><button type="button" class="remove-bonus">Usuń</button></div>
+{% endif %}{% endfor %}</div>
+<button type="button" class="add-bonus">Dodaj bonus</button>
+</details>{% endfor %}
+<p><button name="action" value="save">Zapisz konfigurację</button>
+<button name="action" value="save_apply">Zapisz i zastosuj</button>
+<button name="action" value="undo" formnovalidate>Przywróć poprzedni projekt</button></p>
+<p>Zastosowanie wymaga jednorazowo zainstalowanej obsługi w silniku. Późniejsze zmiany ustawień są odczytywane bez kompilacji i restartu.</p>
+</form>
+<h2>Aktualna paczka użytkownika</h2>
+<p>Wgraj obie części własnego ROOT. Konflikt zatrzyma operację. Pobierana paczka zachowuje pozostałe wpisy i zawiera oryginały oraz sumy kontrolne. Sam eksport nie potwierdza podmiany plików klienta.</p>
+<form method="post" enctype="multipart/form-data" action="{{url_for('dbeditor.systems_horse_pack')}}">
+<input type="hidden" name="dbe_csrf" value="{{dbe_csrf}}"><input type="hidden" name="revision" value="{{revision}}">
+<label>root.index <input type="file" name="root_index" required></label><label>root.data <input type="file" name="root_data" required></label>
+<p><button name="action" value="private">Pobierz samą poprawioną parę ROOT</button></p>
+<h3>Opublikuj pełne wydanie w edytorze</h3>
+<p>Dołącz swoją aktualną parę gamedata; jej zawartość zostanie zachowana bez zmian. dbdata i znacznik zostaną pobrane z istniejącego eksportera tego serwera. Osobiste wydanie jest dostępne w tej zakładce i nie zastępuje globalnego ROOT innych użytkowników.</p>
+<input type="hidden" name="publication_revision" value="{{publication_revision}}">
+<label>gamedata.index <input type="file" name="gamedata_index"></label>
+<label>gamedata.data <input type="file" name="gamedata_data"></label>
+<button name="action" value="publish">Przygotuj, sprawdź i opublikuj pełny ZIP</button></form>
+{% if status.client_publication and status.client_publication.release %}
+<p><a href="{{url_for('dbeditor.systems_horse_download',release=status.client_publication.release,filename='klient-komplet.zip')}}">Pobierz opublikowany pełny ZIP</a> · <a href="{{url_for('dbeditor.systems_horse_download',release=status.client_publication.release,filename='manifest.json')}}">Sumy i lista zmian</a></p>
+<p>Wydanie {{status.client_publication.release}}. Podmień pary ROOT, gamedata i dbdata razem; znacznik umieść obok pliku gry. Pobranie nie potwierdza testu w grze.</p>
+{% endif %}
+<p>ROOT na Windows zabezpieczasz osobno — zapisz-mt2009 nie pobiera plików z komputera.</p>
+<template id="bonus-template"><div class="bonus"><select aria-label="Rodzaj bonusu">{% for k,l,m in keys %}<option value="{{k}}" data-limit="{{m}}">{{l}}</option>{% endfor %}</select><input aria-label="Wartość bonusu" type="number" min="0" value="0" required><button type="button" class="remove-bonus">Usuń</button></div></template>
+<script>
+(function(){
+'use strict';
+const form=document.getElementById('horse-form');
+function previewTga(level,buffer){
+ const b=new Uint8Array(buffer);if(b.length<18||b[1]||b[2]!==2||(b[16]!==24&&b[16]!==32))throw new Error('Nieobsługiwana grafika');
+ const w=b[12]+256*b[13],h=b[14]+256*b[15],step=b[16]/8,start=18+b[0];
+ if(w<1||h<1||w>256||h>256||b.length<start+w*h*step||(b[17]&192))throw new Error('Nieprawidłowy rozmiar grafiki');
+ const canvas=level.querySelector('.icon-preview');canvas.width=w;canvas.height=h;canvas.style.maxWidth='64px';canvas.style.maxHeight='64px';
+ const ctx=canvas.getContext('2d'),image=ctx.createImageData(w,h);
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+  const sx=(b[17]&16)?w-1-x:x,sy=(b[17]&32)?y:h-1-y,p=start+(sy*w+sx)*step,q=(y*w+x)*4;
+  image.data[q]=b[p+2];image.data[q+1]=b[p+1];image.data[q+2]=b[p];image.data[q+3]=step===4&&(b[17]&15)?b[p+3]:255;
+ }ctx.putImageData(image,0,0);
+}
+form.querySelectorAll('.horse-level').forEach(function(level){
+ if(level.dataset.iconUrl)fetch(level.dataset.iconUrl,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error();return r.arrayBuffer();}).then(function(b){previewTga(level,b);}).catch(function(){level.querySelector('.name-preview').title='Nie udało się odczytać grafiki.';});
+ level.querySelector('input[type=file]').addEventListener('change',async function(event){try{const f=event.target.files[0];if(f){if(f.size>263000)throw new Error();previewTga(level,await f.arrayBuffer());}}catch(error){alert('Nie udało się wyświetlić TGA. Zapis sprawdzi format ponownie.');}});
+ level.querySelector('input[name^=name_]').addEventListener('input',function(e){level.querySelector('.name-preview').textContent=e.target.value;});
+ level.querySelector('input[type=color]').addEventListener('input',function(e){level.querySelector('.name-preview').style.color=e.target.value;});
+});
+form.addEventListener('click',function(event){
+ if(event.target.classList.contains('remove-bonus'))event.target.closest('.bonus').remove();
+ if(!event.target.classList.contains('add-bonus'))return;
+ const level=event.target.closest('.horse-level'), n=level.dataset.level;
+ const used=Array.from(level.querySelectorAll('.bonus select')).map(function(s){return s.value;});
+ const fragment=document.getElementById('bonus-template').content.cloneNode(true), select=fragment.querySelector('select');
+ const available=Array.from(select.options).find(function(o){return used.indexOf(o.value)<0;});
+ if(!available){alert('Wszystkie rodzaje bonusów zostały już dodane.');return;}
+ select.value=available.value;select.name='bonus_key_'+n;
+ const input=fragment.querySelector('input');input.name='bonus_value_'+n;input.max=available.dataset.limit;
+ level.querySelector('.bonuses').appendChild(fragment);
+});
+form.addEventListener('change',function(event){if(event.target.matches('.bonus select')){
+ const select=event.target;select.closest('.bonus').querySelector('input').max=select.selectedOptions[0].dataset.limit;
+}});
+const labels={not_requested:'Nie zlecono zastosowania.',waiting:'Oczekiwanie na wszystkie rdzenie.',applied:'Wszystkie rdzenie potwierdziły przeliczenie bonusów.',error:'Błąd zastosowania — sprawdź rdzenie.',unavailable:'Brak wiarygodnego odczytu stanu.',topology_changed:'Zmienił się plan rdzeni. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
+function show(status){
+ document.getElementById('apply-state').textContent=(labels[status.state]||'Nieznany stan.')+(status.draft_pending?' Zapisany projekt wymaga osobnego zastosowania.':'');
+ const list=document.getElementById('core-state');list.textContent='';
+ (status.cores||[]).forEach(function(core){const li=document.createElement('li');li.textContent=core.name+': '+core.state;list.appendChild(li);});
+ document.getElementById('client-state').textContent=status.client_required?'Klient wymaga przygotowania lub potwierdzenia zgodnych paczek.':'Wersja klienta zgodna z odnotowaną publikacją. Podmianę i działanie sprawdź w grze.';
+}
+show({{status|tojson}});
+async function poll(){try{const response=await fetch({{url_for('dbeditor.systems_horse_status')|tojson}},{cache:'no-store',credentials:'same-origin'});if(!response.ok)throw new Error();show(await response.json());}catch(error){document.getElementById('apply-state').textContent='Nie udało się odczytać potwierdzeń. Stan zastosowania niepotwierdzony.';}}
+setInterval(poll,5000);
+})();
+</script>
+{% endblock %}

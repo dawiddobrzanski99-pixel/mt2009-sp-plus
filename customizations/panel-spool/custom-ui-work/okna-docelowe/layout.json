@@ -1,0 +1,19 @@
+{
+  "mission": {
+    "width": 860,
+    "height": 660,
+    "text_color": "0xff302215",
+    "body_font": "Tahoma:14",
+    "title_font": "Times New Roman:26",
+    "reward_heading_count": 1
+  },
+  "dungeon": {
+    "width": 860,
+    "height": 723,
+    "text_color": "0xff302215",
+    "body_font": "Tahoma:14",
+    "title_font": "Times New Roman:26",
+    "bonus_scope": "boss",
+    "map_bonuses": "show_only_verified"
+  }
+}

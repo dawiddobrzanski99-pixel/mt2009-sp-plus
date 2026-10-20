@@ -1,0 +1,264 @@
+## A. 68 zmienionych plikow: +/- linii i nasze znaczniki
+docker/docker-compose.yml | linie:2 | 
+docker/game/Dockerfile | linie:46 | CUSTOM_UKRAINKA_KD_IMAGE_V1 CUSTOM_UKRAINKA_NATIVE_RECIPES_V1 CUSTOM_UKRAINKA_QUESTNPC_V1 CUSTOM_UKRAINKA_QUEST_DIRECTORY_V2 CUSTOM_UKRAINKA_RUNTIME_V1 
+docker/game/arezzo/dungeon_info.txt | linie:156 | 
+docker/game/bin/entrypoint.sh | linie:1 | 
+docker/game/bin/m2-cube | linie:6 | CUSTOM_UKRAINKA_CUBE_GROUPS_V1 
+docker/game/quest/biblioteka_wiedzy.quest | linie:15 | 
+docker/game/quest/blue_dragon_lair.quest | linie:11 | 
+docker/game/quest/konie.quest | linie:3 | HORSE_TRAINING_ZERO_V7 
+docker/game/quest/nemere_dungeon.quest | linie:34 | CUSTOM_RANDOM_COR_CLOTH_BAGS_V2 
+docker/game/quest/razador_dungeon.quest | linie:27 | 
+docker/game/quest/ruiny_atlantydy.quest | linie:11 | 
+docker/game/quest/ruiny_skorpiona.quest | linie:11 | 
+docker/game/quest/starozytna_dzungla.quest | linie:11 | 
+docker/game/quest/wzgorze_wukonga.quest | linie:13 | 
+docker/game/src/server/game/src/battle.cpp | linie:2510 | CUSTOM_COMBAT_WALL_SYNC_V1 
+docker/game/src/server/game/src/char.cpp | linie:130 | COMBAT_DYNAMIC_BONUS_STORAGE_FIX_V1 CUSTOM_GUILD_COMBAT_REWARDS_V1 GUILD_STATS_REFRESH_V2 POLYMORPH_ACTIVE_REWARDS_V1 SEBAN_HORSE_V2 
+docker/game/src/server/game/src/char.h | linie:4734 | CUSTOM_GUILD_COMBAT_REWARDS_V1 
+docker/game/src/server/game/src/char_affect.cpp | linie:2026 | GUILD_LOGIN_POINTS_V2 MISSION_PANEL_DEATH_PERSIST_V1 POLYMORPH_DURATION_G30_P60_V1 WEEKLY_AFFECT_LOAD_FIX_V1 
+docker/game/src/server/game/src/char_battle.cpp | linie:10877 | CUSTOM_BOSS_HIT_POSITION_SYNC_V1 CUSTOM_BOSS_NO_PUSH_V1 CUSTOM_BOSS_RESIST_PUSH_V1 CUSTOM_COMBAT_WALL_SYNC_V1 CUSTOM_DUNGEON_DAMAGE_HUD_V1 CUSTOM_MONSTER_DAMAGE_X18_BOSS_X14_V6 HORSE_BOSS_RESIST_V1 MOB_DAMAGE_X150_BOSS_X140_V1 
+docker/game/src/server/game/src/char_item.cpp | linie:99 | MT2009_PLUS9_ORIGIN_V1 PICKUP_ACTUAL_COUNT_V1 
+docker/game/src/server/game/src/char_shop.cpp | linie:899 | PLAYER_SHOP_TWO_BLOCKS_KEYS2_V1 
+docker/game/src/server/game/src/char_state.cpp | linie:2457 | CUSTOM_ALL_METIN_SPAWN_X15_V2 
+docker/game/src/server/game/src/cmd.cpp | linie:51 | CUSTOM_DUNGEON_DAMAGE_HUD_V1 CUSTOM_MAP_COUNTERS_V1 MT2009_PLUS9_ORIGIN_V1 QUEST_BONUS_PREVIEW_V1 
+docker/game/src/server/game/src/cmd_general.cpp | linie:44 | CHEST50122_WIKI_INDEX_V1 WIKI_RUNTIME_AUDIT_V1 
+docker/game/src/server/game/src/cmd_gm.cpp | linie:19903 | 
+docker/game/src/server/game/src/cube.cpp | linie:165 | CUSTOM_UKRAINKA_CUBE_CATEGORIES_V1 
+docker/game/src/server/game/src/dungeon.cpp | linie:3168 | CUSTOM_DUNGEON_DAMAGE_HUD_V1 CUSTOM_DUNGEON_ELAPSED_TOP_V1 
+docker/game/src/server/game/src/dungeon.h | linie:473 | CUSTOM_DUNGEON_DAMAGE_HUD_V1 
+docker/game/src/server/game/src/guild.cpp | linie:4306 | GUILD_LEADER_WITHDRAW_V2 GUILD_REJOIN_NO_DISBAND_WAIT_V2 GUILD_REJOIN_NO_WITHDRAW_WAIT_V1 GUILD_STATS_REFRESH_V2 
+docker/game/src/server/game/src/guild.h | linie:871 | 
+docker/game/src/server/game/src/ikarus_shop_manager.cpp | linie:9 | PLAYER_SHOP_TWO_BLOCKS_KEYS2_V1 
+docker/game/src/server/game/src/input_main.cpp | linie:35 | CUSTOM_COMBAT_WALL_SYNC_V1 
+docker/game/src/server/game/src/item.h | linie:760 | MEDAL_STACK1000_V1 
+docker/game/src/server/game/src/item_manager.cpp | linie:7302 | CHEST50122_POLICY_HOOKS_V1 CUSTOM_COR_PROGRESSION_RUNTIME_V1 CUSTOM_DROP_CLEANUP_POSSIBLE_V1 CUSTOM_DROP_CLEANUP_PREVIEW_V1 CUSTOM_DROP_CLEANUP_RECIPE_BOX_RUNTIME_V1 CUSTOM_DROP_CLEANUP_WIKI_V1 CUSTOM_DUNGEON_CHEST_PREVIEW_COUNTS_V1 CUSTOM_GUILD_DOUBLE_LOOT_V1 CUSTOM_MAP_MATERIAL_CHESTS_V1 CUSTOM_METIN_WEIGHTED_QUANTITY_V3 CUSTOM_NORMAL_KU_TO_BOX_V1 CUSTOM_RANDOM_COR_CLOTH_BAGS_V2 CUSTOM_RAZADOR_MATERIAL_EARLY_RETURN_V2 CUSTOM_RAZADOR_MATERIAL_WIKI_V2 CUSTOM_RECIPE_BOX_BOSSES_V1 CUSTOM_RECIPE_BOX_GROUP_V1 CUSTOM_SHADOW_STONE_PREVIEW_V2 CUSTOM_TEMPLE_MOB_PREVIEW_V4 CUSTOM_UKRAINKA_FRAGMENT_CHEST_V1 CUSTOM_WUKONG_EXTRA_DROP_V1 DROP50122_RUNTIME_DIAG_V1 METIN_KU_KD_BUILTIN_OFF_V2 METIN_KU_KD_DROP_FILTER_V2 METIN_KU_KD_PREVIEW_HIDDEN_V2 METIN_KU_KD_WIKI_HIDDEN_V2 WIKI_PREVIEW_COMPLETE_V1 
+docker/game/src/server/game/src/item_manager.h | linie:63 | CUSTOM_PET_EXACT_PCT_V1 
+docker/game/src/server/game/src/item_manager_read_tables.cpp | linie:5 | CUSTOM_RECIPE_BOX_DROP_LOADER_V1 
+docker/game/src/server/game/src/playerbot_activities.h | linie:5 | CUSTOM_SIDEKICK_NO_OPEN_FISH_V1 SIDEKICK_KEEP_LIVE_FISH_V1 
+docker/game/src/server/game/src/playerbot_chat_trade.h | linie:6 | GUILD_REJOIN_NO_WAIT_BOT_INVITE_V2 
+docker/game/src/server/game/src/playerbot_collector.cpp | linie:25 | COLLECTOR_REFINE_COUNTS_V1 
+docker/game/src/server/game/src/playerbot_collector.h | linie:7 | 
+docker/game/src/server/game/src/playerbot_consumables.h | linie:4 | CUSTOM_BOT_CHESTS_V1 
+docker/game/src/server/game/src/playerbot_digi_qol.h | linie:51 | CUSTOM_UKRAINKA_BOOK_EXCHANGE_V1 
+docker/game/src/server/game/src/playerbot_dungeon_panel.h | linie:14 | CUSTOM_DUNGEON_FREE_APPROACH_V1 
+docker/game/src/server/game/src/playerbot_dungeon_runs.h | linie:16 | 
+docker/game/src/server/game/src/playerbot_gear.h | linie:11 | CUSTOM_BOT_CHESTS_V1 
+docker/game/src/server/game/src/playerbot_guild.h | linie:42 | BOT_GUILD_EXP_TO_LEVEL10_V1 
+docker/game/src/server/game/src/playerbot_guildduty.h | linie:10 | 
+docker/game/src/server/game/src/playerbot_horse30.h | linie:8 | HORSE_NO_BOSS_STONE_V1 HORSE_TRAINING_NO_MONSTER_V7 
+docker/game/src/server/game/src/playerbot_loot.h | linie:2 | CUSTOM_BOT_CHESTS_V1 
+docker/game/src/server/game/src/playerbot_manager.cpp | linie:2 | 
+docker/game/src/server/game/src/playerbot_market.h | linie:2 | KLEPSYDRA_BOT_MIN_PRICE_1500000_V1 
+docker/game/src/server/game/src/playerbot_newpet.h | linie:32 | WEEKLY_MONSTER_DIAG_V1 
+docker/game/src/server/game/src/playerbot_offline_market.h | linie:3 | KLEPSYDRA_BOT_MIN_PRICE_1500000_V1 
+docker/game/src/server/game/src/playerbot_offline_shop.h | linie:2 | 
+docker/game/src/server/game/src/playerbot_quest_rewards.cpp | linie:3 | QUEST_BONUS_PREVIEW_V1 
+docker/game/src/server/game/src/playerbot_rank_points.h | linie:99 | MT2009_RANK_BADGES_V4 RANK_CUMULATIVE_REWARDS_V4 
+docker/game/src/server/game/src/playerbot_seonhae.h | linie:8 | 
+docker/game/src/server/game/src/playerbot_town.h | linie:16 | KLEPSYDRA_BOT_MIN_PRICE_1500000_V1 
+docker/game/src/server/game/src/playerbot_weekly_rank.h | linie:46 | CUSTOM_WEEKLY_REWARDS_V2 WEEKLY_AFFECT_LOAD_FIX_V1 WEEKLY_MONSTER_DIAG_V1 WEEKLY_TITLE_REWARDS_V2 
+docker/game/src/server/game/src/questlua_pc.cpp | linie:9961 | BIO_COLLECTOR_V1 
+docker/mariadb/playerbot/apply.sh | linie:42 | FOCUSED_EGZO_RADA_STACK_TRADE_V1 OUR_KD_28500_WEAPON_V1 OUR_PRESERVED_ITEMS_V1 
+docker/panel/app/admin_panel.py | linie:514 | 
+docker/seban-panel/Dockerfile | linie:8 | CUSTOM_UKRAINKA_EXPORT_ASSETS_V1 CUSTOM_WINDOWS_PANEL_SOURCE_V1 
+docker/seban-panel/app.py | linie:331 | CUSTOM_CHANGES_BULK_V1 CUSTOM_CHANGES_CATEGORIES8_V1 CUSTOM_CHANGES_NEW_BADGE_V1 CUSTOM_CHANGES_PAGE_V3 CUSTOM_CLIENT_PACK_DOWNLOADS_V1 CUSTOM_PUBLIC_IDEAS_V1 END_CUSTOM_CHANGES_PAGE_V3 
+docker/seban-panel/dbeditor/__init__.py | linie:1 | 
+docker/seban-panel/dbeditor/cube.py | linie:9 | 
+docker/seban-panel/m2clientpack/dbdata.py | linie:6 | CUSTOM_ICON_50122_SUPPORTED_V1 
+docker/seban-panel/m2clientpack/dbsource.py | linie:134 | CUSTOM_MAP_MATERIAL_CHESTS_V1 CUSTOM_UKRAINKA_EXPORT_V1 FOCUSED_EGZO_RADA_STACK_TRADE_V1 OUR_CLIENT_EXPORT_RESTORE_V2 OUR_CUSTOM_ICONS_RESTORED_V3 
+## B. nowe pliki silnika (nasze)
+docker/game/src/server/game/src/chest50122_policy.h
+docker/game/src/server/game/src/custom_bot_chests.h
+docker/game/src/server/game/src/custom_cor_progression.h
+docker/game/src/server/game/src/custom_drop_cleanup.h
+docker/game/src/server/game/src/custom_guild_combat_rewards.h
+docker/game/src/server/game/src/custom_horse_polymorph_rewards.h
+docker/game/src/server/game/src/custom_map_counters.h
+docker/game/src/server/game/src/custom_marmur_czarny_ork.h
+docker/game/src/server/game/src/custom_material_chests.h
+docker/game/src/server/game/src/item_manager_private_types.h
+docker/game/src/server/game/src/seban_horse_live.h
+docker/game/src/server/game/src/seban_horse_rewards.h
+docker/game/src/server/game/src/seban_sha256.h
+kopie .bak w src: 13
+## C. questy: nowe i zmienione (docker/game/quest)
+docker/game/quest/desert_first_quest.quest
+docker/game/quest/desert_second_quest.quest
+docker/game/quest/desert_third_quest.quest
+docker/game/quest/klepsydra_biologa.quest
+docker/game/quest/orcvalley_first_quest.quest
+docker/game/quest/shop_unlock_slots.quest
+docker/game/quest/skill_reset2.quest
+docker/game/quest/ukrainka_wymiany.quest
+ZMIENIONY docker/game/quest/biblioteka_wiedzy.quest
+ZMIENIONY docker/game/quest/blue_dragon_lair.quest
+ZMIENIONY docker/game/quest/konie.quest
+ZMIENIONY docker/game/quest/nemere_dungeon.quest
+ZMIENIONY docker/game/quest/razador_dungeon.quest
+ZMIENIONY docker/game/quest/ruiny_atlantydy.quest
+ZMIENIONY docker/game/quest/ruiny_skorpiona.quest
+ZMIENIONY docker/game/quest/starozytna_dzungla.quest
+ZMIENIONY docker/game/quest/wzgorze_wukonga.quest
+## D. panel/klient: nowe pliki
+docker/game/src/server/game/src/itemshop_manager.h
+docker/panel/app/CHANGELOG.md
+docker/panel/app/VERSION
+docker/panel/app/favicon.png
+docker/panel/app/items.json
+docker/panel/app/static
+docker/panel/app/web_admin_schema.sql
+docker/seban-panel/dbeditor/systems_horse.py
+docker/seban-panel/m2clientpack/appearance_pack.py
+docker/seban-panel/m2clientpack/custom_marmur_czarny_ork_client.py
+docker/seban-panel/m2clientpack/custom_material_assets
+docker/seban-panel/m2clientpack/custom_material_boxes.json
+docker/seban-panel/m2clientpack/custom_material_client.py
+docker/seban-panel/m2clientpack/custom_material_item_list.base.txt
+docker/seban-panel/m2clientpack/custom_ukrainka_assets
+docker/seban-panel/m2clientpack/custom_ukrainka_client.py
+docker/seban-panel/m2clientpack/custom_windows_source
+docker/seban-panel/m2clientpack/horse_editor.py
+docker/seban-panel/m2clientpack/horse_pair_installer.py
+docker/seban-panel/m2clientpack/horse_publication.py
+docker/seban-panel/m2clientpack/restored_item_appearance.py
+docker/seban-panel/m2clientpack/scroll_client_patch.py
+docker/seban-panel/static/icons/00002.png
+docker/seban-panel/static/icons/110230.png
+docker/seban-panel/static/icons/18080.png
+docker/seban-panel/static/icons/50721.png
+docker/seban-panel/static/icons/50722.png
+docker/seban-panel/static/icons/50723.png
+docker/seban-panel/static/icons/50724.png
+docker/seban-panel/static/icons/50725.png
+docker/seban-panel/static/icons/50726.png
+docker/seban-panel/templates/dbeditor/systems_horse.html
+## E. lancuch eksportu klienta (dbsource.py)
+14:# MT2009_PLUS_ITEM_EXTRA_APPLY_V1: the extra bonus lines (beyond item_proto's
+45:# MT2009_PLUS_DB_EDITOR_SKILL_POINT_TYPES_V1: the effect type columns and the
+227:# OUR_CLIENT_EXPORT_RESTORE_V2: current server fields even without edit-history marks.
+257:# OUR_CUSTOM_ICONS_RESTORED_V3: recovered byte-for-byte from the working client.
+264:# CUSTOM_MAP_MATERIAL_CHESTS_V1: preserve all previous generator features.
+273:# FOCUSED_EGZO_RADA_STACK_TRADE_V1
+280:# CUSTOM_ICON_50122_V1_BEGIN
+292:# CUSTOM_ICON_50122_V1_END
+295:# PRESERVED_ITEM_APPEARANCE_V4_BEGIN
+303:# PRESERVED_ITEM_APPEARANCE_V4_END
+305:# CUSTOM_UKRAINKA_EXPORT_V1
+313:# MT2009_NASZE_MARMUR_CZARNY_ORK_V1_BEGIN
+321:# MT2009_NASZE_MARMUR_CZARNY_ORK_V1_END
+## F. katalogi z nasza praca
+/opt/metin2/linux-port/docker/game/ukrainka:
+crafting_override.lua
+cube.native.txt
+kd_recipes.txt
+kd_replace.awk
+npc.a1.txt
+npc.b1.txt
+npc.c1.txt
+
+/opt/metin2/linux-port/docker/game/zachowane-zmiany:
+dt-egzo-ukrainka-20261020-132257-511846
+horse-editor-a23937ff7fe5
+marmur-czarny-ork
+      1 50122-wszystkie-metiny-bossy
+      2 baza-odzyskanie
+      1 biolog40-potwory10-v4
+      1 bonusy-dynamiczne
+      1 bonusy-kodowanie
+      1 boss-bez-przepychania
+      1 boss-korekta-pozycji
+      1 bossologia-30
+      1 dbdata-po-update.zip
+      1 diag-drop50122
+      1 dmg-moby18-boss14
+      1 dmg-moby18-boss24
+      1 dmg-moby20-boss18
+      1 dmg-moby22-boss21
+      1 drop-wyglad
+      1 dt-pieczecie-regen
+      1 dungeon-dmg
+      1 dungi-40
+      1 dungi-limit-x2
+      1 egzo-odczyt
+      1 egzo-rada
+      1 fix-okna
+      2 gildia-bonusy
+      1 ikona-50122
+      1 instaluj-dungeon-dmg.py
+      1 instaluj-gildia-bonusy.py
+      1 instaluj-liczniki-mapy.py
+      1 instaluj-metiny-60-wiecej-mobow.py
+      1 instaluj-moby-sciany.py
+      1 instaluj-reputacja-10min-100.py
+      1 instaluj-wszystkie-zmiany-po-update.py
+      1 kategorie8
+      1 kd28500
+      1 klient-zrodla-po-update.zip
+      1 kolekcjoner-egzo-rady
+      1 kolekcjoner-liczby
+      1 kolekcjoner-refine-drop
+      1 kolumny8-nowosci
+      1 kon-potwory5-v3
+      1 kon-v2-wdrozenie
+      2 kontrast-okien
+      1 ku-model
+      1 liczniki-mapy
+      1 marmur-czarny-ork
+      3 metin2-nasze-zmiany
+      1 metinologia-od25
+      1 metiny-60-moby
+      2 misje-balans-v2
+      3 misje-baza
+      1 misje-wymagania
+      1 moby-sciany
+      1 nowy-uklad-misji
+      1 odzyskanie-update
+      1 okna-final
+      2 okna-ukrainka
+      2 okna-v2
+      3 panel-misji
+      1 polimorfia-p
+      1 przed-update
+      1 publiczne-pomysly
+      1 pve-misje-v16
+      1 questy-zlote-ikony
+      1 ranking-naprawa-GM
+      1 ranking-naprawa-duplikatow
+      1 ranking-podglad-questow
+      1 ranking-zachowaj-nagrody
+      1 razador-pomiar
+      2 razador-skrzynki
+      1 rejestr-przed-scaleniem
+      1 reputacja
+      1 seban-kon-instalator-pytkysdw
+      1 seban-kon-v2-ra31jkll
+      1 seban-kon-v2-zrodla
+      3 skrzynki-ulepszaczy
+      1 strona-kategorie
+      1 strona-zmian
+      1 strona-zmian-v3
+      1 suplementy-blogoslawienstwo
+      1 suplementy-drop
+      1 ukrainka
+      1 ukrainka-instalacja
+      1 ukrainka-panel
+      1 ukrainka-pierwsza-rejestracja
+      1 ukrainka-test-modelu
+      1 wedka-kd-tp-panel
+      1 wspolne-okna
+      1 wspolny-fix
+      1 wukong-drop
+      2 wymiany-native
+      1 wyprawy-ukrainka
+      1 wyprawy-v5
+      1 zakres-zapisu
+     17 zip-dbdata
+      1 zrob-kopie-naszych-zmian.py
+## G. start kontenera przerabia
+/opt/metin2/linux-port/docker/game/bin/entrypoint.sh:241:# (dragon_soul_table.txt) the database editor's "Alchemia" page edits (m2-dragonsoul).
+/opt/metin2/linux-port/docker/game/bin/entrypoint.sh:253:# MT2009_PLUS_DB_EDITOR_V1: the same for the maps' spawns (regen.txt) the
+/opt/metin2/linux-port/docker/game/bin/entrypoint.sh:255:# regen.image.txt, the live ones writable by the service account (m2-regen).
+/opt/metin2/linux-port/docker/game/bin/entrypoint.sh:256:command -v m2-regen >/dev/null 2>&1 \
+/opt/metin2/linux-port/docker/game/bin/entrypoint.sh:257:  && { m2-regen prepare || log "could not prepare the map spawn files (the panel's Spawny potworów page will say so)"; }
+/opt/metin2/linux-port/docker/game/bin/entrypoint.sh:259:# "Respawn bossów i metinów" edits - special_spawns.txt and every map's

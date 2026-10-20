@@ -1,0 +1,16 @@
+{
+  "status": "prepared-not-installed",
+  "route_tests": "passed",
+  "base_hashes": {
+    "root.index": "85abf0c55bd35dd3fe7e0ea2585128a7d6bd217b17a5ed3170081c1add77d607",
+    "root.data": "6c335762969ebf00e5262320d57dfa657c22ee9a3609a51dda209c3f730d3708",
+    "gamedata.index": "bfd05dc880a0dae16e6dde8a11280e22bfdc2138c392ad27e8f83620a96b6922",
+    "gamedata.data": "1c27960e7de8bcf69a24e334cca9d159d636d9ffda982eb7d15328522e11cca3"
+  },
+  "prepared_hashes": {
+    "root.index": "8497e589a5c4e095c2d1db3b0affc7bf584588f6f2601a0484857851c44b7c1e",
+    "root.data": "e376bf3afe01b9687b83da4d267c78523c7b716e5000fe009d049eaf3ac571c2",
+    "gamedata.index": "91f72929869b85f47434d7f4699617201d5f279b190b57f19dcef76c2e473ce0",
+    "gamedata.data": "5771435c12b1309dea2c13791074e9a471ff8492be9e2fda2372a174f220fcc5"
+  }
+}

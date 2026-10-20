@@ -1,0 +1,29 @@
+-- MT2009_PLUS_BELTS_V1 - the belt system (Pasy). Autor: Digi Rasta (nowy-system v0.27.0,
+-- SYSTEMY/pasy.md), ported into MT2009 PLUS. Mistrz (20082), beside the Blacksmith in M1
+-- and M3 of every kingdom (spawned by the Dockerfile), opens the cube window with the nine
+-- belt recipes of cube.pasy.txt. Odlamki Energii: quest energia_alchemik; Kamienie
+-- Plomienia: the Razador and Nemere chests (special_item_group.dungeons.txt). The belts are
+-- refined at the Blacksmith (refine_proto as it is); a belt's grade (value0) opens the
+-- slots of the 4x4 belt inventory for potions (the client's belt window).
+-- cp1250; no literal ends with a Polish letter (qc).
+quest pasy begin
+	state start begin
+		when 20082.chat."Wytwarzanie pasów" begin
+			say_title(mob_name(20082)..":")
+			say("Z kruszców, pere³ i Od³amków Energii")
+			say("wykujê dla ciebie pas. Ka¿dy pas ma")
+			say("kieszenie na mikstury - im wy¿ej go")
+			say("ulepszysz u Kowala, tym wiêcej kieszeni.")
+			say("")
+			say("Od³amki Energii wydobywa Alchemik")
+			say("z rozebranych przedmiotów, a Kamienie")
+			say("P³omienia znajdziesz w skrzyniach")
+			say("Razadora i Nemere.")
+			say("")
+			if select("Otwórz okno wytwarzania", "Anuluj") == 1 then
+				setskin(NOWINDOW)
+				command("cube open")
+			end
+		end
+	end
+end

@@ -1,0 +1,340 @@
+--[[
+	Entrance to Portals
+	Dev: WLsj24; Swiatynia Zodiaku w MT2009 PLUS - Autor: Digi Rasta (MT2009_PLUS_ZODIAC_V1)
+--]]
+quest zodiac_temples begin
+	state start begin
+
+		function CheckPartyAnimaSphere()
+			local notAnimaSphere = {}
+			local pids = {party.get_member_pids()}
+
+			for i = 1, table.getn(pids), 1 do
+				q.begin_other_pc_block(pids[i])
+				-- MT2009_PLUS_ZODIAC_BOTS_V1: a bot of the party goes in on the person's Animosfery
+				if not pc.is_playerbot() and pc.get_animasphere() < 12 and not pc.is_flag_cz_ulimit_enter() then
+					table.insert(notAnimaSphere, table.getn(notAnimaSphere) +1, pc.get_name())
+				end
+
+				q.end_other_pc_block()
+			end
+
+			if table.getn(notAnimaSphere) >= 1 then
+				say_title(mob_name(npc.get_race()))
+				say("Cz³onkowie, posiadaj¹cy za ma³o Animosfer:") --785
+
+				for x = 1, table.getn(notAnimaSphere), 1 do
+					say(color(1,1,0), " "..notAnimaSphere[x])
+				end
+
+				return false
+			end
+		end
+
+		function DeletePartyAnimaSphere()
+			local notAnimaSphere = {}
+			local pids = {party.get_member_pids()}
+
+			for i = 1, table.getn(pids), 1 do
+				q.begin_other_pc_block(pids[i])
+				if not pc.is_playerbot() and pc.get_animasphere() >= 12 and not pc.is_flag_cz_ulimit_enter() then
+					pc.delete_animasphere()
+				end
+
+				q.end_other_pc_block()
+			end
+		end
+
+		when 9012.chat."Œwi¹tynia Zodiaku" begin
+			local gold_required = (200 * pc.get_level())
+			local level_required = 10
+
+			say_title(mob_name(9012))
+			say("Gdzie chcesz siê przenieœæ?") --6476
+			say("Informacja o mapie") --6457
+			say_reward(string.format("Nazwa mapy: Œwi¹tynia Zodiaku[ENTER]Poziom: %d[ENTER]Koszt: %d", level_required, gold_required))
+			say("Czy chcesz siê teleportowaæ?") --6464
+
+			local decision = select("Tak", "Nie")
+			if decision == 2 then return end
+
+			if pc.get_level() < level_required then
+				say(string.format("Masz za niski poziom."), level_required) --6466
+				return
+			end
+			if pc.get_gold() < gold_required then
+				say_title(mob_name(9012))
+				say("Móg³bym Ciê przenieœæ za darmo, ale mam du¿¹[ENTER]rodzinê. Aby j¹ utrzymaæ, potrzebujê pieniêdzy.") --6435
+				return
+			end
+
+			pc.change_money(-gold_required)
+			pc.warp(333200, 1431000)
+		end
+
+		when 20439.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(1)
+		end
+
+		when 20440.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(2)
+		end
+
+		when 20441.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(3)
+		end
+
+		when 20442.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(4)
+		end
+
+		when 20443.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(5)
+		end
+
+		when 20444.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(6)
+		end
+
+		when 20445.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(7)
+		end
+
+		when 20446.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(8)
+		end
+
+		when 20447.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(9)
+		end
+
+		when 20448.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(10)
+		end
+
+		when 20449.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(11)
+		end
+
+		when 20450.chat."Œwi¹tynia Zodiaku" with (party.is_party() and party.is_leader()) or (not party.is_party()) begin
+			say("Czy chcesz teraz wejœæ Œwi¹tyni Zodiaku?") --782
+			local s = select("Tak","Nie")
+			if s == 2 then return end
+
+			if party.is_party() then
+				if zodiac_temples.CheckPartyAnimaSphere() == false then return end
+				zodiac_temples.DeletePartyAnimaSphere()
+			else
+				if not pc.is_flag_cz_ulimit_enter() then
+					if pc.get_animasphere() < 12 then
+						say_title(mob_name(npc.get_race()))
+						say("Musisz za³adowaæ co najmniej 12 Animosfer, by[ENTER]wejœæ.") --783
+						return
+					end
+					pc.delete_animasphere()
+				end
+			end
+
+			zodiac_temple.starttemple(12)
+		end
+
+	end
+end

@@ -1,0 +1,5 @@
+# MT2009_PLUS_DB_EDITOR_QUESTS_V1: questy z panelu Sebana (Edytor bazy danych -> Questy)
+# off/item/gold/exp/bonus/extra <TAB> quest ... - opis w dbeditor/quests.py i bin/m2-quests
+# collect_quest_lv30 - Biolog ? Z?by Orka (poz. 30)
+extra	collect_quest_lv30	state:__complete	bonus	95	25
+extra	collect_quest_lv30	state:__complete	bonus	16	50

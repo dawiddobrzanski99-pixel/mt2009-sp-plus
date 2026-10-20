@@ -55,4 +55,15 @@ def install(app, ctx):
             continue
         module.install(bp, ctx)
     __import__("dbeditor.raredrop", fromlist=["install"]).install(bp, ctx)  # MT2009_PLUS_RARE_DROP_SWITCHES_V1 (on the hub after "Drop")
+    __import__("dbeditor.systems_horse", fromlist=["install"]).install(bp, ctx)
+    __import__("dbeditor.systems_hub", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_SYSTEMY_V1
+    __import__("dbeditor.systems_poly", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_POLIMORFIA_V1
+    __import__("dbeditor.systems_guild", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_GILDIA_V1
+    __import__("dbeditor.systems_rank", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_RANGI_V1
+    __import__("dbeditor.systems_weekly", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_RANKING_V1
+    __import__("dbeditor.systems_missions", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_MISJE_V1
+    __import__("dbeditor.systems_refine", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_ULEPSZANIE_V1
+    __import__("dbeditor.systems_plus9", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_PLUS9_USTAWIENIA_V1
+    __import__("dbeditor.systems_scan", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_SKAN_V1
+    __import__("dbeditor.systems_backup", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_KOPIA_V1
     app.register_blueprint(bp)

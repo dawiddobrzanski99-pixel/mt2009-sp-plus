@@ -1,0 +1,15 @@
+-- MT2009_PLUS_COLLECTOR_ITEM_V1: "Kolekcjoner" (70115, the ItemShop's, 1000 SM; never
+-- used up). Its use opens the collector's storage ("Magazyn kolekcjonera") wherever
+-- the character stands - before only at the storekeeper (Dozorca), from his safebox
+-- window. "/kolekcjoner przedmiot" is the store's own command (playerbot_collector.cpp):
+-- it checks the item is in the bag, the character alive, and keeps every other rule
+-- of the storekeeper's store (moves with hands free, closes 15 m from where it
+-- opened). The client opens the window on the store's first line, as at the
+-- storekeeper. Bots never come here (they never buy it, and the command refuses them).
+quest kolekcjoner_item begin
+    state start begin
+        when 70115.use begin
+            command("kolekcjoner przedmiot")
+        end
+    end
+end

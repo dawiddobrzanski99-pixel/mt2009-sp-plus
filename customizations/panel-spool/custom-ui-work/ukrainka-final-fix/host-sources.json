@@ -1,0 +1,8 @@
+{
+  "model_source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/custom_ukrainka_assets/dane_remy_npc.msm",
+  "model_container": "/app/m2clientpack/custom_ukrainka_assets/dane_remy_npc.msm",
+  "source_hashes": {
+    "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/custom_ukrainka_assets/dane_remy_npc.msm": "c1965ccdf3d04b000035191b72c426978d3c97bd519f05ee3d51e8f14fafce00",
+    "/opt/metin2/linux-port/docker/game/quest/ukrainka_wymiany.quest": "47246c277105e4b4a7294f69fa0bc0123a4f8e3efa5d9b75c27102daf07d762a"
+  }
+}

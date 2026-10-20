@@ -2,6 +2,7 @@
 #include <sys/time.h>
 #include "mission_panel.h"
 #include "custom_horse_polymorph_rewards.h"
+#include "seban_horse_rewards.h"
 #include "utils.h"
 #include "config.h"
 #include "desc.h"
@@ -3108,7 +3109,7 @@ bool CHARACTER::Damage(LPCHARACTER pAttacker, int dam, EDamageType type, DWORD d
             && type!=DAMAGE_TYPE_BLEEDING
 #endif
         )
-            dam=static_cast<int>(static_cast<long long>(dam)*(100-CustomHorseGrowth(GetHorseLevel(),5,30))/100);
+            dam=static_cast<int>(static_cast<long long>(dam)*(1000-SebanHorse::Value(GetHorseLevel(),SebanHorse::RESIST_BOSS))/1000);
 
 		// MOB_DAMAGE_X150_BOSS_X140_V1
 		if (IsPC() && pAttacker && pAttacker->IsMonster() && dam > 0

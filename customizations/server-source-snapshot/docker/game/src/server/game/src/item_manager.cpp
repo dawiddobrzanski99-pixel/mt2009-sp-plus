@@ -1216,6 +1216,9 @@ static void Mt2009PlusSashClothDrop(LPCHARACTER victim, LPCHARACTER killer, int 
 
 // CHEST50122_POLICY_HOOKS_V1
 #include "chest50122_policy.h"
+// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_BEGIN
+#include "custom_marmur_czarny_ork.h"
+// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_END
 
 static void CustomCorDrops(LPCHARACTER victim,std::vector<LPITEM>& items){
  if(!victim)return;
@@ -1890,6 +1893,20 @@ bool ITEM_MANAGER::CreateDropItem(LPCHARACTER pkChr, LPCHARACTER pkKiller, std::
 	// CUSTOM_COR_PROGRESSION_RUNTIME_V1
 	CustomCorDrops(pkChr,vec_item);
 	SharedFinalBossDrops(pkChr,vec_item);
+	// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_BEGIN
+	{
+		const int marblePct = custom_marmur_czarny_ork::ChancePer10000(pkChr, Mt2009PlusBaseMap(pkChr));
+		if (marblePct > 0 && number(1, 10000) <= marblePct)
+		{
+			LPITEM marble = CreateItem(custom_marmur_czarny_ork::ItemVnum, 1, 0, true);
+			if (marble)
+			{
+				marble->SetSocket(0, custom_marmur_czarny_ork::RaceVnum);
+				vec_item.emplace_back(marble);
+			}
+		}
+	}
+	// MT2009_NASZE_MARMUR_CZARNY_ORK_V1_END
 	for (itertype(vec_item) it = vec_item.begin(); it != vec_item.end(); ++it)
 	{
 		LPITEM item = *it;

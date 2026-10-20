@@ -1,0 +1,983 @@
+-- MT2009_PLUS_ATLANTYDA_V1: Ruiny Atlantydy - loch od poziomu 75, na poziomie Groty Wygnañców (mapa 158,
+-- plechito_summer2022_dungeon, loch Plechito "Ruins of Atlantis" z lata 2022). Wejœcie: Mag Atlantydy (9460)
+-- w Dolinie Orków przy wejœciu do Groty (286, 1434), Bilet do Atlantydy (30919) za ka¿d¹ osobê - zamiast op³aty
+-- w Yang. Wejœæ mo¿na samemu albo z dru¿yn¹; boty z dru¿yny gracza wchodz¹ za nim (playerbot_party_dungeon.h),
+-- a boty chodz¹ te¿ same (playerbot_dungeon_runs.h, klucz "atlantyda"). Wzorzec ruiny_skorpiona.quest.
+-- Etapy (flaga lochu "stage": 1..6 w trakcie, 10+N miêdzy etapami, 7 na koñcu):
+--   piêtro 1: 1) fala 45 potworów; 2) Kolumny z Muszli: G³êbinowa Muszla (8729) daje Klucz Atlantydy (30920),
+--      klucz oddany w³aœciwej z czterech kolumn (9461, kolejnoœæ losowa) przywo³uje Stra¿nika Atlantydy (4557),
+--      z³a kolumna - nowa muszla; cztery kolumny i cztery stra¿e;
+--   piêtro 2 (d.jump_all): 3) trzy Elity Atlantydy (4558), jedna prawdziwa - zabicie z³udzenia to punkt karny;
+--      4) fala 45 potworów; 5) 4 Serca Atlantydy (8730); 6) Morkhot (4559) - 300/240/180 s na zabicie
+--      (0/1/2+ punktów karnych), potem chowa siê, a Pradawne Serce Atlantydy (8731) przywo³uje go znowu.
+-- Potem 2-4 Skrzynie Atlantydy (30921) do podzia³u miêdzy ludzi (MT2009_PLUS_DUNGEON_CHEST_SPLIT_V1) i 20 s
+-- do wyjœcia (w³aœciciel, 8 paŸdziernika; inne lochy 10 s). Limit 45 minut, 5 wypraw dziennie. Ca³y loch:
+-- ¿ywio³ B³yskawicy (tools/zywioly).
+quest ruiny_atlantydy begin
+	state start begin
+		-- MT2009_PLUS_DUNGEON_NO_PLAYER_COOLDOWN_V1: only the bots rest between expeditions.
+		function must_rest(now)
+			if not pc.is_playerbot() then
+				return false
+			end
+			return now - pc.getf("ruiny_atlantydy", "entry") < ruiny_atlantydy.cfg().cooldown
+		end
+
+		function cfg()
+			return {
+				map = 158,
+				base_x = 38144, base_y = 22528, size = 768,
+				entry = {199, 241},
+				floor2 = {544, 475},
+				exit_map = 64, exit_x = 2848, exit_y = 8096,
+				min_level = 75,
+				near = 30,
+				cooldown = 60 * 60,
+				limit_min = 45, -- 40 until the owner's 8 October tuning (denser waves)
+				-- The ticket is the entry: one Bilet do Atlantydy (30919) a person, taken on the first login
+				-- into a new instance; Mag Atlantydy sells it for ticket_price (the bots' own runs pay the same
+				-- in yang in the core, playerbot_dungeon_runs.h). No yang fee besides.
+				ticket = 30919,
+				ticket_price = 12000000, ticket_text = "12 000 000",
+				key = 30920,
+				chest = 30921,
+				daily = 10,
+				wave_kills = 45, -- 30 before 8 October; the waves keep 24 alive (were 15/14)
+				pillars = 4,
+				hearts = 4,
+				chests_min = 2, chests_max = 4,
+				-- Morkhot's time by the penalty points of the Elites' stage (0, 1, 2 and more), seconds.
+				boss_time = {300, 240, 180},
+				path = "data/dungeon/ruiny_atlantydy/",
+			}
+		end
+
+		function today()
+			return math.floor((get_global_time() + 7200) / 86400)
+		end
+
+		function runs_today()
+			if pc.getf("ruiny_atlantydy", "day") ~= ruiny_atlantydy.today() then
+				return 0
+			end
+			return pc.getf("ruiny_atlantydy", "runs")
+		end
+
+		function over_limit()
+			return false -- No daily entry limit.
+		end
+
+		function no_ticket()
+			local c = ruiny_atlantydy.cfg()
+			return not pc.is_gm() and pc.count_item(c.ticket) < 1
+		end
+
+		-- MT2009_PLUS_DUNGEON_FEE_LEADER_V1 as the other dungeons: a person pays for himself alone, once,
+		-- on his first login into the new instance (here with a ticket); a bot never.
+		function pay_entry()
+			local c = ruiny_atlantydy.cfg()
+			if pc.is_gm() or pc.is_playerbot() then
+				return true
+			end
+			if ruiny_atlantydy.over_limit() then
+				syschat("Wykorzysta³eœ ju¿ dzisiejsze wyprawy do tego lochu ("..c.daily.."). Wróæ jutro.")
+				return false
+			end
+			if pc.count_item(c.ticket) < 1 then
+				syschat("Bez Biletu do Atlantydy nie przetrwasz w g³êbinach. Kup go u Maga Atlantydy.")
+				return false
+			end
+			pc.remove_item(c.ticket, 1)
+			local day = ruiny_atlantydy.today()
+			if pc.getf("ruiny_atlantydy", "day") ~= day then
+				pc.setf("ruiny_atlantydy", "day", day)
+				pc.setf("ruiny_atlantydy", "runs", 0)
+			end
+			pc.setf("ruiny_atlantydy", "runs", pc.getf("ruiny_atlantydy", "runs") + 1)
+			syschat("Bilet do Atlantydy zuzyty. Bez limitu dobowego.")
+			return true
+		end
+
+		-- MT2009_PLUS_BOT_DUNGEONS_ALL_V1: a party a bot leads is the person's to open.
+		function bot_leads()
+			local lp = party.get_leader_pid()
+			if lp == nil or lp == 0 or lp == pc.get_player_id() then
+				return false
+			end
+			local bot = false
+			local pids = {party.get_member_pids()}
+			for i, pid in next, pids, nil do
+				if pid == lp then
+					q.begin_other_pc_block(pid)
+					bot = pc.get_player_id() == pid and pc.is_playerbot()
+					q.end_other_pc_block()
+				end
+			end
+			return bot
+		end
+
+		function inside()
+			local idx = pc.get_map_index()
+			return idx >= 158 * 10000 and idx < 159 * 10000
+		end
+
+		-- MT2009_PLUS_DUNGEON_END_V1: the end of a run, seen from every core.
+		function end_flag(idx)
+			return "mt2009_dgend_"..math.floor(idx / 10000).."_"..math.mod(idx, 100)
+		end
+
+		function run_ended()
+			local idx = pc.getf("ruiny_atlantydy", "idx")
+			return idx > 0 and game.get_event_flag(ruiny_atlantydy.end_flag(idx)) >= pc.getf("ruiny_atlantydy", "entry")
+		end
+
+		function mark_ended()
+			if d.getf("ended") == 1 then
+				return
+			end
+			d.setf("ended", 1)
+			d.setqf2("ruiny_atlantydy", "idx", 0)
+			if d.getf("mt2009_dgbot") ~= 1 and d.getf("mt2009_dgrun") ~= 1 then
+				game.set_event_flag(ruiny_atlantydy.end_flag(d.get_map_index()), get_global_time())
+			end
+		end
+
+		function clear_stale()
+			local c = ruiny_atlantydy.cfg()
+			if pc.getf("ruiny_atlantydy", "idx") <= 0 then
+				return false
+			end
+			if ruiny_atlantydy.run_ended() then
+				pc.setf("ruiny_atlantydy", "idx", 0)
+				return true
+			end
+			if get_global_time() - pc.getf("ruiny_atlantydy", "entry") >= c.limit_min * 60 then
+				pc.setf("ruiny_atlantydy", "idx", 0)
+			end
+			return false
+		end
+
+		function end_text(n)
+			if n == 1 then
+				return "Za 1 sekundê zostaniesz teleportowany do Doliny Orków."
+			elseif n >= 2 and n <= 4 then
+				return "Za "..n.." sekundy zostaniesz teleportowany do Doliny Orków."
+			end
+			return "Za "..n.." sekund zostaniesz teleportowany do Doliny Orków."
+		end
+
+		function end_count(n)
+			if n <= 0 then
+				ruiny_atlantydy.finish()
+				return
+			end
+			if n <= 5 or math.mod(n, 10) == 0 then
+				d.notice("Ruiny Atlantydy: "..ruiny_atlantydy.end_text(n))
+			end
+			d.setf("end_in", n - 1)
+			server_timer("atlantyda_end", 1, d.get_map_index())
+		end
+
+		function entry_xy()
+			local c = ruiny_atlantydy.cfg()
+			return (c.base_x + c.entry[1]) * 100, (c.base_y + c.entry[2]) * 100
+		end
+
+		function floor2_xy()
+			local c = ruiny_atlantydy.cfg()
+			return (c.base_x + c.floor2[1]) * 100, (c.base_y + c.floor2[2]) * 100
+		end
+
+		-- The floors are two pieces of the map with no way between them: floor 1 west of x 400, floor 2 east.
+		function on_floor1()
+			local c = ruiny_atlantydy.cfg()
+			return pc.get_x() < c.base_x + 400
+		end
+
+		function purge_floor(f)
+			local c = ruiny_atlantydy.cfg()
+			if f == 1 then
+				d.purge_area(c.base_x * 100, c.base_y * 100, (c.base_x + 400) * 100, (c.base_y + c.size) * 100)
+			else
+				d.purge_area((c.base_x + 400) * 100, c.base_y * 100, (c.base_x + c.size) * 100, (c.base_y + c.size) * 100)
+			end
+		end
+
+		function stage_text(stage)
+			local c = ruiny_atlantydy.cfg()
+			if stage == 1 then return "Pokonajcie "..c.wave_kills.." stra¿ników ruin."
+			elseif stage == 2 then return "Zniszczcie G³êbinow¹ Muszlê i oddajcie Klucz Atlantydy w³aœciwej Kolumnie z Muszli ("..d.getf("left").." zosta³o)."
+			elseif stage == 3 then return "Trzy Elity Atlantydy - tylko jedna jest prawdziwa. Zabicie z³udzenia to punkt karny."
+			elseif stage == 4 then return "Pokonajcie "..c.wave_kills.." potworów g³êbin."
+			elseif stage == 5 then return "Zniszczcie "..c.hearts.." Serca Atlantydy."
+			elseif stage == 6 then return "Morkhot nadchodzi! Macie ma³o czasu."
+			end
+			return ""
+		end
+
+		function spawn_shell()
+			d.setf("shell", 1)
+			d.setf("key_out", 0)
+			d.spawn_mob(8729, 198, 179)
+		end
+
+		function spawn_morkhot()
+			local c = ruiny_atlantydy.cfg()
+			local neg = d.getf("negative")
+			if neg > 2 then
+				neg = 2
+			end
+			local t = c.boss_time[neg + 1]
+			d.setf("boss_up", 1)
+			d.setf("boss_try", d.getf("boss_try") + 1)
+			d.set_unique("morkhot"..d.getf("boss_try"), d.spawn_mob(4559, 543, 534))
+			-- The bots' own runs (no person inside: mt2009_dgrun / mt2009_dgbot) fight him without the clock -
+			-- a party of bots that cannot beat it would only go round the Ancient Heart until the time limit.
+			-- MT2009_PLUS_ATLANTYDA_TEST_V1, the test server's switch (event flag atlantyda_bot_clock, set by the core's
+			-- test hook, playerbot_dungeon_runs.h "flag atlantyda_bot_clock N"): the bots' runs get the clock as well -
+			-- 1: the players' times, N > 1: N seconds (the bots kill him in about a minute; a short clock makes him
+			-- hide, so the Ancient Heart and the recall are tried).
+			local test = game.get_event_flag("atlantyda_bot_clock")
+			if d.getf("mt2009_dgrun") == 1 or d.getf("mt2009_dgbot") == 1 then
+				if test <= 0 then
+					d.notice("Ruiny Atlantydy: Pokonajcie Morkhota!")
+					return
+				elseif test > 1 then
+					t = test
+				end
+			end
+			d.notice(string.format("Ruiny Atlantydy: Macie %d s, by pokonaæ Morkhota (punkty karne: %d).", t, d.getf("negative")))
+			server_timer("atlantyda_boss", t, d.get_map_index())
+		end
+
+		function start_stage(stage)
+			local c = ruiny_atlantydy.cfg()
+			d.clear_regen()
+			d.setf("stage", stage)
+			d.setf("kills", 0)
+			if stage == 1 then
+				d.set_regen_file(c.path.."wave1.txt")
+			elseif stage == 2 then
+				-- The four pillars round the Shell; the order the key opens them in is drawn (ord_1..ord_4 =
+				-- the spawn number of the pillar wanted 1st..4th), each pillar a unique "kol<spawn number>".
+				local pos = {{183, 158}, {212, 158}, {183, 200}, {212, 200}}
+				for i = 1, 4 do
+					d.set_unique("kol"..i, d.spawn_mob_dir(9461, pos[i][1], pos[i][2], 1))
+					d.setf("ord_"..i, i)
+					d.setf("open_"..i, 0)
+				end
+				for i = 4, 2, -1 do
+					local j = number(1, i)
+					local t = d.getf("ord_"..i)
+					d.setf("ord_"..i, d.getf("ord_"..j))
+					d.setf("ord_"..j, t)
+				end
+				d.setf("next", 1)
+				d.setf("left", c.pillars)
+				d.setf("boss_up", 0)
+				ruiny_atlantydy.spawn_shell()
+			elseif stage == 3 then
+				d.setf("floor", 2)
+				d.setf("negative", 0)
+				local pos = {{580, 515}, {508, 518}, {546, 578}}
+				-- The real one by its VID (a kill event's npc is the one killed); the two others are illusions.
+				local real = number(1, 3)
+				for i = 1, 3 do
+					local vid = d.spawn_mob(4558, pos[i][1], pos[i][2])
+					if i == real then
+						d.setf("real_vid", vid)
+					end
+				end
+				-- Mag Atlantydy at the first floor's entry: the way down for whoever comes back up there.
+				d.spawn_mob_dir(9460, 199, 236, 5)
+			elseif stage == 4 then
+				d.set_regen_file(c.path.."wave2.txt")
+			elseif stage == 5 then
+				d.setf("left", c.hearts)
+				d.regen_file(c.path.."hearts.txt")
+			end
+			d.notice("Ruiny Atlantydy ("..stage.."/6): "..ruiny_atlantydy.stage_text(stage))
+			-- Morkhot after the stage's notice, so his clock's notice ("Macie N s") comes second (test of 8 October).
+			if stage == 6 then
+				d.setf("boss_try", 0)
+				ruiny_atlantydy.spawn_morkhot()
+			end
+		end
+
+		function next_stage()
+			local stage = d.getf("stage") + 1
+			d.clear_regen()
+			d.setf("stage", 9 + stage)
+			if stage == 2 then
+				ruiny_atlantydy.purge_floor(1)
+				d.notice("Ruiny Atlantydy: Etap zaliczony. Za 5 sekund nastêpne wyzwanie.")
+			elseif stage == 3 then
+				ruiny_atlantydy.purge_floor(1)
+				d.notice("Ruiny Atlantydy: Wszystkie kolumny otwarte. Za 5 sekund pr¹d zabierze was w g³¹b ruin.")
+			else
+				ruiny_atlantydy.purge_floor(2)
+				d.notice("Ruiny Atlantydy: Etap zaliczony. Za 5 sekund nastêpne wyzwanie.")
+			end
+			server_timer("atlantyda_stage", 5, d.get_map_index())
+		end
+
+		function init()
+			local c = ruiny_atlantydy.cfg()
+			d.setf("init", 1)
+			d.setf("entered", 1)
+			d.setf("mt2009_keep_until", get_global_time() + c.limit_min * 60 + 60)
+			d.setf("start", get_global_time())
+			d.setf("stage", 10)
+			d.setf("floor", 1)
+			d.setf("minutes", c.limit_min)
+			d.notice("Ruiny Atlantydy: Witajcie w g³êbinach. Za 5 sekund obudz¹ siê stra¿nicy ruin.")
+			server_timer("atlantyda_stage", 5, d.get_map_index())
+			server_timer("atlantyda_tick", 60, d.get_map_index())
+		end
+
+		function finish()
+			ruiny_atlantydy.mark_ended()
+			local c = ruiny_atlantydy.cfg()
+			d.setf("closed", 1)
+			d.setf("mt2009_keep_until", 0)
+			if d.getf("mt2009_dgbot") == 1 then
+				d.set_warp_location(c.map, c.base_x + c.entry[1], c.base_y + c.entry[2])
+			else
+				d.set_warp_location(c.exit_map, c.exit_x, c.exit_y)
+			end
+			d.exit_all()
+		end
+
+		-- MT2009_PLUS_DUNGEON_CHEST_SPLIT_V1: one pool of chests a run, round-robin among the people inside.
+		function reward()
+			local c = ruiny_atlantydy.cfg()
+			local took = get_global_time() - d.getf("start")
+			local pids = {}
+			if party.is_party() then
+				pids = {party.get_member_pids()}
+			end
+			if table.getn(pids) == 0 then
+				pids = {pc.get_player_id()}
+			end
+			local people = {}
+			for i, pid in next, pids, nil do
+				q.begin_other_pc_block(pid)
+				if not pc.is_playerbot() then
+					table.insert(people, pid)
+				end
+				q.end_other_pc_block()
+			end
+			local n = table.getn(people)
+			if n > 0 then
+				local pool = number(c.chests_min, c.chests_max)
+				local got = {}
+				local first = number(1, n)
+				for k = 0, pool - 1 do
+					local who = math.mod(first - 1 + k, n) + 1
+					got[who] = (got[who] or 0) + 1
+				end
+				for who = 1, n do
+					q.begin_other_pc_block(people[who])
+					local g = got[who] or 0
+					if g > 0 then
+						pc.give_item2(c.chest, g)
+						syschat("Ruiny Atlantydy: Otrzymujesz: Skrzynia Atlantydy x"..g.." (podzia³ ³upu: "..pool.." na "..n..").")
+					else
+						syschat("Ruiny Atlantydy: tym razem bez skrzyni (podzia³ ³upu: "..pool.." na "..n..").")
+					end
+					q.end_other_pc_block()
+				end
+			end
+			return took
+		end
+
+		-- ------------------------------------------------------------ Mag Atlantydy, outside
+
+		when 9460.chat."Ruiny Atlantydy" with pc.get_map_index() ~= 158 and not ruiny_atlantydy.inside() begin
+			local c = ruiny_atlantydy.cfg()
+			say_title(mob_name(9460))
+			if pc.is_playerbot() then
+				return
+			end
+			say("Pod falami œpi¹ ruiny Atlantydy. Ich stra¿nicy")
+			say("wci¹¿ broni¹ skarbów zatopionego miasta, a w g³êbi")
+			say("czeka Morkhot, w³adca g³êbin.")
+			say("")
+			say_reward("Wymagany poziom: "..c.min_level..". Limit "..c.limit_min.." minut, bez czekania miêdzy wyprawami.")
+			say_reward("Wejœcie: Bilet do Atlantydy - jeden za ka¿d¹ osobê (u mnie "..c.ticket_text.." Yang).")
+			say_reward("Bez limitu wypraw dziennie.")
+			say_reward("Mo¿esz wejœæ sam albo z dru¿yn¹; boty z dru¿yny wchodz¹ bez biletu.")
+			if select("WejdŸ do ruin", "Nie teraz") ~= 1 then
+				return
+			end
+			local now = get_global_time()
+			local x, y = ruiny_atlantydy.entry_xy()
+			if ruiny_atlantydy.clear_stale() then
+				say_title(mob_name(9460))
+				say("Ta wyprawa zosta³a ju¿ ukoñczona.")
+			end
+			local idx = pc.getf("ruiny_atlantydy", "idx")
+			if idx > 0 and now - pc.getf("ruiny_atlantydy", "entry") < c.limit_min * 60 then
+				say_title(mob_name(9460))
+				say("Twoja wyprawa wci¹¿ trwa. Czy chcesz do niej wróciæ?")
+				local s = select("Wróæ do ruin", "Nowa wyprawa", "Nie teraz")
+				if s == 3 then
+					return
+				elseif s == 1 then
+					pc.setf("ruiny_atlantydy", "back", idx)
+					pc.setf("ruiny_atlantydy", "back_at", now)
+					if d.find(idx, x, y, pc.get_player_id()) then
+						pc.warp(x, y, idx)
+					else
+						say_title(mob_name(9460))
+						say("Jeœli wyprawa wci¹¿ trwa, pr¹d zaraz ciê zabierze.")
+						timer("atlantyda_rejoin", 5)
+					end
+					return
+				end
+			end
+			if party.is_party() and not party.is_leader() and not ruiny_atlantydy.bot_leads() then
+				say_title(mob_name(9460))
+				say("Tylko przywódca dru¿yny mo¿e otworzyæ przejœcie.")
+				say("Stañ przy mnie - przywódca zabierze dru¿ynê stoj¹c¹ obok.")
+				return
+			end
+			if pc.get_level() < c.min_level then
+				say_title(mob_name(9460))
+				say("G³êbiny ciê zmia¿d¿¹. Wróæ, gdy osi¹gniesz poziom "..c.min_level..".")
+				return
+			end
+			if not pc.can_warp() or pc.is_busy() then
+				say_title(mob_name(9460))
+				say("Poczekaj chwilê po handlu lub rozmowie i spróbuj ponownie.")
+				return
+			end
+			if now - pc.getf("ruiny_atlantydy", "pending") < 10 then
+				say_title(mob_name(9460))
+				say("Przejœcie ju¿ siê otwiera. Poczekaj chwilê.")
+				return
+			end
+			local me = pc.get_player_id()
+			local humans = {me}
+			local low = {}
+			local wait = {}
+			local full = {}
+			local poor = {}
+			if ruiny_atlantydy.must_rest(now) then table.insert(wait, pc.get_name()) end
+			if ruiny_atlantydy.over_limit() then table.insert(full, pc.get_name()) end
+			if ruiny_atlantydy.no_ticket() then table.insert(poor, pc.get_name()) end
+			if party.is_party() then
+				local lmap, lx, ly = pc.get_map_index(), pc.get_x(), pc.get_y()
+				local pids = {party.get_member_pids()}
+				for i, pid in next, pids, nil do
+					if pid ~= me then
+						q.begin_other_pc_block(pid)
+						local dx, dy = pc.get_x() - lx, pc.get_y() - ly
+						if pc.get_player_id() == pid and not pc.is_playerbot() and pc.get_map_index() == lmap and dx * dx + dy * dy <= c.near * c.near and pc.can_warp() then
+							table.insert(humans, pid)
+							if pc.get_level() < c.min_level then table.insert(low, pc.get_name()) end
+							if ruiny_atlantydy.must_rest(now) then table.insert(wait, pc.get_name()) end
+							if ruiny_atlantydy.over_limit() then table.insert(full, pc.get_name()) end
+							if ruiny_atlantydy.no_ticket() then table.insert(poor, pc.get_name()) end
+						end
+						q.end_other_pc_block()
+					end
+				end
+			end
+			if table.getn(low) > 0 then
+				say_title(mob_name(9460))
+				say("Za s³abi na g³êbiny (poziom "..c.min_level.."+):")
+				for i, n in next, low, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			if table.getn(full) > 0 then
+				say_title(mob_name(9460))
+				say("Dzisiejsze wyprawy do ruin ju¿ wykorzystane ("..c.daily.." dziennie):")
+				for i, n in next, full, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			if table.getn(poor) > 0 then
+				say_title(mob_name(9460))
+				say("Bez Biletu do Atlantydy:")
+				for i, n in next, poor, nil do say(color(1,1,0).."    "..n) end
+				say("")
+				say("Bilet kupicie u mnie - opcja: Kup Bilet do Atlantydy.")
+				return
+			end
+			if table.getn(wait) > 0 then
+				say_title(mob_name(9460))
+				say("Jeszcze nie odpoczêli po poprzedniej wyprawie:")
+				for i, n in next, wait, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			local r = d.new_jump_pids(c.map, x, y, humans)
+			if r < 0 then
+				ruiny_atlantydy.lobby()
+				return
+			end
+			pc.setf("ruiny_atlantydy", "pending", now)
+			if r == 0 then
+				timer("atlantyda_fallback", 5)
+			end
+		end
+
+		when 9460.chat."Kup Bilet do Atlantydy" with not ruiny_atlantydy.inside() begin
+			local c = ruiny_atlantydy.cfg()
+			say_title(mob_name(9460))
+			if pc.is_playerbot() then
+				return
+			end
+			say("Bilet do Atlantydy chroni przed wod¹, ciœnieniem")
+			say("i ciemnoœci¹ g³êbin. Bez niego nie zejdziesz do ruin.")
+			say("Bywa te¿ u dowódców i genera³ów Groty Wygnañców.")
+			say("")
+			say_reward("Cena: "..c.ticket_text.." Yang za bilet.")
+			if select("Kup bilet", "Nie teraz") ~= 1 then
+				return
+			end
+			if pc.get_money() < c.ticket_price then
+				say_title(mob_name(9460))
+				say("Nie masz przy sobie "..c.ticket_text.." Yang.")
+				return
+			end
+			pc.change_money(-c.ticket_price)
+			pc.give_item2(c.ticket, 1)
+			say_title(mob_name(9460))
+			say("Proszê. Niech g³êbiny bêd¹ dla ciebie ³askawe.")
+		end
+
+		function lobby()
+			local c = ruiny_atlantydy.cfg()
+			local x, y = ruiny_atlantydy.entry_xy()
+			if party.is_party() then
+				local me = pc.get_player_id()
+				local lmap, lx, ly = pc.get_map_index(), pc.get_x(), pc.get_y()
+				local pids = {party.get_member_pids()}
+				for i, pid in next, pids, nil do
+					if pid ~= me then
+						q.begin_other_pc_block(pid)
+						local dx, dy = pc.get_x() - lx, pc.get_y() - ly
+						if pc.get_player_id() == pid and not pc.is_playerbot() and pc.get_map_index() == lmap and dx * dx + dy * dy <= c.near * c.near and pc.can_warp() then
+							pc.warp(x, y)
+						end
+						q.end_other_pc_block()
+					end
+				end
+			else
+				pc.setf("ruiny_atlantydy", "auto", 1)
+			end
+			pc.setf("ruiny_atlantydy", "pending", 0)
+			pc.warp(x, y)
+		end
+
+		when atlantyda_fallback.timer begin
+			local c = ruiny_atlantydy.cfg()
+			if pc.get_map_index() ~= c.exit_map or pc.getf("ruiny_atlantydy", "pending") == 0 then
+				return
+			end
+			syschat("Ruiny Atlantydy: przejœcie prowadzi przez poczekalniê.")
+			ruiny_atlantydy.lobby()
+		end
+
+		function lobby_create(humans)
+			local c = ruiny_atlantydy.cfg()
+			local x, y = ruiny_atlantydy.entry_xy()
+			local list = {pc.get_player_id()}
+			for i, pid in next, humans, nil do
+				if pid ~= list[1] then
+					table.insert(list, pid)
+				end
+			end
+			return d.new_jump_pids(c.map, x, y, list) > 0
+		end
+
+		-- ------------------------------------------------------------ Mag Atlantydy, the lobby (public 158)
+
+		when 9460.chat."Otwórz przejœcie" with pc.get_map_index() == 158 begin
+			local c = ruiny_atlantydy.cfg()
+			say_title(mob_name(9460))
+			local now = get_global_time()
+			if ruiny_atlantydy.clear_stale() then
+				say("Ta wyprawa zosta³a ju¿ ukoñczona.")
+			end
+			local idx = pc.getf("ruiny_atlantydy", "idx")
+			if idx > 0 and now - pc.getf("ruiny_atlantydy", "entry") < c.limit_min * 60 then
+				if d.find(idx) then
+					say("Twoja wyprawa wci¹¿ trwa. Czy chcesz do niej wróciæ?")
+					if select("Wróæ do ruin", "Nie teraz") == 1 then
+						local x, y = ruiny_atlantydy.entry_xy()
+						pc.warp(x, y, idx)
+					end
+					return
+				end
+				pc.setf("ruiny_atlantydy", "idx", 0)
+			end
+			if party.is_party() and not party.is_leader() and not ruiny_atlantydy.bot_leads() then
+				say("Tylko przywódca dru¿yny mo¿e otworzyæ przejœcie.")
+				say("Poczekaj tu na niego - zabierze ca³¹ dru¿ynê.")
+				return
+			end
+			local humans = {}
+			local low = {}
+			local wait = {}
+			local full = {}
+			local poor = {}
+			if party.is_party() then
+				local pids = {party.get_member_pids()}
+				for i, pid in next, pids, nil do
+					q.begin_other_pc_block(pid)
+					if pc.get_player_id() == pid and not pc.is_playerbot() then
+						table.insert(humans, pid)
+						if pc.get_level() < c.min_level then table.insert(low, pc.get_name()) end
+						if ruiny_atlantydy.must_rest(now) then table.insert(wait, pc.get_name()) end
+						if ruiny_atlantydy.over_limit() then table.insert(full, pc.get_name()) end
+						if ruiny_atlantydy.no_ticket() then table.insert(poor, pc.get_name()) end
+					end
+					q.end_other_pc_block()
+				end
+			else
+				table.insert(humans, pc.get_player_id())
+				if pc.get_level() < c.min_level then table.insert(low, pc.get_name()) end
+				if ruiny_atlantydy.must_rest(now) then table.insert(wait, pc.get_name()) end
+				if ruiny_atlantydy.over_limit() then table.insert(full, pc.get_name()) end
+				if ruiny_atlantydy.no_ticket() then table.insert(poor, pc.get_name()) end
+			end
+			if table.getn(low) > 0 then
+				say("Za s³abi na g³êbiny (poziom "..c.min_level.."+):")
+				for i, n in next, low, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			if table.getn(full) > 0 then
+				say("Dzisiejsze wyprawy do ruin ju¿ wykorzystane ("..c.daily.." dziennie):")
+				for i, n in next, full, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			if table.getn(poor) > 0 then
+				say("Bez Biletu do Atlantydy:")
+				for i, n in next, poor, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			if table.getn(wait) > 0 then
+				say("Jeszcze nie odpoczêli po poprzedniej wyprawie:")
+				for i, n in next, wait, nil do say(color(1,1,0).."    "..n) end
+				return
+			end
+			say("Dru¿yna na tej mapie wejdzie razem z tob¹.")
+			if select("Otwórz przejœcie", "Nie teraz") ~= 1 then
+				return
+			end
+			if not ruiny_atlantydy.lobby_create(humans) then
+				say_title(mob_name(9460))
+				say("Nie uda³o siê otworzyæ przejœcia. Spróbuj ponownie za chwilê.")
+			end
+		end
+
+		-- ------------------------------------------------------------ Mag Atlantydy, inside (floor 1)
+
+		when 9460.chat."ZejdŸ na drugie piêtro" with ruiny_atlantydy.inside() and d.getf("floor") == 2 and d.getf("closed") ~= 1 begin
+			say_title(mob_name(9460))
+			say("Pr¹d zabierze ciê tam, gdzie walczy twoja dru¿yna.")
+			if select("Zabierz mnie", "Nie teraz") == 1 then
+				local x, y = ruiny_atlantydy.floor2_xy()
+				pc.warp(x, y, pc.get_map_index())
+			end
+		end
+
+		when atlantyda_auto.timer begin
+			local c = ruiny_atlantydy.cfg()
+			if pc.get_map_index() ~= c.map or party.is_party() then
+				return
+			end
+			local now = get_global_time()
+			if pc.get_level() < c.min_level or ruiny_atlantydy.must_rest(now) or ruiny_atlantydy.no_ticket() then
+				syschat("Ruiny Atlantydy: porozmawiaj z Magiem Atlantydy, aby otworzyæ przejœcie.")
+				return
+			end
+			if not ruiny_atlantydy.lobby_create({pc.get_player_id()}) then
+				syschat("Ruiny Atlantydy: nie uda³o siê otworzyæ przejœcia - porozmawiaj z Magiem Atlantydy.")
+			end
+		end
+
+		when atlantyda_rejoin.timer begin
+			if ruiny_atlantydy.inside() or pc.getf("ruiny_atlantydy", "idx") <= 0 then
+				return
+			end
+			pc.setf("ruiny_atlantydy", "idx", 0)
+			syschat("Ruiny Atlantydy: Ta wyprawa ju¿ siê zakoñczy³a. Porozmawiaj z Magiem Atlantydy, aby wyruszyæ na now¹.")
+		end
+
+		-- Back on floor 1 (a rejoin or a restart lands at the entry) once the run is on floor 2: down again.
+		when atlantyda_floor2.timer begin
+			if not ruiny_atlantydy.inside() or d.getf("floor") ~= 2 or d.getf("closed") == 1 or not ruiny_atlantydy.on_floor1() then
+				return
+			end
+			local x, y = ruiny_atlantydy.floor2_xy()
+			pc.warp(x, y, pc.get_map_index())
+		end
+
+		when login begin
+			local c = ruiny_atlantydy.cfg()
+			local idx = pc.get_map_index()
+			if idx == c.map then
+				if pc.is_playerbot() then
+					pc.warp(c.exit_x * 100, c.exit_y * 100)
+					return
+				end
+				pc.set_warp_location(c.exit_map, c.exit_x, c.exit_y)
+				pc.setf("ruiny_atlantydy", "pending", 0)
+				if pc.getf("ruiny_atlantydy", "auto") == 1 and not party.is_party() then
+					pc.setf("ruiny_atlantydy", "auto", 0)
+					syschat("Ruiny Atlantydy: przejœcie siê otwiera...")
+					timer("atlantyda_auto", 1)
+				else
+					pc.setf("ruiny_atlantydy", "auto", 0)
+					syschat("Ruiny Atlantydy: porozmawiaj z Magiem Atlantydy, aby otworzyæ przejœcie.")
+				end
+			elseif ruiny_atlantydy.inside() then
+				if pc.is_playerbot() then
+					pc.warp(c.exit_x * 100, c.exit_y * 100)
+					return
+				end
+				pc.set_warp_location(c.exit_map, c.exit_x, c.exit_y)
+				pc.setf("ruiny_atlantydy", "inside", 1)
+				pc.setf("ruiny_atlantydy", "pending", 0)
+				if d.getf("ended") == 1 or d.getf("closed") == 1 then
+					if pc.getf("ruiny_atlantydy", "idx") == idx then
+						pc.setf("ruiny_atlantydy", "idx", 0)
+					end
+					syschat("Ruiny Atlantydy: Ten loch zosta³ ju¿ ukoñczony.")
+					pc.warp(c.exit_x * 100, c.exit_y * 100)
+					return
+				end
+				local back = pc.getf("ruiny_atlantydy", "back") == idx and get_global_time() - pc.getf("ruiny_atlantydy", "back_at") < 60
+				pc.setf("ruiny_atlantydy", "back", 0)
+				if pc.getf("ruiny_atlantydy", "idx") ~= idx then
+					if back then
+						pc.setf("ruiny_atlantydy", "idx", idx)
+					else
+						if not ruiny_atlantydy.pay_entry() then
+							pc.warp(c.exit_x * 100, c.exit_y * 100)
+							return
+						end
+						pc.setf("ruiny_atlantydy", "idx", idx)
+						pc.setf("ruiny_atlantydy", "entry", get_global_time())
+					end
+				end
+				if d.getf("init") == 0 then
+					ruiny_atlantydy.init()
+				elseif d.getf("floor") == 2 and ruiny_atlantydy.on_floor1() then
+					timer("atlantyda_floor2", 2)
+				end
+			else
+				if pc.getf("ruiny_atlantydy", "inside") == 1 then
+					pc.setf("ruiny_atlantydy", "inside", 0)
+					if pc.count_item(c.key) > 0 then pc.remove_item(c.key, pc.count_item(c.key)) end
+				end
+				if not pc.is_playerbot() and ruiny_atlantydy.clear_stale() then
+					syschat("Ruiny Atlantydy: Ten loch zosta³ ju¿ ukoñczony.")
+				end
+			end
+		end
+
+		-- ------------------------------------------------------------ the instance's timers
+
+		when atlantyda_stage.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.getf("closed") == 1 then
+					return
+				end
+				local s = d.getf("stage")
+				if s >= 10 then
+					if s == 12 then
+						-- Floor 2: everybody down with the current (the stage starts once they are there).
+						local c = ruiny_atlantydy.cfg()
+						d.setf("floor", 2)
+						d.jump_all(c.base_x + c.floor2[1], c.base_y + c.floor2[2])
+					end
+					ruiny_atlantydy.start_stage(s - 9)
+				end
+			end
+		end
+
+		when atlantyda_tick.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.getf("closed") == 1 then
+					return
+				end
+				local left = d.getf("minutes") - 1
+				if d.getf("mt2009_dgbot") == 1 then
+					left = d.getf("minutes")
+				end
+				d.setf("minutes", left)
+				if left <= 0 then
+					d.notice("Ruiny Atlantydy: Czas min¹³. Pr¹d wynosi was z ruin.")
+					ruiny_atlantydy.finish()
+					return
+				end
+				-- A key that went nowhere for three minutes (its holder left, a full bag): a new Shell.
+				if d.getf("stage") == 2 and d.getf("key_out") == 1 and d.getf("boss_up") == 0 and get_global_time() - d.getf("key_at") > 180 then
+					d.notice("Ruiny Atlantydy: Klucz przepad³ w g³êbinach. Pojawia siê nowa G³êbinowa Muszla.")
+					ruiny_atlantydy.spawn_shell()
+				end
+				if left == 15 or left == 10 or left == 5 or left == 1 then
+					d.notice("Ruiny Atlantydy: Pozosta³o "..left.." min.")
+				end
+				server_timer("atlantyda_tick", 60, get_server_timer_arg())
+			end
+		end
+
+		-- MT2009_PLUS_AREZZO_DUNGEON_BOTS_V1 / MT2009_PLUS_BOT_DUNGEON_RUNS_V1: the core's own instances.
+		when atlantyda_dgbot.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.getf("mt2009_dgbot") == 1 and d.getf("init") == 0 then
+					ruiny_atlantydy.init()
+				end
+			end
+		end
+
+		when atlantyda_dgrun.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.getf("mt2009_dgrun") == 1 and d.getf("init") == 0 then
+					ruiny_atlantydy.init()
+				end
+			end
+		end
+
+		when atlantyda_end.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.getf("closed") == 1 then
+					return
+				end
+				ruiny_atlantydy.end_count(d.getf("end_in"))
+			end
+		end
+
+		-- Morkhot's time is up: he hides, the Ancient Heart calls him back.
+		when atlantyda_boss.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.getf("closed") == 1 or d.getf("stage") ~= 6 or d.getf("boss_up") ~= 1 then
+					return
+				end
+				d.setf("boss_up", 0)
+				d.purge_unique("morkhot"..d.getf("boss_try"))
+				d.spawn_mob(8731, 543, 534)
+				d.notice("Ruiny Atlantydy: Morkhot skry³ siê w g³êbinach! Zniszczcie Pradawne Serce Atlantydy, by go przywo³aæ.")
+			end
+		end
+
+		-- ------------------------------------------------------------ the stages
+
+		when 4550.kill or 4551.kill or 4552.kill or 4553.kill or 4554.kill or 4555.kill or 4556.kill with ruiny_atlantydy.inside() and (d.getf("stage") == 1 or d.getf("stage") == 4) begin
+			local c = ruiny_atlantydy.cfg()
+			local k = d.getf("kills") + 1
+			d.setf("kills", k)
+			if k >= c.wave_kills then
+				ruiny_atlantydy.next_stage()
+			elseif math.mod(k, 10) == 0 then
+				d.notice("Ruiny Atlantydy: Pokonane potwory: "..k.." / "..c.wave_kills)
+			end
+		end
+
+		when 8729.kill with ruiny_atlantydy.inside() and d.getf("stage") == 2 begin
+			local c = ruiny_atlantydy.cfg()
+			d.setf("shell", 0)
+			d.setf("key_out", 1)
+			d.setf("key_at", get_global_time())
+			pc.give_item2(c.key, 1)
+			d.notice("Ruiny Atlantydy: "..pc.get_name().." ma Klucz Atlantydy. Oddajcie go w³aœciwej Kolumnie z Muszli!")
+		end
+
+		when 9461.take with item.get_vnum() == 30920 and ruiny_atlantydy.inside() and d.getf("stage") == 2 begin
+			if d.getf("boss_up") == 1 then
+				syschat("Ruiny Atlantydy: Najpierw pokonajcie Stra¿nika Atlantydy.")
+				return
+			end
+			local vid = npc.get_vid()
+			local mine = 0
+			for i = 1, 4 do
+				if d.getf("open_"..i) == 0 and d.get_unique_vid("kol"..i) == vid then
+					mine = i
+				end
+			end
+			if mine == 0 then
+				return
+			end
+			local nx = d.getf("next")
+			-- A bot cannot read the riddle: the pillar a bot gives the key to becomes the wanted one
+			-- (its place in the order swapped with the wanted pillar's) - a bot's hand-in never goes wrong.
+			if pc.is_playerbot() and d.getf("ord_"..nx) ~= mine then
+				for k = nx + 1, 4 do
+					if d.getf("ord_"..k) == mine then
+						d.setf("ord_"..k, d.getf("ord_"..nx))
+						d.setf("ord_"..nx, mine)
+					end
+				end
+			end
+			item.remove()
+			d.setf("key_out", 0)
+			if d.getf("ord_"..nx) == mine then
+				d.setf("open_"..mine, 1)
+				d.kill_unique("kol"..mine)
+				d.setf("next", nx + 1)
+				d.setf("left", d.getf("left") - 1)
+				d.setf("boss_up", 1)
+				d.spawn_mob(4557, 198, 179)
+				d.notice("Ruiny Atlantydy: Kolumna siê otwiera! Pokonajcie Stra¿nika Atlantydy.")
+			else
+				d.notice("Ruiny Atlantydy: To nie ta kolumna. Klucz rozpad³ siê - pojawia siê nowa G³êbinowa Muszla.")
+				ruiny_atlantydy.spawn_shell()
+			end
+		end
+
+		when 4557.kill with ruiny_atlantydy.inside() and d.getf("stage") == 2 begin
+			d.setf("boss_up", 0)
+			if d.getf("left") <= 0 then
+				ruiny_atlantydy.next_stage()
+			else
+				d.notice("Ruiny Atlantydy: Stra¿nik pokonany. Zosta³o kolumn: "..d.getf("left")..".")
+				ruiny_atlantydy.spawn_shell()
+			end
+		end
+
+		when 4558.kill with ruiny_atlantydy.inside() and d.getf("stage") == 3 begin
+			if npc.get_vid() == d.getf("real_vid") then
+				d.notice("Ruiny Atlantydy: To by³a prawdziwa Elita Atlantydy! Z³udzenia rozp³ywaj¹ siê w wodzie.")
+				ruiny_atlantydy.next_stage()
+			else
+				local n = d.getf("negative") + 1
+				d.setf("negative", n)
+				d.notice("Ruiny Atlantydy: To by³o tylko z³udzenie! Punkty karne: "..n.." - mniej czasu na Morkhota.")
+			end
+		end
+
+		when 8730.kill with ruiny_atlantydy.inside() and d.getf("stage") == 5 begin
+			local left = d.getf("left") - 1
+			d.setf("left", left)
+			if left <= 0 then
+				d.notice("Ruiny Atlantydy: Serca Atlantydy zniszczone. Morkhot siê budzi!")
+				ruiny_atlantydy.next_stage()
+			else
+				d.notice("Ruiny Atlantydy: Zosta³o Serc Atlantydy: "..left)
+			end
+		end
+
+		when 8731.kill with ruiny_atlantydy.inside() and d.getf("stage") == 6 and d.getf("boss_up") == 0 begin
+			ruiny_atlantydy.spawn_morkhot()
+		end
+
+		when 4559.kill with ruiny_atlantydy.inside() and d.getf("stage") == 6 begin
+			clear_server_timer("atlantyda_boss", d.get_map_index())
+			d.setf("boss_up", 0)
+			d.setf("stage", 7)
+			d.clear_regen()
+			ruiny_atlantydy.purge_floor(2)
+			d.spawn_mob_dir(9462, 543, 540, 5)
+			local took = ruiny_atlantydy.reward()
+			d.update_ranking("atlantyda", took) -- MT2009_PLUS_DUNGEON_PANEL_V1
+			ruiny_atlantydy.mark_ended()
+			d.notice(string.format("Morkhot pokonany! Czas: %d:%02d. Ruiny Atlantydy zosta³y ukoñczone.", math.floor(took / 60), math.mod(took, 60)))
+			-- The owner, 8 October: twenty seconds here (the other dungeons keep ten).
+			ruiny_atlantydy.end_count(20)
+		end
+	end
+end

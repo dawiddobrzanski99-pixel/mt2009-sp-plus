@@ -1,0 +1,84 @@
+{
+ "game.py": [
+  {
+   "marker": "\"mission_panel\":",
+   "anchor": "\t\t\t\"quests\"",
+   "where": "po",
+   "block": "\t\t\t\"mission_panel\": (lambda: __import__(\"uimissionpanel\").ToggleWindow(), None),\n"
+  },
+  {
+   "marker": "def __MissionPanel(",
+   "anchor": "\tdef __ServerCommand_Build(self):",
+   "where": "przed",
+   "block": "\tdef __MissionPanel(self, *args):\n\t\t__import__(\"uimissionpanel\").OnCommand(*args)\n\tdef __QuestPreviewBegin(self):\n\t\t__import__(\"uiquestbonuspreview\").OnBegin()\n\n\tdef __QuestPreviewRow(self, point, earned, remaining, key):\n\t\t__import__(\"uiquestbonuspreview\").OnRow(point, earned, remaining, key)\n\n\tdef __QuestPreviewEnd(self):\n\t\t__import__(\"uiquestbonuspreview\").OnEnd()\n\n\tdef __QuestStyleBegin(self):\n\t\t__import__(\"uiqueststyle\").Begin()\n\n\tdef __QuestStyleIndex(self, index):\n\t\t__import__(\"uiqueststyle\").Index(index)\n\n\tdef __QuestStyleEnd(self):\n\t\t__import__(\"uiqueststyle\").End()\n\t\tif self.interface and self.interface.wndCharacter:\n\t\t\tself.interface.wndCharacter.RefreshQuest()\n\n"
+  },
+  {
+   "marker": "\"MP\": self.__MissionPanel",
+   "anchor": "\t\tserverCommandList={",
+   "where": "po",
+   "block": "\t\t\t\"MP\": self.__MissionPanel,\n\t\t\t\"QSBegin\": self.__QuestStyleBegin,\n\t\t\t\"QSIndex\": self.__QuestStyleIndex,\n\t\t\t\"QSEnd\": self.__QuestStyleEnd,\n\t\t\t\"QPBeg\": self.__QuestPreviewBegin,\n\t\t\t\"QPRow\": self.__QuestPreviewRow,\n\t\t\t\"QPEnd\": self.__QuestPreviewEnd,\n"
+  },
+  {
+   "marker": "__import__(\"uimissionpanel\").DestroyWindow()",
+   "anchor": "\t\t__import__(\"uiweeklyrank\").DestroyWindow()",
+   "where": "po",
+   "block": "\t\t__import__(\"uimissionpanel\").DestroyWindow()\n"
+  },
+  {
+   "marker": "rankbadges\").Update",
+   "anchor": "\t\ttextTail.ArrangeTextTail()",
+   "where": "po",
+   "block": "\t\t__import__(\"rankbadges\").Update(self.__IsShowName(), getattr(self, \"PickingCharacterIndex\", 0), self.targetBoard.GetTargetVID()) # RANK_SIDE_GOTHIC_V1\n",
+   "need": "def __IsShowName("
+  },
+  {
+   "marker": "__import__(\"uiquestbonuspreview\").Reset()",
+   "anchor": "\t\tself.__ServerCommand_Build()",
+   "where": "przed",
+   "block": "\t\t__import__(\"uiquestbonuspreview\").Reset()\n\t\t__import__(\"uiqueststyle\").Reset()\n"
+  }
+ ],
+ "uitooltip.py": [
+  {
+   "marker": "import customrewardtooltip",
+   "anchor": "import ",
+   "where": "przed",
+   "block": "import customrewardtooltip\n"
+  },
+  {
+   "marker": "customrewardtooltip.append_horse(",
+   "where": "po",
+   "need": "SKILL_INDEX_RIDING",
+   "anchor": "\t\t\tself.AppendSupportSkillDefaultData(skillIndex, skillGrade, skillLevel, 30)",
+   "block": "\t\t\tcustomrewardtooltip.append_horse(self, skillGrade, skillLevel)\n"
+  },
+  {
+   "marker": "customrewardtooltip.append_poly(",
+   "where": "po",
+   "anchor": "\t\t\tself.AppendSupportSkillDefaultData(skillIndex, skillGrade, skillLevel, 40)",
+   "block": "\t\t\tcustomrewardtooltip.append_poly(self, skillGrade, skillLevel)\n"
+  },
+  {
+   "marker": "customrewardtooltip.append_poly(",
+   "where": "przed",
+   "anchor": "\t\telif player.SKILL_INDEX_RIDING == skillIndex:",
+   "block": "\t\telif skillIndex == 129: # SKILL_POLYMORPH (Kuznia Mocy)\n\t\t\tself.AppendSupportSkillDefaultData(skillIndex, skillGrade, skillLevel, 40)\n\t\t\tcustomrewardtooltip.append_poly(self, skillGrade, skillLevel)\n\n"
+  }
+ ],
+ "keybind.py": [
+  {
+   "marker": "('mission_panel',",
+   "anchor": "\t\t('quests',",
+   "where": "po",
+   "block": "\t\t('mission_panel', 'Panel Misji', ((CTRL, 'DIK_N'),), False),\n"
+  }
+ ],
+ "uiguild.py": [
+  {
+   "marker": "customguildtooltip",
+   "anchor": "\t\t\tpage.guildLevelSlot = page.GetChild(\"GuildLevelValue\")",
+   "where": "po",
+   "block": "\t\t\timport customguildtooltip\n\t\t\tpage.guildBonusHover = customguildtooltip.GuildBonusHover(page, page.GetChild(\"GuildLevelSlot\"))\n"
+  }
+ ]
+}

@@ -4,6 +4,8 @@
 
 #include "char.h"
 #include "custom_horse_polymorph_rewards.h"
+#include "seban_poly_rewards.h" // MT2009_NASZE_POLIMORFIA_V1
+#include "seban_horse_rewards.h"
 
 #include "config.h"
 #include "utils.h"
@@ -36,6 +38,7 @@
 #include "p2p.h"
 #include "guild.h"
 #include "custom_guild_combat_rewards.h"
+#include "seban_guild_rewards.h" // MT2009_NASZE_GILDIA_V1
 #include "guild_manager.h"
 #include "dungeon.h"
 #include "messenger_manager.h"
@@ -2777,36 +2780,50 @@ void CHARACTER::ComputePoints()
 		}
 	}
 
-	// HORSE_PERMANENT_REWARDS_V2_ATTACK20
-	if (IsPC())
-	{
-	    const int horseLevel = GetHorseLevel();
-	    const int basic = horseLevel < 0 ? 0 : (horseLevel < 10 ? horseLevel : 10);
-	    const int resist = horseLevel <= 11 ? 0 : ((horseLevel < 20 ? horseLevel - 11 : 9) * 15 / 9); // HORSE_CLASS_RESIST15_V1
-	    PointChange(POINT_ATT_GRADE_BONUS, basic * 2);
-	    PointChange(POINT_MAX_HP, basic * 100);
-	    // HORSE_NO_BOSS_STONE_V1: quest and level bonuses removed.
-	    PointChange(POINT_RESIST_WARRIOR, resist);
-	    PointChange(POINT_RESIST_ASSASSIN, resist);
-	    PointChange(POINT_RESIST_SURA, resist);
-	    PointChange(POINT_RESIST_SHAMAN, resist);
-	    if (horseLevel >= 21)
-	        PointChange(POINT_ATTBONUS_HUMAN, 10);
-	        // HORSE_PERMANENT_REWARDS_V3_LEVEL30: additions, old bonuses retained.
-        const int mobBoss=CustomHorseMonsterBoss(horseLevel);
-        PointChange(POINT_ATTBONUS_MONSTER,CustomHorseGrowth(horseLevel,5,30)); // HORSE_MONSTER5_V7
-        // Boss bonus is earned through Bossologia.
-        // Stone bonus is earned through Metinologia.
-        PointChange(POINT_MOV_SPEED,CustomHorseGrowth(horseLevel,20,21));
-        PointChange(POINT_RESIST_MONSTER_1000PCT,CustomHorseGrowth(horseLevel,5,30)*10);
-        const int element=CustomHorseElements(horseLevel);
-        PointChange(POINT_ENCHANT_ELECT,element);
-        PointChange(POINT_ENCHANT_FIRE,element);
-        PointChange(POINT_ENCHANT_ICE,element);
-        PointChange(POINT_ENCHANT_WIND,element);
-        PointChange(POINT_ENCHANT_EARTH,element);
-        PointChange(POINT_ENCHANT_DARK,element);
-}
+	// SEBAN_HORSE_V2: recomputed from scratch, no persistent reward writes.
+	if (IsPC()) {
+	    const int horseLevel=GetHorseLevel();
+	    PointChange(POINT_ATT_GRADE_BONUS,SebanHorse::Value(horseLevel,SebanHorse::ATTACK));
+	    PointChange(POINT_MAX_HP,SebanHorse::Value(horseLevel,SebanHorse::HP));
+	    PointChange(POINT_ATTBONUS_MONSTER,SebanHorse::Value(horseLevel,SebanHorse::MONSTER));
+	    PointChange(POINT_ATTBONUS_BOSS,SebanHorse::Value(horseLevel,SebanHorse::BOSS));
+	    PointChange(POINT_ATTBONUS_STONE,SebanHorse::Value(horseLevel,SebanHorse::STONE));
+	    PointChange(POINT_MOV_SPEED,SebanHorse::Value(horseLevel,SebanHorse::MOVE));
+	    PointChange(POINT_RESIST_MONSTER_1000PCT,SebanHorse::Value(horseLevel,SebanHorse::RESIST_MONSTER));
+	    PointChange(POINT_DEF_GRADE_BONUS,SebanHorse::Value(horseLevel,SebanHorse::DEFENSE));
+	    PointChange(POINT_ATT_SPEED,SebanHorse::Value(horseLevel,SebanHorse::SPEED));
+	    PointChange(POINT_ATTBONUS_HUMAN,SebanHorse::Value(horseLevel,SebanHorse::HUMAN));
+	    PointChange(POINT_ST,SebanHorse::Value(horseLevel,SebanHorse::STRENGTH));
+	    PointChange(POINT_HT,SebanHorse::Value(horseLevel,SebanHorse::VITALITY));
+	    PointChange(POINT_DX,SebanHorse::Value(horseLevel,SebanHorse::DEXTERITY));
+	    PointChange(POINT_IQ,SebanHorse::Value(horseLevel,SebanHorse::INTELLIGENCE));
+	    PointChange(POINT_CRITICAL_PCT,SebanHorse::Value(horseLevel,SebanHorse::CRIT));
+	    PointChange(POINT_PENETRATE_PCT,SebanHorse::Value(horseLevel,SebanHorse::PENETRATE));
+	    PointChange(POINT_ITEM_DROP_BONUS,SebanHorse::Value(horseLevel,SebanHorse::DROP));
+	    PointChange(POINT_EXP_DOUBLE_BONUS,SebanHorse::Value(horseLevel,SebanHorse::EXP));
+	    PointChange(POINT_GOLD_DOUBLE_BONUS,SebanHorse::Value(horseLevel,SebanHorse::YANG));
+	    PointChange(POINT_RESIST_WARRIOR,SebanHorse::Value(horseLevel,SebanHorse::CLASSES));
+	    PointChange(POINT_RESIST_ASSASSIN,SebanHorse::Value(horseLevel,SebanHorse::CLASSES));
+	    PointChange(POINT_RESIST_SURA,SebanHorse::Value(horseLevel,SebanHorse::CLASSES));
+	    PointChange(POINT_RESIST_SHAMAN,SebanHorse::Value(horseLevel,SebanHorse::CLASSES));
+	    PointChange(POINT_ENCHANT_ELECT,SebanHorse::Value(horseLevel,SebanHorse::ELEMENTS));
+	    PointChange(POINT_ENCHANT_FIRE,SebanHorse::Value(horseLevel,SebanHorse::ELEMENTS));
+	    PointChange(POINT_ENCHANT_ICE,SebanHorse::Value(horseLevel,SebanHorse::ELEMENTS));
+	    PointChange(POINT_ENCHANT_WIND,SebanHorse::Value(horseLevel,SebanHorse::ELEMENTS));
+	    PointChange(POINT_ENCHANT_EARTH,SebanHorse::Value(horseLevel,SebanHorse::ELEMENTS));
+	    PointChange(POINT_ENCHANT_DARK,SebanHorse::Value(horseLevel,SebanHorse::ELEMENTS));
+	    // MT2009_NASZE_BONUSY_WSZYSTKIE_V1: dodatkowe bonusy z panelu (kon zawsze, polimorfia tylko w trakcie przemiany).
+	    if (const SebanExtra::Levels* ex=SebanHorse::Extra()) {
+	        const std::vector< std::pair<int,long> >& r=ex->At(horseLevel<0?0:(horseLevel>30?30:horseLevel));
+	        for (size_t i=0;i<r.size();++i) PointChange(r[i].first,r[i].second);
+	    }
+	    if (IsPolymorphed() && !IsPolyMaintainStat() && GetPolymorphVnum()!=30000) {
+	        if (const SebanExtra::Levels* ex=SebanPoly::Extra()) {
+	            const std::vector< std::pair<int,long> >& r=ex->At(SebanPoly::Clamp(GetSkillLevel(SKILL_POLYMORPH)));
+	            for (size_t i=0;i<r.size();++i) PointChange(r[i].first,r[i].second);
+	        }
+	    }
+	}
 
 	ComputeBattlePoints();
 
@@ -3464,7 +3481,7 @@ int	CHARACTER::GetResistPoint(BYTE idx, LPCHARACTER pkAttacker) const
 // CUSTOM_GUILD_COMBAT_REWARDS_V1: responds immediately to joining/leaving/level changes.
 int CHARACTER::GetGuildCombatBonus(BYTE type) const
 {
-    return IsPC() && GetGuild() ? CustomGuildCombatBonus(type, GetGuild()->GetLevel()) : 0;
+    return IsPC() && GetGuild() ? SebanGuild::Bonus(type, GetGuild()->GetLevel()) /* MT2009_NASZE_GILDIA_V1 */ : 0;
 }
 
 int CHARACTER::GetPoint(BYTE type) const
@@ -3480,7 +3497,7 @@ int CHARACTER::GetPoint(BYTE type) const
     // Excludes shop appearance and maintained-stat cosmetic transformations.
     if (IsPC() && IsPolymorphed() && !IsPolyMaintainStat() && GetPolymorphVnum()!=30000)
     {
-        const CustomPolyRewards poly=CustomPolyForLevel(GetSkillLevel(SKILL_POLYMORPH));
+        const CustomPolyRewards poly=SebanPoly::For(GetSkillLevel(SKILL_POLYMORPH)); // MT2009_NASZE_POLIMORFIA_V1
         switch (type)
         {
             case POINT_ATT_GRADE_BONUS: val+=poly.attack; break;
@@ -3523,7 +3540,7 @@ int CHARACTER::GetLimitPoint(BYTE type) const
     // Excludes shop appearance and maintained-stat cosmetic transformations.
     if (IsPC() && IsPolymorphed() && !IsPolyMaintainStat() && GetPolymorphVnum()!=30000)
     {
-        const CustomPolyRewards poly=CustomPolyForLevel(GetSkillLevel(SKILL_POLYMORPH));
+        const CustomPolyRewards poly=SebanPoly::For(GetSkillLevel(SKILL_POLYMORPH)); // MT2009_NASZE_POLIMORFIA_V1
         switch (type)
         {
             case POINT_ATT_GRADE_BONUS: val+=poly.attack; break;
@@ -7284,6 +7301,9 @@ void CHARACTER::SetPolymorph(DWORD dwRaceNum, bool bMaintainStat)
 	SetComboSequence(0);
 
 	ComputeBattlePoints();
+	// MT2009_NASZE_BONUSY_WSZYSTKIE_V1: bonusy przemiany z panelu wchodza i schodza razem z przemiana.
+	static bool sebanPolyRecompute=false;
+	if (IsPC() && !sebanPolyRecompute && SebanPoly::Extra()) { sebanPolyRecompute=true; ComputePoints(); PointsPacket(); sebanPolyRecompute=false; }
 }
 
 int CHARACTER::GetQuestFlag(const std::string& flag) const

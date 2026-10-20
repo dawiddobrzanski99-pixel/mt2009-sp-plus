@@ -59,6 +59,9 @@
 // An implementation fragment in the sense playerbot_types.h describes:
 // included once, after playerbot_dungeon_panel.h.
 #include <ctime>
+#include <map>
+#include <vector>
+#include "seban_weekly_rewards.h" // MT2009_NASZE_RANKING_V1
 
 namespace mt2009_wrank
 {
@@ -421,12 +424,49 @@ namespace mt2009_wrank
 		}
 	}
 
+	// MT2009_NASZE_RANKING_V1: bonusy tytulow z panelu (dowolne bonusy) na jednym typie efektu (AFF_MONSTER,
+	// osobno dla kazdego punktu); zmiana w panelu = stary bonus znika, nowy wchodzi.
+	void SebanSync(LPCHARACTER ch)
+	{
+		std::map<int, long> want;
+		if (s_state.enabled && !IsPlayerBotSidekickPID(ch->GetPlayerID()))
+		{
+			std::map<DWORD, std::vector<std::pair<BYTE, BYTE> > >::const_iterator it = s_titles.find(ch->GetPlayerID());
+			if (it != s_titles.end())
+				for (size_t i = 0; i < it->second.size(); ++i)
+				{
+					const std::vector< std::pair<int, long> >& r = SebanWeekly::Row(it->second[i].first, it->second[i].second);
+					for (size_t j = 0; j < r.size(); ++j) want[r[j].first] += r[j].second;
+				}
+		}
+		for (DWORD t = AFF_BOSS; t <= AFF_ATT; ++t)
+			if (ch->FindAffect(t)) ch->RemoveAffect(t);
+		std::vector<CAffect*> drop;
+		for (const CAffect* c : ch->GetAffectContainer())
+			if (c && c->dwType == AFF_MONSTER)
+			{
+				std::map<int, long>::const_iterator w = want.find(c->bApplyOn);
+				if (w == want.end() || w->second != c->lApplyValue) drop.push_back(const_cast<CAffect*>(c));
+			}
+		for (size_t i = 0; i < drop.size(); ++i) ch->RemoveAffect(drop[i]);
+		bool any = false;
+		for (std::map<int, long>::const_iterator w = want.begin(); w != want.end(); ++w)
+		{
+			if (w->second <= 0) continue;
+			any = true;
+			if (!ch->FindAffect(AFF_MONSTER, w->first))
+				ch->AddAffect(AFF_MONSTER, w->first, w->second, 0, INFINITE_AFFECT_DURATION, 0, true);
+		}
+		if (any) s_applied.insert(ch->GetPlayerID()); else s_applied.erase(ch->GetPlayerID());
+	}
+
 	// One character's bonuses as its titles say: put on, changed or taken off.
 	void Sync(LPCHARACTER ch)
 	{
 		// WEEKLY_AFFECT_LOAD_FIX_V1: never apply before the saved affect list is loaded.
 		if (!ch || !ch->IsPC() || !ch->GetDesc() || !ch->IsLoadedAffect())
 			return;
+		if (SebanWeekly::Installed()) { SebanSync(ch); return; } // MT2009_NASZE_RANKING_V1
 		static const DWORD types[5] = { AFF_MONSTER, AFF_BOSS, AFF_HUMAN, AFF_HP, AFF_ATT };
 		static const BYTE points[5] = { POINT_ATTBONUS_MONSTER, POINT_ATTBONUS_BOSS, POINT_ATTBONUS_HUMAN,
 				POINT_MAX_HP, POINT_ATT_GRADE_BONUS };

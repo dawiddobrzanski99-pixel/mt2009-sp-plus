@@ -3453,8 +3453,20 @@ CPlayerBotManager::~CPlayerBotManager()
 
 #include "playerbot_ochao.h" // MT2009_PLUS_OCHAO_V1 (include): Swiatynia Ochao, the En-Tai Guardian's clock
 #include "playerbot_arezzo.h" // MT2009_PLUS_AREZZO_MODULE_V1 (include): the Arezzo module switch - guards and send-off
+#include "seban_horse_live.h"
+#include "seban_poly_live.h" // MT2009_NASZE_POLIMORFIA_V1
+#include "seban_guild_live.h" // MT2009_NASZE_GILDIA_V1
+#include "seban_rank_live.h" // MT2009_NASZE_RANGI_V1
+#include "seban_weekly_live.h" // MT2009_NASZE_RANKING_V1
+#include "mission_panel.h" // MT2009_NASZE_MISJE_V1
 void CPlayerBotManager::StartWorldClock()
 {
+    SebanHorseLive::Start();
+    SebanPolyLive::Start(); // MT2009_NASZE_POLIMORFIA_V1
+    SebanGuildLive::Start(); // MT2009_NASZE_GILDIA_V1
+    SebanRankLive::Start(); // MT2009_NASZE_RANGI_V1
+    SebanWeeklyLive::Start(); // MT2009_NASZE_RANKING_V1
+    mission_panel::SebanStart(); // MT2009_NASZE_MISJE_V1
 	mt2009_ochao::Start(); // MT2009_PLUS_OCHAO_V1 (start): only where map 209 is hosted
 	mt2009_arezzo::Start(); // MT2009_PLUS_AREZZO_MODULE_V1 (start): every core
 	StartPlayerBotArezzoWatch(); // MT2009_PLUS_AREZZO_BOTS_V1 (start): where 360-362 are hosted

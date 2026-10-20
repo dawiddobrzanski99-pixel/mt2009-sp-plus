@@ -1,0 +1,7 @@
+{
+  "status": "installed",
+  "image": "metin2/ukrainka-ku-model:20261017-015723-618755",
+  "backup": "/opt/metin2/kopie-naszych-zmian/ku-model-20261017-015723-618755",
+  "zip": "/var/lib/docker/volumes/metin2_rates-spool/_data/custom-ui-work/downloads/klient-komplet.zip",
+  "client_test": "pending"
+}

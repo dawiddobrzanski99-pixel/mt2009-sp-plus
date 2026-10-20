@@ -1,0 +1,5208 @@
+# MT2009_PLUS_DROP_EDITOR_V1 - grupy mob_drop_item.txt zmienione w panelu Seban
+# zapis: 2026-10-19 21:38:11 - zmieniono drop potwora 2301
+# Kazda grupa zastepuje WSZYSTKIE grupy z obrazu gry o tym samym Mob i Type (m2-drops, przy starcie rdzeni).
+# Grupa bez pozycji = ten potwor nie ma dropu tego rodzaju.
+
+Group	MT2009_panel_531_drop
+{
+	Mob	531
+	Type	drop
+	1	17083	1	8	-- Jadeitowe Kolczyki+3
+	2	17103	1	6	-- Ebonitowe Kolczyki+3
+	3	17123	1	4	-- Perlowe Kolczyki+3
+	4	17143	1	4	-- Kolczyki Z Bial. Zlota+3
+	5	30357	1	2	-- Amulet Wojownika
+	6	s10923	1	10	-- s10923
+	7	292	1	4	-- Miecz Pelni Ksiezyca+2
+	8	2152	1	4	-- Luk Z Rogu Jelenia+2
+	9	3210	1	4	-- Ostrze Z Czerw. Stali+0
+}
+
+Group	MT2009_panel_533_drop
+{
+	Mob	533
+	Type	drop
+	1	2073	1	4	-- Luk Czarnych Ruin+3
+	2	292	1	4	-- Miecz Pelni Ksiezyca+2
+	3	2152	1	4	-- Luk Z Rogu Jelenia+2
+	4	30357	1	2	-- Amulet Wojownika
+	5	s10923	1	10	-- s10923
+	6	3210	1	4	-- Ostrze Z Czerw. Stali+0
+}
+
+Group	MT2009_panel_534_drop
+{
+	Mob	534
+	Type	drop
+	1	3072	1	8	-- Halabarda+2
+	2	3073	1	4	-- Halabarda+3
+	3	290	1	6	-- Miecz Pelni Ksiezyca+0
+	4	2150	1	4	-- Luk Z Rogu Jelenia+0
+	5	11244	1	2	-- Smiert. Zbroja Plytowa+4
+	6	11243	1	4	-- Smiert. Zbroja Plytowa+3
+	7	11444	1	2	-- Ubranie Lwiej Mrowki+4
+	8	11443	1	4	-- Ubranie Lwiej Mrowki+3
+	9	11644	1	2	-- Zbroja Plyt. Yin-Yang+4
+	10	11643	1	4	-- Zbroja Plyt. Yin-Yang+3
+	11	11844	1	2	-- Szata Zach. Nieba+4
+	12	11843	1	4	-- Szata Zach. Nieba+3
+	13	30075	1	2	-- Shuriken+
+	14	s10923	1	10	-- s10923
+	15	3210	1	4	-- Ostrze Z Czerw. Stali+0
+}
+
+Group	MT2009_panel_591_drop
+{
+	Mob	591
+	Type	drop
+	1	27002	50	100	-- Czerwona Mikstura(S)
+	2	27003	30	50	-- Czerwona Mikstura(D)
+	3	27005	30	50	-- Niebieska Mikstura(S)
+	4	27006	20	50	-- Niebieska Mikstura(D)
+	5	50513	1	0.1	-- Kamien Duchowy
+	6	30357	1	10	-- Amulet Wojownika
+	7	7160	1	1	-- Wachlarz Jes. Wiatru+0
+	8	5110	1	1	-- Antyczny Dzwon+0
+	9	s10751	1	400	-- s10751
+	10	s10751	1	200	-- s10751
+	11	s10751	1	40	-- s10751
+	12	50013	1	10	-- Srebrna Szkatulka+
+	13	50033	1	60	-- Zagadkowa Szkatulka
+	14	50124	1	80	-- Sprochniala Skrzynia
+	15	71102	1	4	-- Klepsydra Biologa 2 procent
+	16	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_681_drop
+{
+	Mob	681
+	Type	drop
+	1	50513	1	0.5	-- Kamien Duchowy
+	2	50013	1	10	-- Srebrna Szkatulka+
+	3	27002	50	150	-- Czerwona Mikstura(S)
+	4	27003	30	100	-- Czerwona Mikstura(D)
+	5	27005	30	150	-- Niebieska Mikstura(S)
+	6	27006	20	100	-- Niebieska Mikstura(D)
+	7	s10752	1	200	-- s10752
+	8	s10752	1	40	-- s10752
+	9	70040	1	10	-- Upartosc Orkow
+	10	50122	1	20	-- Zelazna Skrzynia
+	11	50124	1	80	-- Sprochniala Skrzynia
+	12	13040	1	8	-- Czarna Okragla Tarcza+0
+}
+
+Group	MT2009_panel_691_drop
+{
+	Mob	691
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90010	1	40	-- Kamien Wegielny
+	6	70040	1	10	-- Upartosc Orkow
+	7	s10741	1	200	-- s10741
+	8	s10741	1	40	-- s10741
+	9	s10752	1	400	-- s10752
+	10	50124	1	80	-- Sprochniala Skrzynia
+	11	50122	1	20	-- Zelazna Skrzynia
+	12	71102	1	4	-- Klepsydra Biologa 2 procent
+	13	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_692_drop
+{
+	Mob	692
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_693_drop
+{
+	Mob	693
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_791_drop
+{
+	Mob	791
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_792_drop
+{
+	Mob	792
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90012	1	200	-- Dykta
+	6	30370	1	30	-- Pozwolenie na Zaczar. Przedmiotu
+	7	30375	1	5	-- Magiczna Ruda
+	8	30368	1	1	-- Pozwolenie na Wzmocn. Przedmiotu
+	9	s10754	1	400	-- hightier+ miniboss
+	10	s10754	1	100	-- hightier+ miniboss
+	11	s10742	1	200	-- med tier boss
+	12	s10742	1	40	-- med tier boss
+	13	71102	1	4	-- Klepsydra Biologa 2 procent
+	14	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_793_drop
+{
+	Mob	793
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_794_drop
+{
+	Mob	794
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_795_drop
+{
+	Mob	795
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_796_drop
+{
+	Mob	796
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_993_drop
+{
+	Mob	993
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1091_drop
+{
+	Mob	1091
+	Type	drop
+	1	130	1	25	-- Pol-ksiezycowy Miecz+0
+	2	1090	1	25	-- Chakram+0
+	3	2120	1	25	-- Olbrz. Skrzydl. Luk+0
+	4	7120	1	25	-- Czarny Slon. Wachlarz+0
+	5	5080	1	25	-- Stalowy Robaczy Dzwon+0
+	6	131	1	20	-- Pol-ksiezycowy Miecz+1
+	7	1091	1	20	-- Chakram+1
+	8	2121	1	20	-- Olbrz. Skrzydl. Luk+1
+	9	7121	1	20	-- Czarny Slon. Wachlarz+1
+	10	5081	1	20	-- Stalowy Robaczy Dzwon+1
+	11	132	1	15	-- Pol-ksiezycowy Miecz+2
+	12	1092	1	15	-- Chakram+2
+	13	2122	1	15	-- Olbrz. Skrzydl. Luk+2
+	14	7122	1	15	-- Czarny Slon. Wachlarz+2
+	15	5082	1	15	-- Stalowy Robaczy Dzwon+2
+	16	27002	30	150	-- Czerwona Mikstura(S)
+	17	27003	50	200	-- Czerwona Mikstura(D)
+	18	27005	30	150	-- Niebieska Mikstura(S)
+	19	27006	20	100	-- Niebieska Mikstura(D)
+	20	50300	1	400	-- Ksiega Umiejetnosci
+	21	s10753	1	40	-- high tier miniboss
+	22	71102	1	4	-- Klepsydra Biologa 2 procent
+	23	30376	1	4	-- Drewniany Klucz
+	24	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	25	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_1092_drop
+{
+	Mob	1092
+	Type	drop
+	1	s10753	1	200	-- high tier miniboss
+	2	s10753	1	40	-- high tier miniboss
+	3	71102	1	4	-- Klepsydra Biologa 2 procent
+	4	30376	1	4	-- Drewniany Klucz
+	5	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	6	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_1093_drop
+{
+	Mob	1093
+	Type	drop
+	1	s10755	1	400	-- veryhigh tier miniboss
+	2	s10755	1	100	-- veryhigh tier miniboss
+	3	s10743	1	200	-- high tier boss
+	4	s10743	1	40	-- high tier boss
+	5	71102	1	4	-- Klepsydra Biologa 2 procent
+	6	30376	1	4	-- Drewniany Klucz
+	7	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	8	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_1094_drop
+{
+	Mob	1094
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1095_drop
+{
+	Mob	1095
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1096_drop
+{
+	Mob	1096
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1191_drop
+{
+	Mob	1191
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1192_drop
+{
+	Mob	1192
+	Type	drop
+	1	11294	1	50	-- Zbroja Z Czarnej Stali+4
+	2	11494	1	50	-- Ubranie Czarn. Wiatru+4
+	3	11694	1	50	-- Zbr. Plyt. Czar. Magii+4
+	4	11894	1	50	-- Czarna Szata+4
+	5	13066	1	50	-- Sokola Tarcza+6
+	6	13086	1	50	-- Tarcza Tygrysa+6
+	7	13106	1	50	-- Lwia Tarcza+6
+	8	13126	1	50	-- Tarcza Smoka+6
+	9	15187	1	50	-- Deszczowe Buty+7
+	10	15167	1	50	-- Ekstazyjne Buty+7
+	11	15207	1	50	-- Buty Feniksa+7
+	12	15227	1	50	-- Buty Ognistego Ptaka+7
+	13	16207	1	50	-- Naszyj. Z Niebian.Lez+7
+	14	16187	1	50	-- Ametystowy Naszyjnik+7
+	15	17147	1	50	-- Kolczyki Z Bial. Zlota+7
+	16	17167	1	50	-- Krysztalowe Kolczyki+7
+	17	17187	1	50	-- Ametystowe Kolczyki+7
+	18	17207	1	50	-- Kolczyki Z Niebian.Lez+7
+	19	28430	1	50	-- Kamien Duszy Penetr.+4
+	20	28431	1	50	-- Kamien Duszy Smierci+4
+	21	28432	1	50	-- Kamien Duszy Powtorki+4
+	22	28433	1	50	-- Kamien Duszy Wojownika+4
+	23	28434	1	50	-- Kamien Duszy Ninja+4
+	24	28435	1	50	-- Kamien Duszy Sury+4
+	25	28436	1	50	-- Kamien Duszy Szamana+4
+	26	28437	1	50	-- Kamien Duszy Potwora+4
+	27	28438	1	50	-- Kamien Duszy Uchylenia+4
+	28	28439	1	50	-- Kamien Duszy Uniku+4
+	29	28440	1	50	-- Kamien Duszy Magii+4
+	30	28441	1	50	-- Kamien Witalnosci+4
+	31	28442	1	50	-- Kamien Duszy Obrony+4
+	32	28443	1	50	-- Kamien Duszy Przysp.+4
+	33	70031	1	50	-- Broszura Szermierki
+	34	30190	1	400	-- Krwisty Kamien
+	35	30190	5	100	-- Krwisty Kamien
+	36	30919	1	60	-- Bilet do Atlantydy, 15% (Silna Lodowa Wiedzma)
+	37	71102	1	4	-- Klepsydra Biologa 2 procent
+	38	30376	1	4	-- Drewniany Klucz
+	39	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	40	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_1304_drop
+{
+	Mob	1304
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90010	1	300	-- Kamien Wegielny
+	6	s10755	1	400	-- veryhigh tier miniboss
+	7	s10755	1	100	-- veryhigh tier miniboss
+	8	s10743	1	200	-- high tier boss
+	9	s10743	1	40	-- high tier boss
+	10	30370	1	20	-- Pozwolenie Zmianka
+	11	71102	1	4	-- Klepsydra Biologa 2 procent
+	12	30376	1	4	-- Drewniany Klucz
+	13	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_1306_drop
+{
+	Mob	1306
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1307_drop
+{
+	Mob	1307
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1308_drop
+{
+	Mob	1308
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_1309_drop
+{
+	Mob	1309
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1310_drop
+{
+	Mob	1310
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1334_drop
+{
+	Mob	1334
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1491_drop
+{
+	Mob	1491
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90010	1	300	-- Kamien Wegielny
+	6	s10755	1	400	-- veryhigh tier miniboss
+	7	s10755	1	100	-- veryhigh tier miniboss
+	8	s10744	1	200	-- very high tier boss
+	9	s10744	1	40	-- very high tier boss
+	10	30370	1	20	-- Pozwolenie Zmianka
+	11	30368	1	2	-- pozwolenie dodanie
+	12	71102	1	4	-- Klepsydra Biologa 2 procent
+	13	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_1901_drop
+{
+	Mob	1901
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90010	1	200	-- Kamien Wegielny
+	6	s10753	1	400	-- hightier miniboss
+	7	s10753	1	100	-- hightier miniboss
+	8	s10743	1	200	-- high tier boss
+	9	s10743	1	40	-- high tier boss
+	10	30370	1	20	-- Pozwolenie Zmianka
+	11	71102	1	4	-- Klepsydra Biologa 2 procent
+	12	30376	1	4	-- Drewniany Klucz
+	13	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_1902_drop
+{
+	Mob	1902
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1903_drop
+{
+	Mob	1903
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1904_drop
+{
+	Mob	1904
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_1905_drop
+{
+	Mob	1905
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_1906_drop
+{
+	Mob	1906
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2091_drop
+{
+	Mob	2091
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90011	1	60	-- Pien
+	6	s10753	1	400	-- hightier miniboss
+	7	s10753	1	100	-- hightier miniboss
+	8	s10742	1	200	-- med tier boss
+	9	s10742	1	40	-- med tier boss
+	10	71102	1	4	-- Klepsydra Biologa 2 procent
+	11	30376	1	4	-- Drewniany Klucz
+	12	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	13	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2092_drop
+{
+	Mob	2092
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2093_drop
+{
+	Mob	2093
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2094_drop
+{
+	Mob	2094
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2095_drop
+{
+	Mob	2095
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2181_drop
+{
+	Mob	2181
+	Type	drop
+	1	s10928	1	40	-- s10928
+	2	s10705	1	16	-- s10705
+	3	50006	1	10	-- Zlota Szkatulka
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	s10753	1	200	-- s10753
+	9	s10753	1	80	-- s10753
+	10	s10753	1	40	-- s10753
+	11	50124	1	60	-- Sprochniala Skrzynia
+	12	50122	1	20	-- Zelazna Skrzynia
+}
+
+Group	MT2009_panel_2182_drop
+{
+	Mob	2182
+	Type	drop
+	1	s10928	1	40	-- s10928
+	2	s10705	1	16	-- s10705
+	3	50006	1	10	-- Zlota Szkatulka
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	s10753	1	200	-- s10753
+	9	s10753	1	80	-- s10753
+	10	s10753	1	40	-- s10753
+	11	50124	1	60	-- Sprochniala Skrzynia
+	12	50122	1	20	-- Zelazna Skrzynia
+}
+
+Group	MT2009_panel_2191_drop
+{
+	Mob	2191
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90012	1	80	-- Dykta
+	6	s10753	1	400	-- hightier miniboss
+	7	s10753	1	100	-- hightier miniboss
+	8	s10742	1	200	-- med tier boss
+	9	s10742	1	40	-- med tier boss
+	10	71102	1	4	-- Klepsydra Biologa 2 procent
+	11	30376	1	4	-- Drewniany Klucz
+	12	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	13	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2192_drop
+{
+	Mob	2192
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2206_drop
+{
+	Mob	2206
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90012	1	200	-- Dykta
+	6	s10755	1	400	-- veryhigh miniboss
+	7	s10755	1	100	-- veryhigh miniboss
+	8	s10743	1	200	-- high tier boss
+	9	s10743	1	40	-- high tier boss
+	10	30370	1	20
+	11	71102	1	4	-- Klepsydra Biologa 2 procent
+	12	30376	1	4	-- Drewniany Klucz
+	13	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2207_drop
+{
+	Mob	2207
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2291_drop
+{
+	Mob	2291
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2301_drop
+{
+	Mob	2301
+	Type	drop
+	1	50727	1	2	-- Roza Alpejska
+	2	30165	1	8	-- Konar Zelkova
+}
+
+Group	MT2009_panel_2302_drop
+{
+	Mob	2302
+	Type	drop
+	1	50726	1	1	-- Grzyb Tue
+	2	30165	1	20	-- Konar Zelkova
+}
+
+Group	MT2009_panel_2304_drop
+{
+	Mob	2304
+	Type	drop
+	1	50729	1	0.2	-- Mniszek Lekarski
+	2	30165	1	20	-- Konar Zelkova
+}
+
+Group	MT2009_panel_2306_drop
+{
+	Mob	2306
+	Type	drop
+	1	27002	200	400	-- Czerwona Mikstura(S)
+	2	27003	100	400	-- Czerwona Mikstura(D)
+	3	27005	200	400	-- Niebieska Mikstura(S)
+	4	27006	100	400	-- Niebieska Mikstura(D)
+	5	90010	1	300	-- Kamien Wegielny
+	6	s10755	1	400	-- veryhigh tier miniboss
+	7	s10755	1	100	-- veryhigh tier miniboss
+	8	s10744	1	200	-- very high tier boss
+	9	s10744	1	40	-- very high tier boss
+	10	30370	1	20
+	11	30368	1	2
+	12	71102	1	4	-- Klepsydra Biologa 2 procent
+	13	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2307_drop
+{
+	Mob	2307
+	Type	drop
+	1	30372	1	400	-- Czarna Stal
+	2	30372	1	400	-- Czarna Stal
+	3	30372	1	400	-- Czarna Stal
+	4	30372	1	400	-- Czarna Stal
+	5	30372	1	400	-- Czarna Stal
+	6	s10984	1	400	-- KD+4
+	7	s10984	1	400	-- KD+4
+	8	s10984	1	400	-- KD+4
+	9	s10984	1	400	-- KD+4
+	10	s10990	1	400	-- przetopy
+	11	s10990	1	400	-- przetopy
+	12	s10990	1	400	-- przetopy
+	13	s10990	1	400	-- przetopy
+	14	s10990	1	400	-- przetopy
+	15	s10990	1	400	-- przetopy
+	16	s10990	1	400	-- przetopy
+	17	s10990	1	400	-- przetopy
+	18	30368	1	400	-- Pozwolenie dodanie
+	19	30368	1	400	-- Pozwolenie dodanie
+	20	30368	1	400	-- Pozwolenie dodanie
+	21	30368	1	400	-- Pozwolenie dodanie
+	22	30368	1	400	-- Pozwolenie dodanie
+	23	30370	2	400	-- Pozwolenie Zmianka
+	24	30370	2	400	-- Pozwolenie Zmianka
+	25	30370	2	400	-- Pozwolenie Zmianka
+	26	30370	2	400	-- Pozwolenie Zmianka
+	27	30370	2	400	-- Pozwolenie Zmianka
+	28	s50901	1	400	-- receptury
+	29	s50901	1	400	-- receptury
+	30	s50901	1	400	-- receptury
+	31	s50901	1	400	-- receptury
+	32	s50901	1	400	-- receptury
+	33	s50902	1	400	-- super receptury
+	34	s50902	1	400	-- super receptury
+	35	s50902	1	400	-- super receptury
+	36	50300	1	400	-- Ksiega Umiejetnosci
+	37	50300	1	400	-- Ksiega Umiejetnosci
+	38	50300	1	400	-- Ksiega Umiejetnosci
+	39	50300	1	400	-- Ksiega Umiejetnosci
+	40	50300	1	400	-- Ksiega Umiejetnosci
+	41	25042	1	400	-- Magiczny Kamien
+	42	25045	1	400	-- ZBS
+	43	25045	1	400	-- ZBS
+	44	25045	1	400	-- ZBS
+	45	25045	1	400	-- ZBS
+	46	25045	1	400	-- ZBS
+	47	25043	1	400	-- Podrecznik Kowala
+	48	25043	1	400	-- Podrecznik Kowala
+	49	25043	1	400	-- Podrecznik Kowala
+	50	71282	1	0	-- Ekstraktor Skaz
+	51	71282	1	0	-- Ekstraktor Skaz
+	52	30373	1	400	-- Ksiega Erudyty
+	53	30373	1	400	-- Ksiega Erudyty
+	54	30373	1	400	-- Ksiega Erudyty
+	55	30373	1	400	-- Ksiega Erudyty
+	56	30374	1	400	-- Pioro Medrca
+	57	30374	1	400	-- Pioro Medrca
+	58	30374	1	400	-- Pioro Medrca
+	59	30374	1	400	-- Pioro Medrca
+	60	30375	1	400	-- Magiczna Ruda
+	61	30375	1	400	-- Magiczna Ruda
+	62	30375	1	400	-- Magiczna Ruda
+	63	50513	1	400	-- Kamien Duchowy
+	64	50513	1	400	-- Kamien Duchowy
+	65	50513	1	400	-- Kamien Duchowy
+	66	50513	1	400	-- Kamien Duchowy
+	67	50513	1	400	-- Kamien Duchowy
+	68	s10933	1	400	-- Losowa Perla
+	69	s10933	1	400	-- Losowa Perla
+	70	s10933	1	400	-- Losowa Perla
+	71	71102	1	4	-- Klepsydra Biologa 2 procent
+	72	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2403_limit
+{
+	Mob	2403
+	Type	limit
+	level_limit	75
+	1	7150	1	0.17	-- Ekstazyjny Wachlarz+0
+	2	12665	1	0.8	-- Swietlista Czapka+5
+	3	14164	1	0.34	-- Krysztalowa Bransoleta+4
+	4	17163	1	0.85	-- Krysztalowe Kolczyki+3
+	5	27987	1	0.1	-- Malz
+	6	50723	2	1.25	-- Kwiat Kaki
+	7	50727	2	1.25	-- Roza Alpejska
+	8	5096	1	0.2	-- Dzwon Burzowego Ptaka+6
+	9	7136	1	0.2	-- Niebian. Ptasi Wachl.+6
+	10	11885	1	0.8	-- Szata Baronow+5
+	11	11685	1	0.4	-- Duchowa Zbroja Plyt.+5
+	12	15224	1	0.34	-- Buty Ognistego Ptaka+4
+	13	7154	1	0.15	-- Ekstazyjny Wachlarz+4
+	14	7155	1	0.15	-- Ekstazyjny Wachlarz+5
+	15	70031	1	0.007	-- Broszura Szermierki
+	16	5120	1	0.04	-- Bambusowy Dzwon+0
+}
+
+Group	MT2009_panel_2404_limit
+{
+	Mob	2404
+	Type	limit
+	level_limit	75
+	1	170	1	0.1	-- Miecz Zadlo+0
+	2	174	1	0.09	-- Miecz Zadlo+4
+	3	50060	1	0.08	-- Instr. Jazdy Konnej
+	4	50724	5	1.25	-- Korzen Gango
+	5	50728	5	1.25	-- Morwa
+	6	70048	1	0.23	-- Plaszcz Uciekiniera
+	7	70051	1	0.39	-- Rekawica Krola Przepow.
+	8	3146	1	0.16	-- Magnetyczne Ostrze+6
+	9	3136	1	0.16	-- Partyzana+6
+	10	11285	1	0.60	-- Zbroja Boga Smokow+5
+	11	11485	1	0.20	-- Ubranie Fuksyjne+5
+	12	15085	1	0.85	-- Skorzane Kozaki+5
+	13	12245	1	0.8	-- Upiorna Maska+5
+	14	3152	1	0.14	-- Zlodziej Dusz+2
+	15	70031	1	0.007	-- Broszura Szermierki
+	16	181	1	0.05	-- Zatruty miecz+1
+	17	191	1	0.05	-- Lwi Miecz+1
+	18	1131	1	0.05	-- Skrzydla Demona Chakr.+1
+	19	5121	1	0.05	-- Bambusowy Dzwon+1
+	20	2171	1	0.05	-- Stalowy Luk Kruka+1
+	21	50120	1	0.02	-- Zelazna Szkatulka
+	22	50121	1	0.02	-- Zelazne Pudelko
+}
+
+Group	MT2009_panel_2413_limit
+{
+	Mob	2413
+	Type	limit
+	level_limit	75
+	1	7151	1	0.1	-- Ekstazyjny Wachlarz+1
+	2	12666	1	0.17	-- Swietlista Czapka+6
+	3	14166	1	0.26	-- Krysztalowa Bransoleta+6
+	4	15164	1	0.38	-- Ekstazyjne Buty+4
+	5	17164	1	0.41	-- Krysztalowe Kolczyki+4
+	6	17183	1	0.68	-- Ametystowe Kolczyki+3
+	7	27987	1	0.1	-- Malz
+	8	50723	5	1.25	-- Kwiat Kaki
+	9	50727	5	1.25	-- Roza Alpejska
+	10	154	1	0.16	-- Miecz Szponu Ducha+4
+	11	5106	1	0.16	-- Dzwon Nieba I Ziemi+6
+	12	7146	1	0.26	-- Wachlarz Zbawienia+6
+	13	7144	1	0.26	-- Wachlarz Zbawienia+4
+	14	70031	1	0.01	-- Broszura Szermierki
+	15	5122	1	0.1	-- Bambusowy Dzwon+2
+}
+
+Group	MT2009_panel_2414_limit
+{
+	Mob	2414
+	Type	limit
+	level_limit	75
+	1	182	1	0.2	-- Zatruty miecz+2
+	2	192	1	0.2	-- Lwi Miecz+2
+	3	1132	1	0.2	-- Skrzydla Demona Chakr.+2
+	4	5122	1	0.2	-- Bambusowy Dzwon+2
+	5	2172	1	0.2	-- Stalowy Luk Kruka+2
+	6	50120	1	0.02	-- Zelazna Szkatulka
+	7	50121	1	0.02	-- Zelazne Pudelko
+}
+
+Group	MT2009_panel_2492_drop
+{
+	Mob	2492
+	Type	drop
+	1	30179	1	400	-- Krety Klucz
+	2	30179	2	100	-- Krety Klucz
+	3	30190	1	100	-- Krwisty Kamien
+	4	13063	1	100	-- Sokola Tarcza+3
+	5	14206	1	50	-- Bransol. Z Niebian.Lez+6
+	6	27987	1	100	-- Malz
+	7	70051	1	50	-- Rekawica Krola Przepow.
+	8	13083	1	100	-- Tarcza Tygrysa+3
+	9	70050	1	50	-- Symb. Krola Przepowiedni
+	10	13103	1	100	-- Lwia Tarcza+3
+	11	15165	1	30	-- Ekstazyjne Buty+5
+	12	16203	1	50	-- Naszyj. Z Niebian.Lez+3
+	13	17184	1	50	-- Ametystowe Kolczyki+4
+	14	17203	1	30	-- Kolczyki Z Niebian.Lez+3
+	15	13123	1	50	-- Tarcza Smoka+3
+	16	14143	1	30	-- Bransol. Z Bial. Zlota+3
+	17	15204	1	30	-- Buty Feniksa+4
+	18	16184	1	50	-- Ametystowy Naszyjnik+4
+	19	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	20	s10743	1	400	-- Boss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	21	s10743	1	100	-- Boss HighTier, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	22	s10988	1	400	-- Kamien Duszy +2..+4, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	23	s10984	1	200	-- Kamien Duszy +4, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	24	50513	1	60	-- Kamien Duchowy, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	25	50300	2	200	-- Ksiega Umiejetnosci x2, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	26	27992	1	100	-- Biala Perla, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	27	27993	1	60	-- Niebieska Perla, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	28	27994	1	30	-- Krwawa Perla, 7.5% (MT2009 PLUS AREZZO BALANCE V1)
+	29	71084	2	60	-- Zaczarowanie Przedmiotu x2, 15% (MT2009 PLUS AREZZO BALANCE
+	30	71085	2	40	-- Wzmocnienie Przedmiotu x2, 10% (MT2009 PLUS AREZZO BALANCE V
+	31	s951110	1	40	-- Rubin/Granat/Szmaragd/Szafir +0, 10% (MT2009 PLUS JEWELS75 V
+	32	30919	1	100	-- Bilet do Atlantydy, 25% (General Yonghan)
+	33	71102	1	4	-- Klepsydra Biologa 2 procent
+	34	30376	1	4	-- Drewniany Klucz
+	35	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	36	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2493_drop
+{
+	Mob	2493
+	Type	drop
+	1	30190	1	400	-- Krwisty Kamien
+	2	30190	2	50	-- Krwisty Kamien
+	3	12284	1	20	-- Helm Mistrza Wojny+4
+	4	12404	1	20	-- Pajeczy Kaptur+4
+	5	12544	1	20	-- Magiczny Helm+4
+	6	12684	1	20	-- Kapelusz Duszy+4
+	7	15374	1	20	-- Buty Euforii+4
+	8	15394	1	20	-- Kozaki Glorii+4
+	9	15414	1	20	-- Buty Qilina+4
+	10	15434	1	20	-- Buty Zimorodka+4
+	11	27987	10	75	-- Malz
+	12	50124	1	0	-- Sprochniala Skrzynia
+	13	50124	1	0	-- Sprochniala Skrzynia
+	14	50124	1	0	-- Sprochniala Skrzynia
+	15	50121	1	20	-- Zelazne Pudelko
+	16	50121	1	40	-- Zelazne Pudelko
+	17	50121	1	40	-- Zelazne Pudelko
+	18	71123	1	5	-- Smocza Luska
+	19	71129	1	5	-- Smoczy Szpon
+	20	71083	1	1	-- Ksiega Obrobki Kamienia
+	21	25040	5	0.5	-- Zwoj Blogoslawienstwa
+	22	71085	1	0.5	-- Wzmocnienie Przedmiotu
+	23	71084	1	0.5	-- Zaczarowanie Przedmiotu
+	24	30618	1	20	-- Kamien Ksiezycowy, 5%
+	25	s951103	1	400	-- kamienie pasow, 100%
+	26	s951103	1	160	-- kamienie pasow, 40%
+	27	s950928	1	20	-- Kamien Duszy +5 (losowy, grupa ze special item group.atlanty
+	28	71052	1	8	-- Blogoslawienstwo Przedmiotu (zmiana bonusow 6/7), 2% - wlasc
+	29	71102	1	4	-- Klepsydra Biologa 2 procent
+	30	30376	1	4	-- Drewniany Klucz
+	31	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	32	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2495_drop
+{
+	Mob	2495
+	Type	drop
+	1	30179	1	400	-- Krety Klucz
+	2	30179	3	100	-- Krety Klucz
+	3	30190	1	100	-- Krwisty Kamien
+	4	11691	1	30	-- Zbr. Plyt. Czar. Magii+1
+	5	11491	1	30	-- Ubranie Czarn. Wiatru+1
+	6	11891	1	30	-- Czarna Szata+1
+	7	11291	1	30	-- Zbroja Z Czarnej Stali+1
+	8	13064	1	100	-- Sokola Tarcza+4
+	9	13084	1	30	-- Tarcza Tygrysa+4
+	10	13104	1	100	-- Lwia Tarcza+4
+	11	16204	1	50	-- Naszyj. Z Niebian.Lez+4
+	12	17204	1	30	-- Kolczyki Z Niebian.Lez+4
+	13	13124	1	100	-- Tarcza Smoka+4
+	14	15205	1	30	-- Buty Feniksa+5
+	15	70050	1	50	-- Symb. Krola Przepowiedni
+	16	70051	1	50	-- Rekawica Krola Przepow.
+	17	27987	1	100	-- Malz
+	18	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	19	s10743	1	400	-- Boss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	20	s10743	1	100	-- Boss HighTier, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	21	s10988	1	400	-- Kamien Duszy +2..+4, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	22	s10984	1	200	-- Kamien Duszy +4, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	23	50513	1	60	-- Kamien Duchowy, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	24	50300	2	200	-- Ksiega Umiejetnosci x2, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	25	27992	1	100	-- Biala Perla, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	26	27993	1	60	-- Niebieska Perla, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	27	27994	1	30	-- Krwawa Perla, 7.5% (MT2009 PLUS AREZZO BALANCE V1)
+	28	71084	2	60	-- Zaczarowanie Przedmiotu x2, 15% (MT2009 PLUS AREZZO BALANCE
+	29	71085	2	40	-- Wzmocnienie Przedmiotu x2, 10% (MT2009 PLUS AREZZO BALANCE V
+	30	s951110	1	40	-- Rubin/Granat/Szmaragd/Szafir +0, 10% (MT2009 PLUS JEWELS75 V
+	31	30919	1	100	-- Bilet do Atlantydy, 25% (General Huashin)
+	32	71102	1	4	-- Klepsydra Biologa 2 procent
+	33	30376	1	4	-- Drewniany Klucz
+	34	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	35	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2591_drop
+{
+	Mob	2591
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2592_drop
+{
+	Mob	2592
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2593_drop
+{
+	Mob	2593
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2594_drop
+{
+	Mob	2594
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2595_drop
+{
+	Mob	2595
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2596_drop
+{
+	Mob	2596
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2597_drop
+{
+	Mob	2597
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2598_drop
+{
+	Mob	2598
+	Type	drop
+	1	72067	1	280	-- Silny Suplement (6/7), 70%
+	2	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	3	s10743	1	200	-- Boss HighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	4	s10988	1	200	-- Kamien Duszy +2..+4, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	5	s10984	1	40	-- Kamien Duszy +4, 10% (MT2009 PLUS AREZZO BALANCE V1)
+	6	50513	1	40	-- Kamien Duchowy, 10% (MT2009 PLUS AREZZO BALANCE V1)
+	7	71102	1	4	-- Klepsydra Biologa 2 procent
+	8	30376	1	4	-- Drewniany Klucz
+	9	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	10	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_2750_drop
+{
+	Mob	2750
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2751_drop
+{
+	Mob	2751
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2752_drop
+{
+	Mob	2752
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2760_drop
+{
+	Mob	2760
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2761_drop
+{
+	Mob	2761
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2762_drop
+{
+	Mob	2762
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2770_drop
+{
+	Mob	2770
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2771_drop
+{
+	Mob	2771
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2772_drop
+{
+	Mob	2772
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2780_drop
+{
+	Mob	2780
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2781_drop
+{
+	Mob	2781
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2782_drop
+{
+	Mob	2782
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2790_drop
+{
+	Mob	2790
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2791_drop
+{
+	Mob	2791
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2792_drop
+{
+	Mob	2792
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2800_drop
+{
+	Mob	2800
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2801_drop
+{
+	Mob	2801
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2802_drop
+{
+	Mob	2802
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2810_drop
+{
+	Mob	2810
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2811_drop
+{
+	Mob	2811
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2812_drop
+{
+	Mob	2812
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2820_drop
+{
+	Mob	2820
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2821_drop
+{
+	Mob	2821
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2822_drop
+{
+	Mob	2822
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2830_drop
+{
+	Mob	2830
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2831_drop
+{
+	Mob	2831
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2832_drop
+{
+	Mob	2832
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2840_drop
+{
+	Mob	2840
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2841_drop
+{
+	Mob	2841
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2842_drop
+{
+	Mob	2842
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2850_drop
+{
+	Mob	2850
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2851_drop
+{
+	Mob	2851
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2852_drop
+{
+	Mob	2852
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2860_drop
+{
+	Mob	2860
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2861_drop
+{
+	Mob	2861
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2862_drop
+{
+	Mob	2862
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2900_drop
+{
+	Mob	2900
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2901_drop
+{
+	Mob	2901
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2902_drop
+{
+	Mob	2902
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2903_drop
+{
+	Mob	2903
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2904_drop
+{
+	Mob	2904
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2905_drop
+{
+	Mob	2905
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2906_drop
+{
+	Mob	2906
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_2907_drop
+{
+	Mob	2907
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_2908_drop
+{
+	Mob	2908
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_3090_drop
+{
+	Mob	3090
+	Type	drop
+	1	50726	1	1	-- Grzyb Tue
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	71102	1	4	-- Klepsydra Biologa 2 procent
+	40	30376	1	4	-- Drewniany Klucz
+	41	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	42	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3091_drop
+{
+	Mob	3091
+	Type	drop
+	1	50727	1	1	-- Roza Alpejska
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3190_drop
+{
+	Mob	3190
+	Type	drop
+	1	50725	1	1	-- Bez
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3191_drop
+{
+	Mob	3191
+	Type	drop
+	1	50726	1	1	-- Grzyb Tue
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3290_drop
+{
+	Mob	3290
+	Type	drop
+	1	50724	1	1	-- Korzen Gango
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3291_drop
+{
+	Mob	3291
+	Type	drop
+	1	50725	1	1	-- Bez
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3390_drop
+{
+	Mob	3390
+	Type	drop
+	1	50723	1	1	-- Kwiat Kaki
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	64	s10743	1	200	-- Boss HighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	65	s10988	1	100	-- Kamien Duszy +2..+4, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	66	50513	1	20	-- Kamien Duchowy, 5% (MT2009 PLUS AREZZO BALANCE V1)
+	67	71102	1	4	-- Klepsydra Biologa 2 procent
+	68	30376	1	4	-- Drewniany Klucz
+	69	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	70	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3391_drop
+{
+	Mob	3391
+	Type	drop
+	1	50724	1	1	-- Korzen Gango
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	64	s10755	1	200	-- MiniBoss VeryHighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	65	s10743	1	400	-- Boss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	66	s10988	1	200	-- Kamien Duszy +2..+4, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	67	s10984	1	60	-- Kamien Duszy +4, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	68	50513	1	40	-- Kamien Duchowy, 10% (MT2009 PLUS AREZZO BALANCE V1)
+	69	71102	1	4	-- Klepsydra Biologa 2 procent
+	70	30376	1	4	-- Drewniany Klucz
+	71	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	72	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3490_drop
+{
+	Mob	3490
+	Type	drop
+	1	50722	1	1	-- Pokrzywa
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3491_drop
+{
+	Mob	3491
+	Type	drop
+	1	50723	1	1	-- Kwiat Kaki
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3590_drop
+{
+	Mob	3590
+	Type	drop
+	1	50726	1	1	-- Grzyb Tue
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3591_drop
+{
+	Mob	3591
+	Type	drop
+	1	50727	1	1	-- Roza Alpejska
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3595_drop
+{
+	Mob	3595
+	Type	drop
+	1	50728	1	1	-- Morwa
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3596_drop
+{
+	Mob	3596
+	Type	drop
+	1	50721	1	1	-- Kwiat Brzoskwini
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3690_drop
+{
+	Mob	3690
+	Type	drop
+	1	50727	1	1	-- Roza Alpejska
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3691_drop
+{
+	Mob	3691
+	Type	drop
+	1	50728	1	1	-- Morwa
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3790_drop
+{
+	Mob	3790
+	Type	drop
+	1	50726	1	1	-- Grzyb Tue
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3791_drop
+{
+	Mob	3791
+	Type	drop
+	1	50727	1	1	-- Roza Alpejska
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3890_drop
+{
+	Mob	3890
+	Type	drop
+	1	50725	1	1	-- Bez
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	27006	20	150	-- Niebieska Mikstura(D)
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	100	-- Skrzynia Mroku
+	17	145	1	15	-- Miecz Bojowy+5
+	18	146	1	10	-- Miecz Bojowy+6
+	19	155	1	15	-- Miecz Szponu Ducha+5
+	20	156	1	10	-- Miecz Szponu Ducha+6
+	21	1105	1	15	-- Smoczy Noz+5
+	22	1106	1	10	-- Smoczy Noz+6
+	23	2145	1	15	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	10	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	15	-- Magnetyczne Ostrze+5
+	26	3146	1	10	-- Magnetyczne Ostrze+6
+	27	5105	1	15	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	10	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	15	-- Wachlarz Zbawienia+5
+	30	7146	1	10	-- Wachlarz Zbawienia+6
+	31	11295	1	15	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	10	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	15	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	10	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	15	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	10	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	15	-- Czarna Szata+5
+	38	11896	1	10	-- Czarna Szata+6
+	39	30500	1	40	-- Rubinowy Ozdobny Noz
+	40	30501	1	40	-- Zlota Sprzaczka
+	41	30502	1	40	-- Rubinowa Ozdoba
+	42	30503	1	40	-- Ametystowy Ozdobny Noz
+	43	30504	1	40	-- Srebrny Zacisk
+	44	30505	1	40	-- Szmaragdowa Ozdoba
+	45	30506	1	40	-- Szafirowy Ozdobny Noz
+	46	30507	1	40	-- Brazowy Zacisk
+	47	30508	1	40	-- Szafirowa Ozdoba
+	48	30509	1	40	-- Niebieska Smocza Stal
+	49	30510	1	40	-- Wytworny Naramiennik
+	50	30511	1	40	-- Czerwony Material
+	51	30512	1	40	-- Czerwona Smocza Stal
+	52	30513	1	40	-- Szlachetny Naramiennik
+	53	30514	1	40	-- Fioletowy Material
+	54	30515	1	40	-- Purpurowa Smocza Stal
+	55	30516	1	40	-- Antyczny Naramiennik
+	56	30517	1	40	-- Zloty Material
+	57	30518	1	40	-- Zlota Przedza
+	58	30519	1	40	-- Zloty Hak
+	59	30520	1	40	-- Zlota Spinka
+	60	30521	1	40	-- Element Pierscienia
+	61	30522	1	40	-- Ogniwa Lancucha
+	62	30523	1	40	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3891_drop
+{
+	Mob	3891
+	Type	drop
+	1	50726	1	1	-- Grzyb Tue
+	2	70012	1	15	-- Lza Bogini
+	3	39006	1	15	-- Peleryna Mestwa
+	4	25040	1	10	-- Zwoj Blogoslawienstwa
+	5	70048	1	20	-- Plaszcz Uciekiniera
+	6	70037	1	25	-- Ksiega Zapomnienia
+	7	70014	1	25	-- Pigulka Krwi
+	8	70043	1	20	-- Rekawica Zlodzieja
+	9	39002	1	20	-- Pierscien Doswiadczenia
+	10	27002	50	100	-- Czerwona Mikstura(S)
+	11	27003	30	200	-- Czerwona Mikstura(D)
+	12	27005	30	100	-- Niebieska Mikstura(S)
+	13	50300	1	400	-- Ksiega Umiejetnosci
+	14	70014	1	1	-- Pigulka Krwi
+	15	70037	1	1	-- Ksiega Zapomnienia
+	16	50254	1	400	-- Skrzynia Mroku
+	17	145	1	30	-- Miecz Bojowy+5
+	18	146	1	20	-- Miecz Bojowy+6
+	19	155	1	30	-- Miecz Szponu Ducha+5
+	20	156	1	20	-- Miecz Szponu Ducha+6
+	21	1105	1	30	-- Smoczy Noz+5
+	22	1106	1	20	-- Smoczy Noz+6
+	23	2145	1	30	-- Olbrz. Luk Zolt. Smoka+5
+	24	2146	1	20	-- Olbrz. Luk Zolt. Smoka+6
+	25	3145	1	30	-- Magnetyczne Ostrze+5
+	26	3146	1	20	-- Magnetyczne Ostrze+6
+	27	5105	1	30	-- Dzwon Nieba I Ziemi+5
+	28	5106	1	20	-- Dzwon Nieba I Ziemi+6
+	29	7145	1	30	-- Wachlarz Zbawienia+5
+	30	7146	1	20	-- Wachlarz Zbawienia+6
+	31	11295	1	30	-- Zbroja Z Czarnej Stali+5
+	32	11296	1	20	-- Zbroja Z Czarnej Stali+6
+	33	11495	1	30	-- Ubranie Czarn. Wiatru+5
+	34	11496	1	20	-- Ubranie Czarn. Wiatru+6
+	35	11695	1	30	-- Zbr. Plyt. Czar. Magii+5
+	36	11696	1	20	-- Zbr. Plyt. Czar. Magii+6
+	37	11895	1	30	-- Czarna Szata+5
+	38	11896	1	20	-- Czarna Szata+6
+	39	30500	1	60	-- Rubinowy Ozdobny Noz
+	40	30501	1	60	-- Zlota Sprzaczka
+	41	30502	1	60	-- Rubinowa Ozdoba
+	42	30503	1	60	-- Ametystowy Ozdobny Noz
+	43	30504	1	60	-- Srebrny Zacisk
+	44	30505	1	60	-- Szmaragdowa Ozdoba
+	45	30506	1	60	-- Szafirowy Ozdobny Noz
+	46	30507	1	60	-- Brazowy Zacisk
+	47	30508	1	60	-- Szafirowa Ozdoba
+	48	30509	1	60	-- Niebieska Smocza Stal
+	49	30510	1	60	-- Wytworny Naramiennik
+	50	30511	1	60	-- Czerwony Material
+	51	30512	1	60	-- Czerwona Smocza Stal
+	52	30513	1	60	-- Szlachetny Naramiennik
+	53	30514	1	60	-- Fioletowy Material
+	54	30515	1	60	-- Purpurowa Smocza Stal
+	55	30516	1	60	-- Antyczny Naramiennik
+	56	30517	1	60	-- Zloty Material
+	57	30518	1	60	-- Zlota Przedza
+	58	30519	1	60	-- Zloty Hak
+	59	30520	1	60	-- Zlota Spinka
+	60	30521	1	60	-- Element Pierscienia
+	61	30522	1	60	-- Ogniwa Lancucha
+	62	30523	1	60	-- Element Ozdoby
+	63	71102	1	4	-- Klepsydra Biologa 2 procent
+	64	30376	1	4	-- Drewniany Klucz
+	65	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	66	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_3901_drop
+{
+	Mob	3901
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3902_drop
+{
+	Mob	3902
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3903_drop
+{
+	Mob	3903
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3905_drop
+{
+	Mob	3905
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3906_drop
+{
+	Mob	3906
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3910_drop
+{
+	Mob	3910
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3911_drop
+{
+	Mob	3911
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3912_drop
+{
+	Mob	3912
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_3913_drop
+{
+	Mob	3913
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_4557_drop
+{
+	Mob	4557
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_4558_drop
+{
+	Mob	4558
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_4559_drop
+{
+	Mob	4559
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_5001_drop
+{
+	Mob	5001
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_5002_drop
+{
+	Mob	5002
+	Type	drop
+	1	27002	100	400	-- Czerwona Mikstura(S)
+	2	27003	50	400	-- Czerwona Mikstura(D)
+	3	27005	100	400	-- Niebieska Mikstura(S)
+	4	27006	50	400	-- Niebieska Mikstura(D)
+	5	71102	1	4	-- Klepsydra Biologa 2 procent
+	6	30376	1	4	-- Drewniany Klucz
+	7	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	8	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_5161_drop
+{
+	Mob	5161
+	Type	drop
+	1	50057	1	200	-- Ziolo Z Latwych Malp
+	2	50736	4	2	-- Jaskiniowy Grzyb
+	3	s10751	1	40	-- low tier miniboss
+	4	s10751	1	30	-- low tier miniboss
+	5	50007	1	4	-- Srebrna Szkatulka
+	6	71102	1	4	-- Klepsydra Biologa 2 procent
+	7	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_5162_drop
+{
+	Mob	5162
+	Type	drop
+	1	50058	1	200	-- Ziolo Z Normalnych Malp
+	2	50736	4	3	-- Jaskiniowy Grzyb
+	3	s10752	1	50	-- mediumtier miniboss
+	4	50013	1	4	-- Srebrna Szkatulka+
+	5	71102	1	4	-- Klepsydra Biologa 2 procent
+	6	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_5163_drop
+{
+	Mob	5163
+	Type	drop
+	1	50059	1	200	-- Ziolo Z Trudnych Malp
+	2	50736	4	5	-- Jaskiniowy Grzyb
+	3	s10753	1	50	-- hightier miniboss
+	4	50006	1	4	-- Zlota Szkatulka
+	5	71102	1	4	-- Klepsydra Biologa 2 procent
+	6	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_6091_drop
+{
+	Mob	6091
+	Type	drop
+	1	50270	1	0	-- Skrzynia Razadora
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50946	1	4	-- Receptura Eliksir Slonca (D)
+	7	50947	1	4	-- Receptura Eliksir Ksiezyca (D)
+}
+
+Group	MT2009_panel_6151_drop
+{
+	Mob	6151
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_6191_drop
+{
+	Mob	6191
+	Type	drop
+	1	50271	1	0	-- Skrzynia Nemere (quest: nemere dungeon)
+	2	71102	1	4	-- Klepsydra Biologa 2 procent
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_6311_drop
+{
+	Mob	6311
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_6390_drop
+{
+	Mob	6390
+	Type	drop
+	1	27002	50	60.0
+	2	27005	50	60.0
+	3	27003	20	60.0
+	4	27006	20	60.0
+	5	144	1	50.0
+	6	145	1	50.0
+	7	154	1	50.0
+	8	155	1	50.0
+	9	1104	1	50.0
+	10	1105	1	50.0
+	11	2144	1	50.0
+	12	2145	1	50.0
+	13	3134	1	50.0
+	14	3135	1	50.0
+	15	5094	1	50.0
+	16	5095	1	50.0
+	17	7134	1	50.0
+	18	7135	1	50.0
+	19	30518	1	50.0
+	20	30520	1	50.0
+	21	30519	1	50.0
+	22	71094	1	50.0	-- Rada Pustelnika (za 50323)
+	23	25040	1	50.0	-- Zwoj Blogoslawienstwa (za 50324)
+	24	72723	1	50.0	-- Eliksir Slonca (M) (za 50514)
+	25	72724	1	50.0	-- Eliksir Slonca (S) (za 50515)
+	26	50254	1	50.0
+	27	70005	1	50.0
+	28	70043	1	50.0
+	29	30092	1	30.0	-- Zdobycz Dzikusa (za 30610)
+	30	30082	1	30.0	-- Ogon Weza+ (za 30612)
+	31	30083	1	30.0	-- Nieznane Lekarstwo+ (za 30604)
+	32	71084	1	30.0	-- Zaczarowanie Przedmiotu (za 30619)
+	33	71032	1	15.0	-- Zwoj Boga Smokow (za 30616)
+	34	30075	1	20.0	-- Shuriken+ (za 30605)
+	35	30089	1	20.0	-- Futro Yeti+ (za 30606)
+	36	30076	1	20.0	-- Amulet Orka+ (za 30607)
+	37	30079	1	20.0	-- Nieznany Talizman+ (za 30608)
+	38	71102	1	4	-- Klepsydra Biologa 2 procent
+	39	30376	1	4	-- Drewniany Klucz
+	40	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	41	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_6400_drop
+{
+	Mob	6400
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8001_drop
+{
+	Mob	8001
+	Type	drop
+	1	s8001	1	200	-- s8001
+	2	s8001	1	100	-- s8001
+	3	s8001	1	30	-- s8001
+	4	s8001	1	15	-- s8001
+	5	27002	50	100	-- Czerwona Mikstura(S)
+	6	27003	30	50	-- Czerwona Mikstura(D)
+	7	27005	30	50	-- Niebieska Mikstura(S)
+	8	27006	20	50	-- Niebieska Mikstura(D)
+	9	s50901	1	7.5	-- s50901
+	10	s10701	1	20	-- s10701
+	11	27999	1	400	-- Sakiewka Kamieni Dusz
+	12	50035	1	400	-- Prezent (zolty)
+	13	71102	1	4	-- Klepsydra Biologa 2 procent
+	14	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8002_drop
+{
+	Mob	8002
+	Type	drop
+	1	s8002	1	200	-- s8002
+	2	s8002	1	100	-- s8002
+	3	s8002	1	30	-- s8002
+	4	s8002	1	15	-- s8002
+	5	27002	50	100	-- Czerwona Mikstura(S)
+	6	27003	30	50	-- Czerwona Mikstura(D)
+	7	27005	30	50	-- Niebieska Mikstura(S)
+	8	27006	20	50	-- Niebieska Mikstura(D)
+	9	s50901	1	10	-- s50901
+	10	s10701	1	25	-- s10701
+	11	27999	1	400	-- Sakiewka Kamieni Dusz
+	12	50035	1	400	-- Prezent (zolty)
+	13	71102	1	4	-- Klepsydra Biologa 2 procent
+	14	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8003_drop
+{
+	Mob	8003
+	Type	drop
+	1	s8003	1	200	-- s8003
+	2	s8003	1	100	-- s8003
+	3	s8003	1	30	-- s8003
+	4	s8003	1	15	-- s8003
+	5	27002	50	100	-- Czerwona Mikstura(S)
+	6	27003	30	50	-- Czerwona Mikstura(D)
+	7	27005	30	50	-- Niebieska Mikstura(S)
+	8	27006	20	50	-- Niebieska Mikstura(D)
+	9	s50901	1	12.5	-- s50901
+	10	s10701	1	30	-- s10701
+	11	27999	1	400	-- Sakiewka Kamieni Dusz
+	12	50035	1	400	-- Prezent (zolty)
+	13	71102	1	4	-- Klepsydra Biologa 2 procent
+	14	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8004_drop
+{
+	Mob	8004
+	Type	drop
+	1	s8004	1	200	-- s8004
+	2	s8004	1	100	-- s8004
+	3	s8004	1	30	-- s8004
+	4	27002	50	100	-- Czerwona Mikstura(S)
+	5	27003	30	50	-- Czerwona Mikstura(D)
+	6	27005	30	50	-- Niebieska Mikstura(S)
+	7	27006	20	50	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	1	-- Ksiega Zapomnienia
+	10	s50901	1	15	-- s50901
+	11	s10702	1	20	-- s10702
+	12	27999	1	400	-- Sakiewka Kamieni Dusz
+	13	50035	1	400	-- Prezent (zolty)
+	14	71102	1	4	-- Klepsydra Biologa 2 procent
+	15	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8005_drop
+{
+	Mob	8005
+	Type	drop
+	1	s8005	1	200	-- s8005
+	2	s8005	1	100	-- s8005
+	3	s8005	1	30	-- s8005
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	2	-- Ksiega Zapomnienia
+	10	s50901	1	17.5	-- s50901
+	11	s10702	1	25	-- s10702
+	12	27999	1	400	-- Sakiewka Kamieni Dusz
+	13	50035	1	400	-- Prezent (zolty)
+	14	71102	1	4	-- Klepsydra Biologa 2 procent
+	15	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8006_drop
+{
+	Mob	8006
+	Type	drop
+	1	s8006	1	200	-- s8006
+	2	s8006	1	100	-- s8006
+	3	s8006	1	30	-- s8006
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	3	-- Ksiega Zapomnienia
+	10	s50901	1	18	-- s50901
+	11	72732	1	5	-- Ogon Konia
+	12	s10702	1	30	-- s10702
+	13	50035	1	400	-- Prezent (zolty)
+	14	27999	1	400	-- Sakiewka Kamieni Dusz
+	15	71102	1	4	-- Klepsydra Biologa 2 procent
+	16	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8007_drop
+{
+	Mob	8007
+	Type	drop
+	1	s8007	1	200	-- s8007
+	2	s8007	1	100	-- s8007
+	3	s8007	1	30	-- s8007
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	4	-- Ksiega Zapomnienia
+	10	s50901	1	19	-- s50901
+	11	30370	1	0.5	-- Pozwolenie na Zaczar. Przedmiotu
+	12	s10703	1	30	-- s10703
+	13	50033	1	60	-- Zagadkowa Szkatulka
+	14	50124	1	40	-- Sprochniala Skrzynia
+	15	50035	1	200	-- Prezent (zolty)
+	16	27999	1	400	-- Sakiewka Kamieni Dusz
+	17	71102	1	4	-- Klepsydra Biologa 2 procent
+	18	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8008_drop
+{
+	Mob	8008
+	Type	drop
+	1	s8008	1	200	-- s8008
+	2	s8008	1	100	-- s8008
+	3	s8008	1	30	-- s8008
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	5	-- Ksiega Zapomnienia
+	10	50513	1	0.1	-- Kamien Duchowy
+	11	s50901	1	20	-- s50901
+	12	30370	1	1	-- Pozwolenie na Zaczar. Przedmiotu
+	13	30373	1	1	-- Ksiega Erudyty
+	14	30374	1	0.5	-- Pioro Medrca
+	15	s10704	1	30	-- s10704
+	16	50124	1	40	-- Sprochniala Skrzynia
+	17	13040	1	8	-- Czarna Okragla Tarcza+0
+	18	50035	1	400	-- Prezent (zolty)
+	19	27999	1	400	-- Sakiewka Kamieni Dusz
+	20	71102	1	4	-- Klepsydra Biologa 2 procent
+	21	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8009_drop
+{
+	Mob	8009
+	Type	drop
+	1	s8009	1	200	-- s8009
+	2	s8009	1	100	-- s8009
+	3	s8009	1	30	-- s8009
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	5	-- Ksiega Zapomnienia
+	10	50513	1	0.25	-- Kamien Duchowy
+	11	s50901	1	21	-- s50901
+	12	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	13	30373	1	2	-- Ksiega Erudyty
+	14	30374	1	1	-- Pioro Medrca
+	15	s10705	1	30	-- s10705
+	16	50124	1	40	-- Sprochniala Skrzynia
+	17	13040	1	8	-- Czarna Okragla Tarcza+0
+	18	50035	1	400	-- Skrzynia z KU
+	19	50122	1	8	-- Zelazna Skrzynia
+	20	27999	1	400	-- Sakiewka Kamieni Dusz
+	21	71102	1	4	-- Klepsydra Biologa 2 procent
+	22	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8010_drop
+{
+	Mob	8010
+	Type	drop
+	1	s8010	1	200	-- s8010
+	2	s8010	1	70	-- s8010
+	3	s8010	1	30	-- s8010
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	5	-- Ksiega Zapomnienia
+	10	50513	1	0.5	-- Kamien Duchowy
+	11	s50901	1	22	-- s50901
+	12	30370	1	4	-- Pozwolenie na Zaczar. Przedmiotu
+	13	50309	1	4	-- Ksiega Misji (Trudna)
+	14	30373	1	2.5	-- Ksiega Erudyty
+	15	30374	1	1.25	-- Pioro Medrca
+	16	s10706	1	30	-- s10706
+	17	50124	1	40	-- Sprochniala Skrzynia
+	18	50035	1	400	-- Prezent (zolty)
+	19	50122	1	8	-- Zelazna Skrzynia
+	20	27999	1	400	-- Sakiewka Kamieni Dusz
+	21	71102	1	4	-- Klepsydra Biologa 2 procent
+	22	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8011_drop
+{
+	Mob	8011
+	Type	drop
+	1	s8011	1	200	-- s8011
+	2	s8011	1	50	-- s8011
+	3	s8011	1	15	-- s8011
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	5	-- Ksiega Zapomnienia
+	10	50513	1	1	-- Kamien Duchowy
+	11	s50901	1	23	-- s50901
+	12	30370	1	8	-- Pozwolenie na Zaczar. Przedmiotu
+	13	30373	1	3	-- Ksiega Erudyty
+	14	30374	1	1.5	-- Pioro Medrca
+	15	s10707	1	30	-- s10707
+	16	50124	1	40	-- Sprochniala Skrzynia
+	17	50035	1	400	-- Prezent (zolty)
+	18	27999	1	400	-- Sakiewka Kamieni Dusz
+	19	71102	1	4	-- Klepsydra Biologa 2 procent
+	20	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8012_drop
+{
+	Mob	8012
+	Type	drop
+	1	s8012	1	200	-- s8012
+	2	s8012	1	50	-- s8012
+	3	s8012	1	15	-- s8012
+	4	27003	30	100	-- Czerwona Mikstura(D)
+	5	27006	20	100	-- Niebieska Mikstura(D)
+	6	70014	1	1	-- Pigulka Krwi
+	7	70037	1	5	-- Ksiega Zapomnienia
+	8	50513	1	2	-- Kamien Duchowy
+	9	s50901	1	24	-- s50901
+	10	30370	1	12	-- Pozwolenie na Zaczar. Przedmiotu
+	11	72735	1	0	-- Maska Sabaha
+	12	30373	1	3.5	-- Ksiega Erudyty
+	13	30374	1	1.75	-- Pioro Medrca
+	14	s10707	1	30	-- s10707
+	15	50300	1	260	-- Ksiega Umiejetnosci
+	16	50124	1	40	-- Sprochniala Skrzynia
+	17	50122	1	20	-- Zelazna Skrzynia
+	18	27999	1	400	-- Sakiewka Kamieni Dusz
+	19	50035	1	400	-- Prezent (zolty)
+	20	71102	1	4	-- Klepsydra Biologa 2 procent
+	21	30376	1	4	-- Drewniany Klucz
+	22	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8013_drop
+{
+	Mob	8013
+	Type	drop
+	1	s8013	1	200	-- s8013
+	2	s8013	1	40	-- s8013
+	3	s8013	1	10	-- s8013
+	4	27003	30	100	-- Czerwona Mikstura(D)
+	5	27006	20	100	-- Niebieska Mikstura(D)
+	6	70014	1	1	-- Pigulka Krwi
+	7	70037	1	5	-- Ksiega Zapomnienia
+	8	50513	1	3	-- Kamien Duchowy
+	9	s50901	1	25	-- s50901
+	10	30370	1	16	-- Pozwolenie na Zaczar. Przedmiotu
+	11	30373	1	4	-- Ksiega Erudyty
+	12	30374	1	2	-- Pioro Medrca
+	13	s10706	1	30	-- s10706
+	14	27999	1	400	-- Sakiewka Kamieni Dusz
+	15	50035	1	400	-- Skrzynia z KU
+	16	71102	1	4	-- Klepsydra Biologa
+	17	30376	1	4	-- Drewniany Klucz
+	18	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	19	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8014_drop
+{
+	Mob	8014
+	Type	drop
+	1	s8014	1	200	-- s8014
+	2	s8014	1	40	-- s8014
+	3	s8014	1	10	-- s8014
+	4	27003	30	100	-- Czerwona Mikstura(D)
+	5	27006	20	100	-- Niebieska Mikstura(D)
+	6	70014	1	50	-- Pigulka Krwi
+	7	70037	1	50	-- Ksiega Zapomnienia
+	8	50513	1	4	-- Kamien Duchowy
+	9	s50901	1	25	-- s50901
+	10	30370	1	20	-- Pozwolenie na Zaczar. Przedmiotu
+	11	30368	1	0.3	-- Pozwolenie na Wzmocn. Przedmiotu
+	12	25040	1	1	-- Zwoj Blogoslawienstwa
+	13	30373	1	4.5	-- Ksiega Erudyty
+	14	30374	1	2.25	-- Pioro Medrca
+	15	s10708	1	30	-- s10708
+	16	100300	1	10	-- Green Dragon Bean
+	17	27999	1	400	-- Sakiewka Kamieni Dusz
+	18	50035	1	400	-- Prezent (zolty)
+	19	71102	1	4	-- Klepsydra Biologa 2 procent
+	20	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8015_drop
+{
+	Mob	8015
+	Type	drop
+	1	110	1	10	-- Wielki Miecz+0
+	2	1070	1	10	-- Krwawy Sztylet+0
+	3	2100	1	10	-- Luk z rogu byka+0
+	4	7100	1	10	-- Potrojny Wachlarz+0
+	5	5060	1	10	-- Magiczny Dzwon+0
+	6	111	1	5	-- Wielki Miecz+1
+	7	1071	1	5	-- Krwawy Sztylet+1
+	8	2101	1	5	-- Luk z rogu byka+1
+	9	7101	1	5	-- Potrojny Wachlarz+1
+	10	5061	1	1	-- Magiczny Dzwon+1
+	11	27002	50	150	-- Czerwona Mikstura(S)
+	12	27003	30	100	-- Czerwona Mikstura(D)
+	13	27005	30	150	-- Niebieska Mikstura(S)
+	14	27006	20	100	-- Niebieska Mikstura(D)
+	15	70014	1	1	-- Pigulka Krwi
+	16	70037	1	1	-- Ksiega Zapomnienia
+	17	s50901	1	2.5	-- s50901
+	18	50124	1	40	-- Sprochniala Skrzynia
+	19	50035	1	400	-- Prezent (zolty)
+	20	27999	1	400	-- Sakiewka Kamieni Dusz
+	21	71102	1	4	-- Klepsydra Biologa 2 procent
+	22	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8016_drop
+{
+	Mob	8016
+	Type	drop
+	1	120	1	20	-- Miecz Lat. Maga+0
+	2	1080	1	20	-- Zebrowy Noz+0
+	3	2110	1	20	-- Luk Jednorozca+0
+	4	7110	1	20	-- Brwisty Wachlarz+0
+	5	5070	1	20	-- Zloty Robaczy Dzwon+0
+	6	121	1	10	-- Miecz Lat. Maga+1
+	7	1081	1	10	-- Zebrowy Noz+1
+	8	2111	1	10	-- Luk Jednorozca+1
+	9	7111	1	10	-- Brwisty Wachlarz+1
+	10	5071	1	10	-- Zloty Robaczy Dzwon+1
+	11	122	1	5	-- Miecz Lat. Maga+2
+	12	1082	1	5	-- Zebrowy Noz+2
+	13	2112	1	5	-- Luk Jednorozca+2
+	14	7112	1	5	-- Brwisty Wachlarz+2
+	15	5072	1	5	-- Zloty Robaczy Dzwon+2
+	16	27002	50	100	-- Czerwona Mikstura(S)
+	17	27003	30	200	-- Czerwona Mikstura(D)
+	18	27005	30	100	-- Niebieska Mikstura(S)
+	19	27006	20	150	-- Niebieska Mikstura(D)
+	20	70014	1	1	-- Pigulka Krwi
+	21	70037	1	2	-- Ksiega Zapomnienia
+	22	s50901	1	5	-- s50901
+	23	50124	1	40	-- Sprochniala Skrzynia
+	24	27999	1	400	-- Sakiewka Kamieni Dusz
+	25	50035	1	400	-- Prezent (zolty)
+	26	71102	1	4	-- Klepsydra Biologa 2 procent
+	27	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8017_drop
+{
+	Mob	8017
+	Type	drop
+	1	130	1	10	-- Pol-ksiezycowy Miecz+0
+	2	1090	1	10	-- Chakram+0
+	3	2120	1	10	-- Olbrz. Skrzydl. Luk+0
+	4	7120	1	10	-- Czarny Slon. Wachlarz+0
+	5	5080	1	10	-- Stalowy Robaczy Dzwon+0
+	6	131	1	5	-- Pol-ksiezycowy Miecz+1
+	7	1091	1	5	-- Chakram+1
+	8	2121	1	5	-- Olbrz. Skrzydl. Luk+1
+	9	7121	1	5	-- Czarny Slon. Wachlarz+1
+	10	5081	1	5	-- Stalowy Robaczy Dzwon+1
+	11	132	1	2.5	-- Pol-ksiezycowy Miecz+2
+	12	1092	1	2.5	-- Chakram+2
+	13	2122	1	2.5	-- Olbrz. Skrzydl. Luk+2
+	14	7122	1	2.5	-- Czarny Slon. Wachlarz+2
+	15	5082	1	2.5	-- Stalowy Robaczy Dzwon+2
+	16	27003	30	100	-- Czerwona Mikstura(D)
+	17	27006	20	75	-- Niebieska Mikstura(D)
+	18	70014	1	0.5	-- Pigulka Krwi
+	19	70037	1	0.5	-- Ksiega Zapomnienia
+	20	s50901	1	1.5	-- s50901
+	21	50122	1	20	-- Zelazna Skrzynia
+	22	50124	1	40	-- Sprochniala Skrzynia
+	23	27999	1	400	-- Sakiewka Kamieni Dusz
+	24	50035	1	400	-- Prezent (zolty)
+	25	71102	1	4	-- Klepsydra Biologa 2 procent
+	26	30376	1	4	-- Drewniany Klucz
+	27	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	28	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8018_drop
+{
+	Mob	8018
+	Type	drop
+	1	120	1	15	-- Miecz Lat. Maga+0
+	2	1080	1	15	-- Zebrowy Noz+0
+	3	2110	1	15	-- Luk Jednorozca+0
+	4	7110	1	15	-- Brwisty Wachlarz+0
+	5	5070	1	15	-- Zloty Robaczy Dzwon+0
+	6	121	1	10	-- Miecz Lat. Maga+1
+	7	1081	1	10	-- Zebrowy Noz+1
+	8	2111	1	10	-- Luk Jednorozca+1
+	9	7111	1	10	-- Brwisty Wachlarz+1
+	10	5071	1	10	-- Zloty Robaczy Dzwon+1
+	11	122	1	5	-- Miecz Lat. Maga+2
+	12	1082	1	5	-- Zebrowy Noz+2
+	13	2112	1	5	-- Luk Jednorozca+2
+	14	7112	1	5	-- Brwisty Wachlarz+2
+	15	5072	1	5	-- Zloty Robaczy Dzwon+2
+	16	27003	30	200	-- Czerwona Mikstura(D)
+	17	27006	20	150	-- Niebieska Mikstura(D)
+	18	70014	1	0.75	-- Pigulka Krwi
+	19	70037	1	1	-- Ksiega Zapomnienia
+	20	s50901	1	5	-- s50901
+	21	27999	1	400	-- Sakiewka Kamieni Dusz
+	22	50035	1	400	-- Skrzynia z KU
+	23	71102	1	4	-- Klepsydra Biologa
+	24	30376	1	4	-- Drewniany Klucz
+	25	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	26	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	27	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8019_drop
+{
+	Mob	8019
+	Type	drop
+	1	130	1	10	-- Pol-ksiezycowy Miecz+0
+	2	1090	1	10	-- Chakram+0
+	3	2120	1	10	-- Olbrz. Skrzydl. Luk+0
+	4	7120	1	10	-- Czarny Slon. Wachlarz+0
+	5	5080	1	10	-- Stalowy Robaczy Dzwon+0
+	6	131	1	5	-- Pol-ksiezycowy Miecz+1
+	7	1091	1	5	-- Chakram+1
+	8	2121	1	5	-- Olbrz. Skrzydl. Luk+1
+	9	7121	1	5	-- Czarny Slon. Wachlarz+1
+	10	5081	1	5	-- Stalowy Robaczy Dzwon+1
+	11	132	1	2.5	-- Pol-ksiezycowy Miecz+2
+	12	1092	1	2.5	-- Chakram+2
+	13	2122	1	2.5	-- Olbrz. Skrzydl. Luk+2
+	14	27003	30	100	-- Czerwona Mikstura(D)
+	15	27006	20	75	-- Niebieska Mikstura(D)
+	16	70014	1	0.5	-- Pigulka Krwi
+	17	70037	1	0.75	-- Ksiega Zapomnienia
+	18	50513	1	2	-- Kamien Duchowy
+	19	s50901	1	4	-- s50901
+	20	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	21	100300	1	10	-- Green Dragon Bean
+	22	27999	1	400	-- Sakiewka Kamieni Dusz
+	23	50035	1	400	-- Prezent (zolty)
+	24	71102	1	4	-- Klepsydra Biologa 2 procent
+	25	30376	1	4	-- Drewniany Klucz
+	26	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8020_drop
+{
+	Mob	8020
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8021_drop
+{
+	Mob	8021
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8022_drop
+{
+	Mob	8022
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8023_drop
+{
+	Mob	8023
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8024_drop
+{
+	Mob	8024
+	Type	drop
+	1	s8024	1	200	-- s8024
+	2	s8024	1	40	-- s8024
+	3	s8024	1	10	-- s8024
+	4	27003	30	200	-- Czerwona Mikstura(D)
+	5	27006	20	150	-- Niebieska Mikstura(D)
+	6	70014	1	2	-- Pigulka Krwi
+	7	70037	1	5	-- Ksiega Zapomnienia
+	8	50513	1	5	-- Kamien Duchowy
+	9	s50901	1	30	-- s50901
+	10	30370	1	25	-- Pozwolenie na Zaczar. Przedmiotu
+	11	30368	1	1	-- Pozwolenie na Wzmocn. Przedmiotu
+	12	25040	1	10	-- Zwoj Blogoslawienstwa
+	13	30373	1	5	-- Ksiega Erudyty
+	14	30374	1	2.5	-- Pioro Medrca
+	15	30375	1	1.25	-- Magiczna Ruda
+	16	s10709	1	30	-- s10709
+	17	100300	1	10	-- Green Dragon Bean
+	18	27999	1	400	-- Sakiewka Kamieni Dusz
+	19	50035	1	400	-- Skrzynia z KU
+	20	71102	1	4	-- Klepsydra Biologa
+	21	30376	1	4	-- Drewniany Klucz
+	22	50122	1	16	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8025_drop
+{
+	Mob	8025
+	Type	drop
+	1	s8025	1	200	-- s8025
+	2	s8025	1	40	-- s8025
+	3	s8025	1	10	-- s8025
+	4	27003	30	200	-- Czerwona Mikstura(D)
+	5	27006	20	150	-- Niebieska Mikstura(D)
+	6	70014	1	2	-- Pigulka Krwi
+	7	70037	1	5	-- Ksiega Zapomnienia
+	8	50513	1	6	-- Kamien Duchowy
+	9	s50901	1	30	-- s50901
+	10	30370	1	30	-- Pozwolenie na Zaczar. Przedmiotu
+	11	30368	1	2.5	-- Pozwolenie na Wzmocn. Przedmiotu
+	12	25040	1	12	-- Zwoj Blogoslawienstwa
+	13	30373	1	5.5	-- Ksiega Erudyty
+	14	30374	1	2.75	-- Pioro Medrca
+	15	30375	1	1	-- Magiczna Ruda
+	16	s10709	1	30	-- s10709
+	17	100300	1	10	-- Green Dragon Bean
+	18	27999	1	400	-- Sakiewka Kamieni Dusz
+	19	50035	1	400	-- Skrzynia z KU
+	20	71102	1	4	-- Klepsydra Biologa
+	21	30376	1	4	-- Drewniany Klucz
+	22	50122	1	16	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8026_drop
+{
+	Mob	8026
+	Type	drop
+	1	s8026	1	200	-- s8026
+	2	s8026	1	100	-- s8026
+	3	s8026	1	50	-- s8026
+	4	s8026	1	20	-- s8026
+	5	s8026	1	5	-- s8026
+	6	70038	1	15	-- Peleryna Mestwa
+	7	25040	1	21	-- Zwoj Blogoslawienstwa
+	8	70048	1	20	-- Plaszcz Uciekiniera
+	9	70037	1	25	-- Ksiega Zapomnienia
+	10	70014	1	25	-- Pigulka Krwi
+	11	70043	1	20	-- Rekawica Zlodzieja
+	12	70005	1	20	-- Pierscien Doswiadczenia
+	13	27003	30	200	-- Czerwona Mikstura(D)
+	14	27006	20	150	-- Niebieska Mikstura(D)
+	15	70037	1	5	-- Ksiega Zapomnienia
+	16	50513	1	8	-- Kamien Duchowy
+	17	s50901	1	30	-- s50901
+	18	30370	1	35	-- Pozwolenie na Zaczar. Przedmiotu
+	19	30368	1	5	-- Pozwolenie na Wzmocn. Przedmiotu
+	20	25100	1	1.5	-- Zwoj Kamienia Duszy
+	21	71282	1	0	-- Niebieski Oldtimer
+	22	s50902	1	3	-- s50902
+	23	71201	1	2.5	-- Zwoj Egzorcyzmu
+	24	71094	1	1.25	-- Rada Pustelnika
+	25	30373	1	6	-- Ksiega Erudyty
+	26	30374	1	3	-- Pioro Medrca
+	27	30375	1	1.5	-- Magiczna Ruda
+	28	s10710	1	30	-- s10710
+	29	100300	1	10	-- Green Dragon Bean
+	30	27999	1	400	-- Sakiewka Kamieni Dusz
+	31	50035	1	400	-- Skrzynia z KU
+	32	71102	1	4	-- Klepsydra Biologa
+	33	30376	1	4	-- Drewniany Klucz
+	34	50122	1	32	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8027_drop
+{
+	Mob	8027
+	Type	drop
+	1	s8027	1	200	-- s8027
+	2	s8027	1	140	-- s8027
+	3	s8027	1	80	-- s8027
+	4	s8027	1	40	-- s8027
+	5	s8027	1	16	-- s8027
+	6	70012	1	15	-- Lza Bogini
+	7	70038	1	15	-- Peleryna Mestwa
+	8	25040	1	21	-- Zwoj Blogoslawienstwa
+	9	70048	1	20	-- Plaszcz Uciekiniera
+	10	70037	1	25	-- Ksiega Zapomnienia
+	11	70014	1	25	-- Pigulka Krwi
+	12	70043	1	20	-- Rekawica Zlodzieja
+	13	70005	1	20	-- Pierscien Doswiadczenia
+	14	27002	50	100	-- Czerwona Mikstura(S)
+	15	27003	30	200	-- Czerwona Mikstura(D)
+	16	27005	30	100	-- Niebieska Mikstura(S)
+	17	27006	20	150	-- Niebieska Mikstura(D)
+	18	70037	1	5	-- Ksiega Zapomnienia
+	19	50513	1	10	-- Kamien Duchowy
+	20	s50901	1	40	-- s50901
+	21	30370	1	40	-- Pozwolenie na Zaczar. Przedmiotu
+	22	30368	1	8	-- Pozwolenie na Wzmocn. Przedmiotu
+	23	25100	1	3	-- Zwoj Kamienia Duszy
+	24	71282	1	0	-- Niebieski Oldtimer
+	25	s50902	1	8	-- s50902
+	26	71201	1	5	-- Zwoj Egzorcyzmu
+	27	71094	1	2.5	-- Rada Pustelnika
+	28	30373	1	8	-- Ksiega Erudyty
+	29	30374	1	4	-- Pioro Medrca
+	30	30375	1	2	-- Magiczna Ruda
+	31	s10710	1	30	-- s10710
+	32	100300	1	10	-- Green Dragon Bean
+	33	27999	1	400	-- Sakiewka Kamieni Dusz
+	34	50035	1	400	-- Prezent (zolty)
+	35	71102	1	4	-- Klepsydra Biologa 2 procent
+	36	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8028_drop
+{
+	Mob	8028
+	Type	drop
+	1	s8028	1	200	-- s8028
+	2	s8028	1	100	-- s8028
+	3	s8028	1	30	-- s8028
+	4	27002	50	150	-- Czerwona Mikstura(S)
+	5	27003	30	100	-- Czerwona Mikstura(D)
+	6	27005	30	150	-- Niebieska Mikstura(S)
+	7	27006	20	100	-- Niebieska Mikstura(D)
+	8	70014	1	1	-- Pigulka Krwi
+	9	70037	1	2	-- Ksiega Zapomnienia
+	10	s50901	1	17.5	-- s50901
+	11	s10702	1	25	-- s10702
+	12	27999	1	400	-- Sakiewka Kamieni Dusz
+	13	50035	1	400	-- Prezent (zolty)
+	14	71102	1	4	-- Klepsydra Biologa 2 procent
+	15	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8031_drop
+{
+	Mob	8031
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8032_drop
+{
+	Mob	8032
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8033_drop
+{
+	Mob	8033
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8034_drop
+{
+	Mob	8034
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8035_drop
+{
+	Mob	8035
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8036_drop
+{
+	Mob	8036
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8037_drop
+{
+	Mob	8037
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8038_drop
+{
+	Mob	8038
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8039_drop
+{
+	Mob	8039
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8040_drop
+{
+	Mob	8040
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8041_drop
+{
+	Mob	8041
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8042_drop
+{
+	Mob	8042
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8043_drop
+{
+	Mob	8043
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8044_drop
+{
+	Mob	8044
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8045_drop
+{
+	Mob	8045
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8046_drop
+{
+	Mob	8046
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8047_drop
+{
+	Mob	8047
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8048_drop
+{
+	Mob	8048
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8049_drop
+{
+	Mob	8049
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8050_drop
+{
+	Mob	8050
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8051_drop
+{
+	Mob	8051
+	Type	drop
+	1	30500	1	100	-- Rubinowy Ozdobny Noz
+	2	30506	1	100	-- Szafirowy Ozdobny Noz
+	3	30512	1	100	-- Czerwona Smocza Stal
+	4	30518	1	100	-- Zlota Przedza
+	5	145	1	80	-- Miecz Bojowy+5
+	6	156	1	50	-- Miecz Szponu Ducha+6
+	7	1107	1	20	-- Smoczy Noz+7
+	8	7145	1	80	-- Wachlarz Zbawienia+5
+	9	11296	1	50	-- Zbroja Z Czarnej Stali+6
+	10	11497	1	20	-- Ubranie Czarn. Wiatru+7
+	11	70012	1	30	-- Lza Bogini
+	12	39006	1	30	-- Peleryna Mestwa
+	13	25040	1	10	-- Zwoj Blogoslawienstwa
+	14	70048	1	40	-- Plaszcz Uciekiniera
+	15	70037	1	50	-- Ksiega Zapomnienia
+	16	70014	1	50	-- Pigulka Krwi
+	17	70043	1	40	-- Rekawica Zlodzieja
+	18	39002	1	40	-- Pierscien Doswiadczenia
+	19	27002	50	100	-- Czerwona Mikstura(S)
+	20	27003	30	200	-- Czerwona Mikstura(D)
+	21	27005	30	100	-- Niebieska Mikstura(S)
+	22	27006	20	150	-- Niebieska Mikstura(D)
+	23	50300	1	400	-- Ksiega Umiejetnosci
+	24	70014	1	1	-- Pigulka Krwi
+	25	70037	1	1	-- Ksiega Zapomnienia
+	26	100300	1	1	-- Zielona Smocza Fasola
+	27	100300	1	10	-- Green Dragon Bean, 2.5%
+	28	71102	1	4	-- Klepsydra Biologa 2 procent
+	29	30376	1	4	-- Drewniany Klucz
+	30	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	31	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8052_drop
+{
+	Mob	8052
+	Type	drop
+	1	30501	1	100	-- Zlota Sprzaczka
+	2	30507	1	100	-- Brazowy Zacisk
+	3	30513	1	100	-- Szlachetny Naramiennik
+	4	30519	1	100	-- Zloty Hak
+	5	146	1	50	-- Miecz Bojowy+6
+	6	157	1	20	-- Miecz Szponu Ducha+7
+	7	5105	1	80	-- Dzwon Nieba I Ziemi+5
+	8	7146	1	50	-- Wachlarz Zbawienia+6
+	9	11297	1	20	-- Zbroja Z Czarnej Stali+7
+	10	70012	1	30	-- Lza Bogini
+	11	39006	1	30	-- Peleryna Mestwa
+	12	25040	1	10	-- Zwoj Blogoslawienstwa
+	13	70048	1	40	-- Plaszcz Uciekiniera
+	14	70037	1	50	-- Ksiega Zapomnienia
+	15	70014	1	50	-- Pigulka Krwi
+	16	70043	1	40	-- Rekawica Zlodzieja
+	17	39002	1	40	-- Pierscien Doswiadczenia
+	18	27002	50	100	-- Czerwona Mikstura(S)
+	19	27003	30	200	-- Czerwona Mikstura(D)
+	20	27005	30	100	-- Niebieska Mikstura(S)
+	21	27006	20	150	-- Niebieska Mikstura(D)
+	22	50300	1	400	-- Ksiega Umiejetnosci
+	23	70014	1	1	-- Pigulka Krwi
+	24	70037	1	1	-- Ksiega Zapomnienia
+	25	100300	1	1	-- Zielona Smocza Fasola
+	26	100300	1	10	-- Green Dragon Bean, 2.5%
+	27	71102	1	4	-- Klepsydra Biologa 2 procent
+	28	30376	1	4	-- Drewniany Klucz
+	29	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	30	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8053_drop
+{
+	Mob	8053
+	Type	drop
+	1	30502	1	100	-- Rubinowa Ozdoba
+	2	30508	1	100	-- Szafirowa Ozdoba
+	3	30514	1	100	-- Fioletowy Material
+	4	30520	1	100	-- Zlota Spinka
+	5	147	1	20	-- Miecz Bojowy+7
+	6	3145	1	80	-- Magnetyczne Ostrze+5
+	7	5106	1	50	-- Dzwon Nieba I Ziemi+6
+	8	7147	1	20	-- Wachlarz Zbawienia+7
+	9	11895	1	80	-- Czarna Szata+5
+	10	70012	1	30	-- Lza Bogini
+	11	39006	1	30	-- Peleryna Mestwa
+	12	25040	1	10	-- Zwoj Blogoslawienstwa
+	13	70048	1	40	-- Plaszcz Uciekiniera
+	14	70037	1	50	-- Ksiega Zapomnienia
+	15	70014	1	50	-- Pigulka Krwi
+	16	70043	1	40	-- Rekawica Zlodzieja
+	17	39002	1	40	-- Pierscien Doswiadczenia
+	18	27002	50	100	-- Czerwona Mikstura(S)
+	19	27003	30	200	-- Czerwona Mikstura(D)
+	20	27005	30	100	-- Niebieska Mikstura(S)
+	21	27006	20	150	-- Niebieska Mikstura(D)
+	22	50300	1	400	-- Ksiega Umiejetnosci
+	23	70014	1	1	-- Pigulka Krwi
+	24	70037	1	1	-- Ksiega Zapomnienia
+	25	100300	1	1	-- Zielona Smocza Fasola
+	26	100300	1	10	-- Green Dragon Bean, 2.5%
+	27	71102	1	4	-- Klepsydra Biologa 2 procent
+	28	30376	1	4	-- Drewniany Klucz
+	29	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	30	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8054_drop
+{
+	Mob	8054
+	Type	drop
+	1	30503	1	100	-- Ametystowy Ozdobny Noz
+	2	30509	1	100	-- Niebieska Smocza Stal
+	3	30515	1	100	-- Purpurowa Smocza Stal
+	4	30521	1	100	-- Element Pierscienia
+	5	2145	1	80	-- Olbrz. Luk Zolt. Smoka+5
+	6	3146	1	50	-- Magnetyczne Ostrze+6
+	7	5107	1	20	-- Dzwon Nieba I Ziemi+7
+	8	11695	1	80	-- Zbr. Plyt. Czar. Magii+5
+	9	11896	1	50	-- Czarna Szata+6
+	10	70012	1	30	-- Lza Bogini
+	11	39006	1	30	-- Peleryna Mestwa
+	12	25040	1	42	-- Zwoj Blogoslawienstwa
+	13	70048	1	40	-- Plaszcz Uciekiniera
+	14	70037	1	50	-- Ksiega Zapomnienia
+	15	70014	1	50	-- Pigulka Krwi
+	16	70043	1	40	-- Rekawica Zlodzieja
+	17	39002	1	40	-- Pierscien Doswiadczenia
+	18	27002	50	100	-- Czerwona Mikstura(S)
+	19	27003	30	200	-- Czerwona Mikstura(D)
+	20	27005	30	100	-- Niebieska Mikstura(S)
+	21	27006	20	150	-- Niebieska Mikstura(D)
+	22	50300	1	400	-- Ksiega Umiejetnosci
+	23	70014	1	1	-- Pigulka Krwi
+	24	70037	1	1	-- Ksiega Zapomnienia
+	25	100300	1	1	-- Zielona Smocza Fasola
+	26	100300	1	10	-- Green Dragon Bean, 2.5%
+	27	71102	1	4	-- Klepsydra Biologa 2 procent
+	28	30376	1	4	-- Drewniany Klucz
+	29	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	30	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8055_drop
+{
+	Mob	8055
+	Type	drop
+	1	30504	1	100	-- Srebrny Zacisk
+	2	30510	1	100	-- Wytworny Naramiennik
+	3	30516	1	100	-- Antyczny Naramiennik
+	4	30522	1	100	-- Ogniwa Lancucha
+	5	1105	1	80	-- Smoczy Noz+5
+	6	2146	1	50	-- Olbrz. Luk Zolt. Smoka+6
+	7	3147	1	20	-- Magnetyczne Ostrze+7
+	8	11495	1	80	-- Ubranie Czarn. Wiatru+5
+	9	11696	1	50	-- Zbr. Plyt. Czar. Magii+6
+	10	11897	1	20	-- Czarna Szata+7
+	11	70012	1	30	-- Lza Bogini
+	12	39006	1	30	-- Peleryna Mestwa
+	13	25040	1	10	-- Zwoj Blogoslawienstwa
+	14	70048	1	40	-- Plaszcz Uciekiniera
+	15	70037	1	50	-- Ksiega Zapomnienia
+	16	70014	1	50	-- Pigulka Krwi
+	17	70043	1	40	-- Rekawica Zlodzieja
+	18	39002	1	40	-- Pierscien Doswiadczenia
+	19	27002	50	100	-- Czerwona Mikstura(S)
+	20	27003	30	200	-- Czerwona Mikstura(D)
+	21	27005	30	100	-- Niebieska Mikstura(S)
+	22	27006	20	150	-- Niebieska Mikstura(D)
+	23	50300	1	400	-- Ksiega Umiejetnosci
+	24	70014	1	1	-- Pigulka Krwi
+	25	70037	1	1	-- Ksiega Zapomnienia
+	26	100300	1	1	-- Zielona Smocza Fasola
+	27	100300	1	10	-- Green Dragon Bean, 2.5%
+	28	71102	1	4	-- Klepsydra Biologa 2 procent
+	29	30376	1	4	-- Drewniany Klucz
+	30	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	31	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8056_drop
+{
+	Mob	8056
+	Type	drop
+	1	30505	1	100	-- Szmaragdowa Ozdoba
+	2	30511	1	100	-- Czerwony Material
+	3	30517	1	100	-- Zloty Material
+	4	30523	1	100	-- Element Ozdoby
+	5	155	1	80	-- Miecz Szponu Ducha+5
+	6	1106	1	50	-- Smoczy Noz+6
+	7	2147	1	20	-- Olbrz. Luk Zolt. Smoka+7
+	8	11295	1	80	-- Zbroja Z Czarnej Stali+5
+	9	11496	1	50	-- Ubranie Czarn. Wiatru+6
+	10	11697	1	20	-- Zbr. Plyt. Czar. Magii+7
+	11	70012	1	30	-- Lza Bogini
+	12	39006	1	30	-- Peleryna Mestwa
+	13	25040	1	10	-- Zwoj Blogoslawienstwa
+	14	70048	1	40	-- Plaszcz Uciekiniera
+	15	70037	1	50	-- Ksiega Zapomnienia
+	16	70014	1	50	-- Pigulka Krwi
+	17	70043	1	40	-- Rekawica Zlodzieja
+	18	39002	1	40	-- Pierscien Doswiadczenia
+	19	27002	50	100	-- Czerwona Mikstura(S)
+	20	27003	30	200	-- Czerwona Mikstura(D)
+	21	27005	30	100	-- Niebieska Mikstura(S)
+	22	27006	20	150	-- Niebieska Mikstura(D)
+	23	50300	1	400	-- Ksiega Umiejetnosci
+	24	70014	1	1	-- Pigulka Krwi
+	25	70037	1	1	-- Ksiega Zapomnienia
+	26	100300	1	1	-- Zielona Smocza Fasola
+	27	100300	1	10	-- Green Dragon Bean, 2.5%
+	28	71102	1	4	-- Klepsydra Biologa 2 procent
+	29	30376	1	4	-- Drewniany Klucz
+	30	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	31	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_8057_drop
+{
+	Mob	8057
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8058_drop
+{
+	Mob	8058
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8101_drop
+{
+	Mob	8101
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8102_drop
+{
+	Mob	8102
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8103_drop
+{
+	Mob	8103
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8104_drop
+{
+	Mob	8104
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8105_drop
+{
+	Mob	8105
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8106_drop
+{
+	Mob	8106
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8107_drop
+{
+	Mob	8107
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8108_drop
+{
+	Mob	8108
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8109_drop
+{
+	Mob	8109
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8110_drop
+{
+	Mob	8110
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8111_drop
+{
+	Mob	8111
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_8112_drop
+{
+	Mob	8112
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8113_drop
+{
+	Mob	8113
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8114_drop
+{
+	Mob	8114
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8600_drop
+{
+	Mob	8600
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8601_drop
+{
+	Mob	8601
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8602_drop
+{
+	Mob	8602
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8603_drop
+{
+	Mob	8603
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8604_drop
+{
+	Mob	8604
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8605_drop
+{
+	Mob	8605
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8606_drop
+{
+	Mob	8606
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8607_drop
+{
+	Mob	8607
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8608_drop
+{
+	Mob	8608
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8609_drop
+{
+	Mob	8609
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8610_drop
+{
+	Mob	8610
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8611_drop
+{
+	Mob	8611
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8612_drop
+{
+	Mob	8612
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8613_drop
+{
+	Mob	8613
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8614_drop
+{
+	Mob	8614
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8615_drop
+{
+	Mob	8615
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8729_drop
+{
+	Mob	8729
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8730_drop
+{
+	Mob	8730
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_8731_drop
+{
+	Mob	8731
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_9606_drop
+{
+	Mob	9606
+	Type	drop
+	1	50300	1	300	-- Ksiega Umiejetnosci
+	2	70037	1	30	-- Ksiega Zapomnienia
+	3	25040	1	15	-- Zwoj Blogoslawienstwa
+	4	70058	1	10	-- Pierscien Teleportacji
+	5	27002	20	100	-- Czerwona Mikstura(S)
+	6	27005	20	100	-- Niebieska Mikstura(S)
+	7	s10753	1	400	-- MiniBoss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	8	s10753	1	100	-- MiniBoss HighTier, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	9	s10742	1	200	-- Boss MediumTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	10	s10987	1	40	-- Kamien Duszy +0..+3, 10% (MT2009 PLUS AREZZO BALANCE V1)
+	11	27003	50	400	-- Czerwona Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	12	27006	50	400	-- Niebieska Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	13	71102	1	4	-- Klepsydra Biologa 2 procent
+	14	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9607_drop
+{
+	Mob	9607
+	Type	drop
+	1	50300	1	400	-- Ksiega Umiejetnosci
+	2	70037	1	50	-- Ksiega Zapomnienia
+	3	25040	1	30	-- Zwoj Blogoslawienstwa
+	4	70014	1	20	-- Pigulka Krwi
+	5	39002	1	20	-- Pierscien Doswiadczenia
+	6	70058	1	20	-- Pierscien Teleportacji
+	7	27002	30	100	-- Czerwona Mikstura(S)
+	8	27005	30	100	-- Niebieska Mikstura(S)
+	9	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	10	s10755	1	100	-- MiniBoss VeryHighTier, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	11	s10743	1	200	-- Boss HighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	12	s10743	1	40	-- Boss HighTier, 10% (MT2009 PLUS AREZZO BALANCE V1)
+	13	50513	1	20	-- Kamien Duchowy, 5% (MT2009 PLUS AREZZO BALANCE V1)
+	14	s10987	1	100	-- Kamien Duszy +0..+3, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	15	27003	100	400	-- Czerwona Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	16	27006	100	400	-- Niebieska Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	17	71102	1	4	-- Klepsydra Biologa 2 procent
+	18	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9675_drop
+{
+	Mob	9675
+	Type	drop
+	1	50300	1	400	-- Ksiega Umiejetnosci
+	2	70037	1	40	-- Ksiega Zapomnienia
+	3	25040	1	20	-- Zwoj Blogoslawienstwa
+	4	70014	1	15	-- Pigulka Krwi
+	5	39002	1	15	-- Pierscien Doswiadczenia
+	6	70058	1	15	-- Pierscien Teleportacji
+	7	27002	30	100	-- Czerwona Mikstura(S)
+	8	27005	30	100	-- Niebieska Mikstura(S)
+	9	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	10	s10753	1	100	-- MiniBoss HighTier, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	11	s10743	1	200	-- Boss HighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	12	s10987	1	60	-- Kamien Duszy +0..+3, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	13	27003	50	400	-- Czerwona Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	14	27006	50	400	-- Niebieska Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	15	71102	1	4	-- Klepsydra Biologa 2 procent
+	16	30376	1	4	-- Drewniany Klucz
+	17	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	18	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_9677_drop
+{
+	Mob	9677
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9678_drop
+{
+	Mob	9678
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9681_drop
+{
+	Mob	9681
+	Type	drop
+	1	50300	1	500	-- Ksiega Umiejetnosci
+	2	70037	1	60	-- Ksiega Zapomnienia
+	3	25040	1	35	-- Zwoj Blogoslawienstwa
+	4	70014	1	25	-- Pigulka Krwi
+	5	39002	1	25	-- Pierscien Doswiadczenia
+	6	70043	1	20	-- Rekawica Zlodzieja
+	7	70058	1	20	-- Pierscien Teleportacji
+	8	27003	30	100	-- Czerwona Mikstura(D)
+	9	27006	30	100	-- Niebieska Mikstura(D)
+	10	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	11	s10755	1	200	-- MiniBoss VeryHighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	12	s10743	1	400	-- Boss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	13	s10743	1	100	-- Boss HighTier, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	14	50513	1	32	-- Kamien Duchowy, 8% (MT2009 PLUS AREZZO BALANCE V1)
+	15	s10987	1	100	-- Kamien Duszy +0..+3, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	16	s10988	1	40	-- Kamien Duszy +2..+4, 10% (MT2009 PLUS AREZZO BALANCE V1)
+	17	27003	100	400	-- Czerwona Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	18	27006	100	400	-- Niebieska Mikstura(D), 100% (MT2009 PLUS AREZZO BALANCE V1)
+	19	71102	1	4	-- Klepsydra Biologa 2 procent
+	20	30376	1	4	-- Drewniany Klucz
+	21	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	22	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_9682_drop
+{
+	Mob	9682
+	Type	drop
+	1	25040	1	40	-- Zwoj Blogoslawienstwa
+	2	71284	1	20	-- Zaczarowanie Przedmiotu
+	3	s10755	1	400	-- s10755
+	4	s10743	1	200	-- s10743
+	5	s10987	1	160	-- s10987
+	6	50513	1	20	-- Kamien Duchowy
+	7	71285	1	20	-- Wzmocnienie Przedmiotu
+	8	39008	1	20	-- Zwoj Egzorcyzmu
+	9	39030	1	20	-- Rada Pustelnika
+	10	71102	1	4	-- Klepsydra Biologa
+	11	30376	1	4	-- Drewniany Klucz
+	12	50944	1	4	-- Receptura Eliksir Slonca (S)
+	13	50945	1	4	-- Receptura Eliksir Ksiezyca (S)
+}
+
+Group	MT2009_panel_9683_drop
+{
+	Mob	9683
+	Type	drop
+	1	s10752	1	160	-- MiniBoss MedTier, 40% (MT2009 PLUS AREZZO BALANCE V1)
+	2	71102	1	4	-- Klepsydra Biologa 2 procent
+	3	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9684_drop
+{
+	Mob	9684
+	Type	drop
+	1	s10753	1	400	-- MiniBoss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	2	s10987	1	60	-- Kamien Duszy +0..+3, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	3	71102	1	4	-- Klepsydra Biologa 2 procent
+	4	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9694_drop
+{
+	Mob	9694
+	Type	drop
+	1	27987	5	40	-- Malz x5, 10%
+	2	50513	1	20	-- Kamien Duchowy, 5%
+	3	50255	10	20	-- Cor Draconis (Rough) x10, 5%
+	4	25040	3	40	-- Zwoj Blogoslawienstwa x3, 10%
+	5	71084	1	40	-- Zaczarowanie Przedmiotu, 10%
+	6	72065	1	280	-- Sredni Suplement (6/7), 70%
+	7	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	8	s10755	1	200	-- MiniBoss VeryHighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	9	s10743	1	400	-- Boss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	10	s10988	1	100	-- Kamien Duszy +2..+4, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	11	50513	1	32	-- Kamien Duchowy, 8% (MT2009 PLUS AREZZO BALANCE V1)
+	12	71102	1	4	-- Klepsydra Biologa 2 procent
+	13	30376	1	4	-- Drewniany Klucz
+	14	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	15	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_9695_drop
+{
+	Mob	9695
+	Type	drop
+	1	s10753	1	400	-- MiniBoss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	2	s10742	1	200	-- Boss MediumTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	3	s10987	1	100	-- Kamien Duszy +0..+3, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	4	71102	1	4	-- Klepsydra Biologa 2 procent
+	5	30376	1	4	-- Drewniany Klucz
+	6	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	7	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_9696_drop
+{
+	Mob	9696
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa
+	2	30376	1	4	-- Drewniany Klucz
+	3	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	4	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	5	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_9701_drop
+{
+	Mob	9701
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9702_drop
+{
+	Mob	9702
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9704_drop
+{
+	Mob	9704
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9705_drop
+{
+	Mob	9705
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9706_drop
+{
+	Mob	9706
+	Type	drop
+	1	50255	3	20	-- Cor Draconis (Rough) x3, 5%
+	2	25040	2	40	-- Zwoj Blogoslawienstwa x2, 10%
+	3	s10752	1	200	-- MiniBoss MedTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	4	71102	1	4	-- Klepsydra Biologa 2 procent
+	5	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_9710_drop
+{
+	Mob	9710
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_9711_drop
+{
+	Mob	9711
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_9712_drop
+{
+	Mob	9712
+	Type	drop
+	1	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	2	s10988	1	80	-- Kamien Duszy +2..+4, 20% (MT2009 PLUS AREZZO BALANCE V1)
+	3	71102	1	4	-- Klepsydra Biologa 2 procent
+	4	30376	1	4	-- Drewniany Klucz
+	5	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	6	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_9713_drop
+{
+	Mob	9713
+	Type	drop
+	1	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	2	s10743	1	200	-- Boss HighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	3	s10988	1	120	-- Kamien Duszy +2..+4, 30% (MT2009 PLUS AREZZO BALANCE V1)
+	4	71102	1	4	-- Klepsydra Biologa 2 procent
+	5	30376	1	4	-- Drewniany Klucz
+	6	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	7	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_9714_drop
+{
+	Mob	9714
+	Type	drop
+	1	s950764	1	400	-- losowa perla, 100%
+	2	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	3	s10755	1	400	-- MiniBoss VeryHighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	4	s10743	1	400	-- Boss HighTier, 100% (MT2009 PLUS AREZZO BALANCE V1)
+	5	s10743	1	200	-- Boss HighTier, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	6	s10988	1	200	-- Kamien Duszy +2..+4, 50% (MT2009 PLUS AREZZO BALANCE V1)
+	7	s10984	1	100	-- Kamien Duszy +4, 25% (MT2009 PLUS AREZZO BALANCE V1)
+	8	50513	1	60	-- Kamien Duchowy, 15% (MT2009 PLUS AREZZO BALANCE V1)
+	9	71102	1	4	-- Klepsydra Biologa 2 procent
+	10	30376	1	4	-- Drewniany Klucz
+	11	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu 0.5%
+	12	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu 0.5%
+}
+
+Group	MT2009_panel_20399_drop
+{
+	Mob	20399
+	Type	drop
+	1	100300	1	10	-- Green Dragon Bean
+	2	71102	1	4	-- Klepsydra Biologa
+	3	30376	1	4	-- Drewniany Klucz
+	4	30368	1	2	-- Pozwolenie na Wzmocn. Przedmiotu
+	5	30370	1	2	-- Pozwolenie na Zaczar. Przedmiotu
+	6	50122	1	8	-- Dodania i zmianki
+}
+
+Group	MT2009_panel_20452_drop
+{
+	Mob	20452
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20453_drop
+{
+	Mob	20453
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20454_drop
+{
+	Mob	20454
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20455_drop
+{
+	Mob	20455
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20456_drop
+{
+	Mob	20456
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20457_drop
+{
+	Mob	20457
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20458_drop
+{
+	Mob	20458
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20459_drop
+{
+	Mob	20459
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20460_drop
+{
+	Mob	20460
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20461_drop
+{
+	Mob	20461
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20462_drop
+{
+	Mob	20462
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}
+
+Group	MT2009_panel_20463_drop
+{
+	Mob	20463
+	Type	drop
+	1	71102	1	4	-- Klepsydra Biologa 2 procent
+	2	30376	1	4	-- Drewniany Klucz
+}

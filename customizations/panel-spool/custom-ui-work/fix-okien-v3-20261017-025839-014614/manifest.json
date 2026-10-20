@@ -1,0 +1,11 @@
+{
+  "status": "prepared-not-installed",
+  "base_root_index_sha256": "072ad8b55bd0f4e36c31279a3a62006423152e3c4db49fda0a0d2acb031d19bf",
+  "base_root_data_sha256": "d67cd57a469f35e4f4e42c9778b2af8b980cbb60584e0806202b3e1a01474e53",
+  "changed_entries": [
+    "uimissionpanel.py",
+    "uidungeoninfo.py"
+  ],
+  "preserved_ku_and_model_modules": true,
+  "entry_item_position": "unchanged"
+}

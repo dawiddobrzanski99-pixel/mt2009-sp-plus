@@ -6,4 +6,5 @@ void OnKill(LPCHARACTER ch,LPCHARACTER victim);
 void OnLogin(LPCHARACTER ch);
 void AddPreview(LPCHARACTER ch,std::map<int,long>& earned,std::map<int,long>& left);
 int ItemDropBonus(LPCHARACTER ch);
+void SebanStart(); // MT2009_NASZE_MISJE_V1
 }

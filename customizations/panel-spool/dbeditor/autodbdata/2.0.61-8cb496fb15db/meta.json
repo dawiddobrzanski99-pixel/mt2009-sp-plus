@@ -1,0 +1,16 @@
+{
+ "format": "MT2009_PLUS_DBDATA_AUTO_V1",
+ "stamp": "2.0.61-8cb496fb15db",
+ "base": "2.0.61",
+ "built": 1792514177,
+ "files": {
+  "dbdata.index": {
+   "size": 1380,
+   "sha256": "28EC49626303B2C861D16087373F03826D3D9DD31B9287C00BBF6D5A1C3954C8"
+  },
+  "dbdata.data": {
+   "size": 1208320,
+   "sha256": "B09EC0BABD27B815F4A576CBF96486175EFC368384DA9B30ECE2D1CE1F50CABA"
+  }
+ }
+}

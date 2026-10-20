@@ -1,0 +1,92 @@
+{
+  "66": {
+    "boss": 1093,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Nieumarli"
+    ],
+    "race_flags": 65538
+  },
+  "208": {
+    "boss": 2493,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy"
+    ],
+    "race_flags": 2048
+  },
+  "216": {
+    "boss": 2598,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Nieumarli"
+    ],
+    "race_flags": 65538
+  },
+  "158": {
+    "boss": 4559,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Nieumarli"
+    ],
+    "race_flags": 2050
+  },
+  "351": {
+    "boss": 6091,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Ogniste potwory"
+    ],
+    "race_flags": 4224
+  },
+  "352": {
+    "boss": 6191,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Lodowe potwory"
+    ],
+    "race_flags": 8448
+  },
+  "364": {
+    "boss": 9682,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Zwierzęta"
+    ],
+    "race_flags": 16385
+  },
+  "365": {
+    "boss": 9694,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Owady",
+      "Potwory pustyni"
+    ],
+    "race_flags": 4672
+  },
+  "363": {
+    "boss": 9706,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Owady"
+    ],
+    "race_flags": 16448
+  },
+  "366": {
+    "boss": 9714,
+    "attack_bonuses": [
+      "Potwory",
+      "Bossy",
+      "Diabły"
+    ],
+    "race_flags": 16388
+  }
+}

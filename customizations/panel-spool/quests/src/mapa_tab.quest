@@ -1,0 +1,128 @@
+-- MT2009_PLUS_TELEPORT_MAP_V1: Mapa teleportacji pod TAB. Autor: Mur4s.
+--
+-- The client's window (client root uiteleportmap.py, the picture
+-- teleport_world_map_18_points.png) shows the world with 18 points; a click
+-- sends "/tabteleport <key>" and this quest warps the player there - free,
+-- no ring. Hell asks the client for the respawn kingdom first (hell1/2/3 =
+-- Shinsoo/Chunjo/Jinno). The server takes only a key from the table below,
+-- never a coordinate from the client.
+--
+-- Off by default: the event flag m2_teleport_map_on (1 = on; no row = off;
+-- apply.sh writes it from M2_TELEPORT_MAP, default 0, when .env changed; both
+-- panels switch it live through web_admin.quest TPMAP). Off, "/tabteleport"
+-- does nothing but one chat line, and the client keeps TAB for what it did
+-- before (Slot 6): the client learns the state from "MAPA_TAB 1|0", sent at
+-- login and again within seconds when the flag changes (the timer below).
+--
+-- Checks as the saved positions' panel (tp_bookmarks): not while dead, not out
+-- of an event, war or duel map, not in a duel, not with a trade, shop or
+-- storage open. Dolina Cyklopow and Pustkowie Faraona only while the Arezzo
+-- module is on (mt2009_arezzo_closed = 0). Bots never come here.
+--
+-- Coordinates checked against our server_attr (8 October): every target is
+-- walkable ground on its map; the desert's point moved 7 m north-west out of
+-- the oasis' water onto dry sand (Mur4s' 295600, 548100 -> 295100, 547600).
+-- Kompiluje go Dockerfile.
+quest mapa_tab begin
+	state start begin
+		function is_on()
+			if game.get_event_flag("m2_teleport_map_on") == 1 then
+				return 1
+			end
+			return 0
+		end
+
+		function send_state()
+			local v = mapa_tab.is_on()
+			pc.setqf("sent", v + 1)
+			cmdchat("MAPA_TAB " .. v)
+		end
+
+		-- no teleport out of these (as tp_bookmarks: wedding, guild war arena while active,
+		-- duel, OX, empire war, GM maps)
+		function blocked_from(idx)
+			if idx == 110 or idx == 111 then
+				return guild.get_any_war() ~= 0
+			end
+			return idx == 81 or idx == 112 or idx == 113
+				or idx == 181 or idx == 182 or idx == 183 or idx == 200 or idx == 250
+		end
+
+		when login begin
+			if pc.is_bot() then
+				return
+			end
+			mapa_tab.send_state()
+			-- the panel's switch reaches a player already in game within seconds
+			loop_timer("mapa_tab_tick", 5)
+		end
+
+		when mapa_tab_tick.timer begin
+			if pc.getqf("sent") ~= mapa_tab.is_on() + 1 then
+				mapa_tab.send_state()
+			end
+		end
+
+		when write with mes.get_message() == "tabteleport" begin
+			if pc.is_bot() then
+				return
+			end
+			if mapa_tab.is_on() ~= 1 then
+				syschat("Mapa teleportacji jest wylaczona na tym serwerze.")
+				cmdchat("MAPA_TAB 0")
+				return
+			end
+			if pc.is_dead() then
+				syschat("Nie mozesz sie teraz teleportowac.")
+				return
+			end
+			local cur = pc.get_map_index()
+			if cur >= 10000 then
+				cur = math.floor(cur / 10000)
+			end
+			if mapa_tab.blocked_from(cur) then
+				if cur == 110 or cur == 111 then
+					syschat("Nie mozesz sie teleportowac w trakcie wojny gildii.")
+				else
+					syschat("Z tego miejsca nie mozna sie teleportowac.")
+				end
+				return
+			end
+			if pc.is_pvp() or pc.is_arena() then
+				syschat("Nie mozesz sie teleportowac w trakcie pojedynku.")
+				return
+			end
+			if not pc.can_warp() or pc.is_busy() then
+				syschat("Zamknij handel, sklep i magazyn; odczekaj chwile.")
+				return
+			end
+			local args = mes.get_arguments()
+			local key = args[1] or ""
+			-- { map_index, x, y }; pc.warp(x, y) finds the map by the coordinates
+			-- (the map index is only a note here).
+			local dest = {
+				shinsoo1 = {1, 474300, 954800}, shinsoo2 = {3, 353100, 882900},
+				chunjo1 = {21, 63800, 166400}, chunjo2 = {23, 145500, 240000},
+				jinno1 = {41, 959900, 269200}, jinno2 = {43, 863900, 246000},
+				valley = {64, 332600, 746800}, desert = {63, 295100, 547600},
+				snow = {61, 434700, 214200}, temple = {65, 553600, 143600},
+				forest = {67, 303800, 26800}, redforest = {68, 1119600, 70000},
+				tower = {65, 590800, 111200}, giants = {70, 828300, 763500},
+				hell1 = {62, 599700, 757500}, hell2 = {62, 598500, 622200},
+				hell3 = {62, 730700, 689800},
+				spider = {104, 60000, 496000},
+			}
+			local maps = {cyclops = 360, pharaoh = 361}
+			if maps[key] ~= nil then
+				if game.get_event_flag("mt2009_arezzo_closed") ~= 0 then
+					syschat("Ta mapa jest teraz zamknieta.")
+					return
+				end
+				pc.teleport(maps[key])
+			elseif dest[key] ~= nil then
+				local d = dest[key]
+				pc.warp(d[2], d[3])
+			end
+		end
+	end
+end

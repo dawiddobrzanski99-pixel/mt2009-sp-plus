@@ -1,0 +1,21 @@
+quest ukrainka_wymiany begin
+    state start begin
+        when 30099.chat."Wymiany i crafting" with not pc.is_bot() begin
+            say_title("Ukrainka")
+            local category=select(
+                "KD", "Alchemia", "Zmianki", "Wymiana KU na Odlamki", "Zamknij"
+            )
+            if category>=1 and category<=3 then
+                setskin(NOWINDOW)
+                command("cube open " .. category)
+                return
+            end
+            if category==4 then
+                pc.setf("ukrainka_wymiany","npc_vid",npc.get_vid())
+                pc.setf("ukrainka_wymiany","npc_time",get_time())
+                setskin(NOWINDOW)
+                cmdchat("NOWY_KSIEGI ukrainka open")
+            end
+        end
+    end
+end

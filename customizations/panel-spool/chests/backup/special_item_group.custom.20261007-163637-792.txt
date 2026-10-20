@@ -1,0 +1,9 @@
+# MT2009_PLUS_CHEST_EDITOR_V1 - grupy special_item_group.txt zmienione w panelu Seban
+# zapis: 2026-10-07 16:32:59 - nowa grupa 1
+# Te grupy zastepuja grupy z obrazu gry o tym samym Vnum (m2-chests, przy starcie rdzeni).
+
+Group	PanelChest_1
+{
+	Vnum	1
+	1	27001	1	1	0	-- Czerwona Mikstura (M) - do zmiany
+}

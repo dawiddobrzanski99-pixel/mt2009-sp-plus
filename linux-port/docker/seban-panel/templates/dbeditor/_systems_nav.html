@@ -1,0 +1,48 @@
+{# MT2009_NASZE_SYSTEMY_V1: wspolny naglowek i pasek zakladek systemow #}
+<style>
+.sys-wrap{--sy-bg:#131923;--sy-card:#1b2432;--sy-line:#344154;--sy-text:#e9eef6;--sy-muted:#a9b7ca;--sy-gold:#edbd69;--sy-ok:#5fd39a;
+ color:var(--sy-text);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1280px;margin:20px auto}
+.sys-wrap *{box-sizing:border-box}
+.sys-crumbs{font-size:13px;color:var(--sy-muted);margin-bottom:6px}
+.sys-crumbs a{color:var(--sy-muted);text-decoration:none}.sys-crumbs a:hover{color:var(--sy-gold)}
+.sys-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:6px;background:var(--sy-card);border:1px solid var(--sy-line);border-radius:12px;margin:0 0 18px}
+.sys-tabs a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;color:var(--sy-muted);text-decoration:none;font-weight:600;font-size:14px}
+.sys-tabs a:hover{background:#243045;color:var(--sy-text)}
+.sys-tabs a.is-active{background:var(--sy-gold);color:#20180d}
+.sys-tabs .sys-soon{font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;background:#2c3b51;color:var(--sy-muted)}
+.sys-tabs a.is-active .sys-soon{background:#20180d33;color:#20180d}
+.sys-pick{display:flex;flex-direction:column;gap:4px;min-width:0}
+.sys-pick input.sys-find{background:#0d131c;color:var(--sy-text);border:1px solid #3d4b61;border-radius:8px;padding:6px 10px;font:inherit;font-size:13px;width:100%}
+.sys-pick select{width:100%}
+</style>
+<script>
+/* MT2009_NASZE_SZUKAJ_BONUSU_V1: pole "szukaj" przy kazdej liscie bonusow (bez polskich znakow). */
+(function(){
+'use strict';
+function norm(s){return (s||'').toLowerCase().replace(/ł/g,'l').normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function decorate(sel){
+ if(sel.dataset.sysFind||!sel.closest('.pu-bonus,.bonus'))return;sel.dataset.sysFind='1';
+ const box=document.createElement('div');box.className='sys-pick';sel.parentNode.insertBefore(box,sel);
+ const inp=document.createElement('input');inp.type='search';inp.className='sys-find';inp.placeholder='🔍 szukaj bonusu (np. ludz, orki, kryt)';inp.setAttribute('aria-label','Szukaj bonusu');
+ box.appendChild(inp);box.appendChild(sel);
+ inp.addEventListener('input',function(){
+  const q=norm(inp.value).trim().split(/\s+/).filter(Boolean);let first=null,cur=false;
+  Array.from(sel.options).forEach(function(o){const t=norm(o.textContent);const ok=q.every(function(w){return t.indexOf(w)>=0;});o.hidden=!ok;o.disabled=!ok&&!o.selected;if(ok&&!first)first=o;if(ok&&o.selected)cur=true;});
+  Array.from(sel.querySelectorAll('optgroup')).forEach(function(g){g.hidden=!Array.from(g.children).some(function(o){return !o.hidden;});});
+  if(first&&!cur){sel.value=first.value;sel.dispatchEvent(new Event('change',{bubbles:true}));}
+ });
+ inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sel.focus();}});
+ sel.addEventListener('blur',function(){if(inp.value){inp.value='';Array.from(sel.options).forEach(function(o){o.hidden=false;o.disabled=false;});Array.from(sel.querySelectorAll('optgroup')).forEach(function(g){g.hidden=false;});}});
+}
+function scan(root){(root.querySelectorAll?root:document).querySelectorAll('select').forEach(decorate);}
+document.addEventListener('DOMContentLoaded',function(){scan(document);new MutationObserver(function(m){m.forEach(function(r){r.addedNodes.forEach(function(n){if(n.nodeType===1){if(n.matches&&n.matches('select'))decorate(n);else scan(n);}});});}).observe(document.body,{childList:true,subtree:true});});
+})();
+</script>
+<nav class="sys-crumbs"><a href="{{ url_for('dbeditor.systems_index') }}">🐉 Kuźnia Mocy</a>{% if system is defined and system %} › {{ system[3] }}{% endif %}</nav>
+<nav class="sys-tabs" aria-label="Systemy">
+ <a href="{{ url_for('dbeditor.systems_index') }}" class="{% if sys_active=='przeglad' %}is-active{% endif %}">🧭 Przegląd</a>
+ {% for key, ep, icon, title, desc, ready, src in sys_systems %}
+ <a href="{{ url_for(ep) }}" class="{% if sys_active==key %}is-active{% endif %}">{{ icon }} {{ title }}{% if not ready %} <span class="sys-soon">wkrótce</span>{% endif %}</a>
+ {% endfor %}
+ <a href="{{ url_for('dbeditor.systems_info') }}" class="{% if sys_active=='info' %}is-active{% endif %}">ℹ️ Info</a>
+</nav>

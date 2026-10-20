@@ -3,6 +3,7 @@
 #include "item.h"
 #include "PetSystem.h"
 #include "custom_horse_polymorph_rewards.h"
+#include "seban_poly_rewards.h" // MT2009_NASZE_POLIMORFIA_V1
 #include <map>
 void WeeklyRankDebugMonster(LPCHARACTER ch);
 long NewPetDebugMonster(LPCHARACTER ch);
@@ -15,7 +16,7 @@ inline void Send(LPCHARACTER ch) {
  requests[ch->GetPlayerID()]=now;
  auto print=[&](const char* text){ch->ChatPacket(CHAT_TYPE_INFO,"[WRDBG] %s",text);sys_log(0,"WRDBG pid=%u name=%s %s",ch->GetPlayerID(),ch->GetName(),text);};
  char text[240];long poly=0;
- if (ch->IsPolymorphed() && !ch->IsPolyMaintainStat() && ch->GetPolymorphVnum()!=30000)poly=CustomPolyForLevel(ch->GetSkillLevel(SKILL_POLYMORPH)).monster;
+ if (ch->IsPolymorphed() && !ch->IsPolyMaintainStat() && ch->GetPolymorphVnum()!=30000)poly=SebanPoly::For(ch->GetSkillLevel(SKILL_POLYMORPH)).monster; // MT2009_NASZE_POLIMORFIA_V1
  const long pet=NewPetDebugMonster(ch);const long guild=ch->GetGuildCombatBonus(POINT_ATTBONUS_MONSTER);
  snprintf(text,sizeof(text),"BEGIN monster=%d limited=%d real=%d guild=%ld horse_level=%d horse_bonus=%d poly=%ld newpet=%ld",ch->GetPoint(POINT_ATTBONUS_MONSTER),ch->GetLimitPoint(POINT_ATTBONUS_MONSTER),ch->GetRealPoint(POINT_ATTBONUS_MONSTER),guild,ch->GetHorseLevel(),CustomHorseMonsterBoss(ch->GetHorseLevel()),poly,pet);print(text);
  unsigned worn=0;

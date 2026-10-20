@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_SYSTEMY_INFO_V1: jak dziala klient z serwera; kiedy potrzebny jest nowy ROOT #}
+{% block title %}Info · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.si-hero{background:linear-gradient(135deg,#1d2a3d,#16202d);border:1px solid var(--sy-line);border-radius:16px;padding:24px 28px;margin-bottom:16px}
+.si-hero h1{margin:0 0 6px;font:700 28px/1.2 system-ui}
+.si-hero p{margin:0;color:var(--sy-muted)}
+.si-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.si-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:20px 22px}
+.si-card h2{margin:0 0 10px;font:700 18px/1.3 system-ui}
+.si-card ol,.si-card ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.si-card code{background:#101722;border:1px solid #2c3a4f;border-radius:6px;padding:1px 6px;color:var(--sy-gold)}
+.si-ok{border-color:#2f6a52;background:#16261f}
+.si-warn{border-color:#6a5a2f;background:#25200f}
+.si-chip{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:8px}
+.si-chip.ok{background:#5fd39a22;color:var(--sy-ok)}.si-chip.warn{background:#edbd6922;color:var(--sy-gold)}
+.si-table{width:100%;border-collapse:collapse;font-size:14px}
+.si-table td,.si-table th{border-bottom:1px solid var(--sy-line);padding:8px 6px;text-align:left;vertical-align:top}
+.si-table th{color:var(--sy-muted);font-weight:600}
+</style>
+<section class="si-hero">
+ <h1>ℹ️ Jak systemy łączą się z klientem</h1>
+ <p>Wartości systemów (bonusy, czasy) idą z serwera do gry. ROOT klienta dopisujesz <b>raz</b>; potem zmiany z panelu działają od razu po „Zapisz i zastosuj”.</p>
+</section>
+ <section class="si-card si-ok" style="margin-bottom:14px">
+  <span class="si-chip ok">🔄 Po zmianach na serwerze</span>
+  <h2>Skanuj serwer</h2>
+  <p>Dodałeś przedmioty, potwory, bossy albo zmieniłeś bazę? Skan pokaże, co się zmieniło od ostatniego razu, i co pobrać dla klienta. Niczego nie nadpisuje.</p>
+  <p><a class="ue-btn" style="display:inline-block;padding:9px 14px;border-radius:8px;background:#5fd39a;color:#0d2a1c;font-weight:700;text-decoration:none" href="{{ url_for('dbeditor.systems_skan') }}">🔄 Skanuj serwer</a></p>
+ </section>
+ <div class="si-grid">
+ <section class="si-card si-ok">
+  <span class="si-chip ok">✔ Jednorazowo</span>
+  <h2>1. Dopisanie wtyczki do ROOT</h2>
+  <ol>
+   <li>Wejdź w <a href="{{ url_for('dbeditor.systems_index') }}">Kuźnia Mocy → Przegląd</a> → karta <b>📦 Klient (ROOT)</b>.</li>
+   <li>Wgraj <b>swoje aktualne</b> <code>root.index</code> i <code>root.data</code> z folderu <code>pack</code> klienta.</li>
+   <li>Pobierz gotowe <code>root.index</code> + <code>root.data</code> i podmień je w <code>pack</code> (gra zamknięta).</li>
+   <li>Rozdaj graczom nowy ROOT (np. przez launcher / aktualizację klienta).</li>
+  </ol>
+  <p style="color:var(--sy-muted);margin:10px 0 0">Panel dopisuje tylko małe wpisy (<code>sebansystems.py</code>, hooki w opisach i liście poleceń). Twoje inne zmiany w ROOT zostają. Ponowne wgranie tego samego ROOT niczego nie dubluje.</p>
+ </section>
+ <section class="si-card">
+  <span class="si-chip ok">✔ Bez ROOT</span>
+  <h2>2. Zmiana wartości — na co dzień</h2>
+  <ol>
+   <li>Zmień bonusy / czas w systemie (Koń, Polimorfia, …).</li>
+   <li>Kliknij <b>Zapisz i zastosuj</b> — kanały potwierdzają w zakładce <b>Stan</b> (9/9).</li>
+   <li>Gracze dostają nowe wartości od razu (opisy po najechaniu odświeżą się same). Bez restartu i bez ROOT.</li>
+  </ol>
+  <p style="color:var(--sy-muted);margin:10px 0 0">Sprawdzenie w grze: <code>/diag_potwory</code> pokazuje rzeczywiście działające bonusy.</p>
+ </section>
+ <section class="si-card si-warn">
+  <span class="si-chip warn">⚠ Wtedy znowu ROOT</span>
+  <h2>3. Kiedy trzeba ponownie wgrać ROOT</h2>
+  <ul>
+   <li><b>Nowa grafika</b> — np. własna ikona poziomu konia, nowe okno, nowe obrazki.</li>
+   <li><b>Nazwa lub kolor poziomu konia</b> — te teksty są zapisane w ROOT.</li>
+   <li><b>Aktualizacja klienta od autora</b>, która nadpisze <code>root</code> — wtyczkę trzeba dopisać ponownie (krok 1, z nowym ROOT autora).</li>
+  </ul>
+ </section>
+ <section class="si-card">
+  <h2>Co skąd pochodzi</h2>
+  <table class="si-table">
+   <tr><th>Element</th><th>Źródło</th></tr>
+   <tr><td>Bonusy konia i polimorfii (wartości)</td><td>serwer → klient przy logowaniu i po „Zastosuj”</td></tr>
+   <tr><td>Czas przemiany</td><td>serwer</td></tr>
+   <tr><td>Nazwy/kolory/ikony poziomów konia</td><td>ROOT (zakładka Klient konia)</td></tr>
+   <tr><td>Nazwy bonusów („Silny przeciw orkom” itd.)</td><td>wtyczka w ROOT — wszystkie bonusy z gry</td></tr>
+   <tr><td>Przedmioty, nazwy itemów (dbdata)</td><td>pobierasz z panelu po zmianie w bazie</td></tr>
+   <tr><td>Bonusy gildii, rang, tytułów tygodnia (wartości)</td><td>serwer → klient (wtyczka w ROOT)</td></tr>
+   <tr><td>Nazwy, kolory i odznaki rang</td><td>ROOT (budowany na Przeglądzie)</td></tr>
+   <tr><td>Misje Ctrl+N (etapy, cele, bonusy, nagrody)</td><td>serwer — bez ROOT</td></tr>
+   <tr><td>Ulepszanie (Yang, szansa, materiały)</td><td>serwer — bez ROOT (po zapisie „Zastosuj”)</td></tr>
+   <tr><td>Sława (ogłoszenia +9)</td><td>serwer — bez ROOT; nicki na przedmiocie: plus9origin.py w ROOT</td></tr>
+   <tr><td>Wygląd okna Ctrl+N (czytelność, obrót modelu)</td><td>ROOT (budowany na Przeglądzie)</td></tr>
+  </table>
+  <p style="color:var(--sy-muted);margin:10px 0 0">Bez wtyczki w ROOT gra działa normalnie — bonusy też działają — tylko opisy pokazują stare wartości z klienta.</p>
+ </section>
+ <section class="si-card si-ok">
+  <span class="si-chip ok">🌍 Instalator</span>
+  <h2>Instalacja na innym serwerze</h2>
+  <ul>
+   <li><b>Nic nie jest nadpisywane</b> w danych tamtego serwera. Ulepszanie (Yang, szansa, materiały), przedmioty, potwory, metiny i bossy panel czyta <b>na żywo z jego bazy</b> — jeśli ktoś wcześniej coś zmienił, zobaczy swoje wartości.</li>
+   <li><b>Nowe przedmioty i potwory</b> dodane do bazy pojawiają się same w wyszukiwarkach (ulepszanie, misje, nagrody).</li>
+   <li><b>Koń, polimorfia, gildia, rangi, ranking</b> startują <b>puste</b> (bez bonusów) — każdy ustawia po swojemu.</li>
+   <li><b>Misje Ctrl+N</b> instalują się z gotowym zestawem etapów; etapy z potworami, których nie ma w bazie tamtego serwera, są pomijane i wypisane w raporcie.</li>
+   <li>Wtyczkę do ROOT każdy dopisuje <b>raz</b> do swojego ROOT (krok 1 powyżej) — jego inne zmiany w ROOT zostają.</li>
+   <li>Brakujące okna (np. Ctrl+N w starym kliencie) panel <b>dokłada całe</b> razem z grafiką — nie ma wymaganej wersji klienta.</li>
+   <li>Przy instalacji wybór: <b>„Świeży start”</b> (puste bonusy, rangi z jego gry) albo <b>„Ustawienia autora”</b> (wartości, rangi z odznakami, ranking) — osobno dla każdego systemu. Misje Ctrl+N są w obu.</li>
+  </ul>
+ </section>
+ <section class="si-card" style="grid-column:1/-1">
+  <span class="si-chip warn">🛠 Gdy coś nie działa</span>
+  <h2>Częste błędy i jak je naprawić</h2>
+  <table class="si-table">
+   <tr><th>Objaw</th><th>Przyczyna</th><th>Naprawa</th></tr>
+   <tr><td>Gra ładuje się w nieskończoność (widać czat, ekran ładowania nie znika)</td><td>błąd w pliku ROOT (syserr.txt: <code>Traceback</code>)</td><td>Wróć do kopii swojego starego ROOT (podmień oba pliki w <code>pack</code>), wyślij <code>syserr.txt</code> z folderu klienta. Zbuduj ROOT ponownie po poprawce.</td></tr>
+   <tr><td>Podmieniony tylko jeden plik ROOT</td><td><code>root.index</code> i <code>root.data</code> to para</td><td>Zawsze podmieniaj <b>oba naraz</b>, przy zamkniętej grze.</td></tr>
+   <tr><td>„Konflikt” przy budowaniu ROOT</td><td>plik w Twoim ROOT jest inny niż oczekiwany (np. zmieniony ręcznie)</td><td>Nic nie zostało zmienione. Zbuduj z czystszego ROOT albo zgłoś nazwę pliku z komunikatu.</td></tr>
+   <tr><td>Opisy pokazują stare wartości</td><td>brak wtyczki w ROOT albo stary ROOT po aktualizacji klienta</td><td>Przegląd → 📦 Klient (ROOT): wgraj swój aktualny ROOT i podmień na gotowy.</td></tr>
+   <tr><td>„Brak potwierdzenia kanałów” po „Zapisz i zastosuj”</td><td>kanał gry wyłączony / restartuje się</td><td>Poczekaj aż gra wstanie i kliknij „Zastosuj” ponownie (zakładka Stan pokazuje 9/9).</td></tr>
+   <tr><td>Zmiana ulepszenia nie działa</td><td>przepisy gra wczytuje przy starcie</td><td>Po zapisie kliknij <b>„Zastosuj”</b> w panelu (krótki restart kanałów).</td></tr>
+   <tr><td>Nowy przedmiot bez nazwy/ikony w grze</td><td>klient nie ma nowego <code>dbdata</code> albo grafiki</td><td>Pobierz nowe <code>dbdata</code> z panelu; ikonę/model musisz mieć w swoich plikach klienta.</td></tr>
+   <tr><td>Brak modelu 3D w oknie Ctrl+N / odznaki rangi przy nicku</td><td>inny exe niż exe autora (MT2009 Plus)</td><td>Gra działa dalej; pełny wygląd tylko z exe autora.</td></tr>
+   <tr><td>Grafika okna nie zmieniła się</td><td>ROOT zbudowany <b>przed</b> wgraniem grafiki</td><td>Kolejność: Misje → 🎨 Wygląd okna (zapisz) → Przegląd → zbuduj ROOT → podmień w kliencie.</td></tr>
+  </table>
+ </section>
+</div>
+</div>
+{% endblock %}

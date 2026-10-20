@@ -1,0 +1,12 @@
+{
+  "status": "source-snapshot",
+  "root_index_sha256": "85abf0c55bd35dd3fe7e0ea2585128a7d6bd217b17a5ed3170081c1add77d607",
+  "root_data_sha256": "6c335762969ebf00e5262320d57dfa657c22ee9a3609a51dda209c3f730d3708",
+  "source_hashes": {
+    "uimissionpanel.py": "0ce4129cd3a374ae4ea6bb48b7e74994a7e32f029958d09b05dd71b62d71cffc",
+    "uidungeoninfo.py": "671ba069c2aa7206ffc12190462d28a11d949870337e8753cb4f49bc92c98d52",
+    "dungeoninfo.py": "2fe980a21e32967b0791245844ae89c3a4b8097a15f82c22495d0c83e41b0780",
+    "uiscript/dungeoninfowindow.py": "8ab54dfeaef96c98928db6a8a0383d64d4fbcc03602fda31262b8dd9e9862c9f"
+  },
+  "atlas_sha256": "60a2dcb14538a566057dee6c6c62ffa0f9b6fc5b8d46adbe5f6e9e84786361aa"
+}

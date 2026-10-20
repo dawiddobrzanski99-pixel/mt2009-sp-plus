@@ -1,0 +1,6 @@
+{
+  "status": "installed-awaiting-client-test",
+  "backup": "/opt/metin2/kopie-naszych-zmian/okna-v2-20261017-024919-461079",
+  "model_rotation": "not-fixed",
+  "zip": "/var/lib/docker/volumes/metin2_rates-spool/_data/custom-ui-work/downloads/klient-komplet.zip"
+}

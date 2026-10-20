@@ -1,0 +1,11 @@
+  {'id': 'systemy', 'mark': 'MT2009_NASZE_SYSTEMY_V1', 'icon': '🐉', 'label': 'Kuźnia Mocy', 'items': [
+    {'ep': 'dbeditor.systems_index', 'label': 'Przegląd Kuźni Mocy', 'desc': 'wszystkie systemy gry w jednym miejscu', 'kw': 'systemy edytor bonusy'},
+    {'ep': 'dbeditor.systems_horse', 'label': 'Koń', 'desc': 'bonusy poziomów konia 1-30, nazwy, kolory, grafiki', 'kw': 'kon konia wierzchowiec bonusy poziomy'},
+    {'ep': 'dbeditor.systems_gildia', 'label': 'Gildia', 'desc': 'bonusy zależne od poziomu gildii', 'kw': 'gildia bonusy poziom'},
+    {'ep': 'dbeditor.systems_polimorfia', 'label': 'Polimorfia', 'desc': 'bonusy i czas przemiany', 'kw': 'polimorfia przemiana marmur'},
+    {'ep': 'dbeditor.systems_rangi', 'label': 'Rangi', 'desc': 'progi, nazwy, kolory, bonusy rang', 'kw': 'ranga rangi reputacja'},
+    {'ep': 'dbeditor.systems_ranking', 'label': 'Ranking tygodnia', 'desc': 'tytuły tygodniowe i nagrody', 'kw': 'ranking tydzien tytuly'},
+    {'ep': 'dbeditor.systems_misje', 'label': 'Misje (Ctrl+N)', 'desc': 'polowania, metinologia, bossologia, biolog', 'kw': 'misje polowania metinologia bossologia biolog ctrl n'},
+    {'ep': 'dbeditor.systems_ulepszanie', 'label': 'Ulepszanie', 'desc': 'koszt, szansa i materiały każdego + broni i zbroi', 'kw': 'ulepszanie kowal refine plus szansa yang ulepszacz'},
+    {'ep': 'dbeditor.systems_plus9', 'label': 'Sława', 'desc': 'ogłoszenia kto ulepszył na +9, nicki na przedmiocie', 'kw': 'plus9 +9 origin ogloszenie ulepszyl nick'},
+  ]},

@@ -177,6 +177,24 @@ try:
     for path in (PROJECT/'docker/seban-panel').glob('*.py'):
         take(path, Path('linux-port')/path.relative_to(PROJECT))
 
+    # MT2009_NASZE_ZAPIS_SPOOL_V1_BEGIN: edycje panelu (spool) i grafiki przygotowane dla klienta.
+    # Bez custom-changes (logowanie panelu, sqlite), logow, paczek .data/.index/.zip.
+    print('Zbieranie edycji panelu (spool) i grafik klienta...', flush=True)
+    spool_data = {'.txt','.quest','.lua','.json','.tsv','.csv','.py','.sql'}
+    for sub in ('drops','chests','cube','regen','spawns','quests','systems',
+                'dragonsoul','fishing','crafting','dbeditor'):
+        for path in walk(spool/sub):
+            if path.suffix.lower() in spool_data and path.stat().st_size <= 8*1024*1024:
+                take(path, Path('customizations/panel-spool')/path.relative_to(spool))
+    spool_ui = {'.tga','.png','.jpg','.jpeg','.dds','.py','.txt','.json','.md'}
+    for path in walk(spool/'custom-ui-work'):
+        rel = path.relative_to(spool/'custom-ui-work')
+        if rel.parts and rel.parts[0].startswith(('dbdata-sprawdzone-','downloads')):
+            continue
+        if path.suffix.lower() in spool_ui and path.stat().st_size <= 8*1024*1024:
+            take(path, Path('customizations/panel-spool')/path.relative_to(spool))
+    # MT2009_NASZE_ZAPIS_SPOOL_V1_END
+
     print('Zbieranie zrodel silnika...', flush=True)
     private_definitions = {}
     for relative in ('docker/game/src/server/game/src','docker/game/src/server/common'):

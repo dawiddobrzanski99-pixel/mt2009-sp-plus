@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_PLUS9_USTAWIENIA_V1 #}
+{% block title %}Sława · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.p9-hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap;background:radial-gradient(circle at 10% 50%,#6a4a1466,transparent 45%),linear-gradient(135deg,#2a2214,#151c27 60%);border:1px solid #6a5a2a;border-radius:16px;padding:22px 26px;margin-bottom:16px}
+.p9-hero h1{margin:0;font:800 28px/1.2 Georgia,serif;color:#ffd27a}
+.p9-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.p9-big{font-size:56px;line-height:1;filter:drop-shadow(0 0 14px #ffd27a88)}
+.p9-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px}
+.p9-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:18px 20px}
+.p9-card h2{margin:0 0 12px;font-size:17px;color:var(--sy-gold)}
+.p9-field{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.p9-field span{font-size:13px;color:var(--sy-muted)}
+.p9-field input[type=text],.p9-field input[type=number]{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:9px 12px;border-radius:8px;font:inherit}
+.p9-switch{display:flex;gap:10px;align-items:center}
+.p9-switch input{appearance:auto!important;width:18px;height:18px;accent-color:#edbd69}
+.p9-tags{display:flex;gap:6px;flex-wrap:wrap}
+.p9-tags button{background:#2c3b51;border:1px solid #52657f;color:var(--sy-text);border-radius:14px;padding:4px 10px;font:600 12px system-ui;cursor:pointer}
+.p9-preview{margin-top:10px;padding:10px 14px;border-radius:8px;background:#0d131c;border:1px solid #3d4b61;color:#ffe08a;font-family:Tahoma,Verdana,sans-serif;font-size:13px}
+.p9-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.p9-actions button{border-radius:8px;padding:10px 16px;font:700 14px system-ui;cursor:pointer;border:1px solid #52657f;background:#2c3b51;color:var(--sy-text)}
+.p9-actions button.save{background:var(--sy-gold);color:#20180d;border-color:var(--sy-gold)}
+.p9-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.p9-list li{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:8px;background:#151d29;font-size:14px}
+.p9-nr{font-weight:800;color:var(--sy-gold);min-width:34px}
+.p9-note{font-size:13px;color:var(--sy-muted);margin-top:10px}
+@media(max-width:900px){.p9-grid{grid-template-columns:1fr}}
+</style>
+<header class="p9-hero"><span class="p9-big" aria-hidden="true">🏅</span>
+ <div><h1>Sława</h1><p>Ogłoszenie na czacie, kto ulepszył przedmiot na +9 i którym był na serwerze. Nick autora zostaje zapisany na przedmiocie.</p></div></header>
+<div class="p9-grid">
+<form class="p9-card" method="post">
+ <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+ <label class="p9-switch" style="padding:10px 12px;border:1px solid var(--sy-line);border-radius:10px;margin-bottom:14px"><input type="checkbox" name="enabled" value="1" {% if cfg.enabled %}checked{% endif %}> <span><b>System Sława włączony</b><br><small style="color:var(--sy-muted)">Wyłączony: brak ogłoszeń, nowe +9 nie są zapisywane, nicki nie pokazują się na przedmiotach. Zapisane dane zostają.</small></span></label>
+ <h2>📣 Ogłoszenie na czacie</h2>
+ <label class="p9-switch"><input type="checkbox" name="announce" value="1" {% if cfg.announce %}checked{% endif %}> <b>Ogłaszaj ulepszenia na +9</b></label>
+ <label class="p9-field"><span>Ogłaszaj tylko pierwszych … osób dla danego przedmiotu (0 = każdego)</span><input type="number" name="first" min="0" value="{{ cfg.first }}"></label>
+ <label class="p9-field"><span>Treść komunikatu (do 200 znaków)</span><input type="text" name="text" id="p9-text" maxlength="200" value="{{ cfg.text }}" required></label>
+ <div class="p9-tags"><span style="font-size:12px;color:var(--sy-muted)">Wstaw:</span><button type="button" data-tag="{gracz}">{gracz}</button><button type="button" data-tag="{przedmiot}">{przedmiot}</button><button type="button" data-tag="{nr}">{nr}</button></div>
+ <div class="p9-preview" id="p9-prev"></div>
+ <div class="p9-actions"><button class="save" name="action" value="save">💾 Zapisz</button><button name="action" value="defaults" formnovalidate onclick="return confirm('Przywrócić domyślną treść i ustawienia?')">Domyślne</button></div>
+ <p class="p9-note">Działa od następnego ulepszenia na +9 — bez restartu i bez ROOT. Nicki na przedmiocie (opis po najechaniu) zapisywane są zawsze; pokazuje je klient (plik <b>plus9origin.py</b> w ROOT — u Ciebie już jest).</p>
+</form>
+<section class="p9-card">
+ <h2>🕒 Ostatnie ulepszenia na +9{% if total is not none %} <small style="color:var(--sy-muted);font-weight:400">(wszystkich: {{ total }})</small>{% endif %}</h2>
+ {% if recent %}<ul class="p9-list">{% for r in recent %}<li><span class="p9-nr">{{ r.nr }}.</span><span><b>{{ r.who }}</b> — {{ r.item }}</span></li>{% endfor %}</ul>
+ {% else %}<p class="p9-note">Brak zapisanych ulepszeń.</p>{% endif %}
+</section>
+</div>
+<script>
+(function(){
+const t=document.getElementById('p9-text'),p=document.getElementById('p9-prev');
+function draw(){p.textContent=(t.value||'').replace(/\{gracz\}/g,'Dawid').replace(/\{przedmiot\}/g,'Miecz Smoka+9').replace(/\{nr\}/g,'3');}
+t.addEventListener('input',draw);draw();
+document.querySelectorAll('[data-tag]').forEach(function(b){b.addEventListener('click',function(){const s=t.selectionStart||t.value.length;t.value=t.value.slice(0,s)+b.dataset.tag+t.value.slice(t.selectionEnd||s);t.focus();draw();});});
+})();
+</script>
+</div>
+{% endblock %}

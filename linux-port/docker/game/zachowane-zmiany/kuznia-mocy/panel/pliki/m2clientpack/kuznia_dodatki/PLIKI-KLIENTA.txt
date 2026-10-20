@@ -1,0 +1,1 @@
+Pliki klienta (moduly .py i grafiki) nie sa w repo - instalator buduje je z ROOT autora: /root/root-uzytkownika (spakuj_klient.py).

@@ -5,6 +5,7 @@
 #include "char.h"
 #include "skill.h"
 #include "custom_horse_polymorph_rewards.h"
+#include "seban_poly_rewards.h" // MT2009_NASZE_POLIMORFIA_V1
 #include "char_manager.h"
 #include "affect.h"
 #include "packet.h"
@@ -694,7 +695,7 @@ bool CHARACTER::AddAffect(DWORD dwType, BYTE bApplyOn, long lApplyValue, DWORD d
     // POLYMORPH_DURATION_G30_P60_V1: shared by marbles and polymorph books.
     if (IsPC() && dwType==AFFECT_POLYMORPH && lDuration>0
         && !(bApplyOn==POINT_POLYMORPH && lApplyValue==30000))
-        lDuration=CustomPolyDuration(GetSkillLevel(SKILL_POLYMORPH),lDuration);
+        lDuration=SebanPoly::Duration(GetSkillLevel(SKILL_POLYMORPH),lDuration); // MT2009_NASZE_POLIMORFIA_V1
 
 	if (!CanAddAffect(dwType, bApplyOn, lApplyValue, dwFlag, lDuration))
 		return false;

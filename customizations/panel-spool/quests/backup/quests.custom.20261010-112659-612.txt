@@ -1,0 +1,43 @@
+# MT2009_PLUS_DB_EDITOR_QUESTS_V1: questy z panelu Sebana (Edytor bazy danych -> Questy)
+# off/item/gold/exp/bonus/extra <TAB> quest ... - opis w dbeditor/quests.py i bin/m2-quests
+# collect_quest_lv30 - Biolog ? Z?by Orka (poz. 30)
+extra	collect_quest_lv30	state:__complete	bonus	16	10
+extra	collect_quest_lv30	state:__complete	bonus	63	2
+extra	collect_quest_lv30	state:__complete	bonus	142	5
+# collect_quest_lv40 - Biolog ? Ksi?gi Kl?tw (poz. 40)
+extra	collect_quest_lv40	state:__complete	bonus	95	2
+extra	collect_quest_lv40	state:__complete	bonus	16	2
+extra	collect_quest_lv40	state:__complete	bonus	6	50
+extra	collect_quest_lv40	state:__complete	bonus	123	5
+# collect_quest_lv50 - Biolog ? Pami?tki Demon?w (poz. 50)
+extra	collect_quest_lv50	state:__complete	bonus	95	5
+extra	collect_quest_lv50	state:__complete	bonus	16	5
+extra	collect_quest_lv50	state:__complete	bonus	6	50
+extra	collect_quest_lv50	state:__complete	bonus	142	5
+extra	collect_quest_lv50	state:__complete	bonus	136	5
+# collect_quest_lv60 - Biolog ? Matowy L?d (poz. 60)
+extra	collect_quest_lv60	state:__complete	bonus	95	2
+extra	collect_quest_lv60	state:__complete	bonus	16	2
+extra	collect_quest_lv60	state:__complete	bonus	6	50
+# collect_quest_lv70 - Biolog ? Konar Zelkowy (poz. 70)
+extra	collect_quest_lv70	state:__complete	bonus	95	2
+extra	collect_quest_lv70	state:__complete	bonus	16	2
+extra	collect_quest_lv70	state:__complete	bonus	6	50
+# collect_quest_lv80 - Biolog ? Certyfikat Tugyis (poz. 80)
+extra	collect_quest_lv80	state:__complete	bonus	119	5
+extra	collect_quest_lv80	state:__complete	bonus	93	10
+extra	collect_quest_lv80	state:__complete	bonus	16	50
+# collect_quest_lv85 - Biolog ? Czerwony Konar Duchodrzewa (poz. 85)
+extra	collect_quest_lv85	state:__complete	bonus	95	15
+extra	collect_quest_lv85	state:__complete	bonus	16	60
+extra	collect_quest_lv85	state:__complete	bonus	119	10
+# collect_quest_lv90 - Biolog ? Notatka Przyw?dcy (poz. 90)
+extra	collect_quest_lv90	state:__complete	bonus	16	70
+extra	collect_quest_lv90	state:__complete	bonus	119	10
+extra	collect_quest_lv90	state:__complete	bonus	93	10
+# horse_upgrade - Ulepszenie konia
+extra	horse_upgrade	item:50052	bonus	122	5
+# konie - Trening konia (stajenny)
+bonus	konie	53	*	53	1
+bonus	konie	149	*	149	1
+bonus	konie	150	*	150	1

@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+ROOT="${M2_RATES_SPOOL:-/opt/m2spool}/systems/horse"
+mkdir -p "$ROOT" "$ROOT/status" "$ROOT/assets"
+chgrp m2spool "$ROOT" "$ROOT/status" "$ROOT/assets"
+chmod 2770 "$ROOT" "$ROOT/status" "$ROOT/assets"

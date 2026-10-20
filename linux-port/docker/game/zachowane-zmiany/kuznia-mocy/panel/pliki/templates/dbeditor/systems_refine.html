@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_ULEPSZANIE_V1 - katalog ulepszen (koszt, szansa, materialy kazdego +N) #}
+{% block title %}Ulepszanie · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.up-hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap;background:radial-gradient(circle at 10% 50%,#5a3a1466,transparent 45%),linear-gradient(135deg,#2a1d14,#151c27 60%);border:1px solid #6a4a2a;border-radius:16px;padding:22px 26px;margin-bottom:16px}
+.up-hero h1{margin:0;font:800 28px/1.2 Georgia,serif;color:#ffd27a}
+.up-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.up-big{font-size:56px;line-height:1;filter:drop-shadow(0 0 14px #ff8a3a88)}
+.up-search{margin-left:auto;display:flex;gap:8px}
+.up-search input{background:#101722;color:var(--sy-text);border:1px solid #53627a;padding:10px 14px;border-radius:10px;font:inherit;min-width:260px}
+.up-search button{background:var(--sy-gold);color:#20180d;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
+.up-cats{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.up-cats a{padding:8px 12px;border-radius:10px;border:1px solid var(--sy-line);background:#151d29;color:var(--sy-muted);text-decoration:none;font-weight:600;font-size:14px}
+.up-cats a.is-active{border-color:var(--sy-gold);color:#20180d;background:var(--sy-gold)}
+.up-note{font-size:13px;padding:12px 14px;border-left:4px solid var(--sy-gold);background:#edbd6914;border-radius:8px;margin:0 0 16px;color:var(--sy-muted)}
+.up-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:14px}
+.up-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:16px 18px;min-width:0}
+.up-card header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.up-card h2{margin:0;font-size:17px;color:var(--sy-text)}
+.up-card .up-v{font-size:12px;color:var(--sy-muted)}
+.up-card .up-edit{margin-left:auto;padding:7px 12px;border-radius:8px;background:#2c3b51;border:1px solid #52657f;color:var(--sy-text);text-decoration:none;font-weight:600;font-size:13px;white-space:nowrap}
+.up-card .up-edit:hover{border-color:var(--sy-gold)}
+.up-table{width:100%;border-collapse:collapse;font-size:13px}
+.up-table th{color:var(--sy-muted);font-weight:600;text-align:left;padding:4px 6px;border-bottom:1px solid var(--sy-line)}
+.up-table td{padding:5px 6px;border-bottom:1px solid #263142;vertical-align:top}
+.up-lvl{font-weight:800;color:var(--sy-gold);white-space:nowrap}
+.up-prob{font-weight:700}
+.up-prob.hi{color:#7fe0a8}.up-prob.mid{color:#ffd27a}.up-prob.lo{color:#ff9d8f}
+.up-mats{color:var(--sy-muted)}
+.up-pages{display:flex;gap:6px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+.up-pages a,.up-pages span{padding:6px 12px;border-radius:8px;border:1px solid var(--sy-line);color:var(--sy-muted);text-decoration:none}
+.up-pages span{border-color:var(--sy-gold);color:var(--sy-gold)}
+.up-empty{padding:30px;text-align:center;color:var(--sy-muted);border:1px dashed var(--sy-line);border-radius:14px}
+@media(max-width:640px){.up-search{margin-left:0;width:100%}.up-search input{min-width:0;flex:1}}
+</style>
+<header class="up-hero">
+ <span class="up-big" aria-hidden="true">🔨</span>
+ <div><h1>Ulepszanie</h1><p>Wszystkie ulepszalne przedmioty: koszt w Yang, szansa i materiały każdego „+”. Kliknij „Edytuj”, żeby zmienić.</p></div>
+ <form class="up-search" method="get"><input type="hidden" name="kat" value="{{ cat }}"><input type="search" name="q" value="{{ query }}" placeholder="🔍 szukaj przedmiotu (np. miecz, 11, zbroja)" aria-label="Szukaj przedmiotu"><button>Szukaj</button></form>
+</header>
+<nav class="up-cats">
+ {% for key, c in cats.items() %}<a href="{{ url_for('dbeditor.systems_ulepszanie', kat=key) }}" class="{% if key==cat and not query %}is-active{% endif %}">{{ c[0] }} {{ c[1] }}</a>{% endfor %}
+</nav>
+<p class="up-note">Zmiany ulepszeń działają na serwerze — <b>klient nie wymaga zmian</b> (okno kowala pobiera koszt, szansę i materiały z serwera). Gra wczytuje przepisy przy starcie: po zapisie kliknij <b>„Zastosuj”</b> w panelu (krótki restart kanałów).{% if pending_total %} <b>Oczekujące zmiany: {{ pending_total }}</b>.{% endif %} Wiele przedmiotów dzieli jeden przepis — edytor zapyta, czy zmienić wszystkie, czy tylko tę rodzinę.</p>
+<h2 style="margin:0 0 12px">{{ icon }} {{ title }} <small style="color:var(--sy-muted);font-weight:400">({{ total }})</small></h2>
+{% if fams %}
+<div class="up-grid">
+{% for f in fams %}
+ <article class="up-card">
+  <header><h2>{{ f.name }}</h2><span class="up-v">#{{ f.vnum }}</span><a class="up-edit" href="{{ url_for(edit_endpoint, vnum=f.vnum) }}">✏️ Edytuj</a></header>
+  <table class="up-table">
+   <tr><th>Krok</th><th>Yang</th><th>Szansa</th><th>Materiały</th></tr>
+   {% for r in f.rows %}
+   <tr><td class="up-lvl">+{{ r.frm }} → +{{ r.frm + 1 }}</td>
+    {% if r.cost is none %}<td colspan="3" class="up-mats">brak przepisu #{{ r.set }}</td>{% else %}
+    <td>{{ '{:,}'.format(r.cost).replace(',', ' ') }}</td>
+    <td class="up-prob {{ 'hi' if r.prob >= 70 else 'mid' if r.prob >= 40 else 'lo' }}">{{ r.prob }}%</td>
+    <td class="up-mats">{% for n, c in r.mats %}{{ n }} ×{{ c }}{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}</td>{% endif %}</tr>
+   {% endfor %}
+  </table>
+ </article>
+{% endfor %}
+</div>
+{% if pages > 1 %}<nav class="up-pages">{% for p in range(1, pages + 1) %}{% if p == page %}<span>{{ p }}</span>{% else %}<a href="{{ url_for('dbeditor.systems_ulepszanie', kat=cat, q=query, s=p) }}">{{ p }}</a>{% endif %}{% endfor %}</nav>{% endif %}
+{% else %}<div class="up-empty">Nic nie znaleziono.</div>{% endif %}
+</div>
+{% endblock %}

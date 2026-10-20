@@ -1,0 +1,43 @@
+-- MT2009_PLUS_ELEMENTS_V1 - Elements and talismans (Zywioly i talizmany). Autor: Digi Rasta
+-- (nowy-system 0.28.0, SYSTEMY/zywioly-talizmany.md, his zywioly.quest), ported into MT2009 PLUS.
+-- Mistrz (20082, beside the Blacksmith in M1 and M3 of every kingdom - the belt system's
+-- spawn) sells Kwiaty Zywiolu (shop 9550 of mariadb/playerbot/zywioly_talizmany.sql,
+-- npc.open_shop) and explains the elements as the owner's rules of 7 October 2026 have them.
+-- cp1250; no literal ends with a Polish letter (qc).
+quest zywioly begin
+	state start begin
+		when 20082.chat."Kwiaty ¯ywio³u" begin
+			npc.open_shop()
+			setskin(NOWINDOW)
+		end
+
+		when 20082.chat."¯ywio³y i talizmany" begin
+			say_title(mob_name(20082)..":")
+			say("Niektóre potwory maj¹ ¿ywio³: ogieñ,")
+			say("b³yskawicê, lód, wiatr, ziemiê albo mrok.")
+			say("Znak ¿ywio³u widaæ przy pasku ¿ycia celu.")
+			say("¯ywio³ maj¹ bossowie, potwory Groty")
+			say("Wygnañców (b³yskawica), Œwi¹tyni Ochao")
+			say("i Zaczarowanego Lasu (wiatr) oraz lochy:")
+			say("Nemere (lód), Le¿e Smoka (b³yskawica)")
+			say("i Staro¿ytna D¿ungla (wiatr).")
+			wait()
+			say_title(mob_name(20082)..":")
+			say("Talizman ¿ywio³u daje Si³ê tego ¿ywio³u:")
+			say("pierwszy 1% to +18% obra¿eñ przeciw jego")
+			say("potworom, ka¿dy kolejny +0,5% (do 80%).")
+			say("Ka¿de pe³ne 10% Si³y daje te¿ +1% do")
+			say("obra¿eñ przeciw wszystkim (do +20%).")
+			say("Na graczy ¿ywio³y nie dzia³aj¹.")
+			wait()
+			say_title(mob_name(20082)..":")
+			say("Talizmany wypadaj¹ z bossów swojego")
+			say("¿ywio³u, a Talizman Ognia i Lodu tak¿e")
+			say("ze skrzyñ Razadora i Nemere. Kowal")
+			say("ulepsza je do +200: 10 Kwiatów ¯ywio³u,")
+			say("Ornament i drugi Talizman +0 tego")
+			say("samego ¿ywio³u. W³asne bonusy talizmanu")
+			say("dodasz Wzmocnieniem Przedmiotu.")
+		end
+	end
+end

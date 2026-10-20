@@ -1,0 +1,12 @@
+{
+  "status": "prepared-not-client-tested",
+  "base_root": {
+    "root.index": "85abf0c55bd35dd3fe7e0ea2585128a7d6bd217b17a5ed3170081c1add77d607",
+    "root.data": "6c335762969ebf00e5262320d57dfa657c22ee9a3609a51dda209c3f730d3708"
+  },
+  "prepared_root": {
+    "root.index": "8920cdd98cf293e56be7c6bec72c69618fe4d22a2187232cbad09384fd5a5bfd",
+    "root.data": "4b332f1a486ff60bd78657b489379a9efa42c5fec47a5c4ee3840304214e4e2b"
+  },
+  "changed_entries": 38
+}

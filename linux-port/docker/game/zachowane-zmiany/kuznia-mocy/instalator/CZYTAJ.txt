@@ -1,0 +1,29 @@
+KUZNIA MOCY - instalator
+========================
+
+Co instaluje: panel "Kuznia Mocy" (kon, gildia, polimorfia, rangi, ranking tygodnia, misje Ctrl+N,
+ulepszanie, Slawa, skan serwera, kopia ustawien) oraz systemy gry, ktorych te zakladki potrzebuja.
+Twoje dane (przedmioty, potwory, ulepszenia w bazie) NIE sa nadpisywane - panel czyta je na zywo.
+
+WYMAGANIA: serwer MT2009 (folder z linux-port) i dzialajacy Docker. Nic wiecej.
+
+VPS / Linux:
+  1. Rozpakuj zip u siebie na komputerze i wrzuc folder kuznia-mocy do /root na VPS (np. WinSCP).
+  2. sudo sh /root/kuznia-mocy/instaluj.sh      (albo: sudo sh /root/kuznia-mocy/instaluj.sh /sciezka/do/serwera)
+
+PC (Windows + Docker Desktop):
+  1. Uruchom Docker Desktop.
+  2. Kliknij dwa razy instaluj.bat (zapyta o folder serwera, jesli go nie znajdzie).
+
+Po instalacji (panel -> Kuznia Mocy):
+  1. Wszystkie systemy startuja od zera (puste bonusy, rangi z Twojej gry) - ustaw je po swojemu.
+  2. Przeglad -> Klient (ROOT): wgraj root.index + root.data SWOJEGO klienta (folder pack).
+     Instalator sam dopisze brakujace pliki Kuzni. Pobierz gotowy ROOT i podmien go w kliencie
+     (zachowaj stary na wszelki wypadek). Kazdy gracz dostaje ten sam gotowy ROOT.
+  3. Pozniejsze zmiany bonusow w panelu dzialaja od razu - bez nowego ROOT i bez restartu.
+
+Aktualizacja serwera: po kazdej aktualizacji MT2009 uruchom instalator jeszcze raz
+(zaczyna od nowych plikow autora). Przed aktualizacja pobierz "Kopie ustawien",
+po niej wgraj ja z powrotem - nowe potwory i przedmioty z bazy sa wtedy od razu widoczne.
+
+Kopie zapasowe: folder kopie/ obok instalatora (pliki sprzed kazdej instalacji).

@@ -1,0 +1,13 @@
+{
+  "status": "prepared-not-installed",
+  "base_root_index_sha256": "e2742ba054cb573b2a499e857136f3b1a5b705f8ee2064f9eea911a4c68493f3",
+  "base_root_data_sha256": "0560ad0ee53febb4c01c828c6c07f74d20e14454e6559a01a7b9ba13a052a080",
+  "preserved_ku_and_model_modules": true,
+  "changed_entries": [
+    "uimissionpanel.py",
+    "uidungeoninfo.py",
+    "d:/ymir work/ui/game/custom_windows/final/dungeon_frame.tga",
+    "d:/ymir work/ui/game/custom_windows/final/mission_frame.tga"
+  ],
+  "model_rotation": "awaiting-native-source"
+}

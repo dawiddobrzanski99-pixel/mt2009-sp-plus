@@ -1,0 +1,102 @@
+{
+  "schema": "MT2009_MODULE_INSTALLER_V1",
+  "module": "seban-systems-horse",
+  "version": "2.0.0-preview.1",
+  "base": "345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+  "files": [
+    {
+      "path": "docker/seban-panel/dbeditor/systems_horse.py",
+      "payload": "payload/000.py",
+      "kind": "add",
+      "sha256": "6d038354404815eacacc334bcfa054e83b1b713cd50500cb8555272d6f447983"
+    },
+    {
+      "path": "docker/seban-panel/m2clientpack/horse_editor.py",
+      "payload": "payload/001.py",
+      "kind": "add",
+      "sha256": "eaada5ff3f7080ef31242ed362e68666bf6f7899415c2617fc4960ae81a2b5c9"
+    },
+    {
+      "path": "docker/seban-panel/m2clientpack/horse_publication.py",
+      "payload": "payload/002.py",
+      "kind": "add",
+      "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
+    },
+    {
+      "path": "docker/seban-panel/m2clientpack/horse_pair_installer.py",
+      "payload": "payload/003.py",
+      "kind": "add",
+      "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
+    },
+    {
+      "path": "docker/seban-panel/templates/dbeditor/systems_horse.html",
+      "payload": "payload/004.html",
+      "kind": "add",
+      "sha256": "fe9a7f68b6dd5cbd084700b07ff233b3db931c80378741dbdd3d29a6da64c279"
+    },
+    {
+      "path": "docker/game/src/server/game/src/seban_horse_rewards.h",
+      "payload": "payload/005.h",
+      "kind": "add",
+      "sha256": "6e189a54b74397377e1bd8d4f8b6fc14f171ebf85e5e2bbad7791ca14fa75659"
+    },
+    {
+      "path": "docker/game/src/server/game/src/seban_sha256.h",
+      "payload": "payload/006.h",
+      "kind": "add",
+      "sha256": "b7a6872259399446e10f67c028fb6c2b09e47ed1bfe0474345e987af41291b25"
+    },
+    {
+      "path": "docker/game/src/server/game/src/seban_horse_live.h",
+      "payload": "payload/007.h",
+      "kind": "add",
+      "sha256": "cedc8d6e42ae09c1b7a30ecf500e4d08e29b635907d47e0c6660e76648546acb"
+    },
+    {
+      "path": "docker/game/bin/m2-systems",
+      "payload": "payload/008",
+      "kind": "add",
+      "sha256": "d87c2523e3145111baf8519a2f91efafc6d7bd17fa544f3b23f3d75d8a856fb0"
+    },
+    {
+      "path": "docker/game/bin/entrypoint.sh",
+      "payload": "payload/009.json",
+      "kind": "splice",
+      "sha256": "86f52b91983ea993039a4492330d6784bd918b5c1b8e74966308dd7935cc064b"
+    },
+    {
+      "path": "docker/game/src/server/game/src/playerbot_manager.cpp",
+      "payload": "payload/010.json",
+      "kind": "splice",
+      "sha256": "8dcd27c08839dec4efbef3260c008492767b7d282da303e3a65ae7087768a3de"
+    },
+    {
+      "path": "docker/seban-panel/dbeditor/__init__.py",
+      "payload": "payload/011.json",
+      "kind": "splice",
+      "sha256": "1cbb963ef036fdfa1937de4e2300cd2c273cdf6fec238286356557cbbd6bb80c"
+    },
+    {
+      "path": "docker/game/src/server/game/src/char.cpp",
+      "payload": "payload/012.json",
+      "kind": "splice",
+      "sha256": "5069d65d6ee674a68d26093f405b50ee8e2dd435c979f538913d860ac9266870"
+    },
+    {
+      "path": "docker/game/src/server/game/src/char_battle.cpp",
+      "payload": "payload/013.json",
+      "kind": "splice",
+      "sha256": "643bf779e9315bfd228872d522cefaa586509fcfe3e3624b006ee09c02b8da53"
+    }
+  ],
+  "constraints": [
+    {
+      "path": "docker/game/quest/konie.quest",
+      "contains": "return {0, 0, 0} -- HORSE_TRAINING_ZERO_V7"
+    },
+    {
+      "path": "docker/game/src/server/game/src/playerbot_horse30.h",
+      "contains": "const int PLAYERBOT_HORSE_BONUS[10][3] = {\n\t\t{ 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 },\n\t\t{ 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 },\n\t};"
+    }
+  ]
+}

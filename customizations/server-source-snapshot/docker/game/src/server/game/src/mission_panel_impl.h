@@ -6,6 +6,18 @@
 #include "mob_manager.h"
 #include "event.h"
 #include <algorithm>
+#include "item_manager.h" // MT2009_NASZE_MISJE_V2
+#include <list>
+#include <cstring>
+#include <sstream>
+#include <fstream>
+#include <iterator>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/stat.h>
+#include "config.h"
+#include "seban_sha256.h"
+#include "seban_bonus_extra.h" // MT2009_NASZE_MISJE_V1
 namespace mission_panel {
 namespace {
 const DWORD HUNT_AFFECT=64000; // dedicated aggregate; explicitly retained on death.
@@ -18,18 +30,19 @@ struct Master{const char* kind;int id,level;DWORD race;int targetLevel,kills;con
 struct MissionExtra{const char* kind;int id;long yang;int bless,change,add,coupons;};
 #include "boss-extra-data.inc"
 #include "legacy-boss-data-v15.inc"
-const Bonus (&FinalRewards(const char* kind))[8]{if(std::string(kind)=="metin")return metinFinal;return bossFinal;}
+#include "seban_missions_data.h" // MT2009_NASZE_MISJE_V1
+const Bonus (&FinalRewards(const char* kind))[8]{SebanMissionTable* t=SebanMissionCurrent();if(std::string(kind)=="metin"){if(t)return t->metinF;return metinFinal;}if(t)return t->bossF;return bossFinal;} // MT2009_NASZE_MISJE_V1
 std::string MasterFlag(const Master& m,const char* what){return std::string("custom_masteries_v1.")+m.kind+"_"+what+"_"+std::to_string(m.id);}
 bool MasterDone(quest::PC* pc,const Master& m){return pc->GetFlag(MasterFlag(m,"done"))!=0;}
 // SEQUENTIAL_MASTERIES_V8: only the first unfinished stage can start or count kills.
-const Master* NextMaster(quest::PC* pc,const char* kind){for(const auto& m:masters)if(std::string(m.kind)==kind && !MasterDone(pc,m))return &m;return nullptr;}
-bool AllDone(quest::PC* pc,const char* kind){for(const auto& m:masters)if(std::string(m.kind)==kind && !MasterDone(pc,m))return false;return true;}
+const Master* NextMaster(quest::PC* pc,const char* kind){for(const auto& m:Masters())if(std::string(m.kind)==kind && !MasterDone(pc,m))return &m;return nullptr;}
+bool AllDone(quest::PC* pc,const char* kind){for(const auto& m:Masters())if(std::string(m.kind)==kind && !MasterDone(pc,m))return false;return true;}
 // BOSS_TRACK_30_V15: historical bonuses are a floor, never a second award.
 std::string BossMigrationFlag(const char* what){return std::string("custom_boss30_v15.")+what;}
 std::string LegacyBonusFlag(int point){return BossMigrationFlag("earned_")+std::to_string(point);}
 void MasterTotals(quest::PC* pc,std::map<int,long>& earned,std::map<int,long>& left){
  std::map<int,long> bossEarned,bossMax;
- for(const auto& m:masters)for(const auto& b:m.bonus)if(b.point>0 && b.value>0){
+ for(const auto& m:Masters())for(const auto& b:m.bonus)if(b.point>0 && b.value>0){
   if(std::string(m.kind)=="boss"){bossMax[b.point]+=b.value;if(MasterDone(pc,m))bossEarned[b.point]+=b.value;}
   else (MasterDone(pc,m)?earned:left)[b.point]+=b.value;
  }
@@ -51,11 +64,11 @@ void MigrateBoss30(LPCHARACTER ch,quest::PC* pc){
  if(all)for(const auto& b:bossFinal)if(b.point>0)legacyEarned[b.point]+=b.value;
  for(const auto& b:legacyEarned)ch->SetQuestFlag(LegacyBonusFlag(b.first),b.second);
  ch->SetQuestFlag(BossMigrationFlag("coupons"),std::min(40L,coupons));
- for(const auto& m:masters)if(std::string(m.kind)=="boss"){
+ for(const auto& m:Masters())if(std::string(m.kind)=="boss"){
   // Same VNUM retains count and completion. Fully completed old track stays completed.
   if(all){ch->SetQuestFlag(MasterFlag(m,"done"),1);ch->SetQuestFlag(MasterFlag(m,"count"),std::max(m.kills,pc->GetFlag(MasterFlag(m,"count"))));}
   if(!MasterDone(pc,m))continue;
-  const MissionExtra* e=nullptr;for(const auto& candidate:missionExtras)if(std::string(candidate.kind)=="boss" && candidate.id==m.id){e=&candidate;break;}
+  const MissionExtra* e=nullptr;for(const auto& candidate:Extras())if(std::string(candidate.kind)=="boss" && candidate.id==m.id){e=&candidate;break;}
   if(!e)continue;
   std::string base="custom_mission_loot_v1.boss_"+std::to_string(m.id)+"_";
   // Completed historical stages keep paid values; suppress a second payout from rebalancing.
@@ -70,7 +83,7 @@ void MigrateBoss30(LPCHARACTER ch,quest::PC* pc){
 struct Bio{const char* quest;int level;DWORD item;int required;};
 const Bio bios[]={{"collect_quest_lv30",30,30006,10},{"collect_quest_lv40",40,30047,15},{"collect_quest_lv50",50,30015,15},{"collect_quest_lv60",60,30050,20},{"collect_quest_lv70",70,30165,25},{"collect_quest_lv80",80,30166,30},{"collect_quest_lv85",85,30167,40},{"collect_quest_lv90",90,30168,50}};
 quest::PC* Ready(LPCHARACTER ch){
- if(!ch || !ch->IsPC() || !ch->GetDesc() || ch->GetDesc()->IsBot() || !ch->IsLoadedAffect())return nullptr;
+ if(!ch || !ch->IsPC() || !ch->GetDesc() || (ch->GetDesc()->IsBot() && !SebanBotsAllowed()) || !ch->IsLoadedAffect())return nullptr; // MT2009_NASZE_MISJE_BOTY_V1
  quest::PC* pc=quest::CQuestManager::instance().GetPCForce(ch->GetPlayerID());return pc && pc->IsLoaded()?pc:nullptr;
 }
 std::string Flag(const char* kind,int id){return std::string("custom_hunting_v1.")+kind+std::to_string(id);}
@@ -78,15 +91,18 @@ bool Done(quest::PC* pc,const Hunt& h){return pc->GetFlag(Flag("done_",h.id))!=0
 int Progress(quest::PC* pc,const Hunt& h){return std::max(0,std::min(h.kills,pc->GetFlag(Flag("count_",h.id))));}
 long BaseMap(long m){return m>=10000?m/10000:m;}
 bool MapMatch(long map,long want){map=BaseMap(map);return map==want || (want==1 && (map==21 || map==41)) || (want==3 && (map==23 || map==43));}
-const Hunt* ByID(int id){for(const auto& h:hunts)if(h.id==id)return &h;return nullptr;}
+const Hunt* ByID(int id){for(const auto& h:Hunts())if(h.id==id)return &h;return nullptr;}
 // SEQUENTIAL_HUNTING_V1: browsing allowed, starting/kills only for first unfinished stage.
-const Hunt* NextHunt(quest::PC* pc){for(const auto& h:hunts)if(!Done(pc,h))return &h;return nullptr;}
+const Hunt* NextHunt(quest::PC* pc){for(const auto& h:Hunts())if(!Done(pc,h))return &h;return nullptr;}
 const char* BossGiftName(DWORD vnum){switch(vnum){case 25040:return "Zwoj Blogoslawienstwa";case 71284:return "Zaczarowanie Przedmiotu";case 71285:return "Wzmocnienie Przedmiotu";case 80017:return "Kupon 50 SM";default:return "Przedmiot";}}
-const MissionExtra* ExtraFor(const char* kind,int id){for(const auto& e:missionExtras)if(std::string(e.kind)==kind && e.id==id)return &e;return nullptr;}
+const MissionExtra* ExtraFor(const char* kind,int id){for(const auto& e:Extras())if(std::string(e.kind)==kind && e.id==id)return &e;return nullptr;}
 std::vector<std::pair<DWORD,int>> ExtraItems(const MissionExtra& e){return {{25040,e.bless},{71284,e.change},{71285,e.add},{80017,e.coupons}};}
+void SebanGrantRewards(LPCHARACTER ch,quest::PC* pc); // MT2009_NASZE_MISJE_V2
 void GrantMissionExtras(LPCHARACTER ch,quest::PC* pc){
  if(!ch || !pc || !ch->CanHandleItem())return;
- for(const auto& m:masters){if(!MasterDone(pc,m))continue;const MissionExtra* e=ExtraFor(m.kind,m.id);if(!e)continue;
+ if(ch->GetDesc() && ch->GetDesc()->IsBot())return; // MT2009_NASZE_MISJE_BOTY_V1: nagrody jednorazowe tylko dla graczy
+ SebanGrantRewards(ch,pc);
+ for(const auto& m:Masters()){if(!MasterDone(pc,m))continue;const MissionExtra* e=ExtraFor(m.kind,m.id);if(!e)continue;
   std::string base="custom_mission_loot_v1."+std::string(m.kind)+"_"+std::to_string(m.id)+"_";
   long gold=std::max(0L,e->yang-(long)pc->GetFlag(base+"yang"));
   if(gold && ch->GetGold()<=GOLD_MAX-gold){ch->PointChange(POINT_GOLD,gold);ch->SetQuestFlag(base+"yang",e->yang);pc->Save();ch->Save();}
@@ -99,7 +115,7 @@ void GrantMissionExtras(LPCHARACTER ch,quest::PC* pc){
  }
 }
 void Totals(quest::PC* pc,std::map<int,long>& earned,std::map<int,long>& left){
- for(const auto& h:hunts)for(const auto& b:h.bonus)if(b.point>0 && b.value>0)(Done(pc,h)?earned:left)[b.point]+=b.value;
+ for(const auto& h:Hunts())for(const auto& b:h.bonus)if(b.point>0 && b.value>0)(Done(pc,h)?earned:left)[b.point]+=b.value;
  MasterTotals(pc,earned,left);
 }
 
@@ -133,6 +149,7 @@ void Sync(LPCHARACTER ch,quest::PC* pc){
  for(const auto& b:wanted){CAffect* have=ch->FindAffect(HUNT_AFFECT,b.first);if(!have || have->lApplyValue!=b.second)ch->AddAffect(HUNT_AFFECT,(BYTE)b.first,b.second,0,INFINITE_AFFECT_DURATION,0,true,true);}
 }
 std::string Hex(const std::string& text){const char* digits="0123456789abcdef";std::string out;for(unsigned char c:text){out+=digits[c>>4];out+=digits[c&15];}return out.empty()?"-":out;}
+#include "seban_missions_rewards.h" // MT2009_NASZE_MISJE_V2
 std::string BonusList(const std::map<int,long>& values){std::ostringstream out;bool first=true;for(const auto& b:values){if(!first)out<<',';first=false;out<<b.first<<':'<<b.second<<':'<<quest_bonus_preview::PointName(b.first);}return first?"-":out.str();}
 void Row(LPCHARACTER ch,const char* kind,int id,int level,DWORD race,DWORD item,int count,int required,int status,const std::string& name,const std::string& place,const std::map<int,long>& bonus){
  ch->ChatPacket(CHAT_TYPE_COMMAND,"MP row %s %d %d %u %u %d %d %d %s %s %s",kind,id,level,race,item,count,required,status,Hex(name).c_str(),Hex(place).c_str(),BonusList(bonus).c_str());
@@ -159,19 +176,18 @@ void Send(LPCHARACTER ch,quest::PC* pc){
   Row(ch,"biolog",b.level,b.level,20084,b.item,count,b.required,status,"Biolog - poziom "+std::to_string(b.level),"M1",BioBonuses(b));prior=done;
  }
  int active=pc->GetFlag("custom_hunting_v1.active");
- for(const auto& h:hunts){std::map<int,long> bonus;for(const auto& b:h.bonus)if(b.point)bonus[b.point]+=b.value;
+ for(const auto& h:Hunts()){std::map<int,long> bonus;for(const auto& b:h.bonus)if(b.point)bonus[b.point]+=b.value;
   int status=Done(pc,h)?3:((NextHunt(pc)!=&h)?0:(active==h.id?2:1));
   Row(ch,"hunting",h.id,h.level,h.race,0,Done(pc,h)?h.kills:Progress(pc,h),h.kills,status,h.name,h.location,bonus);
+  SebanSendExtra(ch,"hunting",h.id,nullptr); // MT2009_NASZE_MISJE_V2
  }
  
- for(const auto& m:masters){std::map<int,long> bonus;for(const auto& b:m.bonus)if(b.point)bonus[b.point]+=b.value;
+ for(const auto& m:Masters()){std::map<int,long> bonus;for(const auto& b:m.bonus)if(b.point)bonus[b.point]+=b.value;
   int active=pc->GetFlag(std::string("custom_masteries_v1.")+m.kind+"_active");
   int status=MasterDone(pc,m)?3:((NextMaster(pc,m.kind)!=&m || ch->GetLevel()<m.level)?0:(std::string(m.kind)=="boss" || active==m.id?2:1));
   int count=MasterDone(pc,m)?m.kills:std::max(0,std::min(m.kills,pc->GetFlag(MasterFlag(m,"count"))));
   Row(ch,m.kind,m.id,m.level,m.race,0,count,m.kills,status,m.name,m.location,bonus);
-  {const MissionExtra* e=ExtraFor(m.kind,m.id);if(e){std::ostringstream items;bool first=true;
-   for(const auto& item:ExtraItems(*e)){if(item.second<=0)continue;if(!first)items<<",";first=false;items<<item.first<<":"<<item.second<<":"<<Hex(BossGiftName(item.first));}
-   ch->ChatPacket(CHAT_TYPE_COMMAND,"MP extra %s %d %ld %s",m.kind,m.id,e->yang,items.str().c_str());}}
+  SebanSendExtra(ch,m.kind,m.id,ExtraFor(m.kind,m.id)); // MT2009_NASZE_MISJE_V2
 
  }
  for(const char* kind:{"metin","boss"}){std::map<int,long> bonus;for(const auto& b:FinalRewards(kind))if(b.point)bonus[b.point]+=b.value;
@@ -179,6 +195,7 @@ void Send(LPCHARACTER ch,quest::PC* pc){
  }
  ch->ChatPacket(CHAT_TYPE_COMMAND,"MP end");
 }
+#include "seban_missions_live.h" // MT2009_NASZE_MISJE_V1
 struct LoginInfo:public event_info_data{DWORD pid,handle;int attempts;};
 EVENTFUNC(LoginEvent){
  auto* info=dynamic_cast<LoginInfo*>(event->info);if(!info)return 0;
@@ -186,6 +203,16 @@ EVENTFUNC(LoginEvent){
  if(auto* pc=Ready(ch)){Sync(ch,pc);return 0;}
  return ++info->attempts<60?PASSES_PER_SEC(1):0;
 }
+}
+// MT2009_NASZE_MISJE_V1: zegar misji z panelu + eksport wkompilowanych tabel (wartosci domyslne edytora).
+void SebanStart(){
+ if(g_bAuthServer || seban_live::clockEvent)return;
+ struct timeval tv;gettimeofday(&tv,NULL);
+ seban_live::instance=SebanHorse::Sha256(std::to_string(getpid())+":missions:"+std::to_string(tv.tv_sec)+":"+std::to_string(tv.tv_usec));
+ mkdir(seban_live::Root().c_str(),02770);mkdir((seban_live::Root()+"/status").c_str(),02770);
+ seban_live::WriteFile(seban_live::Root()+"/status/defaults.txt",SebanDefaultsText());
+ seban_live::ClockInfo* info=AllocEventInfo<seban_live::ClockInfo>();seban_live::clockEvent=event_create(seban_live::Clock,info,PASSES_PER_SEC(1));
+ seban_live::Tick();
 }
 void OnLogin(LPCHARACTER ch){
  if(!ch || !ch->GetDesc() || ch->GetDesc()->IsBot())return;
@@ -198,7 +225,8 @@ int ItemDropBonus(LPCHARACTER ch){if(!ch)return 0;CAffect* a=ch->FindAffect(HUNT
 
 void MasterKill(LPCHARACTER ch,LPCHARACTER victim){
  auto* pc=Ready(ch);if(!pc || !victim || victim->IsPC())return;
- for(const auto& m:masters){
+ if(ch->GetDesc() && ch->GetDesc()->IsBot()){const Master* nm=NextMaster(pc,"metin");if(nm && ch->GetLevel()>=nm->level && pc->GetFlag("custom_masteries_v1.metin_active")!=nm->id)ch->SetQuestFlag("custom_masteries_v1.metin_active",nm->id);} // MT2009_NASZE_MISJE_BOTY_V1
+ for(const auto& m:Masters()){
   bool stone=std::string(m.kind)=="metin";
   if(NextMaster(pc,m.kind)!=&m || MasterDone(pc,m) || ch->GetLevel()<m.level)continue;
   if(stone){if(!victim->IsStone() || victim->GetLevel()!=m.targetLevel || pc->GetFlag("custom_masteries_v1.metin_active")!=m.id)continue;}
@@ -207,19 +235,20 @@ void MasterKill(LPCHARACTER ch,LPCHARACTER victim){
   ch->SetQuestFlag(MasterFlag(m,"count"),n);
   if(n==m.kills){ch->SetQuestFlag(MasterFlag(m,"done"),1);pc->Save();Sync(ch,pc);ch->ChatPacket(CHAT_TYPE_INFO,"%s: %s - ukonczone!",stone?"Metinologia":"Bossologia",m.name);}
   ch->ChatPacket(CHAT_TYPE_COMMAND,"MP masterprogress %s %d %d %d",m.kind,m.id,n,n==m.kills?3:2);
-  if(n==m.kills)Send(ch,pc);
+  if(n==m.kills && !(ch->GetDesc() && ch->GetDesc()->IsBot()))Send(ch,pc);
   return;
  }
 }
 void OnKill(LPCHARACTER ch,LPCHARACTER victim){
  MasterKill(ch,victim);
  quest::PC* pc=Ready(ch);if(!pc || !victim || !victim->IsMonster() || victim->IsStone())return;
+ if(ch->GetDesc() && ch->GetDesc()->IsBot()){const Hunt* nh=NextHunt(pc);if(nh && pc->GetFlag("custom_hunting_v1.active")!=nh->id)ch->SetQuestFlag("custom_hunting_v1.active",nh->id);} // MT2009_NASZE_MISJE_BOTY_V1
  const Hunt* h=ByID(pc->GetFlag("custom_hunting_v1.active"));
  if(!h || NextHunt(pc)!=h || Done(pc,*h) || victim->GetRaceNum()!=h->race || !MapMatch(victim->GetMapIndex(),h->map))return;
  int count=std::min(h->kills,Progress(pc,*h)+1);ch->SetQuestFlag(Flag("count_",h->id),count);
  if(count==h->kills){ch->SetQuestFlag(Flag("done_",h->id),1);pc->Save();Sync(ch,pc);ch->ChatPacket(CHAT_TYPE_INFO,"Polowanie ukonczone! %s",h->label);}
  ch->ChatPacket(CHAT_TYPE_COMMAND,"MP progress %d %d %d",h->id,count,count==h->kills?3:2);
- if(count==h->kills)Send(ch,pc);
+ if(count==h->kills && !(ch->GetDesc() && ch->GetDesc()->IsBot()))Send(ch,pc);
 }
 void Command(LPCHARACTER ch,const char* argument){
  quest::PC* pc=Ready(ch);if(!pc){if(ch && ch->GetDesc())ch->ChatPacket(CHAT_TYPE_INFO,"Misje jeszcze sie wczytuja. Sprobuj za chwile.");return;}
@@ -231,7 +260,7 @@ void Command(LPCHARACTER ch,const char* argument){
   ch->WarpSet(destinations[empire-1][0],destinations[empire-1][1]);return;
  }
  
- if(op=="metin"){int id=0;if(!(args>>id))return;for(const auto& m:masters)if(std::string(m.kind)=="metin" && m.id==id && NextMaster(pc,"metin")==&m && !MasterDone(pc,m) && ch->GetLevel()>=m.level){ch->SetQuestFlag("custom_masteries_v1.metin_active",id);pc->Save();Send(ch,pc);return;}return;}
+ if(op=="metin"){int id=0;if(!(args>>id))return;for(const auto& m:Masters())if(std::string(m.kind)=="metin" && m.id==id && NextMaster(pc,"metin")==&m && !MasterDone(pc,m) && ch->GetLevel()>=m.level){ch->SetQuestFlag("custom_masteries_v1.metin_active",id);pc->Save();Send(ch,pc);return;}return;}
  if(op=="start"){int id=0;std::string extra;if(!(args>>id) || (args>>extra))return;const Hunt* h=ByID(id);
   if(!h || NextHunt(pc)!=h || Done(pc,*h)){ch->ChatPacket(CHAT_TYPE_INFO,"Najpierw ukoncz poprzednie Polowanie.");return;}
   ch->SetQuestFlag("custom_hunting_v1.active",id);pc->Save();Send(ch,pc);return;

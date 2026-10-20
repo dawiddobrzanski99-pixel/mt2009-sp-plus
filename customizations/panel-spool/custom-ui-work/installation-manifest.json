@@ -1,0 +1,25 @@
+{
+  "backup": "/opt/metin2/kopie-naszych-zmian/wspolne-okna-20261016-230741",
+  "game_service": "game",
+  "panel_service": "seban-panel",
+  "source_hashes": {
+    "/opt/metin2/linux-port/docker/seban-panel/app.py": "0f9f17405aeddba24339fca45dfd7562cad340fa9014fd2148f328766c128f74",
+    "/opt/metin2/linux-port/docker/seban-panel/Dockerfile": "4e41f4a1faba3b2ef3cf3ababe96e41b855d2c51a9e1a4bd262bcdda88030bf3",
+    "/opt/metin2/linux-port/docker/game/Dockerfile": "4c1427108db5b44b9024a00553110b74e0649b35723aab04e0c06b545f1835c1"
+  },
+  "download_hashes": {
+    "root.index": "c89f1f2b1da895f6dde370cbe4dfd88dff84cff646aba415bdf418a626ce7d15",
+    "root.data": "054ba17efbce0d0cf3a0899008f800f136f8696291235588a05d183d799181a6",
+    "gamedata.index": "91f72929869b85f47434d7f4699617201d5f279b190b57f19dcef76c2e473ce0",
+    "gamedata.data": "5771435c12b1309dea2c13791074e9a471ff8492be9e2fda2372a174f220fcc5",
+    "dbdata.index": "28ec49626303b2c861d16087373f03826d3d9dd31b9287c00bbf6d5a1c3954c8",
+    "dbdata.data": "b09ec0babd27b815f4a576cbf96486175efc368384da9b30ece2d1ce1f50caba",
+    "klient-komplet.zip": "9f4d3fbffa45c079c70b072c87676e57628cef30689cf800c1e90cd393d48119",
+    "dbdata_stamp.txt": "a502de5f7cab7dcf2300b06f5b84b131e29f89e41e3a28647c0677d6a986aa41"
+  },
+  "installed": true,
+  "deployment_started": true,
+  "phase": "installed",
+  "installed_at": "2026-10-16T21:16:58.082119+00:00",
+  "mission_layout": "v3-awaiting-client-test"
+}

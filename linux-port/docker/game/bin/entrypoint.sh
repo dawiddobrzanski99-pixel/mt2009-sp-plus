@@ -210,6 +210,7 @@ m2-render-config
 #     have to be writable by the unprivileged account the supervisor runs as.
 #     Everything else about the rates happens later, in m2-supervise.
 # -----------------------------------------------------------------------------
+command -v m2-systems >/dev/null 2>&1 && { m2-systems || log "could not prepare system editor spool"; }
 command -v m2-rates >/dev/null 2>&1 && { m2-rates prepare || log "could not prepare the rate spool (the rates page will say so)"; }
 command -v m2-world-reset >/dev/null 2>&1 && { m2-world-reset prepare || log "could not prepare the world reset's backup folder"; }
 # The same, for the language files: this runs as root, and the four files the

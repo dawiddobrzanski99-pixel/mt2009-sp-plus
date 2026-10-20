@@ -8516,14 +8516,14 @@
     "ordinal": 9,
     "original": "gamedata/item_list.txt",
     "saved": "dbdata/gamedata/item_list.txt",
-    "sha256": "4f10efe15e7a44746f1ed5c2ef695ca6fc1a59ef24befacf38f9a22dc08de8c6"
+    "sha256": "fe3f0d5425fde0173e23a7e836b53aa0df1031b0deeb43c791eb96b64d8808c7"
   },
   {
     "pack": "dbdata",
     "ordinal": 10,
     "original": "gamedata/item_proto",
     "saved": "dbdata/gamedata/item_proto",
-    "sha256": "f081e2565fe1331cab3fd72388f8de7fe3add6629dcf6ae307a99d5659c77902"
+    "sha256": "6ed4fb39b44376ec02b02cbb0a6303ee067d13e076f1bf5c6b21858924602adf"
   },
   {
     "pack": "dbdata",
@@ -8684,7 +8684,7 @@
     "ordinal": 33,
     "original": "locale/pl/itemdesc.txt",
     "saved": "dbdata/locale/pl/itemdesc.txt",
-    "sha256": "bbb9dac233ea1a1eb80bc99ae7b3277d35314ae482ce2dae154f233f68471b39"
+    "sha256": "ea17b26417add71dd1808d1bd1ab7e79c969143ab07731b6f5c54e221590732d"
   },
   {
     "pack": "dbdata",
