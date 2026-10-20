@@ -406,6 +406,64 @@ Przy nowym trafieniu skanera zapis zatrzyma sie z lokalnymi plikami.
 Wyjatki obejmuja tylko znany, przejrzany kontekst kodu.
 """
     put('docs/nasze-zmiany/JEDNA-KOMENDA.md',method.encode('utf-8'))
+    # MT2009_NEW_CHAT_SAVE_POLICY_V1
+    save_policy = """
+## Zapis po potwierdzeniu dzialania przez uzytkownika
+
+Gdy uzytkownik potwierdzi, ze zmiana dziala, i poprosi o zapis,
+podaj gotowa komende do PuTTY:
+    zapisz-mt2009 "konkretny opis wykonanych zmian"
+
+Sam uzupelnij opis rzeczywistymi zmianami.
+Nie wymagaj ponownej konfiguracji GitHuba przy zwyklym zapisie.
+Nie traktuj samego potwierdzenia dzialania jako dowodu wykonania zapisu.
+Nie twierdz, ze zmiany sa na GitHubie, dopoki wynik nie potwierdzi push.
+Przy bledzie zachowaj lokalny zapis i napraw konkretny problem.
+Nie wpisuj hasel, kluczy ani danych kont do opisu.
+"""
+    agents = DEST/'AGENTS.md'
+    if not agents.is_file():
+        raise RuntimeError('Brak AGENTS.md do uzupelnienia.')
+    current = agents.read_text(encoding='utf-8')
+    if '## Zapis po potwierdzeniu dzialania przez uzytkownika' not in current:
+        put('AGENTS.md',(current.rstrip()+'\n'+save_policy).encode('utf-8'))
+
+    new_chat = """# Tekst do nowego czatu
+
+Pracujemy nad repozytorium:
+https://github.com/dawiddobrzanski99-pixel/mt2009-sp-plus
+Galaz: main.
+
+Najpierw przeczytaj AGENTS.md oraz docs/nasze-zmiany/START-TUTAJ.md,
+WYMAGANIA-ZAPISU.md, STAN-ZAPISU.md, WERYFIKACJA.md,
+JEDNA-KOMENDA.md, REJESTR-ZAPISOW.md i mape ostatniego zapisu.
+
+Zrodla silnika: customizations/server-source-snapshot.
+Opublikowany klient: customizations/client-packs.
+Migawki danych gry: customizations/database/world.
+Kod projektu: linux-port.
+Narzedzia zapisu: tools/nasze-zmiany.
+
+Pracuj na istniejacej instalacji VPS.
+Zachowaj nasze dotychczasowe funkcje, grafiki, bonusy i blokady.
+Nie zastepuj aktualnego klienta ani serwera starsza cala paczka.
+Czytaj opisane braki; nie zakladaj, ze wszystkie historyczne zmiany
+zostaly zweryfikowane albo ze przygotowany fix zostal wdrozony.
+
+Po zmianach dotyczacych klienta uwzglednij aktualne pliki do pobrania
+z panelu. Zachowuj zgodnosc paczek, dbdata i znacznika.
+Zmiany tylko na Windows oraz etc/locale wymagaja osobnego zabezpieczenia.
+
+Gdy napisze, ze dziala i chce zapis, podaj:
+zapisz-mt2009 "opis rzeczywiscie wykonanych zmian"
+Opis uzupelnij sam. Sukces potwierdz dopiero po udanym push.
+
+Prywatne ustawienia i naglowek protokolu sa przechowywane poza GitHubem.
+Migawki world sluza do porownania i selektywnego odtwarzania;
+nie importuj ich hurtowo na nowsza wersje gry.
+"""
+    put('docs/nasze-zmiany/NOWY-CZAT.md',new_chat.encode('utf-8'))
+
     registry = DEST/'docs/nasze-zmiany/REJESTR-ZAPISOW.md'
     old=registry.read_text(encoding='utf-8') if registry.is_file() else '# Rejestr zapisow\n'
     put('docs/nasze-zmiany/REJESTR-ZAPISOW.md',
