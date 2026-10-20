@@ -1,0 +1,187 @@
+# MT2009_PLUS_CHEST_EDITOR_V1 - grupy special_item_group.txt zmienione w panelu Seban
+# zapis: 2026-10-09 22:41:05 - zmieniono grupe 50035
+# Te grupy zastepuja grupy z obrazu gry o tym samym Vnum (m2-chests, przy starcie rdzeni).
+
+Group	PanelChest_3210
+{
+	Vnum	3210
+	1	27001	1	1	0	-- Czerwona Mikstura (M) - do zmiany
+}
+
+Group	Kamien_Duszy_0
+{
+	Vnum	10980
+	1	27001	1	1	0	-- Czerwona Mikstura(M)
+}
+
+Group	Kamien_Duszy_1
+{
+	Vnum	10981
+	1	27001	1	1	0	-- Czerwona Mikstura(M)
+}
+
+Group	Kamien_Duszy_2
+{
+	Vnum	10982
+	1	27001	1	1	0	-- Czerwona Mikstura(M)
+}
+
+Group	Kamien_Duszy_3
+{
+	Vnum	10983
+	1	27001	1	1	0	-- Czerwona Mikstura(M)
+}
+
+Group	Kamien_Duszy_4
+{
+	Vnum	10984
+	1	27001	1	1	0	-- Czerwona Mikstura(M)
+}
+
+Group	PanelChest_27999
+{
+	Vnum	27999
+	1	28030	1	5	0	-- Kamień Duszy Penetr.+0
+	2	28031	1	5	0	-- Kamień Duszy Śmierci+0
+	3	28032	1	5	0	-- Kamień Duszy Powtórki+0
+	4	28033	1	5	0	-- Kamień Duszy Wojownika+0
+	5	28034	1	5	0	-- Kamień Duszy Ninja+0
+	6	28035	1	5	0	-- Kamień Duszy Sury+0
+	7	28036	1	5	0	-- Kamień Duszy Szamana+0
+	8	28037	1	5	0	-- Kamień Duszy Potwora+0
+	9	28038	1	5	0	-- Kamień Duszy Uchylenia+0
+	10	28039	1	5	0	-- Kamień Duszy Uniku+0
+	11	28040	1	5	0	-- Kamień Duszy Magii+0
+	12	28041	1	5	0	-- Kamień Witalności+0
+	13	28042	1	5	0	-- Kamień Duszy Obrony+0
+	14	28043	1	5	0	-- Kamień Duszy Przysp.+0
+	15	28130	1	4	0	-- Kamień Duszy Penetr.+1
+	16	28131	1	4	0	-- Kamień Duszy Śmierci+1
+	17	28132	1	4	0	-- Kamień Duszy Powtórki+1
+	18	28133	1	4	0	-- Kamień Duszy Wojownika+1
+	19	28134	1	4	0	-- Kamień Duszy Ninja+1
+	20	28135	1	4	0	-- Kamień Duszy Sury+1
+	21	28136	1	4	0	-- Kamień Duszy Szamana+1
+	22	28137	1	4	0	-- Kamień Duszy Potwora+1
+	23	28138	1	4	0	-- Kamień Duszy Uchylenia+1
+	24	28139	1	4	0	-- Kamień Duszy Uniku+1
+	25	28140	1	4	0	-- Kamień Duszy Magii+1
+	26	28141	1	4	0	-- Kamień Witalności+1
+	27	28142	1	4	0	-- Kamień Duszy Obrony+1
+	28	28143	1	4	0	-- Kamień Duszy Przysp.+1
+	29	28230	1	3	0	-- Kamień Duszy Penetr.+2
+	30	28231	1	3	0	-- Kamień Duszy Śmierci+2
+	31	28232	1	3	0	-- Kamień Duszy Powtórki+2
+	32	28233	1	3	0	-- Kamień Duszy Wojownika+2
+	33	28234	1	3	0	-- Kamień Duszy Ninja+2
+	34	28235	1	3	0	-- Kamień Duszy Sury+2
+	35	28236	1	3	0	-- Kamień Duszy Szamana+2
+	36	28237	1	3	0	-- Kamień Duszy Potwora+2
+	37	28238	1	3	0	-- Kamień Duszy Uchylenia+2
+	38	28239	1	3	0	-- Kamień Duszy Uniku+2
+	39	28240	1	3	0	-- Kamień Duszy Magii+2
+	40	28241	1	3	0	-- Kamień Witalności+2
+	41	28242	1	3	0	-- Kamień Duszy Obrony+2
+	42	28243	1	3	0	-- Kamień Duszy Przysp.+2
+	43	28330	1	2	0	-- Kamień Duszy Penetr.+3
+	44	28331	1	2	0	-- Kamień Duszy Śmierci+3
+	45	28332	1	2	0	-- Kamień Duszy Powtórki+3
+	46	28333	1	2	0	-- Kamień Duszy Wojownika+3
+	47	28334	1	2	0	-- Kamień Duszy Ninja+3
+	48	28335	1	2	0	-- Kamień Duszy Sury+3
+	49	28336	1	2	0	-- Kamień Duszy Szamana+3
+	50	28337	1	2	0	-- Kamień Duszy Potwora+3
+	51	28338	1	2	0	-- Kamień Duszy Uchylenia+3
+	52	28339	1	2	0	-- Kamień Duszy Uniku+3
+	53	28340	1	2	0	-- Kamień Duszy Magii+3
+	54	28341	1	2	0	-- Kamień Witalności+3
+	55	28342	1	2	0	-- Kamień Duszy Obrony+3
+	56	28343	1	2	0	-- Kamień Duszy Przysp.+3
+	57	28430	1	1	0	-- Kamień Duszy Penetr.+4
+	58	28431	1	1	0	-- Kamień Duszy Śmierci+4
+	59	28432	1	1	0	-- Kamień Duszy Powtórki+4
+	60	28433	1	1	0	-- Kamień Duszy Wojownika+4
+	61	28434	1	1	0	-- Kamień Duszy Ninja+4
+	62	28435	1	1	0	-- Kamień Duszy Sury+4
+	63	28436	1	1	0	-- Kamień Duszy Szamana+4
+	64	28437	1	1	0	-- Kamień Duszy Potwora+4
+	65	28438	1	1	0	-- Kamień Duszy Uchylenia+4
+	66	28439	1	1	0	-- Kamień Duszy Uniku+4
+	67	28440	1	1	0	-- Kamień Duszy Magii+4
+	68	28441	1	1	0	-- Kamień Witalności+4
+	69	28442	1	1	0	-- Kamień Duszy Obrony+4
+	70	28443	1	1	0	-- Kamień Duszy Przysp.+4
+	71	1	1	1	0	-- Yang
+}
+
+Group	MT2009_chest_30773
+{
+	Vnum	30773
+	Type	pct
+	1	s950731	1	100	0	-- Losowanie z grupy 950731 (MT2009_chest_biblioteka_gear)
+	2	s950732	1	100	0	-- Losowanie z grupy 950732 (MT2009_chest_biblioteka_misc)
+	3	s950732	1	40	0	-- Losowanie z grupy 950732 (MT2009_chest_biblioteka_misc)
+	4	s950733	1	30	0	-- Losowanie z grupy 950733 (MT2009_chest_biblioteka_pet)
+	5	s950734	1	100	0	-- Losowanie z grupy 950734 (MT2009_chest_biblioteka_sakwa)
+	6	s950735	1	40	0	-- Losowanie z grupy 950735 (MT2009_chest_biblioteka_mat)
+	7	s950736	1	15	0	-- Losowanie z grupy 950736 (MT2009_chest_biblioteka_val)
+	8	39030	1	5	0	-- Rada Pustelnika
+	9	39008	1	5	0	-- Zwój Egzorcyzmu
+}
+
+Group	알수없는상자
+{
+	Vnum	50033
+	1	25040	1	1	0	-- Zwój Błogosławieństwa
+	2	3210	1	1	0	-- Ostrze Z Czerw. Stali+0
+	3	290	1	1	0	-- Miecz Pełni Księżyca+0
+	4	7160	1	1	0	-- Wachlarz Jes. Wiatru+0
+	5	2150	1	1	0	-- Łuk Z Rogu Jelenia+0
+	6	5110	1	1	0	-- Antyczny Dzwon+0
+	7	1170	1	1	0	-- Kozik Czar. Liś.+0
+}
+
+Group	어린이날선물상자_3
+{
+	Vnum	50035
+	1	50300	1	1	0	-- Księga Umiejętności
+}
+
+Group	부서진_귀걸이_상자
+{
+	Vnum	50122
+	1	71284	1	1	0	-- Zaczarowanie Przedmiotu
+	2	71285	1	1	0	-- Wzmocnienie Przedmiotu
+}
+
+Group	eva_box
+{
+	Vnum	50124
+	1	71152	1	1	0	-- Zielona Siła
+	2	71151	1	1	0	-- Zielony Czar
+}
+
+Group	MT2009_chest_30921_dusza5
+{
+	Vnum	950928
+	1	27001	1	1	0	-- Czerwona Mikstura(M)
+}
+
+Group MT2009_Egzo_39008
+{
+	Vnum	90039008
+	1	39008	1	32000
+	2	39008	2	30400
+	3	39008	3	1560
+	4	39008	4	39
+	5	39008	5	1
+}
+Group MT2009_Egzo_39030
+{
+	Vnum	90039030
+	1	39030	1	32000
+	2	39030	2	30400
+	3	39030	3	1560
+	4	39030	4	39
+	5	39030	5	1
+}

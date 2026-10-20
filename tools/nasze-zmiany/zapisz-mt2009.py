@@ -161,6 +161,7 @@ try:
         '.md','.csv','.ttf','.otf'
     }
     roots = [
+        'docker/game/zachowane-zmiany',
         'docker/game/quest','docker/game/ukrainka','docker/game/bin',
         'docker/game/arezzo','docker/game/atlantyda','docker/game/dungeons',
         'docker/game/ochao','docker/game/zodiak','docker/game/treasure_hunt',

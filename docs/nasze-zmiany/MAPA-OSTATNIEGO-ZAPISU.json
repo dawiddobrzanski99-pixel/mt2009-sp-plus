@@ -1,6 +1,6 @@
 {
   "AGENTS.md": {
-    "source": "wygenerowany",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 1193,
     "sha256": "216544ee8f5a9d9f2d1238fbc52424d1ab5078cfa2967af9410df2c38ee6b99f"
   },
@@ -10,42 +10,47 @@
     "sha256": "4fe3fc9924d6e29940c2c85448eacdc84bb816a924f1cddec31ac21b8845965e"
   },
   "docs/nasze-zmiany/MAPA-OSTATNIEGO-ZAPISU.json": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
-    "bytes": 1769740,
-    "sha256": "729ba7a6ef57b7446986208c5cd7039278294108650fdb12e68f79def7ddfede"
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
+    "bytes": 1770105,
+    "sha256": "10465d74aeacd2b8496a9535bc938e608bb846b558fca2efdd42b98d04627059"
   },
   "docs/nasze-zmiany/MAPA-PLIKOW.json": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 248317,
     "sha256": "785d20f916b566332b021b41ff1c9e5b020fff0ea34bdf3b1dc6a8b8c4d0f536"
   },
   "docs/nasze-zmiany/MAPA-PUBLIKACJI.json": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 761775,
     "sha256": "7b5d40c650a00a54f01890e15f29b2a5c8a7dbb96dd49d823ac6ae8c6b2f138f"
   },
+  "docs/nasze-zmiany/NOWY-CZAT.md": {
+    "source": "wygenerowany",
+    "bytes": 1373,
+    "sha256": "414479f5ef0ef33b12cd3a2fef4c7a6ce74e27bf60e27f0e724c661480e4a59f"
+  },
   "docs/nasze-zmiany/REJESTR-ZAPISOW.md": {
     "source": "wygenerowany",
-    "bytes": 231,
-    "sha256": "b68f57138d2486c54339e5a51df114dfafffa463f0d5e3680dd71b72a03693e7"
+    "bytes": 462,
+    "sha256": "0c51d0ea9ceef1b19da8b6827628cafd8bc8f32def55b36f3bb5eb3a5ef96cc1"
   },
   "docs/nasze-zmiany/STAN-ZAPISU.md": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 1977,
     "sha256": "033c4dd7db076a46da494e3d1d2b8b3dadc13404408691a2669ea41aa06b5d5b"
   },
   "docs/nasze-zmiany/START-TUTAJ.md": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 1741,
     "sha256": "8c828c546065a3fdd09bbdaf46e3b1f5e243c686a17386028171b0924e9f8882"
   },
   "docs/nasze-zmiany/WERYFIKACJA.md": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 962,
     "sha256": "625de5ff3e47c865527dc038909fa38115270cb2fa4e3cce43f186aec2a81578"
   },
   "docs/nasze-zmiany/WYMAGANIA-ZAPISU.md": {
-    "source": "Git 0aef48f0c0b7ddef4a9dc15a75a24e0eab5ddd90",
+    "source": "Git aa317df6926c5c099db1ed1855efebc7a40e9bc9",
     "bytes": 2947,
     "sha256": "7a7c8917b4326ef857ef539c99fbc6528441a80b4bd51c69055f9c2c1b78a109"
   },
@@ -24584,6 +24589,31 @@
     "bytes": 41322,
     "sha256": "6c10722222867b1d5f7c7c20c3a80ec37b58439d7d66ef66f0729fde7137a532"
   },
+  "linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/README.md": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/README.md",
+    "bytes": 953,
+    "sha256": "ca002e00ad7bc51321a6437e25616badd3bc4d9322b7e848b8a7e71ba805e107"
+  },
+  "linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/SHA256SUMS.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/SHA256SUMS.txt",
+    "bytes": 275,
+    "sha256": "f9c45304604a8183df2ee0065a4b767e45fb9f658f5b03eaf08f0f536afe59b3"
+  },
+  "linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/deviltower5_regen.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/deviltower5_regen.txt",
+    "bytes": 1295,
+    "sha256": "f2d123da84cc0453da8c7d5e81f372e6ac9650f3cd0a1508a403cad611cf3d88"
+  },
+  "linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/mob_drop_item.custom.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/mob_drop_item.custom.txt",
+    "bytes": 156772,
+    "sha256": "4e3a2336e06dc41e421b0b1e8670d2c1d9ffa63e41a810b8a695df323180c5bc"
+  },
+  "linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/special_item_group.custom.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/special_item_group.custom.txt",
+    "bytes": 5556,
+    "sha256": "2cc72c80cd52b54a0c7b823210f7c6fd90a9a21b4b777fe0d82e0cb2a9243b85"
+  },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/BanManager.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/BanManager.cpp",
     "bytes": 5301,
@@ -33711,8 +33741,8 @@
   },
   "tools/nasze-zmiany/zapisz-mt2009.py": {
     "source": "/usr/local/bin/zapisz-mt2009",
-    "bytes": 23797,
-    "sha256": "5a48d71f1c55a0d410790677b28a9ac922842c0aed51230f90f1bd70744a9399"
+    "bytes": 23837,
+    "sha256": "889acbef862ff57a1ba2c68a7422480bc49d765fb9e1585ac8c43ae8063e3d18"
   },
   "tools/nasze-zmiany/wyslij-zestaw.py": {
     "source": "/root/mt2009-git-20261019-203457-8wnhzjlu/wyslij-zestaw.py",
@@ -33728,10 +33758,5 @@
     "source": "/root/odswiez-pelny-zip.py",
     "bytes": 5576,
     "sha256": "5c54c05f1e3f875ac7b5cc4ab507e5c09447e21752f0d6b51942711fd06ae14d"
-  },
-  "docs/nasze-zmiany/NOWY-CZAT.md": {
-    "source": "wygenerowany",
-    "bytes": 1373,
-    "sha256": "414479f5ef0ef33b12cd3a2fef4c7a6ce74e27bf60e27f0e724c661480e4a59f"
   }
 }
