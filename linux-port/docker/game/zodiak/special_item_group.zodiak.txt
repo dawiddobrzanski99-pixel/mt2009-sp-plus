@@ -1,0 +1,45 @@
+# MT2009_PLUS_ZODIAC_ITEMS_V1 (the owner, 9 October; Autor: Digi Rasta's Swiatynia Zodiaku): Zlota Skrzynia
+# Zodiaku (33033) - the temple's main boss, its sign's General (27x2: 2752, 2762 ... 2862, the last boss, floor 34),
+# gives one to every character on the floor, bots included (CZodiacManager::DeadMob -> CZodiac::GiveGiftBox).
+# One item an opening by weight (of 1000): the seven Zodiac weapons +0 together 6%, the four armours +0 8%, the
+# rest 86% (potions 54%, attack/haste potions and peach wine 18%, Cor Draconis 4%, our five simple sashes +0 -
+# the bots' tier-1 drop list - 10%). Not in our world: the Wolfman's claw and harness (6120, 21200), the wiki's
+# Chen/Xu/Zi/Shen/Wu/Yin sashes, Kula Polimorfii. The Zodiac weapons come from here only - never from the
+# Razador / Nemere chests. Appended to special_item_group.txt by the Dockerfile (share: Swiatynia Zodiaku).
+
+Group	MT2009_zodiac_chest_33033
+{
+	Vnum	33033 -- Zlota Skrzynia Zodiaku
+	1	27005	100	90 -- Niebieska Mikstura (S) x100
+	2	27005	200	90 -- Niebieska Mikstura (S) x200
+	3	27006	100	90 -- Niebieska Mikstura (D) x100
+	4	27002	100	90 -- Czerwona Mikstura (S) x100
+	5	27002	200	90 -- Czerwona Mikstura (S) x200
+	6	27003	100	90 -- Czerwona Mikstura (D) x100
+	7	71014	5	60 -- Mikstura Ataku +10 x5
+	8	70020	5	60 -- Wino z Kwiatu Brzoskwini x5
+	9	71101	5	60 -- Mikstura Pospiechu x5
+	10	51501	1	40 -- Cor Draconis (surowe)
+	11	85001	1	20 -- Szarfa Wladcy +0
+	12	85005	1	20 -- Szarfa Mistrza +0
+	13	85011	1	20 -- Szarfa Wladcy Absolutnego +0
+	14	85015	1	20 -- Krolewska Szarfa +0
+	15	85021	1	20 -- Rocznicowa Szarfa +0
+	16	310	1	9 -- Miecz Zodiaku+0
+	17	5160	1	9 -- Dzwon Zodiaku+0
+	18	7300	1	9 -- Wachlarz Zodiaku+0
+	19	3220	1	9 -- Glewia Zodiaku+0
+	20	1180	1	8 -- Sztylet Zodiaku+0
+	21	2200	1	8 -- Luk Zodiaku+0
+	22	300	1	8 -- Ostrze Zodiaku+0
+	23	19490	1	20 -- Ubranie Zodiaku+0
+	24	19890	1	20 -- Szata Zodiaku+0
+	25	19290	1	20 -- Zbroja Zodiaku+0
+	26	19690	1	20 -- Zbroja Plytowa Zodiaku+0
+}
+Group	MT2009_zodiac_mats_jungle
+{
+	Vnum	951311 -- Skrzynia Dzungli (30776, line 10 at 20%): Dwutlenek Tytanu or Agat (owner, 9 October)
+	1	30616	1	50 -- Dwutlenek Tytanu
+	2	30617	1	50 -- Agat
+}

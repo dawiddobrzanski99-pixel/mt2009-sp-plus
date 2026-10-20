@@ -1,0 +1,94 @@
+{% extends 'base.html' %}{% block title %}Podgląd rynku · {{ panel_brand }}{% endblock %}{% block content %}
+{#- MT2009_PLUS_MARKET_PREVIEW_V1: the market preview (market_preview/__init__.py). -#}
+<link rel="stylesheet" href="{{ static_asset_url('market-preview.css') }}">
+<p class="eyebrow">GOSPODARKA</p><h1>Podgląd rynku <span class="mk-badge-exp-top">wersja eksperymentalna</span></h1>
+<p class="muted">Wszystkie oferty sklepów offline ze wszystkich królestw – botów i graczy. Kategorie, filtry po poziomie, ulepszeniu i bonusach, okazje cenowe i teleport Twojej postaci do sklepu. Migawka rynku odświeża się co minutę, gdy ta karta jest otwarta.</p>
+<div class="mk" id="mk">
+<div class="mk-card" style="padding:12px 14px">
+ <div class="mk-top">
+  <button type="button" class="mk-btn2 mk-sidetoggle" id="mk-sidetoggle">☰ Kategorie i filtry</button>
+  <div class="mk-search">
+   <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+   <input id="mk-q" type="search" maxlength="60" autocomplete="off" placeholder="Szukaj przedmiotu…" aria-label="Szukaj przedmiotu">
+  </div>
+  <span class="mk-count" id="mk-count">…</span>
+  <div class="mk-sortbox"><select id="mk-sort" aria-label="Sortowanie">
+   {% for key, name in sorts.items() %}<option value="{{ key }}">{{ name }}</option>{% endfor %}
+  </select></div>
+ </div>
+ <div class="mk-meta"><span id="mk-when">…</span> · <button type="button" class="mk-link" id="mk-refresh">odśwież</button>
+  <span id="mk-chips" class="mk-chips" style="margin:0"></span></div>
+</div>
+<div class="mk-layout">
+ <aside class="mk-side" id="mk-side">
+  <div class="mk-card"><div class="mk-sec">KATEGORIE</div><ul class="mk-cats" id="mk-cats"></ul></div>
+  <div class="mk-card" id="mk-filters"><div class="mk-sec">FILTRY</div>
+   <div class="mk-f"><span class="mk-lab">Cena</span>
+    <div class="mk-pair"><div><input id="mk-pmin" placeholder="od" inputmode="decimal"><div class="mk-err">Błędna wartość</div></div>
+    <div><input id="mk-pmax" placeholder="do" inputmode="decimal"><div class="mk-err">Błędna wartość</div></div></div>
+    <div class="mk-hint">np. 500k, 1.5kk</div>
+    <label class="mk-check"><input type="checkbox" id="mk-unit">Cena za sztukę zamiast ceny linii</label></div>
+   <div class="mk-f"><span class="mk-lab">Poziom przedmiotu</span>
+    <div class="mk-pair"><div><input id="mk-lmin" placeholder="od lv" inputmode="numeric"><div class="mk-err">Błędna wartość</div></div>
+    <div><input id="mk-lmax" placeholder="do lv" inputmode="numeric"><div class="mk-err">Błędna wartość</div></div></div></div>
+   <div class="mk-f"><span class="mk-lab">Ulepszenie</span>
+    <div class="mk-pair"><select id="mk-rmin" aria-label="Ulepszenie od"><option value="">od: dowolne</option>
+     {% for n in range(0, 20) %}<option value="{{ n }}">+{{ n }}</option>{% endfor %}</select>
+    <select id="mk-rmax" aria-label="Ulepszenie do"><option value="">do: dowolne</option>
+     {% for n in range(0, 20) %}<option value="{{ n }}">+{{ n }}</option>{% endfor %}</select></div></div>
+   <div class="mk-f"><span class="mk-lab">Klasa</span>
+    <select id="mk-cls"><option value="">wszystkie</option>
+     {% for key in class_keys %}<option value="{{ key }}">{{ class_names[loop.index0] }}</option>{% endfor %}</select></div>
+   <div class="mk-f"><span class="mk-lab">Bonus</span>
+    <div id="mk-bonuses"></div>
+    <button type="button" class="mk-link" id="mk-bonus-add">+ dodaj bonus</button></div>
+   <div class="mk-f"><span class="mk-lab">Min. bonusów</span>
+    <select id="mk-nbmin"><option value="">0</option>{% for n in range(1, 6) %}<option value="{{ n }}">{{ n }}</option>{% endfor %}</select>
+    <label class="mk-check"><input type="checkbox" id="mk-maxonly">Tylko z bonusem maksymalnym</label>
+    <select id="mk-nmaxmin" aria-label="min. bonusów maksymalnych"><option value="">min. bonusów maksymalnych: 1</option>
+     {% for n in range(2, 5) %}<option value="{{ n }}">min. bonusów maksymalnych: {{ n }}</option>{% endfor %}</select></div>
+   <div class="mk-f mk-weapon-only"><span class="mk-lab">Średnie obrażenia (ŚR)</span>
+    <div class="mk-pair"><div><input id="mk-avgmin" placeholder="od" inputmode="numeric"><div class="mk-err">Błędna wartość</div></div>
+    <div><input id="mk-avgmax" placeholder="do" inputmode="numeric"><div class="mk-err">Błędna wartość</div></div></div></div>
+   <div class="mk-f mk-weapon-only"><span class="mk-lab">Obrażenia umiejętności (UM)</span>
+    <div class="mk-pair"><div><input id="mk-sklmin" placeholder="od" inputmode="numeric"><div class="mk-err">Błędna wartość</div></div>
+    <div><input id="mk-sklmax" placeholder="do" inputmode="numeric"><div class="mk-err">Błędna wartość</div></div></div></div>
+   <div class="mk-f mk-gear-only"><span class="mk-lab">Kamienie duszy w przedmiocie</span>
+    <select id="mk-ks"><option value="">dowolne</option><option value="has">ma kamień duszy</option>
+     {% for stone in stones %}<option value="{{ stone.v }}">{{ stone.n }}</option>{% endfor %}</select></div>
+   <div class="mk-f"><span class="mk-lab">Królestwo</span>
+    <select id="mk-emp"><option value="">wszystkie</option>
+     {% for name in empires %}<option value="{{ loop.index }}">{{ name }}</option>{% endfor %}</select></div>
+   <div class="mk-f"><span class="mk-lab">Sprzedawca</span>
+    <select id="mk-seller"><option value="">wszyscy</option><option value="bot">tylko boty</option>
+     <option value="person">tylko gracze</option></select>
+    <input id="mk-sname" maxlength="60" placeholder="nazwa sprzedawcy lub sklepu" style="margin-top:6px"></div>
+   <div class="mk-f"><label class="mk-check"><input type="checkbox" id="mk-deals">Tylko okazje</label>
+    <input id="mk-dmin" inputmode="numeric" placeholder="co najmniej X% taniej" aria-label="co najmniej X% taniej"><div class="mk-err">Błędna wartość</div></div>
+   <div class="mk-f"><label class="mk-check" title="Przedmioty, których na wszystkich otwartych sklepach wszystkich królestw jest mniej niż 10 sztuk."><input type="checkbox" id="mk-rare">Tylko rzadkie</label></div>
+   <div class="mk-f"><label class="mk-check" title="Pojedyncza księga albo ulepszacz za co najmniej pięciokrotność zwykłej ceny."><input type="checkbox" id="mk-hideslip" checked>Ukryj podejrzane ceny</label>
+    <label class="mk-check"><input type="checkbox" id="mk-expired">Pokaż zamknięte sklepy</label></div>
+   <div class="mk-actions"><button type="button" class="mk-btn" id="mk-apply">Zastosuj</button>
+    <button type="button" class="mk-btn2" id="mk-clear">Wyczyść filtry</button></div>
+  </div>
+  <div class="mk-card"><div class="mk-sec">TELEPORT</div><p class="mk-muted" style="margin:0">Przycisk „⚡ TP” przy ofercie przenosi Twoją postać, która jest teraz w grze (gracz albo GM, nie bot), pod sklep – na jego kanał. Działa jak „Teleportuj moją postać” na karcie bota.</p><div class="mk-hist" id="mk-hist" style="margin-top:8px"></div></div>
+ </aside>
+ <section>
+  <div id="mk-chart" class="mk-card mk-chart" style="display:none"></div>
+  <div class="mk-list" id="mk-list"></div>
+  <div class="mk-pager" id="mk-pager"></div>
+ </section>
+</div>
+<div class="mk-cmpbar" id="mk-cmpbar"><button type="button" class="mk-btn" id="mk-cmp-open"></button>
+ <button type="button" class="mk-btn2" id="mk-cmp-clear">Odznacz wszystkie</button></div>
+<div class="mk-modal" id="mk-modal" role="dialog" aria-modal="true"><div class="box">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+  <b style="font-size:16px">Porównanie ofert</b><button type="button" class="mk-btn2" id="mk-cmp-close">Zamknij</button></div>
+ <div class="mk-cmp" id="mk-cmp"></div></div></div>
+<div class="mk-tip" id="mk-tip"></div>
+<div class="mk-pop" id="mk-pop" role="tooltip"></div>
+<div class="mk-toast" id="mk-toast" role="status" aria-live="polite"></div>
+<script type="application/json" id="mk-data">{{ data|tojson }}</script>
+</div>
+<script src="{{ static_asset_url('market-preview.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,97 @@
+// MT2009_PLUS_ZODIAC_ITEMS_V1: the Zodiac refine ladder's materials (the owner's decision, 9 October).
+// Type drop: pct / 4 percent at the server's 100% drop (the level and rate multipliers apply);
+// Type limit: a plain percent a kill (outside them, a group of its own - the Seban panel's saved drop groups
+// do not hide it).
+//  * Stabilne Sznury (95601) - Mag Ochao (6303) 1% (the wiki's source), and with Ciezkie Pasy (95603) 0.5% each
+//    from every regular monster of Swiatynia Ochao (209: 6301-6305) and Zaczarowany Las (362: lemurs 9611-9615).
+//  * Dwutlenek Tytanu (30616) 3% and Agat (30617) 2% from the twenty level 103-107 bosses (3090-3891) - lines in
+//    their limit groups in mob_drop_item.beltmats.append.txt (a mob has one limit group); both also from Skrzynia
+//    Dzungli (special_item_group.arezzo2.txt line 10, 20%).
+//  * Kamien Ksiezycowy (30618), the rarest: Beran-Setaou (2493) 5%; Skrzynia Mroku (50254, ~5% of its weight).
+
+Group	MT2009_zodiak_mat_6303
+{
+	mob	6303	-- Mag Ochao (lv 100)
+	Type	drop
+	1	95601	1	4	-- Stabilne Sznury, 1%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_6301
+{
+	mob	6301	-- Wojownik Ochao
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_6302
+{
+	mob	6302	-- Zolnierz Ochao
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_6304
+{
+	mob	6304	-- Kat Ochao
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_6305
+{
+	mob	6305	-- General Ochao
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_9611
+{
+	mob	9611	-- Lemur Wojownik
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_9612
+{
+	mob	9612	-- Lemur Zolnierz
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_9613
+{
+	mob	9613	-- Lemur Mag
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_9614
+{
+	mob	9614	-- Lemur Kat
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matreg_9615
+{
+	mob	9615	-- Lemur General
+	Type	drop
+	1	95601	1	2	-- Stabilne Sznury, 0.5%
+	2	95603	1	2	-- Ciezkie Pasy, 0.5%
+}
+
+Group	MT2009_zodiak_matboss_2493
+{
+	mob	2493	-- Beran-Setaou
+	Type	drop
+	1	30618	1	20	-- Kamien Ksiezycowy, 5%
+}

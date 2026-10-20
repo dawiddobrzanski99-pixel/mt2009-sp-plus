@@ -1,0 +1,22 @@
+[
+  {
+    "p": "customizations/client-packs/root/uiquestbonuspreview.py",
+    "c": "77edb8f7bf2498e857a8d8ea48730134338407f1ac8f94642ed27a8434290f2f"
+  },
+  {
+    "p": "customizations/server-source-snapshot/docker/game/src/server/game/src/playerbot_minigames.h",
+    "c": "2ed676c77dee019a020e1bbcf9f1dca53414d4070d1e637a87c3ef6cbc9249f2"
+  },
+  {
+    "p": "customizations/server-source-snapshot/docker/game/src/server/game/src/playerbot_minigames.h",
+    "c": "47f035ae516586ce19bdab9acc4d159692e273743f2e381d3c465d52a6378a0d"
+  },
+  {
+    "p": "customizations/server-source-snapshot/docker/game/src/server/game/src/text_file_loader.cpp",
+    "c": "e87c75fd6ab31fe71f93d8c45aa376e29d98c3180f44b899a83c7d7089f42f95"
+  },
+  {
+    "p": "customizations/server-source-snapshot/docker/game/src/server/game/src/text_file_loader.h",
+    "c": "dd00401658ea08401be255be84c84d5d46aa7d2a3c9d008922065c3c40c88294"
+  }
+]

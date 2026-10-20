@@ -1,0 +1,261 @@
+{
+  "table": "shop",
+  "columns": [
+    {
+      "name": "vnum",
+      "type": "int",
+      "key": "PRI",
+      "charset": null,
+      "collation": null,
+      "hex_encoded": false
+    },
+    {
+      "name": "name",
+      "type": "varchar",
+      "key": "",
+      "charset": "latin1",
+      "collation": "latin1_swedish_ci",
+      "hex_encoded": true
+    },
+    {
+      "name": "npc_vnum",
+      "type": "smallint",
+      "key": "",
+      "charset": null,
+      "collation": null,
+      "hex_encoded": false
+    }
+  ],
+  "rows": [
+    {
+      "vnum": 1,
+      "name": "576561706F6E2053686F70204465616C6572",
+      "npc_vnum": 9001
+    },
+    {
+      "vnum": 2,
+      "name": "4669736865726D616E",
+      "npc_vnum": 9009
+    },
+    {
+      "vnum": 3,
+      "name": "47656E6572616C2053746F72652053616C6573776F6D616E",
+      "npc_vnum": 9003
+    },
+    {
+      "vnum": 4,
+      "name": "41726D6F75722053686F70204465616C6572",
+      "npc_vnum": 9002
+    },
+    {
+      "vnum": 5,
+      "name": "576561706F6E2053686F70204465616C65722032",
+      "npc_vnum": 9007
+    },
+    {
+      "vnum": 6,
+      "name": "41726D6F75722053686F70204465616C65722032",
+      "npc_vnum": 9008
+    },
+    {
+      "vnum": 7,
+      "name": "676F6C645F6261725F73686F70",
+      "npc_vnum": 9005
+    },
+    {
+      "vnum": 8,
+      "name": "66697265776F726B5F73686F70",
+      "npc_vnum": 9004
+    },
+    {
+      "vnum": 9,
+      "name": "506564646C6572",
+      "npc_vnum": 20042
+    },
+    {
+      "vnum": 10,
+      "name": "7069636B5F73686F70",
+      "npc_vnum": 20015
+    },
+    {
+      "vnum": 11,
+      "name": "537461626C6520426F79",
+      "npc_vnum": 20349
+    },
+    {
+      "vnum": 13,
+      "name": "416C6368656D697374",
+      "npc_vnum": 20001
+    },
+    {
+      "vnum": 14,
+      "name": "41682D597520436F7374756D652053686F70",
+      "npc_vnum": 20003
+    },
+    {
+      "vnum": 16,
+      "name": "6E6162697261",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 41,
+      "name": "5A6F64696163204D65726368616E74",
+      "npc_vnum": 20451
+    },
+    {
+      "vnum": 989,
+      "name": "726F7379",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 990,
+      "name": "686967685F6974656D7932",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 991,
+      "name": "686967685F6974656D79",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 992,
+      "name": "626574615F67656E6572616C5F6574617033",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 993,
+      "name": "626574615F67656E6572616C5F6574617032",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 994,
+      "name": "686967685F62726F6E6965",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 995,
+      "name": "626574615F756C65706B6933",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 996,
+      "name": "626574615F756C65706B6932",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 997,
+      "name": "626574615F756C65706B6931",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 998,
+      "name": "626574615F68657262",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 999,
+      "name": "62657461",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1001,
+      "name": "616C6C5F73776F7264",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1002,
+      "name": "616C6C5F6475616C68616E645F73776F7264",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1003,
+      "name": "616C6C5F626F77",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1004,
+      "name": "616C6C5F74776F68616E645F73776F7264",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1005,
+      "name": "616C6C5F62656C6C",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1006,
+      "name": "616C6C5F66616E",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1007,
+      "name": "616C6C5F77617272696F725F61726D6F7572",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1008,
+      "name": "616C6C5F617373617373696E5F61726D6F7572",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1009,
+      "name": "616C6C5F737572615F61726D6F7572",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1010,
+      "name": "616C6C5F7368616D616E5F61726D6F7572",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1011,
+      "name": "616C6C5F77617272696F725F68656C6D6574",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1012,
+      "name": "616C6C5F617373617373696E5F68656C6D6574",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1013,
+      "name": "616C6C5F737572615F68656C6D6574",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1014,
+      "name": "616C6C5F7368616D616E5F68656C6D6574",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1015,
+      "name": "616C6C5F736869656C64",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1016,
+      "name": "616C6C5F62726163656C6574",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1017,
+      "name": "616C6C5F73686F65",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1018,
+      "name": "616C6C5F6E65636B6C616365",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 1019,
+      "name": "616C6C5F72696E67",
+      "npc_vnum": 0
+    },
+    {
+      "vnum": 9550,
+      "name": "4D697374727A202D204B7769617479205A7977696F6C75",
+      "npc_vnum": 20082
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+"Bonus level: Destroy Metin stones.";
+"Poziom bonusowy: zniszcz Kamienie Metin";
+
+"Bonus level: Destroy a Metin stone.";
+"Poziom bonusowy: zniszcz kamieñ Metin.";
+
+"Bonus level: You have 5 minutes to trade with the merchant and stock up on supplies.";
+"Poziom bonusowy: zakupy u handlarza mo¿ecie robiæ tylko przez 5 minut, by powiêkszyæ wasze zapasy.";
+
+"Bonus_level:_Destroy_Metin_stones.";
+"Poziom bonusowy: zniszcz Kamienie Metin";
+
+"Bonus_level:_Destroy_a_Metin_stone.";
+"Poziom bonusowy: zniszcz kamieñ Metin.";
+
+"Bonus_level:_You_have_5_minutes_to_trade_with_the_merchant_and_stock_up_on_supplies.";
+"Poziom bonusowy: zakupy u handlarza mo¿ecie robiæ tylko przez 5 minut, by powiêkszyæ wasze zapasy.";
+
+"Defeat all Zodiac bosses.";
+"Pokonaj wszystkich bossów Zodiaku.";
+
+"Defeat all monsters without dying.";
+"Pokonaj wszystkie potwory, nie gin¹c w walce.";
+
+"Defeat all monsters.";
+"Pokonaj wszystkie potwory.";
+
+"Defeat monsters.";
+"Pokonaj potwory.";
+
+"Defeat the Zodiac boss without dying.";
+"Pokonaj bossa Zodiaku, nie gin¹c w walce.";
+
+"Defeat the Zodiac boss.";
+"Pokonaj bossa Zodiaku.";
+
+"Defeat_all_Zodiac_bosses.";
+"Pokonaj wszystkich bossów Zodiaku.";
+
+"Defeat_all_monsters.";
+"Pokonaj wszystkie potwory.";
+
+"Defeat_all_monsters_without_dying.";
+"Pokonaj wszystkie potwory, nie gin¹c w walce.";
+
+"Defeat_monsters.";
+"Pokonaj potwory.";
+
+"Defeat_the_Zodiac_boss.";
+"Pokonaj bossa Zodiaku.";
+
+"Defeat_the_Zodiac_boss_without_dying.";
+"Pokonaj bossa Zodiaku, nie gin¹c w walce.";
+
+"Destroy Metin stones.";
+"Zniszcz Kamienie Metin.";
+
+"Destroy a Metin stone. If you are successful, you'll receive a bonus buff.";
+"Zniszcz Kamienie Metin. Jeœli odniesiesz sukces, otrzymasz buffa bonusowego.";
+
+"Destroy all Metin stones.";
+"Zniszcz wszystkie Kamienie Metin.";
+
+"Destroy_Metin_stones.";
+"Zniszcz Kamienie Metin.";
+
+"Destroy_a_Metin_stone._If_you_are_successful,_you'll_receive_a_bonus_buff.";
+"Zniszcz Kamienie Metin. Jeœli odniesiesz sukces, otrzymasz buffa bonusowego.";
+
+"Destroy_all_Metin_stones.";
+"Zniszcz wszystkie Kamienie Metin.";
+
+"Missing data. Please, contact an administrator.";
+"Brak danych. Skontaktuj siê z administratorem.";
+
+"Only GM have access to this command";
+"Tylko GM ma dostêp do tej komendy.";
+
+"Osiagnieto limit zakupu tego przedmiotu.";
+"Osi¹gniêto limit zakupu tego przedmiotu.";
+
+"The effect is already active.";
+"Ten efekt jest ju¿ aktywny.";
+
+"The mission was unsuccessful.";
+"Misja nie zosta³a wykonana.";
+
+"The person you are trying to revive is not human.";
+"Osoba, któr¹ próbujesz o¿ywiæ, nie jest cz³owiekiem.";
+
+"The_mission_was_unsuccessful.";
+"Misja nie zosta³a wykonana.";
+
+"There is no one to resuscitate.";
+"Nie ma kogo o¿ywiæ.";
+
+"This action can only be done in the Zodiac Temple.";
+"Tê czynnoœæ mo¿na wykonaæ tylko w Œwi¹tyni Zodiaku.";
+
+"Time's up.";
+"Czas siê skoñczy³.";
+
+"Time's_up.";
+"Czas siê skoñczy³.";
+
+"You can not resurrect someone who is alive.";
+"Nie mo¿esz o¿ywiæ kogoœ, kto ¿yje.";
+
+"You don't have enough insignia.";
+"Masz za ma³o insygniów.";
+
+"You haven't enough animasphere.";
+"Masz za ma³o Animosfer.";
+
+"You just missed the bonus level.";
+"Niestety nie uda³o siê wam siê dotrzeæ do poziomu bonusowego.";
+
+"You_just_missed_the_bonus_level.";
+"Niestety nie uda³o siê wam siê dotrzeæ do poziomu bonusowego.";
+
+"[224]Mission complete. As soon as the group leader hits the button, you will be teleported directly to level %u.";
+"Misja zakoñczona. Po naciœniêciu przez lidera grupy przycisku, zostaniecie bezpoœrednio teleportowani do poziomu %d.";
+
+"You can not use this while you have an open window.";
+"Nie mo¿esz tego u¿yæ, gdy masz otwarte okno.";
+
+"Eliminados! Vuestro tiempo en la mazmorra concluye si nadie revive en el plazo de un minuto.";
+"Wszyscy polegli! Wasz czas w Œwi¹tyni skoñczy siê, jeœli nikt nie zostanie wskrzeszony w ci¹gu minuty.";

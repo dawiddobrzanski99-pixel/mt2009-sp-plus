@@ -865,6 +865,22 @@ quest razador_dungeon begin
 
 		when 6091.kill with razador_dungeon.inside() and d.getf("boss") == 1 begin
 			d.setf("boss", 2)
+			do
+			    local egzo_rada_v1 = {39008,39030}
+			    for egzo_i = 1,2 do
+			        if number(1,100) <= 10 then
+			            local egzo_n = number(1,2)
+			            if egzo_n == 2 and number(1,10000) <= 500 then
+			                egzo_n = 3
+			                if number(1,10000) <= 250 then
+			                    egzo_n = 4
+			                    if number(1,10000) <= 250 then egzo_n = 5 end
+			                end
+			            end
+			            game.drop_item_with_ownership(egzo_rada_v1[egzo_i],egzo_n,60)
+			        end
+			    end
+			end
 			razador_dungeon.give_chests()
 			d.update_ranking("razador") -- MT2009_PLUS_DUNGEON_PANEL_V1: the dungeon panel's results
 			d.clear_regen()
