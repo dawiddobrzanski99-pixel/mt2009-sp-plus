@@ -1,5 +1,5 @@
 # MT2009_PLUS_DBDATA_STAMP_V1: znacznik plikow klienta z edytora bazy danych (panel Seban).
 # Gra porownuje go ze znacznikiem serwera i przypomina o pobraniu nowych plikow. Nie zmieniaj.
-stamp 2.0.61-8cb496fb15db
+stamp 2.0.61-d92136e2a21f
 size pack/dbdata.index 1380
 size pack/dbdata.data 1208320

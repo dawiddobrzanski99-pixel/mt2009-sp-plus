@@ -481,6 +481,12 @@ ACMD(do_jump_floor);
 ACMD(do_next_floor);
 ACMD(do_cz_complete_reward);
 #endif
+namespace mission_panel { void KolekcjeCommand(LPCHARACTER ch, const char* argument); } // MT2009_NASZE_KOLEKCJE_V1
+ACMD(do_kolekcje)
+{
+	mission_panel::KolekcjeCommand(ch, argument);
+}
+
 struct command_info cmd_info[] =
 {
 	{ "!RESERVED!",	NULL,			0,			POS_DEAD,	GM_IMPLEMENTOR	},
@@ -961,6 +967,7 @@ struct command_info cmd_info[] =
 	{ "nextfloor",				do_next_floor,			0,			POS_DEAD,	GM_PLAYER	},
 	{ "cz_complete_reward",		do_cz_complete_reward,	0,			POS_DEAD,	GM_IMPLEMENTOR	},
 #endif
+	{ "kolekcje",	do_kolekcje,	0,	POS_DEAD,	GM_PLAYER	}, // MT2009_NASZE_KOLEKCJE_V1
 	{ "\n",		NULL,			0,			POS_DEAD,	GM_IMPLEMENTOR	}
 };
 

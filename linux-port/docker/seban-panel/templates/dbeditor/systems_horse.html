@@ -242,7 +242,7 @@ form.addEventListener('submit',function(){dirty=false;});
 window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
 /* stan rdzeni */
 const labels={not_requested:'Nie zlecono zastosowania.',waiting:'⏳ Oczekiwanie na wszystkie kanały…',applied:'✔ Wszystkie kanały potwierdziły przeliczenie bonusów.',error:'✖ Błąd zastosowania — sprawdź kanały.',unavailable:'Brak wiarygodnego odczytu stanu.',topology_changed:'Zmienił się plan kanałów. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
-const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak potwierdzenia',stale:'Nieaktualny',applying:'Przeliczanie',error:'Błąd'};
+const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak potwierdzenia',offline:'Nie działa – weźmie przy starcie',stale:'Nieaktualny',applying:'Przeliczanie',error:'Błąd'};
 function show(status){
  document.getElementById('apply-state').textContent=(labels[status.state]||'Nieznany stan.')+(status.draft_pending?' Zapisany projekt wymaga osobnego zastosowania.':'');
  const list=document.getElementById('core-state');list.textContent='';

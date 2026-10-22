@@ -93,11 +93,13 @@ class SystemStore:
     def _apply(self, config):
         c = self.codec; ports, plan_hash = self.topology()
         missing = [name for port, name in ports.items() if self.heartbeat(port) is None]
-        if missing: raise ValueError('Brak obsługi lub świeżego potwierdzenia kanałów: ' + ', '.join(missing))
+        # MT2009_NASZE_KANALY_OFFLINE_V1: rdzen, ktory nie dziala (np. kanal wylaczony), wezmie ustawienia przy starcie z request.txt.
+        if len(missing) == len(ports): raise ValueError('Gra nie działa – żaden kanał nie odpowiada: ' + ', '.join(missing))
         if not (self.root / 'draft.json').exists(): atomic(self.root / 'draft.json', c.canonical(config))
         operation = uuid.uuid4().hex
         meta = dict(operation=operation, engine_revision=c.engine_revision(config), config_revision=c.revision(config),
-                    expected={str(p): n for p, n in ports.items()}, plan_sha256=plan_hash, created=time.time())
+                    expected={str(p): n for p, n in ports.items()}, plan_sha256=plan_hash, created=time.time(),
+                    offline=missing)  # MT2009_NASZE_KANALY_OFFLINE_V1
         atomic(self.root / 'operations' / (operation + '.json'), json.dumps(meta).encode())
         atomic(self.root / 'last-request.json', json.dumps(meta).encode())
         if self.topology()[1] != plan_hash: raise ValueError('Plan rdzeni zmienił się podczas operacji.')
@@ -141,6 +143,8 @@ class SystemStore:
             for port, name in ports.items():
                 ack = self.heartbeat(port)
                 state = 'missing' if ack is None else 'ready'
+                if ack is None and meta and name in (meta.get('offline') or []):
+                    result['cores'].append(dict(port=port, name=name, state='offline')); continue  # MT2009_NASZE_KANALY_OFFLINE_V1
                 if meta and ack:
                     if ack.get('state') == 'error': state = 'error'; any_error = True
                     elif ack.get('operation') == meta['operation'] and ack.get('revision') == meta['engine_revision']:

@@ -203,6 +203,9 @@ services:
       M2_PUBLIC_ADDRESS: "${M2_PUBLIC_ADDRESS:-}"
       M2_BIND_IP: "${M2_BIND_IP:-0.0.0.0}"
       M2_CHANNELS: "${M2_CHANNELS:-1}"
+      # MT2009_NASZE_WIDOK_V1: shops / bots (for players) seen from closer; 0 = full range
+      M2_SHOP_VIEW_RANGE: "${M2_SHOP_VIEW_RANGE:-4000}"
+      M2_BOT_VIEW_RANGE: "${M2_BOT_VIEW_RANGE:-6000}"
       M2_MAX_LEVEL: "${M2_MAX_LEVEL:-120}"
       M2_TEST_SERVER: "${M2_TEST_SERVER:-0}"
       M2_MALL_URL: "${M2_MALL_URL:-${M2_PUBLIC_ADDRESS:-127.0.0.1}:${M2_ITEMSHOP_PUBLIC_PORT:-7791}}"
@@ -611,6 +614,8 @@ services:
     container_name: "${M2_CONTAINER_PREFIX:-metin2}-seban-item-grants"
     restart: unless-stopped
     command: ["python", "item_grants.py"]
+    volumes:
+      - rates-spool:/opt/m2spool  # MT2009_NASZE_ITEM_GRANTS_SPOOL_V1: app.py opens custom-changes on import
     depends_on:
       - seban-panel
     environment: *seban-env

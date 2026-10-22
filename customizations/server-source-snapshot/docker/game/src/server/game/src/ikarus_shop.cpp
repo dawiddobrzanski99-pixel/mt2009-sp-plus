@@ -10,6 +10,8 @@
 
 #include "ikarus_shop.h"
 #include "ikarus_shop_manager.h"
+#include <set> // MT2009_NASZE_SKLEPY_MAX10_V1
+#include <map>
 
 #ifdef ENABLE_IKASHOP_RENEWAL
 
@@ -705,6 +707,26 @@ namespace ikashop
 	}
 
 #ifdef ENABLE_IKASHOP_ENTITIES
+	// MT2009_NASZE_SKLEPY_MAX10_V1: najwyzej SHOPS_VISIBLE sklepow naraz u jednego gracza; reszta ukryta (dalej w wyszukiwarce).
+	namespace
+	{
+		const size_t SHOPS_VISIBLE = 10;
+		struct ShownShops { DWORD handle = 0; std::set<DWORD> vids; };
+		std::map<DWORD, ShownShops> s_shownShops;
+
+		ShownShops& ShownFor(LPCHARACTER ch)
+		{
+			ShownShops& s = s_shownShops[ch->GetPlayerID()];
+			const DWORD handle = ch->GetDesc() ? ch->GetDesc()->GetHandle() : 0;
+			if (s.handle != handle)		// nowe polaczenie (relog) - stara lista nieaktualna
+			{
+				s.handle = handle;
+				s.vids.clear();
+			}
+			return s;
+		}
+	}
+
 	ShopEntity::ShopEntity()
 	{
 		CEntity::Initialize(ENTITY_NEWSHOPS);
@@ -726,6 +748,14 @@ namespace ikashop
 		if(GetShop() && GetShop()->GetDuration() == 0)
 			return;
 
+		if (ch->GetDesc() && !ch->GetDesc()->IsBot()) // MT2009_NASZE_SKLEPY_MAX10_V1
+		{
+			ShownShops& shown = ShownFor(ch);
+			if (!shown.vids.count(GetVID()) && shown.vids.size() >= SHOPS_VISIBLE)
+				return;
+			shown.vids.insert(GetVID());
+		}
+
 		GetManager().EncodeInsertShopEntity(*this, ch);
 	}
 
@@ -739,6 +769,13 @@ namespace ikashop
 		auto ch = static_cast<LPCHARACTER>(entity);
 		if (!ch->IsPC())
 			return;
+
+		if (ch->GetDesc() && !ch->GetDesc()->IsBot()) // MT2009_NASZE_SKLEPY_MAX10_V1: ukrytego sklepu klient nie zna - bez pakietu
+		{
+			ShownShops& shown = ShownFor(ch);
+			if (!shown.vids.erase(GetVID()))
+				return;
+		}
 
 		GetManager().EncodeRemoveShopEntity(*this, ch);
 	}

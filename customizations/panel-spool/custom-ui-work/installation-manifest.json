@@ -12,10 +12,10 @@
     "root.data": "054ba17efbce0d0cf3a0899008f800f136f8696291235588a05d183d799181a6",
     "gamedata.index": "91f72929869b85f47434d7f4699617201d5f279b190b57f19dcef76c2e473ce0",
     "gamedata.data": "5771435c12b1309dea2c13791074e9a471ff8492be9e2fda2372a174f220fcc5",
-    "dbdata.index": "28ec49626303b2c861d16087373f03826d3d9dd31b9287c00bbf6d5a1c3954c8",
-    "dbdata.data": "b09ec0babd27b815f4a576cbf96486175efc368384da9b30ece2d1ce1f50caba",
-    "klient-komplet.zip": "9f4d3fbffa45c079c70b072c87676e57628cef30689cf800c1e90cd393d48119",
-    "dbdata_stamp.txt": "a502de5f7cab7dcf2300b06f5b84b131e29f89e41e3a28647c0677d6a986aa41"
+    "dbdata.index": "60de01cd62f660cb3e322f6d87007be3f7320b14b22ee8415f3d0508a81831dd",
+    "dbdata.data": "d8bd739236364f75bd7233aaade0c01ed1165b6f63c8cb7aa4fd5e15dd98b6bd",
+    "klient-komplet.zip": "45a22f88c6208eb4b345460afe0c0a3d3d869ac2b4398c0884ae16c2c754c777",
+    "dbdata_stamp.txt": "9bbb14275c8466e9314e0f8ca295ebb42d94a9520b092b1effbc2c1d7ed69a8e"
   },
   "installed": true,
   "deployment_started": true,

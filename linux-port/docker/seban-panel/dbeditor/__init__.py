@@ -66,4 +66,7 @@ def install(app, ctx):
     __import__("dbeditor.systems_plus9", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_PLUS9_USTAWIENIA_V1
     __import__("dbeditor.systems_scan", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_SKAN_V1
     __import__("dbeditor.systems_backup", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_KOPIA_V1
+    __import__("dbeditor.systems_kolekcje", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_KOLEKCJE_V1
+    __import__("dbeditor.systems_statystyki", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_STATYSTYKI_BOTOW_V1
+    __import__("dbeditor.systems_inne", fromlist=["install"]).install(bp, ctx)  # MT2009_NASZE_INNE_V1
     app.register_blueprint(bp)

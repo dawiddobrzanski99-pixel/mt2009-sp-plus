@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_STATYSTYKI_BOTOW_V1 #}
+{% block title %}Statystyki botów · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.st-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#1d2a3d,#151c27 70%);border:1px solid var(--sy-line);border-radius:16px;padding:18px 22px;margin-bottom:14px}
+.st-hero h1{margin:0;font:800 26px/1.2 Georgia,serif;color:#ffd27a}.st-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.st-sums{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.st-sum{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:14px 16px}
+.st-sum b{display:block;font:800 26px system-ui;color:var(--sy-gold)}.st-sum small{color:var(--sy-muted)}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:14px}
+.st-box{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:14px 16px}
+.st-box h2{margin:0 0 10px;font:700 16px system-ui;color:var(--sy-gold)}
+.st-tab{width:100%;border-collapse:collapse;font-size:14px}.st-tab th{text-align:left;color:var(--sy-muted);font-weight:500;font-size:12px;padding:4px 6px;border-bottom:1px solid var(--sy-line)}
+.st-tab td{padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.05)}.st-tab td.n{text-align:right;font-weight:700}
+.st-bar{height:6px;border-radius:3px;background:linear-gradient(90deg,#edbd69,#c47a1e);margin-top:3px}
+.st-days{display:flex;gap:6px;align-items:flex-end;height:140px;padding-top:10px}
+.st-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--sy-muted)}
+.st-col{width:100%;border-radius:5px 5px 0 0;background:linear-gradient(#edbd69,#8a5a1f);min-height:2px}
+.st-note{color:var(--sy-muted);font-size:13px}
+</style>
+<header class="st-hero"><span style="font-size:46px">📊</span>
+ <div><h1>Statystyki botów</h1><p>Jakie bossy i Metiny zabijają boty, ile razy i jakie dungeony robią. Liczone z logów gry od {{ since or '—' }}{% if last %} (ostatni wpis: {{ last }}){% endif %}; sumy rosną na stałe, nawet gdy logi są czyszczone.{% if added %} Doliczono teraz: {{ added }} wpisów.{% endif %}</p></div></header>
+{% if error %}<p class="st-box" style="color:#ff9d8a">Nie udało się odczytać logów gry: {{ error }}</p>{% endif %}
+<div class="st-sums">
+ <div class="st-sum"><b>{{ '{:,}'.format(sums.boss_bot).replace(',', ' ') }}</b><small>bossów zabitych przez boty</small></div>
+ <div class="st-sum"><b>{{ '{:,}'.format(sums.metin_bot).replace(',', ' ') }}</b><small>Metinów zniszczonych przez boty</small></div>
+ <div class="st-sum"><b>{{ '{:,}'.format(sums.boss_gracz).replace(',', ' ') }}</b><small>bossów zabitych przez graczy</small></div>
+ <div class="st-sum"><b>{{ '{:,}'.format(sums.metin_gracz).replace(',', ' ') }}</b><small>Metinów zniszczonych przez graczy</small></div>
+</div>
+<div class="st-grid">
+ <section class="st-box"><h2>🐉 Bossy zabijane przez boty</h2>
+ {% if bosses %}<table class="st-tab"><tr><th>Boss</th><th style="text-align:right">Boty</th><th style="text-align:right">Gracze</th><th>Ostatnio</th></tr>
+ {% for b in bosses %}<tr><td>{{ b.name }} <small class="st-note">· {{ b.vnum }}</small><div class="st-bar" style="width:{{ (100 * b.n / bosses[0].n)|round(1) }}%"></div></td><td class="n">{{ b.n }}</td><td class="n" style="color:var(--sy-muted)">{{ b.inni }}</td><td class="st-note">{{ b.ostatnio[5:16] }}</td></tr>{% endfor %}</table>
+ {% else %}<p class="st-note">Jeszcze brak danych.</p>{% endif %}</section>
+ <section class="st-box"><h2>🪨 Metiny najczęściej bite przez boty</h2>
+ {% if metins %}<table class="st-tab"><tr><th>Metin</th><th style="text-align:right">Boty</th><th style="text-align:right">Gracze</th><th>Ostatnio</th></tr>
+ {% for b in metins %}<tr><td>{{ b.name }} <small class="st-note">· {{ b.vnum }}</small><div class="st-bar" style="width:{{ (100 * b.n / metins[0].n)|round(1) }}%"></div></td><td class="n">{{ b.n }}</td><td class="n" style="color:var(--sy-muted)">{{ b.inni }}</td><td class="st-note">{{ b.ostatnio[5:16] }}</td></tr>{% endfor %}</table>
+ {% else %}<p class="st-note">Jeszcze brak danych.</p>{% endif %}</section>
+ <section class="st-box"><h2>🏰 Dungeony (bossy w instancjach)</h2>
+ {% if dungeons %}<table class="st-tab"><tr><th>Dungeon</th><th style="text-align:right">Boty</th><th style="text-align:right">Gracze</th><th>Bossy</th></tr>
+ {% for d in dungeons %}<tr><td>{{ map_name(d.map) if map_name is defined else d.map }} <small class="st-note">· mapa {{ d.map }}</small></td><td class="n">{{ d.bot }}</td><td class="n" style="color:var(--sy-muted)">{{ d.gracz }}</td><td class="st-note">{{ d.bossy }}</td></tr>{% endfor %}</table>
+ {% else %}<p class="st-note">Jeszcze brak danych – pojawią się, gdy boty pokonają bossa w dungeonie.</p>{% endif %}</section>
+ <section class="st-box"><h2>📅 Zabicia botów – ostatnie dni (bossy + Metiny)</h2>
+ {% if days %}<div class="st-days">{% for day, d in days %}<div class="st-day" title="{{ day }}: bossy {{ d.boss_bot }}, Metiny {{ d.metin_bot }}"><span>{{ d.boss_bot + d.metin_bot }}</span>
+  <div class="st-col" style="height:{{ (100 * (d.boss_bot + d.metin_bot) / top_day)|round(0) }}px"></div><span>{{ day[8:10] }}.{{ day[5:7] }}</span></div>{% endfor %}</div>
+ {% else %}<p class="st-note">Jeszcze brak danych.</p>{% endif %}</section>
+</div>
+</div>
+{% endblock %}

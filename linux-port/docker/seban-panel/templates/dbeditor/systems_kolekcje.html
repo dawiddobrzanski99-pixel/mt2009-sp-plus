@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_KOLEKCJE_V1 #}
+{% block title %}Kolekcjoner · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.kc-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#2a2216,#151c27 75%);border:1px solid var(--sy-line);border-radius:16px;padding:18px 22px;margin-bottom:14px}
+.kc-hero h1{margin:0;font:800 26px/1.2 Georgia,serif;color:#ffd27a}.kc-hero p{margin:4px 0 0;color:var(--sy-muted);max-width:760px}
+.kc-layout{display:grid;grid-template-columns:260px 1fr;gap:14px;align-items:start}
+@media(max-width:900px){.kc-layout{grid-template-columns:1fr}}
+.kc-box{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:14px 16px}
+.kc-box h2{margin:0 0 10px;font:700 15px system-ui;color:var(--sy-gold);display:flex;align-items:center;gap:8px}
+.kc-step{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;background:#ffd27a;color:#2a1606;font:800 13px system-ui}
+.kc-hint{color:var(--sy-muted);font-size:13px;margin:-4px 0 10px}
+.kc-cat{display:flex;gap:10px;align-items:center;padding:8px;border-radius:10px;cursor:pointer;border:1px solid transparent}
+.kc-cat:hover{background:rgba(255,255,255,.04)}.kc-cat.on{background:rgba(255,210,122,.10);border-color:rgba(255,210,122,.45)}
+.kc-cat b{display:block}.kc-cat small{color:var(--sy-muted)}
+.kc-ico{width:36px;height:36px;border-radius:8px;background:#0c0a08;border:1px solid #4a3c2a;display:flex;align-items:center;justify-content:center;flex:none}
+.kc-ico img{width:32px;height:32px;image-rendering:pixelated}
+.kc-add{width:100%;margin-top:8px;padding:10px;border-radius:10px;border:1px dashed #9b7a45;background:none;color:#ffd27a;font:700 14px system-ui;cursor:pointer}
+.kc-main{display:flex;flex-direction:column;gap:14px}
+.kc-row{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+@media(max-width:640px){.kc-row{grid-template-columns:1fr}}
+.kc-pick{width:96px;text-align:center;cursor:pointer;border:0;background:none;color:inherit;padding:0}
+.kc-pick .big{width:76px;height:76px;margin:0 auto;border-radius:16px;background:radial-gradient(#2a2118 55%,#0c0a08);border:1px solid rgba(255,210,122,.6);box-shadow:0 0 16px rgba(255,210,122,.2);display:flex;align-items:center;justify-content:center}
+.kc-pick img{width:48px;height:48px;image-rendering:pixelated}.kc-pick small{display:block;color:#ffd27a;margin-top:6px;font-weight:700}
+.kc-f label{display:block;font-size:13px;color:var(--sy-muted);margin-bottom:10px}
+.kc-f input,.kc-f select,.kc-f textarea,.kc-search input{width:100%;box-sizing:border-box;margin-top:4px}
+.kc-f textarea{min-height:54px;resize:vertical}
+.kc-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kc-search{position:relative}
+.kc-drop{position:absolute;left:0;right:0;top:100%;z-index:20;background:#1b1712;border:1px solid #5a4a30;border-radius:10px;max-height:300px;overflow:auto;box-shadow:0 12px 30px rgba(0,0,0,.6)}
+.kc-drop div{display:flex;gap:10px;align-items:center;padding:6px 10px;cursor:pointer}.kc-drop div:hover{background:rgba(255,210,122,.10)}
+.kc-drop img{width:28px;height:28px;image-rendering:pixelated}.kc-drop small{color:var(--sy-muted)}
+.kc-items{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.kc-item{display:grid;grid-template-columns:34px 44px 1fr;gap:12px;background:rgba(0,0,0,.18);border:1px solid var(--sy-line);border-radius:12px;padding:12px}
+.kc-ord{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--sy-muted);font-weight:700}
+.kc-ord button,.kc-x{background:rgba(255,255,255,.05);border:1px solid var(--sy-line);color:inherit;border-radius:7px;cursor:pointer;padding:2px 8px}
+.kc-item .kc-ico{width:44px;height:44px}
+.kc-name{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:700}.kc-name small{color:var(--sy-muted);font-weight:400}
+.kc-lock{font-size:12px;color:var(--sy-muted);margin:2px 0 8px}
+.kc-three{display:grid;grid-template-columns:repeat(3,minmax(90px,1fr));gap:10px}
+.kc-bl{display:flex;gap:6px;align-items:center;margin-bottom:6px}.kc-bl select{flex:1;min-width:0}.kc-bl input{width:80px}
+.kc-link{background:none;border:0;color:#ffd27a;cursor:pointer;font-weight:700;padding:0}
+.kc-bar{position:sticky;bottom:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(18,15,12,.96);border:1px solid var(--sy-line);border-radius:14px;padding:12px 16px;z-index:5}
+.kc-save{border:0;border-radius:10px;padding:11px 18px;font:800 14px system-ui;cursor:pointer;background:linear-gradient(135deg,#f3c869,#c47a1e);color:#2a1606}
+.kc-del{border:1px solid #6a3a2a;border-radius:10px;padding:10px 14px;background:none;color:#e8a08a;cursor:pointer}
+.kc-msg{font-weight:700}.kc-msg.ok{color:#8fe0a8}.kc-msg.err{color:#ff9d8a}.kc-msg.dirty{color:#ffd27a}
+.kc-prev{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;background:linear-gradient(90deg,rgba(240,197,106,.16),rgba(240,197,106,.02));border:1px solid rgba(240,197,106,.4);max-width:260px}
+.kc-prev img{width:32px;height:32px;image-rendering:pixelated}.kc-prev small{display:block;color:var(--sy-muted)}
+.kc-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.kc-modal.on{display:flex}
+.kc-mbox{background:#1b1712;border:1px solid #5a4a30;border-radius:14px;width:min(680px,100%);max-height:86vh;display:flex;flex-direction:column}
+.kc-mbox header{display:flex;gap:10px;align-items:center;padding:12px;border-bottom:1px solid var(--sy-line)}.kc-mbox header input{flex:1}
+.kc-grid{padding:12px;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px}
+.kc-grid button{height:52px;border-radius:10px;background:#0c0a08;border:1px solid var(--sy-line);cursor:pointer}
+.kc-grid button:hover{border-color:#ffd27a;box-shadow:0 0 10px rgba(255,210,122,.35)}
+.kc-grid img{width:32px;height:32px;image-rendering:pixelated}
+.kc-empty{color:var(--sy-muted);text-align:center;padding:30px 10px}
+</style>
+<header class="kc-hero"><span style="font-size:46px">🗂️</span>
+ <div><h1>Kolekcjoner</h1><p>Gracze oddają przedmioty w oknie <b>Ctrl+N → Kolekcjoner</b> i za każdą ukończoną kolekcję dostają bonusy na stałe. Kolekcje w kategorii robi się po kolei. Zapis działa od razu w grze, bez restartu. Postęp graczy zostaje po zmianach.</p></div></header>
+
+<div class="kc-layout">
+ <div class="kc-box kc-side"><h2>Kategorie</h2><p class="kc-hint">Każda kategoria to osobna zakładka w oknie gry.</p>
+  <div id="cats"></div><button class="kc-add" type="button" onclick="KC.newCat()">+ Nowa kategoria</button></div>
+ <div class="kc-main" id="main"></div>
+</div>
+
+{% macro art_card(a) %}<div class="kc-art" id="art-{{ a.name }}">
+ <div class="kc-art-img"><img src="{{ url_for('dbeditor.systems_kolekcje_art', name=a.name) }}" alt=""></div>
+ <b>{{ a.label or a.name }}</b><small>{{ a.name }}.tga · {{ a.w }}×{{ a.h }}{% if a.own %} · <span style="color:#8fe0a8">twoja</span>{% endif %}</small>
+ <div class="kc-art-btns"><label class="kc-x" style="cursor:pointer">Wgraj swoją<input type="file" accept=".tga" hidden onchange="KCART.up('{{ a.name }}',this)"></label>
+ {% if a.own %}<button class="kc-x" type="button" onclick="KCART.reset('{{ a.name }}')">Przywróć</button>{% endif %}</div></div>{% endmacro %}
+<section class="kc-box" style="margin-top:14px">
+ <h2>🎨 Wygląd okna Ctrl+N (własne grafiki)</h2>
+ <p class="kc-hint">Możesz podmienić dowolną grafikę okna na swoją: plik TGA (24/32-bit), dokładnie w tym samym rozmiarze. Twoje grafiki są zapisane na serwerze i zostają po aktualizacji i ponownej instalacji Kuźni. Weszły do gry po zbudowaniu i pobraniu nowego ROOT (Przegląd → Klient). „Przywróć” wraca do grafiki Kuźni.</p>
+ <div class="kc-arts">{% for a in arts %}{% if a.label %}{{ art_card(a) }}{% endif %}{% endfor %}</div>
+ <details style="margin-top:10px"><summary class="kc-link">Pozostałe grafiki (karty, paski, przyciski…)</summary>
+  <div class="kc-arts" style="margin-top:10px">{% for a in arts %}{% if not a.label %}{{ art_card(a) }}{% endif %}{% endfor %}</div></details>
+</section>
+
+<style>
+.kc-arts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.kc-art{background:rgba(0,0,0,.18);border:1px solid var(--sy-line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.kc-art-img{height:90px;display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(#2a2520 0 25%,#1d1915 0 50%) 0 0/14px 14px;border-radius:8px;overflow:hidden}
+.kc-art-img img{max-width:100%;max-height:90px;image-rendering:pixelated}
+.kc-art small{color:var(--sy-muted)}.kc-art-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+</style>
+<script>
+window.KCART={
+ async send(name,f){const r=await fetch({{ url_for('dbeditor.systems_kolekcje_art_set', name='__N__')|tojson }}.replace('__N__',name),{method:'POST',body:f,credentials:'same-origin'});
+  const j=await r.json().catch(()=>({ok:false,error:'błąd serwera'}));if(!j.ok){alert('Nie wgrano: '+j.error);return}location.reload()},
+ up(name,input){if(!input.files[0])return;const f=new FormData();f.append('dbe_csrf',{{ dbe_csrf|tojson }});f.append('plik',input.files[0]);KCART.send(name,f)},
+ reset(name){if(!confirm('Przywrócić grafikę Kuźni dla '+name+'?'))return;const f=new FormData();f.append('dbe_csrf',{{ dbe_csrf|tojson }});f.append('usun','1');KCART.send(name,f)}
+};
+</script>
+
+<div class="kc-modal" id="modal" onclick="if(event.target===this)KC.closePick()"><div class="kc-mbox">
+ <header><b>Wybierz ikonę</b><input id="mq" placeholder="Szukaj po nazwie albo numerze przedmiotu" oninput="KC.pickSearch()"><button class="kc-x" type="button" onclick="KC.closePick()">✕</button></header>
+ <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--sy-line)">
+  <label class="kc-save" style="cursor:pointer;padding:8px 14px">📤 Wgraj własną ikonę (TGA 32×32)<input type="file" accept=".tga" hidden onchange="KC.uploadIcon(this)"></label>
+  <span id="ownbox"></span><small class="kc-hint" style="margin:0">albo wybierz ikonę z gry poniżej</small></div>
+ <div class="kc-grid" id="mgrid"></div>
+ <div style="padding:0 12px 12px;text-align:center"><button class="kc-x" type="button" id="more" style="display:none;padding:8px 16px" onclick="KC.morePick()">Pokaż więcej ikon</button><small class="kc-hint" id="mcount" style="display:block;margin-top:6px"></small></div></div></div>
+</div>
+<script>
+(function(){
+const SAVE_URL={{ url_for('dbeditor.systems_kolekcje_save')|tojson }}, SEARCH_URL={{ url_for('dbeditor.systems_kolekcje_search')|tojson }}, CSRF={{ dbe_csrf|tojson }};
+const LABELS={{ labels|tojson }}, CDS={{ cooldowns|tojson }}, LIM={{ limits|tojson }};
+let data={{ data|tojson }}, info={{ items|tojson }}, cur=0, dirty=false, msg='', msgKind='';
+const $=id=>document.getElementById(id), esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const C=()=>data.cats[cur];
+const nm=v=>(info[v]||{}).name||('#'+v), ic=v=>(info[v]||{}).icon||'';
+const img=v=>ic(v)?`<img src="${esc(ic(v))}" alt="">`:'<span>?</span>';
+const ICON_URL={{ url_for('dbeditor.systems_kolekcje_icon', key='__K__')|tojson }}, ICON_SET={{ url_for('dbeditor.systems_kolekcje_icon_set', key='__K__')|tojson }}, ICONS_URL={{ url_for('dbeditor.systems_kolekcje_icons')|tojson }};
+let stamp=Date.now(), pickPage=0;
+const catSrc=c=>c.own_icon?ICON_URL.replace('__K__',c.key)+'?t='+stamp:ic(c.icon);
+const catImg=c=>catSrc(c)?`<img src="${esc(catSrc(c))}" alt="">`:'<span>?</span>';
+const newKey=()=>{let k;do{k='k'+(Math.floor(Math.random()*899999)+100000)}while(data.cats.some(c=>c.key===k));return k};
+function touch(){dirty=true;msg='Masz niezapisane zmiany';msgKind='dirty';drawBar();drawCats();drawPrev()}
+function bonusOpts(sel){return LABELS.map(([p,l])=>`<option value="${p}" ${+p===+sel?'selected':''}>${esc(l)}</option>`).join('')}
+function bonusList(list,path){return list.map((b,i)=>`<div class="kc-bl"><select onchange="KC.set('${path}',${i},'point',this.value)">${bonusOpts(b.point)}</select><input type="number" min="1" value="${b.value}" oninput="KC.set('${path}',${i},'value',this.value)"><button class="kc-x" type="button" title="Usuń bonus" onclick="KC.delBon('${path}',${i})">✕</button></div>`).join('')+(list.length<LIM.bonus?`<button class="kc-link" type="button" onclick="KC.addBon('${path}')">+ dodaj bonus</button>`:'')}
+function listOf(path){return path==='fin'?C().fin:C().items[+path].bonus}
+function drawCats(){$('cats').innerHTML=data.cats.length?data.cats.map((c,i)=>`<div class="kc-cat ${i===cur?'on':''}" onclick="KC.sel(${i})"><div class="kc-ico">${catImg(c)}</div><div><b>${esc(c.name||'(bez nazwy)')}</b><small>${c.items.length} przedm. · od ${c.level} poz.</small></div></div>`).join(''):'<p class="kc-hint">Brak kategorii. Zacznij od „+ Nowa kategoria”.</p>'}
+function drawPrev(){const c=C();if(!c||!$('prev'))return;$('prev').innerHTML=`${catImg(c)}<div><b>${esc(c.name||'(bez nazwy)')}</b><small>0 / ${c.items.length} ukończonych</small></div>`}
+function drawBar(){if($('msg')){$('msg').className='kc-msg '+msgKind;$('msg').textContent=msg}}
+function drawMain(){
+ const c=C();
+ if(!c){$('main').innerHTML='<div class="kc-box kc-empty"><p>Nie masz jeszcze żadnej kategorii. Kategoria to zakładka w oknie Ctrl+N, np. „Kamienie Duszy” albo „Ulepszacze”.</p><button class="kc-save" type="button" onclick="KC.newCat()">+ Nowa kategoria</button></div>';return}
+ $('main').innerHTML=`
+ <section class="kc-box"><h2><span class="kc-step">1</span> Kategoria</h2><p class="kc-hint">Nazwa, ikona i opis zakładki w oknie gry.</p>
+  <div class="kc-row"><button class="kc-pick" type="button" onclick="KC.openPick()"><div class="big">${catSrc(c)?`<img src="${esc(catSrc(c))}" alt="">`:'<span style="font-size:28px">＋</span>'}</div><small>${(c.icon||c.own_icon)?'Zmień ikonę':'Wybierz ikonę'}</small></button>
+  <div class="kc-f"><label>Nazwa<input maxlength="${LIM.name}" value="${esc(c.name)}" oninput="KC.cat('name',this.value)"></label>
+   <label>Opis (widoczny w oknie gry)<textarea maxlength="${LIM.desc}" oninput="KC.cat('desc',this.value)">${esc(c.desc)}</textarea></label>
+   <div class="kc-two"><label>Od poziomu<input type="number" min="1" max="250" value="${c.level}" oninput="KC.cat('level',this.value)"></label>
+   <label>Tak wygląda w grze<div class="kc-prev" id="prev"></div></label></div></div></div></section>
+ <section class="kc-box"><h2><span class="kc-step">2</span> Przedmioty do oddania</h2><p class="kc-hint">Wpisz nazwę albo numer przedmiotu i kliknij go na liście, a jego ikona pojawi się sama. Kolekcje robi się w tej kolejności. Następna odblokowuje się po ukończeniu poprzedniej.</p>
+  <div class="kc-search"><input id="q" placeholder="+ Dodaj przedmiot: np. „Kamień Duszy”, „Ząb Orka” albo 30006" autocomplete="off" oninput="KC.search()" onfocus="KC.search()"><div class="kc-drop" id="drop" style="display:none"></div></div>
+  <div class="kc-items">${c.items.length?c.items.map((it,i)=>`<div class="kc-item">
+   <div class="kc-ord"><button type="button" title="Wyżej" onclick="KC.move(${i},-1)">↑</button>${i+1}<button type="button" title="Niżej" onclick="KC.move(${i},1)">↓</button></div>
+   <div class="kc-ico">${img(it.vnum)}</div>
+   <div class="kc-f"><div class="kc-name"><span>${esc(nm(it.vnum))} <small>· ${it.vnum}</small></span><button class="kc-x" type="button" onclick="KC.delItem(${i})">Usuń</button></div>
+    <div class="kc-lock">${i===0?'Pierwsza kolekcja w tej kategorii':'Odblokuje się po ukończeniu: '+esc(nm(c.items[i-1].vnum))}</div>
+    <div class="kc-three"><label>Ile sztuk oddać<input type="number" min="1" value="${it.need}" oninput="KC.item(${i},'need',this.value)"></label>
+     <label>Szansa przyjęcia %<input type="number" min="1" max="100" value="${it.chance}" oninput="KC.item(${i},'chance',this.value)"></label>
+     <label>Co ile można oddać<select onchange="KC.item(${i},'cooldown',this.value)">${CDS.map(([s,l])=>`<option value="${s}" ${+s===+it.cooldown?'selected':''}>${l}</option>`).join('')}</select></label></div>
+    <label>Bonusy na stałe za ukończenie</label>${bonusList(it.bonus,String(i))}</div></div>`).join(''):'<p class="kc-empty">Brak przedmiotów. Dodaj pierwszy powyżej.</p>'}</div></section>
+ <section class="kc-box"><h2><span class="kc-step">3</span> Nagroda za całą kategorię</h2><p class="kc-hint">Dodatkowe bonusy, gdy gracz ukończy wszystkie kolekcje tej kategorii (może zostać puste).</p>
+  <div class="kc-f">${bonusList(c.fin,'fin')}</div></section>
+ <div class="kc-bar"><button class="kc-save" type="button" onclick="KC.save()">💾 Zapisz – działa od razu w grze</button><span class="kc-msg" id="msg"></span><span style="flex:1"></span><button class="kc-del" type="button" onclick="KC.delCat()">Usuń kategorię</button></div>`;
+ drawPrev();drawBar();
+}
+function drawAll(){drawCats();drawMain()}
+let searchTimer=null;
+async function find(q){const r=await fetch(SEARCH_URL+'?q='+encodeURIComponent(q),{credentials:'same-origin'});const list=r.ok?await r.json():[];list.forEach(x=>info[x.vnum]={name:x.name,icon:x.icon});return list}
+window.KC={
+ sel(i){cur=i;drawAll()},
+ newCat(){data.cats.push({key:newKey(),own_icon:false,name:'Nowa kategoria',desc:'',icon:0,level:1,fin:[],items:[]});cur=data.cats.length-1;touch();drawAll();KC.openPick()},
+ delCat(){const c=C();if(!c||!confirm('Usunąć kategorię „'+c.name+'”? Gracze stracą jej bonusy (po zapisaniu).'))return;data.cats.splice(cur,1);cur=Math.max(0,cur-1);touch();drawAll()},
+ cat(k,v){C()[k]=k==='level'?(+v||1):v;touch()},
+ item(i,k,v){C().items[i][k]=+v;touch()},
+ move(i,d){const a=C().items,j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];touch();drawMain()},
+ delItem(i){C().items.splice(i,1);touch();drawMain()},
+ set(path,i,k,v){listOf(path)[i][k]=+v;touch()},
+ addBon(path){listOf(path).push({point:+LABELS[0][0],value:1});touch();drawMain()},
+ delBon(path,i){listOf(path).splice(i,1);touch();drawMain()},
+ search(){clearTimeout(searchTimer);const q=$('q').value.trim(),d=$('drop');if(!q){d.style.display='none';return}
+  searchTimer=setTimeout(async()=>{const list=await find(q);const have=new Set(C().items.map(x=>x.vnum));
+   d.innerHTML=list.length?list.map(x=>`<div onmousedown="KC.addItem(${x.vnum})">${x.icon?`<img src="${esc(x.icon)}" alt="">`:''}<span>${esc(x.name)} <small>· ${x.vnum}${have.has(x.vnum)?' · już dodany':''}</small></span></div>`).join(''):'<div><small>Nic nie znaleziono</small></div>';d.style.display='block'},200)},
+ addItem(v){const c=C();if(c.items.some(x=>x.vnum===v)){alert('Ten przedmiot już jest w tej kategorii.');return}
+  if(c.items.length>=LIM.items){alert('Najwięcej '+LIM.items+' przedmiotów w kategorii.');return}
+  c.items.push({vnum:v,need:10,chance:50,cooldown:3600,bonus:[{point:+LABELS[0][0],value:1}]});if(!c.icon)c.icon=v;$('q').value='';$('drop').style.display='none';touch();drawAll()},
+ async openPick(){const c=C();if(c&&!c.key)c.key=newKey();$('mq').value='';$('modal').classList.add('on');
+  $('ownbox').innerHTML=c&&c.own_icon?`<img src="${esc(catSrc(c))}" style="width:32px;height:32px;image-rendering:pixelated;vertical-align:middle"> <button class="kc-x" type="button" onclick="KC.delIcon()">Usuń własną</button>`:'';
+  pickPage=0;$('mgrid').innerHTML='';await KC.morePick()},
+ async morePick(){const r=await fetch(ICONS_URL+'?strona='+pickPage,{credentials:'same-origin'});const j=r.ok?await r.json():{items:[],more:false,total:0};
+  j.items.forEach(x=>info[x.vnum]={name:x.name,icon:x.icon});
+  $('mgrid').insertAdjacentHTML('beforeend',j.items.map(x=>`<button type="button" title="${esc(x.name)} · ${x.vnum}" onclick="KC.setIcon(${x.vnum})"><img src="${esc(x.icon)}" alt=""></button>`).join(''));
+  pickPage++;$('more').style.display=j.more?'inline-block':'none';$('mcount').textContent='Ikony z gry: '+$('mgrid').children.length+' z '+j.total},
+ async uploadIcon(input){const c=C();if(!input.files[0]||!c)return;const f=new FormData();f.append('dbe_csrf',CSRF);f.append('plik',input.files[0]);
+  const r=await fetch(ICON_SET.replace('__K__',c.key),{method:'POST',body:f,credentials:'same-origin'});const j=await r.json().catch(()=>({ok:false,error:'błąd serwera'}));
+  input.value='';if(!j.ok){alert('Nie wgrano: '+j.error);return}c.own_icon=true;stamp=Date.now();KC.closePick();touch();drawAll()},
+ async delIcon(){const c=C();const f=new FormData();f.append('dbe_csrf',CSRF);f.append('usun','1');
+  await fetch(ICON_SET.replace('__K__',c.key),{method:'POST',body:f,credentials:'same-origin'});c.own_icon=false;if(!c.icon&&c.items.length)c.icon=c.items[0].vnum;KC.closePick();touch();drawAll()},
+ closePick(){$('modal').classList.remove('on')},
+ async pickSearch(){clearTimeout(searchTimer);if(!$('mq').value.trim()){pickPage=0;$('mgrid').innerHTML='';return KC.morePick()}$('more').style.display='none';$('mcount').textContent='';searchTimer=setTimeout(async()=>{const list=await find($('mq').value.trim());
+  $('mgrid').innerHTML=list.length?list.map(x=>`<button type="button" title="${esc(x.name)} · ${x.vnum}" onclick="KC.setIcon(${x.vnum})">${x.icon?`<img src="${esc(x.icon)}" alt="">`:esc(x.vnum)}</button>`).join(''):'<p class="kc-empty">Nic nie znaleziono</p>'},150)},
+ setIcon(v){C().icon=v;C().own_icon=false;KC.closePick();touch();drawAll()},
+ async save(){msg='Zapisywanie…';msgKind='';drawBar();
+  const f=new FormData();f.append('dbe_csrf',CSRF);f.append('dane',JSON.stringify(data));
+  try{const r=await fetch(SAVE_URL,{method:'POST',body:f,credentials:'same-origin'});const j=await r.json();
+   if(j.ok){data=j.data;dirty=false;msg='✔ Zapisano o '+j.time+' – gra już używa nowych ustawień';msgKind='ok';drawAll()}
+   else{msg='✖ '+j.error;msgKind='err';drawBar()}}catch(e){msg='✖ Nie udało się zapisać (sprawdź połączenie)';msgKind='err';drawBar()}}
+};
+document.addEventListener('click',e=>{if(!e.target.closest('.kc-search')&&$('drop'))$('drop').style.display='none'});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+drawAll();
+})();
+</script>
+{% endblock %}

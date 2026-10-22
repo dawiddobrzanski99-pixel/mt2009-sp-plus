@@ -18,6 +18,7 @@
 #include "config.h"
 #include "seban_sha256.h"
 #include "seban_bonus_extra.h" // MT2009_NASZE_MISJE_V1
+#include "kuznia_kolekcje.h" // MT2009_NASZE_KOLEKCJE_V1
 namespace mission_panel {
 namespace {
 const DWORD HUNT_AFFECT=64000; // dedicated aggregate; explicitly retained on death.
@@ -139,6 +140,7 @@ void Sync(LPCHARACTER ch,quest::PC* pc){
  MigrateBoss30(ch,pc);
  ReconcileProgress(ch,pc);
  GrantMissionExtras(ch,pc);
+ kuznia_kolekcje::Apply(ch,pc); // MT2009_NASZE_KOLEKCJE_V1
  std::map<int,long> wanted,unused;Totals(pc,wanted,unused);
  const Master* metinNext=NextMaster(pc,"metin");int metinActive=pc->GetFlag("custom_masteries_v1.metin_active");if(metinActive && (!metinNext || metinNext->id!=metinActive)){ch->SetQuestFlag("custom_masteries_v1.metin_active",0);pc->Save();}
  const Hunt* next=NextHunt(pc);int active=pc->GetFlag("custom_hunting_v1.active");if(active && (!next || next->id!=active)){ch->SetQuestFlag("custom_hunting_v1.active",0);pc->Save();}
@@ -272,5 +274,30 @@ void Command(LPCHARACTER ch,const char* argument){
  auto it=times.find(key);if(it!=times.end() && (DWORD)(now-it->second)<800)return;
  for(auto p=times.begin();p!=times.end();)if((DWORD)(now-p->second)>60000)p=times.erase(p);else ++p;
  times[key]=now;Send(ch,pc);
+}
+}
+
+// MT2009_NASZE_KOLEKCJE_V1: komenda "/kolekcje" - dane zakladki Kolekcjoner i oddawanie (Ready() i nazwy bonusow z tej jednostki).
+namespace mission_panel {
+void KolekcjeCommand(LPCHARACTER ch, const char* argument)
+{
+	quest::PC* pc = Ready(ch);
+	if (!pc || (ch->GetDesc() && ch->GetDesc()->IsBot())) return;
+	std::istringstream args(argument ? argument : "");
+	std::string op;
+	args >> op;
+	static std::map<DWORD, DWORD> last;
+	const DWORD now = get_dword_time();
+	DWORD& prev = last[ch->GetPlayerID()];
+	if ((DWORD) (now - prev) < 300) return;
+	prev = now;
+	if (op == "give")
+	{
+		std::string key; DWORD vnum = 0;
+		if (!(args >> key >> vnum)) return;
+		kuznia_kolekcje::Give(ch, pc, key, vnum);
+	}
+	kuznia_kolekcje::Apply(ch, pc);
+	kuznia_kolekcje::Send(ch, pc);
 }
 }

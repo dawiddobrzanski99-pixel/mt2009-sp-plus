@@ -55,6 +55,17 @@ unsigned long long CountBiologMaterial(LPCHARACTER ch,DWORD vnum){
  if(session && session->loaded)for(const auto& entry:session->entries){const TPlayerItem& row=entry.second;if(row.vnum==vnum && NoAttrs(row) && !ITEM_MANAGER::instance().Find(row.id))count+=row.count;}
  return count;
 }
+// MT2009_NASZE_INNE_V1 (auto_kolekcjoner): podniesiony przedmiot od razu do Kolekcjonera - jak "Wloz" w oknie
+// magazynu (PutOne: te same zasady co reczne odkladanie). Kolekcjoner niewczytany / pelny / przedmiot nie do
+// przechowania - przedmiot zostaje w plecaku.
+bool KuzniaAutoStore(LPCHARACTER ch,LPITEM item){
+ if(!RealPlayer(ch) || ch->GetDesc()->IsBot() || !item || item->GetType()==ITEM_QUEST)return false;
+ WarmRefine(ch);TSession* s=RefineSession(ch);if(!s || !s->loaded)return false;
+ std::vector<DWORD> touched;unsigned long long moved=0;
+ if(PutOne(ch,*s,item,0,touched,moved)!=RESULT_DONE)return false;
+ if(s->visible)SendTouched(ch,*s,touched);
+ return true;
+}
 bool ConsumeBiologMaterial(LPCHARACTER ch,DWORD vnum,ITEM_COUNT count){
  if(!ch || !count || !ch->CanHandleItem())return false;
  TRefineTable recipe{};recipe.material_count=1;recipe.materials[0].vnum=vnum;recipe.materials[0].count=count;

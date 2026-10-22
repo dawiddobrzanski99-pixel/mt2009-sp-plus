@@ -319,3 +319,13 @@ def client_files(*args, **kwargs):
     from .custom_marmur_czarny_ork_client import extend
     return extend(query, base, files, summary)
 # MT2009_NASZE_MARMUR_CZARNY_ORK_V1_END
+
+
+# MT2009_NASZE_INNE_KLIENT_V1_BEGIN
+_kuznia_inne_previous = client_files
+def client_files(*args, **kwargs):
+    files, summary = _kuznia_inne_previous(*args, **kwargs)
+    base = args[1] if len(args) > 1 else kwargs['base']
+    from .kuznia_inne_client import extend
+    return extend(base, files, summary)
+# MT2009_NASZE_INNE_KLIENT_V1_END

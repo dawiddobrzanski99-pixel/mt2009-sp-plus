@@ -211,7 +211,7 @@ form.addEventListener('invalid',function(e){const lv=e.target.closest('.pu-level
 form.addEventListener('submit',function(){dirty=false;});
 window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
 const labels={not_requested:'Nie zlecono zastosowania — gra używa wartości domyślnych.',waiting:'⏳ Oczekiwanie na wszystkie kanały…',applied:'✔ Wszystkie kanały zastosowały tabelę.',error:'✖ Błąd zastosowania — sprawdź kanały.',unavailable:'Brak odczytu stanu.',topology_changed:'Zmienił się plan kanałów. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
-const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak obsługi',applying:'Przeliczanie',waiting:'Czeka',error:'Błąd'};
+const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak obsługi',offline:'Nie działa – weźmie przy starcie',applying:'Przeliczanie',waiting:'Czeka',error:'Błąd'};
 function show(s){
  document.getElementById('pu-state').textContent=(labels[s.state]||'Nieznany stan.')+(s.draft_pending&&s.state!=='not_requested'?' Zapisany projekt różni się od zastosowanego.':'');
  const list=document.getElementById('pu-cores');list.textContent='';let ok=0;

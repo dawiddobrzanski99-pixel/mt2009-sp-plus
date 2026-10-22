@@ -22,6 +22,8 @@ void CEntity::Initialize(int type)
 	m_iViewAge = 0;
 	m_pos.x = m_pos.y = m_pos.z = 0;
 	m_map_view.clear();
+	m_iRealViewers = 0; // MT2009_NASZE_WYDAJNOSC_V2
+	m_bViewBot = false;
 
 	m_pSectree = NULL;
 	m_lpDesc = NULL;
@@ -82,7 +84,7 @@ void CEntity::PacketView(const void * data, int bytes, LPENTITY except)
 
 	FuncPacketView f(data, bytes, except);
 
-	if (!m_bIsObserver)
+	if (!m_bIsObserver && m_iRealViewers > 0) // MT2009_NASZE_WYDAJNOSC_V2
 		for_each(m_map_view.begin(), m_map_view.end(), f);
 
 	f(std::make_pair(this, 0));

@@ -1640,7 +1640,7 @@ void CInputDB::MapLocations(const char * c_pData)
 		// The ceiling is the launcher slider's; the real guard is below:
 		// SplitPopulation caps each kingdom at the identities it has, and
 		// SpawnRegistered at what LoadRegisteredBots accepted.
-		const int autoSpawnCeiling = 2500;
+		const int autoSpawnCeiling = 8500; // MT2009_NASZE_LIMIT_BOTOW_V1: 4 kanaly, 8000 kont botow
 		if (autoSpawnCount < 0)
 			autoSpawnCount = 0;
 		else if (autoSpawnCount > autoSpawnCeiling)

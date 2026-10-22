@@ -4,6 +4,7 @@
 #include "desc.h"
 #include "char.h"
 #include "char_manager.h"
+extern DWORD g_dwSectreeDestroyGen; // MT2009_NASZE_WYDAJNOSC_V1
 #include "mob_manager.h"
 #include "party.h"
 #include "regen.h"
@@ -145,6 +146,7 @@ void CHARACTER_MANAGER::DestroyCharacter(LPCHARACTER ch, const char* file, size_
 		return;
 	}
 
+	++g_dwSectreeDestroyGen; // MT2009_NASZE_WYDAJNOSC_V1: snapshots taken before this check their characters
 	m_map_pkChrByVID.erase(it);
 
 	if (true == ch->IsPC())
@@ -759,7 +761,8 @@ void CHARACTER_MANAGER::Update(int iPulse)
 	{
 		if (!m_set_pkChrState.empty())
 		{
-			CHARACTER_VECTOR v;
+			static CHARACTER_VECTOR v; // MT2009_NASZE_WYDAJNOSC_V1: one buffer for every pulse, not an allocation each
+			v.clear();
 			v.reserve(m_set_pkChrState.size());
 #if defined(__GNUC__) && !defined(__clang__) && !defined(CXX11_ENABLED)
 			transform(m_set_pkChrState.begin(), m_set_pkChrState.end(), back_inserter(v), identity<CHARACTER_SET::value_type>());

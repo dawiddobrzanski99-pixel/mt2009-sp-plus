@@ -285,8 +285,12 @@ def client_patches(files, config):
     if 'rankpoints.py' in files: module('rankpoints.py', 'bonusy rang w dymku', systems_client.patch_rank)  # MT2009_NASZE_RANGI_V1
     if 'uiweeklyrank.py' in files: module('uiweeklyrank.py', 'bonusy rankingu tygodnia', systems_client.patch_weekly)  # MT2009_NASZE_RANKING_V1
     opt('wygląd rang (nazwy, kolory, odznaki)', lambda: result.update(systems_client.rank_look(files)))  # MT2009_NASZE_RANGI_V2
-    if 'uimissionpanel.py' in files: opt('czytelność okna misji', lambda: result.__setitem__('uimissionpanel.py', systems_client.patch_missions_look(files['uimissionpanel.py'])))  # MT2009_NASZE_MISJE_CZYTELNOSC_V1
-    opt('wygląd okna misji', lambda: result.update(systems_client.missions_skin()))  # MT2009_NASZE_MISJE_WYGLAD_V1
+    window=kuznia_dodatki.window()  # MT2009_NASZE_OKNO_CTRLN_V2: nowe okno Ctrl+N (Misje + Kolekcjoner) zamiast starego
+    if window is not None:
+        result['uimissionpanel.py']=window; note.append('podmieniono uimissionpanel.py na nowe okno Ctrl+N Kuźni (Misje + Kolekcjoner)')
+    else:
+        if 'uimissionpanel.py' in files: opt('czytelność okna misji', lambda: result.__setitem__('uimissionpanel.py', systems_client.patch_missions_look(files['uimissionpanel.py'])))  # MT2009_NASZE_MISJE_CZYTELNOSC_V1
+        opt('wygląd okna misji', lambda: result.update(systems_client.missions_skin()))  # MT2009_NASZE_MISJE_WYGLAD_V1
     return result
 
 
@@ -427,6 +431,11 @@ def _patch_pack(index,data,config,assets=None):
     manifest=[]
     for name,raw in replacements.items():
         existing=groups.get(name,[])
+        if raw is None:  # MT2009_NASZE_INNE_IKONY_V1: wpis do usuniecia (np. ikona wylaczonej opcji Inne)
+            if existing:
+                entries[:]=[x for x in entries if x not in existing]
+                manifest.append(dict(path=name,before=hashlib.sha256(decoded[name]).hexdigest() if name in decoded else None,after=None))
+            continue
         force=name in kuznia_dodatki.FORCE_NEW
         if existing and not force and decoded[name]==raw:continue
         if not existing or force:
@@ -446,6 +455,7 @@ def _patch_pack(index,data,config,assets=None):
     for e in reread:
         name=e.name.replace('\\','/').lower()
         if name.startswith('d:/'):name=name[3:]
+        if name in replacements and replacements[name] is None:raise ValueError('ROOT: wpis nieusuniety')
         if name in replacements and eterpack.read_entry(out_data,e)!=replacements[name]:raise ValueError('Błąd weryfikacji ROOT.')
     return out_index,out_data,manifest
 

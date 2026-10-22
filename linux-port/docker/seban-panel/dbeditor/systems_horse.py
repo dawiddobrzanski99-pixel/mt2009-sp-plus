@@ -88,11 +88,12 @@ class Store:
     def _apply(self,config):
         ports,plan_hash=self.topology()
         missing=[name for port,name in ports.items() if self.heartbeat(port) is None]
-        if missing:raise ValueError('Brak obsługi lub świeżego potwierdzenia rdzeni: '+', '.join(missing))
+        # MT2009_NASZE_KANALY_OFFLINE_V1: rdzen, ktory nie dziala, wezmie ustawienia przy starcie z request.txt.
+        if len(missing)==len(ports):raise ValueError('Gra nie działa – żaden kanał nie odpowiada: '+', '.join(missing))
         if not (self.root/'draft.json').exists():atomic(self.root/'draft.json',horse.canonical(config))
         operation=uuid.uuid4().hex
         meta=dict(operation=operation,engine_revision=horse.engine_revision(config),config_revision=horse.revision(config),
-                  client_revision=horse.client_revision(config),expected={str(p):n for p,n in ports.items()},plan_sha256=plan_hash,created=time.time())
+                  client_revision=horse.client_revision(config),expected={str(p):n for p,n in ports.items()},plan_sha256=plan_hash,created=time.time(),offline=missing)
         # The single atomic request contains the complete SHA256-validated table.
         # A metadata-only or draft-only write can never change live bonuses.
         atomic(self.root/'operations'/(operation+'.json'),json.dumps(meta).encode())
@@ -142,6 +143,8 @@ class Store:
             for port,name in ports.items():
                 ack=self.heartbeat(port)
                 state='missing' if ack is None else 'ready'
+                if ack is None and meta and name in (meta.get('offline') or []):
+                    result['cores'].append(dict(port=port,name=name,state='offline'));continue  # MT2009_NASZE_KANALY_OFFLINE_V1 (status)
                 if meta and ack:
                     if ack.get('state')=='error':state='error';any_error=True
                     elif ack.get('operation')==meta['operation'] and ack.get('revision')==meta['engine_revision']:
@@ -274,6 +277,7 @@ def install(bp,ctx):
                 game_index=request.files['gamedata_index'].read(32*1024*1024+1)
                 game_data=request.files['gamedata_data'].read(512*1024*1024+1)
                 if not game_index or not game_data:raise ValueError('Do pełnego wydania wymagana jest własna kompletna para gamedata.')
+                from m2clientpack import kuznia_dodatki as _kd; game_index,game_data,_gr=_kd.patch_gamedata(game_index,game_data)  # MT2009_NASZE_INNE_IKONY_V1
                 publisher=ctx.get('dbdata_publisher')
                 folder,meta=publication.build(store.root,cfg,index,data,game_index,game_data,publisher,assets)
                 try:
@@ -286,6 +290,12 @@ def install(bp,ctx):
                 _kuznia_report()
                 return redirect(url_for('dbeditor.systems_index'))
             result_index,result_data,changes=horse.patch_pack(index,data,cfg,assets)
+            gd=None  # MT2009_NASZE_INNE_IKONY_V1: gamedata (opcjonalnie) - ikony Skrzyni z KU i Klepsydry
+            _gi=request.files.get('gamedata_index');_gdd=request.files.get('gamedata_data')
+            if _gi and _gdd and _gi.filename and _gdd.filename:
+                from m2clientpack import kuznia_dodatki as _kd
+                gd=_kd.patch_gamedata(_gi.read(32*1024*1024+1),_gdd.read(512*1024*1024+1))
+                for _line in gd[2]:flash('gamedata: '+_line,'info')
             _kuznia_report()
             manifest=dict(schema=horse.SCHEMA,config_revision=horse.revision(cfg),changes=changes,
                           before={'root.index':hashlib.sha256(index).hexdigest(),'root.data':hashlib.sha256(data).hexdigest()},
@@ -294,6 +304,7 @@ def install(bp,ctx):
             with zipfile.ZipFile(stream,'w',zipfile.ZIP_DEFLATED) as z:
                 # MT2009_NASZE_ROOT_ZIP_PROSTY_V1: tylko to, co trzeba wgrac do klienta.
                 z.writestr('pack/root.index',result_index);z.writestr('pack/root.data',result_data)
+                if gd:z.writestr('pack/gamedata.index',gd[0]);z.writestr('pack/gamedata.data',gd[1])  # MT2009_NASZE_INNE_IKONY_V1
                 z.writestr('CZYTAJ.txt','Zamknij gre. Zrob kopie swoich plikow pack/root.index i pack/root.data,\r\npotem skopiuj oba pliki z folderu pack tej paczki do folderu pack klienta (oba naraz).\r\n')
             stream.seek(0)
             return send_file(stream,as_attachment=True,download_name='kuznia-root-'+horse.revision(cfg)[:12]+'.zip',mimetype='application/zip',max_age=0)

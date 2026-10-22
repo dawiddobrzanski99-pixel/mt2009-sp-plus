@@ -104,6 +104,15 @@ class CEntity
 		int			m_iViewAge;
 
 		LPSECTREE		m_pSectree;
+
+		// MT2009_NASZE_WYDAJNOSC_V2: how many entities in m_map_view may be a real player (a bot's
+		// desc drops every packet). It can only run high, never low: an entity
+		// once seen as a bot stays one (m_bViewBot), so PacketView skips the walk
+		// only when nobody in the view can receive anything.
+		int			m_iRealViewers;
+		bool			m_bViewBot;
+		static bool		ViewCountsReal(LPENTITY entity);
+		void			ViewMapErased(LPENTITY entity);
 };
 
 #endif

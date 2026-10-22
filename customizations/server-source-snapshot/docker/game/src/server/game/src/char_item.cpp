@@ -6,6 +6,8 @@
 #include "utils.h"
 #include "config.h"
 #include "char.h"
+#include "kuznia_inne.h" // MT2009_NASZE_INNE_V1
+#include "playerbot_collector.h"
 #include "playerbot_collector.h"
 #include "char_manager.h"
 // MT2009_PLUS_MOUNT_ON_EQUIP_V1 (include)
@@ -716,7 +718,8 @@ int CHARACTER::GetEmptyInventory(BYTE size, BYTE startSlot) const
 	if (startSlot >= GetInventoryMaxCount())
 		return -1;
 
-	for ( int i = startSlot; i < GetInventoryMaxCount(); ++i)
+	const int iInvMax = GetInventoryMaxCount(); // MT2009_NASZE_WYDAJNOSC_V1
+	for ( int i = startSlot; i < iInvMax; ++i)
 		if (IsEmptyItemGrid(TItemPos (INVENTORY, i), size))
 			return i;
 	return -1;
@@ -754,7 +757,8 @@ int CHARACTER::CountEmptyInventory() const
 {
 	int	count = 0;
 
-	for (int i = 0; i < GetInventoryMaxCount(); ++i)
+	const int iInvMax = GetInventoryMaxCount(); // MT2009_NASZE_WYDAJNOSC_V1
+	for (int i = 0; i < iInvMax; ++i)
 		if (GetInventoryItem(i))
 			count += GetInventoryItem(i)->GetSize();
 
@@ -6733,6 +6737,7 @@ bool CHARACTER::PickupItem(DWORD dwVID)
 				ChatPacketRecieveItem(this, finalItem, pickup_count);
 				if (finalItem->GetType() == ITEM_QUEST)
 					quest::CQuestManager::instance().PickupItem(GetPlayerID(), finalItem);
+				if (kuznia_inne::AutoKolekcjoner()) playerbot_collector::KuzniaAutoStore(this, finalItem); // MT2009_NASZE_INNE_V1
 				return true;
 			}
 
@@ -6758,6 +6763,7 @@ bool CHARACTER::PickupItem(DWORD dwVID)
 
 			if (item->GetType() == ITEM_QUEST)
 				quest::CQuestManager::instance().PickupItem(GetPlayerID(), item);
+			if (kuznia_inne::AutoKolekcjoner()) playerbot_collector::KuzniaAutoStore(this, item); // MT2009_NASZE_INNE_V1
 		}
 
 		//Motion(MOTION_PICKUP);
@@ -7551,7 +7557,8 @@ bool CHARACTER::EquipItem(LPITEM item, int iCandidateCell)
 
 LPITEM CHARACTER::FindSpecifyItem(DWORD vnum) const
 {
-	for (int i = 0; i < GetInventoryMaxCount(); ++i)
+	const int iInvMax = GetInventoryMaxCount(); // MT2009_NASZE_WYDAJNOSC_V1
+	for (int i = 0; i < iInvMax; ++i)
 		if (GetInventoryItem(i) && GetInventoryItem(i)->GetVnum() == vnum)
 			return GetInventoryItem(i);
 
@@ -7560,7 +7567,8 @@ LPITEM CHARACTER::FindSpecifyItem(DWORD vnum) const
 
 LPITEM CHARACTER::FindItemByID(DWORD id) const
 {
-	for (int i=0 ; i < GetInventoryMaxCount(); ++i)
+	const int iInvMax = GetInventoryMaxCount(); // MT2009_NASZE_WYDAJNOSC_V1
+	for (int i=0 ; i < iInvMax; ++i)
 	{
 		if (NULL != GetInventoryItem(i) && GetInventoryItem(i)->GetID() == id)
 			return GetInventoryItem(i);
@@ -7580,7 +7588,8 @@ ITEM_COUNT CHARACTER::CountSpecifyItem(DWORD vnum) const
 	ITEM_COUNT	count = 0;
 	LPITEM item;
 
-	for (int i = 0; i < GetInventoryMaxCount(); ++i)
+	const int iInvMax = GetInventoryMaxCount(); // MT2009_NASZE_WYDAJNOSC_V1
+	for (int i = 0; i < iInvMax; ++i)
 	{
 		item = GetInventoryItem(i);
 		if (NULL != item && item->GetVnum() == vnum)
@@ -7645,7 +7654,8 @@ ITEM_COUNT CHARACTER::CountSpecifyTypeItem(BYTE type) const
 {
 	ITEM_COUNT	count = 0;
 
-	for (int i = 0; i < GetInventoryMaxCount(); ++i)
+	const int iInvMax = GetInventoryMaxCount(); // MT2009_NASZE_WYDAJNOSC_V1
+	for (int i = 0; i < iInvMax; ++i)
 	{
 		LPITEM pItem = GetInventoryItem(i);
 		if (pItem != NULL && pItem->GetType() == type)

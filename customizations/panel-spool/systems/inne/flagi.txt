@@ -1,0 +1,3 @@
+sakiewka_szansa=200
+klepsydra_metin=200
+klepsydra_boss=200

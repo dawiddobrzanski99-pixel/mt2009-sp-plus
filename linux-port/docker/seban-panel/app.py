@@ -517,7 +517,7 @@ REGEN_DELAY_FLAGS = {"metin": "fastMetinSpawn", "boss": "fastBossSpawn", "mob": 
 REGEN_COUNT_FLAGS = {"metin": "m2_metin_count", "boss": "m2_boss_count", "mob": "m2_mob_count"}
 REGEN_METIN_FALLBACK = {"fastMetinSpawn": "fastBossSpawn", "m2_metin_count": "m2_boss_count"}
 REGEN_DELAY_MIN = 10
-REGEN_COUNT_CHOICES = (100, 150, 200, 250, 300, 400)
+REGEN_COUNT_CHOICES = (100, 120, 150, 200, 250, 300, 400)
 QUEUE_FINAL_STATUSES = frozenset((
     "done", "bad_args", "failed", "unknown_cmd", "cancelled", "no_gm",
     # MT2009_PLUS_BOT_EXP_UNLOCK_V1: EXPUNLOCK/EXPLOCK for a character that is no bot.
@@ -7764,8 +7764,8 @@ def retired_bots_start():
         count = int(request.form.get("bot_count", ""))
         window_minutes = int(request.form.get("window_minutes", ""))
         shop_minutes = int(request.form.get("shop_minutes", ""))
-        if not 1 <= count <= 2500:
-            raise ValueError("Liczba botów musi mieścić się w zakresie 1–2500.")
+        if not 1 <= count <= 8500:
+            raise ValueError("Liczba botów musi mieścić się w zakresie 1–8500.")
         if not 1 <= window_minutes <= 10080:
             raise ValueError("Czas rozłożenia resetów musi mieścić się w zakresie 1–10 080 minut.")
         if not 1 <= shop_minutes <= 10080:
@@ -10358,8 +10358,8 @@ def manage_restart_config():
             # snapping it to some default.
             if "playerbot_count" in request.form and panel_feature_enabled("bot_count"):
                 bot_count = int(request.form["playerbot_count"])
-                if not 1 <= bot_count <= 2500:
-                    raise ValueError("Liczba botów musi mieścić się w zakresie 1–2500.")
+                if not 1 <= bot_count <= 8500:
+                    raise ValueError("Liczba botów musi mieścić się w zakresie 1–8500.")
             for index, name in MAP_RESPAWN_OPTIONS:
                 for prefix in ("", "stone_"):
                     if prefix and index not in MAP_STONE_RESPAWN_IDS:

@@ -1,8 +1,8 @@
 {
  "ok": true,
- "time": 1792438770,
- "when": "19.10.2026 21:40",
- "seconds": 48.8,
+ "time": 1792616995,
+ "when": "21.10.2026 23:10",
+ "seconds": 54.5,
  "client": "2.0.61",
  "summary": {
   "items": [
@@ -60,7 +60,8 @@
    "Przedmiot 59009: nowy w kliencie (rekord z bazy; ikona z item_list.txt klienta albo domyślna).",
    "Przedmiot 59011: nowy w kliencie (rekord z bazy; ikona z item_list.txt klienta albo domyślna).",
    "Przedmiot 59010: nowy w kliencie (rekord z bazy; ikona z item_list.txt klienta albo domyślna).",
-   "Ukrainka: dane NPC, rejestracja modelu, animacje i ikona skrzyni."
+   "Ukrainka: dane NPC, rejestracja modelu, animacje i ikona skrzyni.",
+   "Przedmiot 70108: nowy w kliencie (rekord z bazy; ikona z item_list.txt klienta albo domyślna)."
   ],
   "skilldesc": [
    19,
@@ -92,7 +93,8 @@
    71102
   ],
   "ukrainka_npc": 30099,
-  "stamp": "2.0.61-101856248931",
+  "marmur_czarny_ork": 70108,
+  "stamp": "2.0.61-8cb496fb15db",
   "changed_files": [
    "d:/ymir work/npc/dane_remy_npc/a0002_1a.tga",
    "d:/ymir work/npc/dane_remy_npc/dane_remy_npc.gr2",

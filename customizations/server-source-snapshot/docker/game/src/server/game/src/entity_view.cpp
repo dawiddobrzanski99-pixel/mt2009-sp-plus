@@ -4,6 +4,29 @@
 #include "char.h"
 #include "sectree_manager.h"
 #include "config.h"
+#include "desc.h"
+
+// MT2009_NASZE_WYDAJNOSC_V2 (see entity.h)
+bool CEntity::ViewCountsReal(LPENTITY entity)
+{
+	if (!entity || entity->m_bViewBot)
+		return false;
+	LPDESC d = entity->GetDesc();
+	if (d && d->IsBot())
+	{
+		entity->m_bViewBot = true;
+		return false;
+	}
+	if (d)
+		return true;
+	return entity->IsType(ENTITY_CHARACTER) && ((LPCHARACTER) entity)->IsPC();
+}
+
+void CEntity::ViewMapErased(LPENTITY entity)
+{
+	if (m_iRealViewers > 0 && ViewCountsReal(entity))
+		--m_iRealViewers;
+}
 
 void CEntity::ViewCleanup(
 	#ifdef ENABLE_GOTO_LAG_FIX
@@ -29,6 +52,7 @@ void CEntity::ViewCleanup(
 	}
 
 	m_map_view.clear();
+	m_iRealViewers = 0; // MT2009_NASZE_WYDAJNOSC_V2
 }
 
 void CEntity::ViewReencode()
@@ -74,6 +98,8 @@ void CEntity::ViewInsert(LPENTITY entity, bool recursive)
 	}
 
 	m_map_view.emplace(entity, m_iViewAge);
+	if (ViewCountsReal(entity)) // MT2009_NASZE_WYDAJNOSC_V2
+		++m_iRealViewers;
 
 	if (!entity->m_bIsObserver)
 		entity->EncodeInsertPacket(this);
@@ -91,6 +117,7 @@ void CEntity::ViewRemove(LPENTITY entity, bool recursive)
 	if (it == m_map_view.end())
 		return;
 
+	ViewMapErased(it->first); // MT2009_NASZE_WYDAJNOSC_V2
 	m_map_view.erase(it);
 
 	if (!(entity->m_bIsObserver  || entity->m_bIsSpy))
@@ -98,6 +125,40 @@ void CEntity::ViewRemove(LPENTITY entity, bool recursive)
 
 	if (recursive)
 		entity->ViewRemove(this, false);
+}
+
+// MT2009_NASZE_WIDOK_V1: the distance two entities see each other from. A shop (ENTITY_NEWSHOPS)
+// is seen from M2_SHOP_VIEW_RANGE, and a bot by a real player (and the player by
+// the bot) from M2_BOT_VIEW_RANGE: a player walking into a town of stalls and
+// bots loads fewer of them at once. Bots among themselves and the monsters keep
+// the full range. Symmetric, so both sides of a pair agree. 0 = the full range.
+static int ViewRangeFromEnv(const char* name)
+{
+	const char* v = std::getenv(name);
+	return (v && *v) ? std::max(0, std::atoi(v)) : 0;
+}
+
+static bool ViewIsBotChar(LPENTITY e)
+{
+	return e->IsType(ENTITY_CHARACTER) && e->GetDesc() && e->GetDesc()->IsBot();
+}
+
+static bool ViewIsRealPC(LPENTITY e)
+{
+	return e->IsType(ENTITY_CHARACTER) && ((LPCHARACTER) e)->IsPC() && !(e->GetDesc() && e->GetDesc()->IsBot());
+}
+
+static int ViewPairRange(LPENTITY a, LPENTITY b, int full)
+{
+	static const int shopRange = ViewRangeFromEnv("M2_SHOP_VIEW_RANGE");
+	static const int botRange = ViewRangeFromEnv("M2_BOT_VIEW_RANGE");
+#ifdef ENABLE_IKASHOP_RENEWAL
+	if (shopRange > 0 && (a->IsType(ENTITY_NEWSHOPS) || b->IsType(ENTITY_NEWSHOPS)))
+		return std::min(full, shopRange);
+#endif
+	if (botRange > 0 && ((ViewIsBotChar(a) && ViewIsRealPC(b)) || (ViewIsBotChar(b) && ViewIsRealPC(a))))
+		return std::min(full, botRange);
+	return full;
 }
 
 class CFuncViewInsert
@@ -118,7 +179,7 @@ class CFuncViewInsert
 		{
 			if (!ent->IsType(ENTITY_OBJECT))
 			{
-				if (DISTANCE_APPROX(ent->GetX() - m_me->GetX(), ent->GetY() - m_me->GetY()) > dwViewRange)
+				if (DISTANCE_APPROX(ent->GetX() - m_me->GetX(), ent->GetY() - m_me->GetY()) > ViewPairRange(m_me, ent, dwViewRange)) // MT2009_NASZE_WIDOK_V1
 					return;
 			}
 
@@ -225,7 +286,7 @@ void CEntity::UpdateSectree()
 					LPENTITY ent = this_it->first;
 
 					ent->EncodeRemovePacket(this);
-					m_map_view.erase(this_it);
+					ViewMapErased(this_it->first); m_map_view.erase(this_it);
 
 					ent->ViewRemove(this, false);
 				}
@@ -234,7 +295,7 @@ void CEntity::UpdateSectree()
 					LPENTITY ent = this_it->first;
 
 					//ent->EncodeRemovePacket(this);
-					//m_map_view.erase(this_it);
+					//ViewMapErased(this_it->first); m_map_view.erase(this_it);
 
 					//ent->ViewRemove(this, false);
 					EncodeRemovePacket(ent);
@@ -256,7 +317,7 @@ void CEntity::UpdateSectree()
 					if (ent)
 					{
 						ent->EncodeRemovePacket(this);
-						m_map_view.erase(this_it);
+						ViewMapErased(this_it->first); m_map_view.erase(this_it);
 
 						ent->ViewRemove(this, false);
 					}
@@ -293,12 +354,12 @@ void CEntity::UpdateSectree()
 
 					if (!ent)
 					{
-						m_map_view.erase(this_it);
+						ViewMapErased(this_it->first); m_map_view.erase(this_it);
 						continue;
 					}
 
 					ent->ViewRemove(this, false);
-					m_map_view.erase(this_it);
+					ViewMapErased(this_it->first); m_map_view.erase(this_it);
 
 					ent->EncodeRemovePacket(this);
 				}
@@ -341,14 +402,14 @@ void CEntity::RemoveViewAllViewers()
 		LPENTITY ent = this_it->first;
 		if (ent == nullptr)
 		{
-			m_map_view.erase(this_it);
+			ViewMapErased(this_it->first); m_map_view.erase(this_it);
 			continue;
 		}
 
 		if (this_it->second < m_iViewAge)
 		{
 			ent->EncodeRemovePacket(this);
-			m_map_view.erase(this_it);
+			ViewMapErased(this_it->first); m_map_view.erase(this_it);
 
 			ent->ViewRemove(this, false);
 		}

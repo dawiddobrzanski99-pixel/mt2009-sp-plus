@@ -32,6 +32,12 @@ SYSTEMS = [
      'Co zmieniło się w bazie (przedmioty, potwory, ulepszenia) i co odświeżyć dla klienta.', True, 'baza'),
     ('kopia', 'dbeditor.systems_kopia', '💾', 'Kopia ustawień',
      'Pobierz wszystkie ustawienia Kuźni przed aktualizacją serwera i wgraj je z powrotem po ponownej instalacji.', True, 'spool'),
+    ('kolekcje', 'dbeditor.systems_kolekcje', '🗂️', 'Kolekcjoner',  # MT2009_NASZE_KOLEKCJE_V1
+     'Kolekcje przedmiotów do oddania w oknie Ctrl+N: kategorie, ikony, szanse, przerwy i bonusy; własne grafiki okna.', True, 'spool'),
+    ('statystyki', 'dbeditor.systems_statystyki', '📊', 'Statystyki botów',  # MT2009_NASZE_STATYSTYKI_BOTOW_V1
+     'Jakie bossy i Metiny zabijają boty, ile razy i jakie dungeony robią (z logów gry, sumy rosną na stałe).', True, 'log.log'),
+    ('inne', 'dbeditor.systems_inne', '🧩', 'Inne',  # MT2009_NASZE_INNE_V1
+     'Dodatki do włączenia osobno: Sakiewka KD, Skrzynia z KU, ulepszacze z Kolekcjonera, Klepsydra Biologa, licznik.', True, 'spool'),
 ]
 
 MISSION_TABS = [
@@ -72,9 +78,25 @@ PLANNED = {
 }
 
 
+def _fresh_problem(bad):
+    """MT2009_NASZE_SWIEZY_START_CICHO_V1: krotki opis nieudanego swiezego startu - przy niedzialajacych
+    kanalach jedna lista kanalow zamiast tego samego bledu dla kazdego systemu."""
+    import re
+    down = set()
+    for b in bad:
+        for m in re.finditer(r'(ch\d+)-(?:first|game\d+)', b):
+            down.add(m.group(1))
+    if down and all('potwierdzenia' in b for b in bad):
+        names = ', '.join(sorted(down, key=lambda x: int(x[2:]))).upper()
+        return ('ustawienia zapisane, ale kanały %s nie odpowiadają (nie działają albo dopiero startują). '
+                'Uruchom je albo zmniejsz liczbę kanałów serwera – panel dokończy sam, bez kolejnych komunikatów.' % names)
+    return '; '.join(bad)
+
+
 def install(bp, ctx):
     login = ctx['login_required']
     by_key = {s[0]: s for s in SYSTEMS}
+    fresh_warned = {'done': False}  # komunikat o nieudanym swiezym starcie: raz na uruchomienie panelu
 
     @bp.app_context_processor
     def systems_context():
@@ -102,7 +124,9 @@ def install(bp, ctx):
                 atomic(weekly_done, b'1')
                 flash('Kuźnia Mocy: ranking tygodnia ustawiony jak w grze tego serwera i zastosowany.', 'success')
             except Exception as exc:
-                flash('Kuźnia Mocy: nie ustawiono rankingu tygodnia (spróbuję przy następnym wejściu): %s' % exc, 'warning')
+                if not fresh_warned['done']:
+                    fresh_warned['done'] = True
+                    flash('Kuźnia Mocy: ranking tygodnia – %s' % _fresh_problem([str(exc)]), 'warning')
             return
         if done.exists():
             return
@@ -129,8 +153,9 @@ def install(bp, ctx):
         if not bad:
             atomic(done, b'1'); atomic(root / '.swiezy-ranking-v2', b'1')
             flash('Kuźnia Mocy: świeży start — koń, gildia, polimorfia, ranking i rangi ustawione od zera i zastosowane w grze.', 'success')
-        else:
-            flash('Kuźnia Mocy: świeży start nie w pełni (spróbuję przy następnym wejściu; gra musi działać): ' + '; '.join(bad), 'warning')
+        elif not fresh_warned['done']:
+            fresh_warned['done'] = True
+            flash('Kuźnia Mocy: świeży start – ' + _fresh_problem(bad), 'warning')
 
     @bp.route('/systemy')
     @login

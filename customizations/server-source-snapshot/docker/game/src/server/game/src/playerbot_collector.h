@@ -97,3 +97,5 @@ namespace playerbot_collector {void WarmRefine(LPCHARACTER ch);bool PayRefine(LP
 namespace playerbot_collector {void WarmRefineForRecipe(LPCHARACTER ch,const TRefineTable* recipe);}
 
 namespace playerbot_collector {unsigned long long CountBiologMaterial(LPCHARACTER ch,DWORD vnum);bool ConsumeBiologMaterial(LPCHARACTER ch,DWORD vnum,ITEM_COUNT count);}
+
+namespace playerbot_collector {bool KuzniaAutoStore(LPCHARACTER ch,LPITEM item);} // MT2009_NASZE_INNE_V1 (auto_kolekcjoner)

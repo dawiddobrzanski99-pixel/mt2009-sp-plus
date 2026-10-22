@@ -292,7 +292,7 @@ form.addEventListener('change',function(e){if(e.target.type==='checkbox')markDir
 form.addEventListener('submit',function(){S.master_enabled=form.querySelector('[name=master_enabled]').checked;S.enabled=form.querySelector('[name=enabled]').checked;S.bots=form.querySelector('[name=bots]').checked;document.getElementById('mi-payload').value=JSON.stringify(S);dirty=false;});
 window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
 const labels={not_requested:'Nie zlecono zastosowania — gra używa wkompilowanych misji.',waiting:'⏳ Oczekiwanie na wszystkie kanały…',applied:'✔ Wszystkie kanały zastosowały misje.',error:'✖ Błąd zastosowania — sprawdź kanały.',unavailable:'Brak odczytu stanu.',topology_changed:'Zmienił się plan kanałów. Zastosuj ponownie.',not_published:'Żądanie nie zostało opublikowane.'};
-const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak obsługi',applying:'Przeliczanie',waiting:'Czeka',error:'Błąd'};
+const names={ready:'Gotowy',applied:'Zastosowano',missing:'Brak obsługi',offline:'Nie działa – weźmie przy starcie',applying:'Przeliczanie',waiting:'Czeka',error:'Błąd'};
 function show(s){
  document.getElementById('pu-state').textContent=(labels[s.state]||'Nieznany stan.')+(s.draft_pending&&s.state!=='not_requested'?' Zapisany projekt różni się od zastosowanego.':'');
  const list=document.getElementById('pu-cores');list.textContent='';let ok=0;

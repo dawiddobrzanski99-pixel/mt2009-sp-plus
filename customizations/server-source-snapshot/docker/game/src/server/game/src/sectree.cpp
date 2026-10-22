@@ -20,6 +20,8 @@ DWORD SECTREE_SnapshotKey(LPENTITY entity)
 	return (DWORD) static_cast<LPCHARACTER>(entity)->GetVID();
 }
 
+DWORD g_dwSectreeDestroyGen = 0; // MT2009_NASZE_WYDAJNOSC_V1
+
 bool SECTREE_SnapshotAlive(LPENTITY entity, DWORD key)
 {
 	if (key == 0)

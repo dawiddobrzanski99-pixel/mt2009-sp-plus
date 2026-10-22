@@ -42,6 +42,10 @@ enum
 // while the character manager still holds that VID for that pointer.
 DWORD SECTREE_SnapshotKey(LPENTITY entity);
 bool SECTREE_SnapshotAlive(LPENTITY entity, DWORD key);
+// MT2009_NASZE_WYDAJNOSC_V1: grows each time a character leaves the VID map (DestroyCharacter).
+// While it has not moved since the snapshot was taken, nobody in it was freed
+// and the per-entity lookup in the VID map (~100k entries) is skipped.
+extern DWORD g_dwSectreeDestroyGen;
 
 struct FCollectEntity {
 	void operator()(LPENTITY entity) {
@@ -52,7 +56,7 @@ struct FCollectEntity {
 	void ForEach(F& f) {
 		for (size_t i = 0; i < result.size(); ++i) {
 			LPENTITY entity = result[i];
-			if (!SECTREE_SnapshotAlive(entity, keys[i]))
+			if (keys[i] != 0 && g_dwSectreeDestroyGen != gen && !SECTREE_SnapshotAlive(entity, keys[i])) // MT2009_NASZE_WYDAJNOSC_V1
 				continue;
 			f(entity);
 		}
@@ -60,6 +64,7 @@ struct FCollectEntity {
 	typedef std::vector<LPENTITY> ListType;
 	ListType result; // list collected
 	std::vector<DWORD> keys; // the VID of each character in result, 0 for the rest
+	DWORD gen = g_dwSectreeDestroyGen; // MT2009_NASZE_WYDAJNOSC_V1
 };
 
 class CAttribute;

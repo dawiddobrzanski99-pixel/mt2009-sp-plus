@@ -33,7 +33,7 @@
 #define ZODIAK_NO_CLEAR_ON_DEATH(type) (false)
 #endif
 #define IS_NO_CLEAR_ON_DEATH_AFFECT_POTION(type, point) ((type) >= AFFECT_POTION_START && (type) <= AFFECT_POTION_END && point != POINT_MOV_SPEED && point != POINT_ATT_SPEED)
-#define IS_NO_CLEAR_ON_DEATH_AFFECT(type) ((type)==64000 || (type) == AFFECT_BLOCK_CHAT || ((type) >= 500 && (type) < 600) || (type) == AFFECT_TEMPLE_CURSE || (type) == AFFECT_EXP_BLOCK || (type) == AFFECT_COLLECT_NO_TIME || (type) == AFFECT_COLLECT_NO_FAIL_TIME || (type) == AFFECT_LEARN_NO_FAIL_TIME) || IS_MONKEY_CURSE_AFFECT(type) || (type) == AFFECT_DEVILTOWER_DAMAGE || type == AFFECT_FAST_PICKUP || type == AFFECT_SPY || type == AFFECT_HERBALIST_BONUS || type == AFFECT_NO_ITEM_DEATH_PENALTY
+#define IS_NO_CLEAR_ON_DEATH_AFFECT(type) ((type)==64000 || (type)==64001 /* MT2009_NASZE_KOLEKCJE_V1 */ || (type)==64000 || (type) == AFFECT_BLOCK_CHAT || ((type) >= 500 && (type) < 600) || (type) == AFFECT_TEMPLE_CURSE || (type) == AFFECT_EXP_BLOCK || (type) == AFFECT_COLLECT_NO_TIME || (type) == AFFECT_COLLECT_NO_FAIL_TIME || (type) == AFFECT_LEARN_NO_FAIL_TIME) || IS_MONKEY_CURSE_AFFECT(type) || (type) == AFFECT_DEVILTOWER_DAMAGE || type == AFFECT_FAST_PICKUP || type == AFFECT_SPY || type == AFFECT_HERBALIST_BONUS || type == AFFECT_NO_ITEM_DEATH_PENALTY
 #define IS_TARGET_SHOW_AFFECT(type) (type == AFFECT_POISON || type == AFFECT_SLOW || type == AFFECT_STUN || type == AFFECT_FIRE || type == AFFECT_HEAL_ON_DAMAGE || type == AFFECT_REMOVE_ALL_RESIST)
 
 

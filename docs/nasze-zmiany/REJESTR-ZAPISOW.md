@@ -9,3 +9,5 @@
 - 2026-10-20T14:17:51+02:00 — Zapis aktualnych zrodel przed dodaniem edytora bonusow w panelu Seban
 
 - 2026-10-21T01:55:17+02:00 — Kuznia Mocy: instalator dla innych serwerow + opis dla nowego czatu (zachowane-zmiany/kuznia-mocy), nowe poprawki panelu (czytelne nagrody Ctrl+N, Zapisz i zastosuj w Ulepszaniu, prosty ZIP ROOT, raport dodatkow)
+
+- 2026-10-22T18:39:51+02:00 — Sklepy offline: gracz widzi naraz najwyżej 10 sklepów, reszta ukryta, ale dalej w wyszukiwarce (MT2009_NASZE_SKLEPY_MAX10_V1, ikarus_shop.cpp). Okno J wgrane i cofnięte – serwer bez okna J.

@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "vector.h"
 #include "char.h"
+#include "desc.h"
 #include "battle.h"
 #include "char_manager.h"
 #include "packet.h"
@@ -767,7 +768,11 @@ void CHARACTER::StateMove()
 
 	Move(x, y);
 
-	if (IsPC() && (thecore_pulse() & 15) == 0)
+	// MT2009_NASZE_WYDAJNOSC_V3: a bot refreshes its view while walking every 64 pulses, each on its
+	// own pulse (by VID), not all of them on the same one every 16. A player keeps 16
+	// and still puts an approaching bot into its own view on its own refresh.
+	const bool bViewBot = GetDesc() && GetDesc()->IsBot();
+	if (IsPC() && (bViewBot ? ((thecore_pulse() + GetVID()) & 63) == 0 : (thecore_pulse() & 15) == 0))
 	{
 		UpdateSectree();
 

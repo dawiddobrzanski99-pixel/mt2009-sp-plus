@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{# MT2009_NASZE_INNE_V1 #}
+{% block title %}Inne · Kuźnia Mocy · Seban{% endblock %}
+{% block content %}
+<div class="sys-wrap">
+{% include "dbeditor/_systems_nav.html" %}
+<style>
+.in-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#1d2a3d,#151c27 70%);border:1px solid var(--sy-line);border-radius:16px;padding:20px 24px;margin-bottom:16px}
+.in-hero h1{margin:0;font:800 28px/1.2 Georgia,serif;color:#ffd27a}
+.in-hero p{margin:4px 0 0;color:var(--sy-muted)}
+.in-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px}
+.in-card{background:var(--sy-card);border:1px solid var(--sy-line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.in-card.on{border-color:#2f6a52}
+.in-head{display:flex;gap:12px;align-items:center}
+.in-ico{font-size:34px;line-height:1}
+.in-card h2{margin:0;font-size:18px;color:var(--sy-gold)}
+.in-card p{margin:0;color:var(--sy-muted)}
+.in-badge{display:inline-block;border-radius:999px;padding:3px 10px;font:700 12px system-ui}
+.in-badge.on{background:#1f4a37;color:#9de0b8}.in-badge.off{background:#3a2f22;color:#e8c58c}
+.in-card button{align-self:flex-start;border:0;border-radius:10px;padding:10px 16px;font:700 14px system-ui;cursor:pointer}
+.in-on{background:#5fd39a;color:#0d2a1c}.in-off{background:#c96a5a;color:#2a0f0a}
+.in-note{color:var(--sy-muted);font-size:13px}
+</style>
+<header class="in-hero"><span style="font-size:48px">🧩</span>
+ <div><h1>Inne</h1><p>Dodatki do serwera. Każdy jest domyślnie wyłączony. Włączenie dodaje go do serwera, wyłączenie usuwa i przywraca wszystko jak było przed zmianą. Po każdej zmianie kanały gry restartują się (ok. minuty).</p></div></header>
+{% if author %}
+<p class="in-card" style="margin-bottom:14px">🐉 To serwer autora Kuźni – dodatki oznaczone „Wbudowane – działa” są tu w grze na stałe (bez przełącznika). „Drop prosto do Kolekcjonera” włączasz tu jak inni. Opisy pokazują też, co dostają inne serwery.</p>
+{% endif %}
+<div class="in-grid">
+{% for o in options %}
+ <form class="in-card{% if o.on %} on{% endif %}" method="post" action="{{ url_for('dbeditor.systems_inne_toggle', key=o.key) }}"
+       onsubmit="return confirm('{{ 'Wyłączyć' if o.on else 'Włączyć' }} „{{ o.name }}”? Kanały gry zrestartują się (gracze online zostaną rozłączeni na ok. minutę).')">
+  <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+  <input type="hidden" name="wlacz" value="{{ '0' if o.on else '1' }}">
+  <div class="in-head"><span class="in-ico">{{ o.icon }}</span><div><h2>{{ o.name }}</h2>
+   {% if author and not o.autor %}<span class="in-badge on">✔ Wbudowane – działa</span>
+   {% else %}<span class="in-badge {{ 'on' if o.on else 'off' }}">{{ '✔ Włączone' if o.on else '⏸ Wyłączone' }}</span>{% endif %}{% if o.since %} <small class="in-note">od {{ o.since }}</small>{% endif %}</div></div>
+  <p>{{ o.desc }}</p>
+  {% if not author or o.autor %}<button class="{{ 'in-off' if o.on else 'in-on' }}">{{ 'Wyłącz i usuń z serwera' if o.on else 'Włącz na serwerze' }}</button>{% endif %}
+ </form>
+{% endfor %}
+</div>
+{% if not author %}
+<form class="in-card" style="margin-top:14px" method="post" action="{{ url_for('dbeditor.systems_inne_chance') }}">
+ <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}">
+ <h2>👛 Szansa na Sakiewkę z Metinów bez KD</h2>
+ <p>Sakiewka wypada z <b>każdego Metina</b> na serwerze – także z nowych, dodanych później. Metiny, które miały KD w dropie, dają Sakiewkę z szansą swojego KD. Pozostałe – z tą szansą:</p>
+ <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><input name="szansa" type="number" min="0" max="100" step="0.01" value="{{ '%g' % szansa }}" style="width:110px"> <b>%</b></div>
+ <h2 style="margin-top:6px">🎲 Co jest w Sakiewce</h2>
+ <p>Szansa na każde ulepszenie KD (liczby względem siebie – np. 40/30/15/10/5 = 40% na +0, 5% na +4):</p>
+ <div style="display:flex;gap:12px;flex-wrap:wrap">{% for w in kd.wagi %}
+  <label style="display:flex;flex-direction:column;gap:4px;font-weight:700">+{{ loop.index0 }} <input name="w{{ loop.index0 }}" type="number" min="0" max="1000" value="{{ w }}" style="width:80px" oninput="KDW()"></label>{% endfor %}
+  <span id="kdw" class="in-note" style="align-self:flex-end"></span></div>
+ <p style="margin-top:6px">Rodzaje KD, które mogą wypaść:</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px">{% for v, n, on in kd.rodzaje %}
+  <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="rodzaj" value="{{ v }}" {% if on %}checked{% endif %}> {{ n }}</label>{% endfor %}</div>
+ <button class="in-on">Zapisz Sakiewkę (szansa + zawartość)</button>
+ <p class="in-note">Działa po restarcie kanałów – gracze nic nie pobierają.</p>
+</form>
+<script>function KDW(){const w=[0,1,2,3,4].map(i=>+document.querySelector('[name=w'+i+']').value||0),s=w.reduce((a,b)=>a+b,0);
+document.getElementById('kdw').textContent=s?'= '+w.map((x,i)=>'+'+i+': '+(100*x/s).toFixed(1).replace('.0','')+'%').join(' · '):'';}KDW();</script>
+<form class="in-card" style="margin-top:14px" method="post" action="{{ url_for('dbeditor.systems_inne_hourglass') }}" onsubmit="document.getElementById('hg-moby').value=JSON.stringify(HG.list)">
+ <input type="hidden" name="dbe_csrf" value="{{ dbe_csrf }}"><input type="hidden" name="moby" id="hg-moby">
+ <h2>⌛ Klepsydra Biologa (ID 71102) – skąd wypada i z jaką szansą</h2>
+ <p>Szansa z <b>każdego Metina</b> i <b>każdego bossa</b> na serwerze (także nowych). Możesz też dodać wybrane potwory z własną szansą – dla nich liczy się szansa z listy (0% = z tego potwora nie wypada).</p>
+ <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+  <label>Metiny <input name="metin" type="number" min="0" max="100" step="0.01" value="{{ '%g' % (klepsydra.metin / 100.0) }}" style="width:100px"> <b>%</b></label>
+  <label>Bossy <input name="boss" type="number" min="0" max="100" step="0.01" value="{{ '%g' % (klepsydra.boss / 100.0) }}" style="width:100px"> <b>%</b></label></div>
+ <div style="position:relative;margin-top:6px"><input id="hg-q" placeholder="+ Dodaj potwora: wpisz nazwę albo numer (np. „Dziki Pies”, 101)" autocomplete="off" style="width:100%;box-sizing:border-box" oninput="HG.search()">
+  <div id="hg-drop" style="display:none;position:absolute;left:0;right:0;top:100%;z-index:20;background:#1b2432;border:1px solid var(--sy-line);border-radius:10px;max-height:260px;overflow:auto"></div></div>
+ <div id="hg-list" style="display:flex;flex-direction:column;gap:6px"></div>
+ <button class="in-on">Zapisz ustawienia Klepsydry</button>
+ <p class="in-note">Zmiana szans (Klepsydra i Sakiewka) działa po restarcie kanałów – <b>gracze nic nie pobierają</b> (drop, podgląd dropu i wiki są z serwera).</p>
+</form>
+<script>
+window.HG={list:{{ klepsydra.moby|tojson }}.map(m=>({race:m.race,name:m.name,chance:m.chance/100})),t:null,
+ esc:s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
+ draw(){document.getElementById('hg-list').innerHTML=HG.list.length?HG.list.map((m,i)=>`<div style="display:flex;gap:10px;align-items:center;background:rgba(0,0,0,.2);border:1px solid var(--sy-line);border-radius:10px;padding:6px 10px"><b style="flex:1">${HG.esc(m.name||'Potwór')} <small style="color:var(--sy-muted);font-weight:400">· ${m.race}</small></b><input type="number" min="0" max="100" step="0.01" value="${m.chance}" style="width:90px" oninput="HG.list[${i}].chance=this.value"> <b>%</b><button type="button" class="in-off" style="padding:4px 10px" onclick="HG.list.splice(${i},1);HG.draw()">✕</button></div>`).join(''):'<p class="in-note">Brak wybranych potworów – Klepsydra wypada tylko z Metinów i bossów.</p>'},
+ search(){clearTimeout(HG.t);const q=document.getElementById('hg-q').value.trim(),d=document.getElementById('hg-drop');if(!q){d.style.display='none';return}
+  HG.t=setTimeout(async()=>{const r=await fetch({{ url_for('dbeditor.systems_inne_mobs')|tojson }}+'?q='+encodeURIComponent(q),{credentials:'same-origin'});const list=r.ok?await r.json():[];
+   d.innerHTML=list.length?list.map(m=>`<div style="padding:6px 10px;cursor:pointer" onmousedown='HG.add(${JSON.stringify(m)})'>${HG.esc(m.name)} <small style="color:var(--sy-muted)">· ${m.race} · poz. ${m.level}</small></div>`).join(''):'<div style="padding:6px 10px"><small>Nic nie znaleziono</small></div>';d.style.display='block'},200)},
+ add(m){if(!HG.list.some(x=>x.race===m.race))HG.list.push({race:m.race,name:m.name,chance:2});document.getElementById('hg-q').value='';document.getElementById('hg-drop').style.display='none';HG.draw()}
+};HG.draw();
+</script>
+{% endif %}
+<div class="in-card" style="margin-top:14px">
+ <h2>📦 Pliki dla graczy po włączeniu / wyłączeniu</h2>
+ <p>Po każdym włączeniu / wyłączeniu wyślij graczom nowe pliki:</p>
+ <ul style="margin:0;color:var(--sy-muted)">
+  <li><b>dbdata</b> (nazwy i opisy przedmiotów) – przy każdej opcji.</li>
+  <li><b>nowy ROOT + gamedata</b> – także przy <b>Skrzyni z KU</b> i <b>Klepsydrze Biologa</b> (ich ikona jest w gamedata). W Przegląd → Klient wgraj ROOT <b>i</b> swoje gamedata (rozwiń „gamedata (opcjonalnie)”), kliknij „Zbuduj i pobierz ROOT” – zip ma oba. <b>Po wyłączeniu zrób dokładnie to samo</b> (ROOT + gamedata + dbdata) – wraca zwykła ikona. Możesz wgrać gamedata już poprawioną przez panel. Bez nowej gamedata u graczy nic się nie psuje, tylko przedmiot dalej ma nową ikonę.</li>
+  <li>Sakiewka KD, Ulepszacze i Licznik – sam dbdata (ROOT bez zmian).</li></ul>
+ <div style="display:flex;gap:10px;flex-wrap:wrap">
+ <a href="{{ url_for('dbeditor.clientdata_zip') }}" style="background:#5fd39a;color:#0d2a1c;border-radius:10px;padding:10px 16px;font:700 14px system-ui;text-decoration:none">⬇ Pobierz pliki klienta (dbdata)</a>
+ <a href="{{ url_for('dbeditor.systems_index') }}" style="background:#edbd69;color:#20180d;border-radius:10px;padding:10px 16px;font:700 14px system-ui;text-decoration:none">🧭 Zbuduj nowy ROOT (Przegląd → Klient)</a></div>
+</div>
+</div>
+{% endblock %}

@@ -1414,6 +1414,45 @@ percent	10
 end
 
 section
+npc	20082
+item	71152	3
+reward	71151	1
+percent	85
+gold	2000000
+end
+
+section
+npc	20082
+item	50124	10
+reward	50122	1
+percent	85
+gold	2000000
+end
+
+section
+npc	20082
+item	71151	10
+reward	50122	1
+percent	85
+gold	2000000
+end
+
+section
+npc	20082
+item	50124	5
+reward	70124	1
+percent	50
+end
+
+section
+npc	20082
+item	71285	2
+reward	71284	1
+percent	75
+gold	2000000
+end
+
+section
 npc 30099
 item	28442	1
 item	28438	1
@@ -1441,6 +1480,14 @@ item	30360	50
 reward	28540	1
 percent	50
 gold	3000000
+end
+
+section
+npc	20082
+item	71284	1
+reward	71285	2
+percent	85
+gold	2000000
 end
 
 section
@@ -1490,43 +1537,11 @@ percent 100
 gold 1500000
 end
 section
-npc	65001
-item	71285	2
-reward	71284	1
-percent	85
-gold	1000000
-end
-
-section
-npc	65001
-item	71152	3
-reward	71151	1
-percent	100
-gold	2000000
-end
-
-section
-npc	65001
-item	50124	10
-reward	50122	1
-percent	85
-gold	2000000
-end
-
-section
-npc	65001
-item	71151	10
-reward	50120	1
-percent	85
-gold	2000000
-end
-
-section
-npc	65001
-item	71284	3
-reward	70124	1
-percent	85
-gold	2000000
+npc 65001
+item 71285 1
+reward 71284 1
+percent 100
+gold 100000
 end
 
 section

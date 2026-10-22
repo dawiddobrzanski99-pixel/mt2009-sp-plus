@@ -62,6 +62,26 @@
    <li><b>Aktualizacja klienta od autora</b>, która nadpisze <code>root</code> — wtyczkę trzeba dopisać ponownie (krok 1, z nowym ROOT autora).</li>
   </ul>
  </section>
+ <section class="si-card si-ok" style="grid-column:1/-1">{# MT2009_NASZE_INFO_POSTEP_V1 #}
+  <span class="si-chip">🛡️ Postęp graczy</span>
+  <h2>Postęp graczy po aktualizacji serwera / ponownej instalacji</h2>
+  <ul>
+   <li>Postęp graczy jest w bazie serwera (nie w dbdata ani w ROOT): <b>misje</b> (Polowanie, Metinologia, Bossologia, odebrane nagrody), <b>Biolog</b>, <b>Kolekcjoner</b> (np. ile KD oddał), <b>Sława +9</b> (lista ludzi z +9), <b>punkty rang</b> i <b>ranking tygodnia</b>. Instalacja Kuźni tego nie usuwa – gra liczy dalej.</li>
+   <li><b>Instalator sam</b> zapisuje ten postęp przed zmianami (folder <code>kopie</code> obok instalatora) i po instalacji wgrywa go z powrotem: wpisy misji/Kolekcjonera tylko w górę (nigdy mniej), a Sława/rangi/ranking – tylko brakujące wiersze. Na VPS i na PC tak samo.</li>
+   <li><b>Kopia ustawień</b> (Kuźnia Mocy → Kopia ustawień) też ma cały postęp graczy. Gdy aktualizacja MT2009 podmieni bazę, wgraj kopię – wraca do tych samych postaci (ten sam numer i nick). Najlepiej wgrywać, gdy nikt nie gra.</li>
+  </ul>
+ </section>
+ <section class="si-card" style="grid-column:1/-1">{# MT2009_NASZE_INFO_POBIERANIE_V1 #}
+  <span class="si-chip">📦 Dla graczy</span>
+  <h2>Co gracze muszą pobrać po zmianach</h2>
+  <ul>
+   <li><b>Nic</b> – bonusy (koń, gildia, polimorfia, rangi, ranking, misje), <b>Kolekcjoner</b> (kategorie, przedmioty, szanse, bonusy) i <b>wszystkie szanse dropu</b> (Sakiewka KD, Klepsydra Biologa, wybrane potwory). To jest tylko na serwerze; podgląd dropu i wiki gra bierze z serwera. Wystarczy restart kanałów (panel robi go sam).</li>
+   <li><b>Nic</b> – po włączeniu / wyłączeniu <b>Ulepszaczy z Kolekcjonera</b>, <b>Dropu prosto do Kolekcjonera</b> i <b>licznika pod minimapą</b> (działają na serwerze; licznik jest już w ROOT Kuźni).</li>
+   <li><b>dbdata</b> (Inne → „Pobierz pliki klienta”) – po włączeniu / wyłączeniu <b>Sakiewki KD</b> (nazwa i opis przedmiotu).</li>
+   <li><b>dbdata + gamedata</b> – po włączeniu / wyłączeniu <b>Skrzyni z KU</b> albo <b>Klepsydry Biologa</b> (ich ikona jest w gamedata). Gamedata składasz na Przeglądzie → Klient (ROOT): wgraj ROOT i swoje gamedata, zip ma oba – gracze podmieniają oba (ROOT się przy tym nie zmienia). <b>Po wyłączeniu – to samo jeszcze raz</b>, wtedy wraca zwykła ikona; można wgrać gamedata już poprawioną przez panel. Bez nowej gamedata u graczy nic się nie psuje – zostaje tylko nowa ikona.</li>
+   <li><b>Nowy ROOT</b> – po instalacji / aktualizacji Kuźni, po wgraniu własnej grafiki okna Ctrl+N albo własnej ikony kategorii Kolekcjonera.</li>
+  </ul>
+ </section>
  <section class="si-card">
   <h2>Co skąd pochodzi</h2>
   <table class="si-table">

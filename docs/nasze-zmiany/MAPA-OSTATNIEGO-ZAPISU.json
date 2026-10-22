@@ -1,6 +1,6 @@
 {
   "AGENTS.md": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 1193,
     "sha256": "216544ee8f5a9d9f2d1238fbc52424d1ab5078cfa2967af9410df2c38ee6b99f"
   },
@@ -10,17 +10,17 @@
     "sha256": "4fe3fc9924d6e29940c2c85448eacdc84bb816a924f1cddec31ac21b8845965e"
   },
   "docs/nasze-zmiany/MAPA-OSTATNIEGO-ZAPISU.json": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
-    "bytes": 1771846,
-    "sha256": "ab8733c8db086849a13f1bed02b422fd56af1b8b8deb0b52cc299a0b0fc50d2c"
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
+    "bytes": 2079286,
+    "sha256": "b3b12ec8877356155f78c07597263de1151c3591ec823b416cbfb012185d9a4b"
   },
   "docs/nasze-zmiany/MAPA-PLIKOW.json": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 248317,
     "sha256": "785d20f916b566332b021b41ff1c9e5b020fff0ea34bdf3b1dc6a8b8c4d0f536"
   },
   "docs/nasze-zmiany/MAPA-PUBLIKACJI.json": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 761775,
     "sha256": "7b5d40c650a00a54f01890e15f29b2a5c8a7dbb96dd49d823ac6ae8c6b2f138f"
   },
@@ -31,26 +31,26 @@
   },
   "docs/nasze-zmiany/REJESTR-ZAPISOW.md": {
     "source": "wygenerowany",
-    "bytes": 811,
-    "sha256": "8b5eb86997483910b0546eb2c04819df479564b80959af73d1e7cd90e686223b"
+    "bytes": 1039,
+    "sha256": "8f121e4fc6fa189ca78647a2db35d4521728d5054e7b2d0fc3a02e3eaf741a0f"
   },
   "docs/nasze-zmiany/STAN-ZAPISU.md": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 1977,
     "sha256": "033c4dd7db076a46da494e3d1d2b8b3dadc13404408691a2669ea41aa06b5d5b"
   },
   "docs/nasze-zmiany/START-TUTAJ.md": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 1741,
     "sha256": "8c828c546065a3fdd09bbdaf46e3b1f5e243c686a17386028171b0924e9f8882"
   },
   "docs/nasze-zmiany/WERYFIKACJA.md": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 962,
     "sha256": "625de5ff3e47c865527dc038909fa38115270cb2fa4e3cce43f186aec2a81578"
   },
   "docs/nasze-zmiany/WYMAGANIA-ZAPISU.md": {
-    "source": "Git 345b76fcb07804b2f6d54a5d5cf9bf1eeacf4103",
+    "source": "Git 74c7c74038a38023cb1420734494d1c887b62106",
     "bytes": 2947,
     "sha256": "7a7c8917b4326ef857ef539c99fbc6528441a80b4bd51c69055f9c2c1b78a109"
   },
@@ -66,8 +66,8 @@
   },
   "linux-port/docker/docker-compose.yml": {
     "source": "/opt/metin2/linux-port/docker/docker-compose.yml",
-    "bytes": 35023,
-    "sha256": "2995cbccdf427c38aa8378863eeee16179b781d33c6d47e5471d082ba29a87cf"
+    "bytes": 35346,
+    "sha256": "71864a730ba7fa1d9187b2b1cbb048fdc4e91e51f983ea950e7682ab553e6bed"
   },
   "linux-port/docker/game/.dockerignore": {
     "source": "/opt/metin2/linux-port/docker/game/.dockerignore",
@@ -2384,6 +2384,11 @@
     "bytes": 23638,
     "sha256": "b10d01103a0bdda733e2b81800d879e394bcd44160f05ce5a2ebc739ce954927"
   },
+  "linux-port/docker/game/bin/m2-systems": {
+    "source": "/opt/metin2/linux-port/docker/game/bin/m2-systems",
+    "bytes": 219,
+    "sha256": "d87c2523e3145111baf8519a2f91efafc6d7bd17fa544f3b23f3d75d8a856fb0"
+  },
   "linux-port/docker/game/bin/m2-tail-syserr": {
     "source": "/opt/metin2/linux-port/docker/game/bin/m2-tail-syserr",
     "bytes": 1801,
@@ -3259,6 +3264,26 @@
     "bytes": 34,
     "sha256": "1dc189f2c041b0fbde4ed77a0fe12fb60a552fa066344a675fe8ea619047db5a"
   },
+  "linux-port/docker/game/zachowane-zmiany/REJESTR/PROMPT-NOWY-CZAT.md": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/PROMPT-NOWY-CZAT.md",
+    "bytes": 3175,
+    "sha256": "8e42cb955f8ade0e4869b76dc1aef31cb35bce8c3d749792d402514c60d956d0"
+  },
+  "linux-port/docker/game/zachowane-zmiany/REJESTR/REJESTR-ZMIAN.md": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/REJESTR-ZMIAN.md",
+    "bytes": 8511,
+    "sha256": "d5f2485070d9861c692527894639d58660a574ac5cb3820789d2841ca9ba44ac"
+  },
+  "linux-port/docker/game/zachowane-zmiany/REJESTR/pliki-zmienione-wzgledem-autora.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/pliki-zmienione-wzgledem-autora.txt",
+    "bytes": 3066,
+    "sha256": "f250cf7bfb32783590d99aa1c0a2a3cffe172e8ddc5e6dde62c27514a10f3c43"
+  },
+  "linux-port/docker/game/zachowane-zmiany/REJESTR/porownanie-z-autorem-v2.32.0.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/porownanie-z-autorem-v2.32.0.txt",
+    "bytes": 14912,
+    "sha256": "b9ad8bf3495b3340f3ea86534119db671b89129eb16b6dacf36fa3ed8c8481ca"
+  },
   "linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/README.md": {
     "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/README.md",
     "bytes": 953,
@@ -3283,6 +3308,386 @@
     "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/dt-egzo-ukrainka-20261020-132257-511846/special_item_group.custom.txt",
     "bytes": 5556,
     "sha256": "2cc72c80cd52b54a0c7b823210f7c6fd90a9a21b4b777fe0d82e0cb2a9243b85"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/README.md": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/README.md",
+    "bytes": 7577,
+    "sha256": "2ad1af2c0fe94af8ddd782bdc3e4f0073456e9f8c065c905d11619fcbfcd4527"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/REPORT.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/REPORT.txt",
+    "bytes": 1671,
+    "sha256": "4a822c293c6c1e3de787b01da3e959602e4b6f22b912689a3fafb2f9ed850b75"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/bundle.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/bundle.json",
+    "bytes": 3657,
+    "sha256": "a23937ff7fe5dbb630d63b680a0b2d5e769343ab911f31408aeed60158bc3d92"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/export-state.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/export-state.py",
+    "bytes": 4470,
+    "sha256": "f2d1dcadb17145755106023464701ebca602f551f2c75faab050654be06b3268"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/install.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/install.py",
+    "bytes": 7810,
+    "sha256": "12b09d859e521645d7be2535c00de57fbd7b201acfafa3e63348efd920e3f687"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/000.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/000.py",
+    "bytes": 18167,
+    "sha256": "6d038354404815eacacc334bcfa054e83b1b713cd50500cb8555272d6f447983"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/001.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/001.py",
+    "bytes": 16340,
+    "sha256": "eaada5ff3f7080ef31242ed362e68666bf6f7899415c2617fc4960ae81a2b5c9"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/002.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/002.py",
+    "bytes": 8886,
+    "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/003.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/003.py",
+    "bytes": 2069,
+    "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/004.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/004.html",
+    "bytes": 10057,
+    "sha256": "fe9a7f68b6dd5cbd084700b07ff233b3db931c80378741dbdd3d29a6da64c279"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/005.h": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/005.h",
+    "bytes": 3207,
+    "sha256": "6e189a54b74397377e1bd8d4f8b6fc14f171ebf85e5e2bbad7791ca14fa75659"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/006.h": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/006.h",
+    "bytes": 2139,
+    "sha256": "b7a6872259399446e10f67c028fb6c2b09e47ed1bfe0474345e987af41291b25"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/007.h": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/007.h",
+    "bytes": 3432,
+    "sha256": "cedc8d6e42ae09c1b7a30ecf500e4d08e29b635907d47e0c6660e76648546acb"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/009.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/009.json",
+    "bytes": 377,
+    "sha256": "86f52b91983ea993039a4492330d6784bd918b5c1b8e74966308dd7935cc064b"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/010.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/010.json",
+    "bytes": 319,
+    "sha256": "8dcd27c08839dec4efbef3260c008492767b7d282da303e3a65ae7087768a3de"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/011.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/011.json",
+    "bytes": 309,
+    "sha256": "1cbb963ef036fdfa1937de4e2300cd2c273cdf6fec238286356557cbbd6bb80c"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/012.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/012.json",
+    "bytes": 8846,
+    "sha256": "5069d65d6ee674a68d26093f405b50ee8e2dd435c979f538913d860ac9266870"
+  },
+  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/013.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/013.json",
+    "bytes": 738,
+    "sha256": "643bf779e9315bfd228872d522cefaa586509fcfe3e3624b006ee09c02b8da53"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/README.md": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/README.md",
+    "bytes": 5031,
+    "sha256": "1f88239442da0870e528b0489d4e714b89ffbfd2108d4ee4c58a282434451e49"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/CZYTAJ.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/CZYTAJ.txt",
+    "bytes": 1634,
+    "sha256": "54d32947c0d528a32ea67ec9311425e97fb54f63459f50c08b6f9cbee1f3458b"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/czytaj_ranking.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/czytaj_ranking.py",
+    "bytes": 1181,
+    "sha256": "860e603179c509b993654b76ce65c1cfde85c26fa3af8ecc4de88290d3eef619"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.bat.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.bat.txt",
+    "bytes": 164,
+    "sha256": "76b10d86db6712624a77d6273393c61074a2fb7e1bd9337b134216739641e5ec"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.ps1": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.ps1",
+    "bytes": 2509,
+    "sha256": "0d0360385e1b9aa844eba229bd6582b70836982e75d10c0a341bcc92017e7832"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.sh": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.sh",
+    "bytes": 1344,
+    "sha256": "8b72edfdd41d9b1a9b79f4c58e6a3c990fca57c91b7d16cc9ebf7ea95f90cd13"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj_panel.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj_panel.py",
+    "bytes": 2273,
+    "sha256": "e0ee3014bd47b60a6c5ef74cef7472b0e8efa15675fe927a8c90fa6f2590de64"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kompiluj_test.sh": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kompiluj_test.sh",
+    "bytes": 880,
+    "sha256": "f9f915d8807badd294c0ba8056e4e01564cea9e605fb346a9e6c571348e4034c"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kotwice.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kotwice.py",
+    "bytes": 900,
+    "sha256": "479b7b918a7d86388bd7265aaa133fb4d69096ee26d86e3316386b3a4205447d"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/naloz_latki.sh": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/naloz_latki.sh",
+    "bytes": 1293,
+    "sha256": "c55731c41b9d179122e8be9799d9aa7f4c05f13a69437f1a7203fe79245edc35"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_klient.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_klient.py",
+    "bytes": 6041,
+    "sha256": "d9943437a725b938db8c7755a137daec12bacbe1c6980a351d2b7650fe0069de"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_panel.sh": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_panel.sh",
+    "bytes": 1658,
+    "sha256": "094e56f34f69f882b9815567cf426f6516885a4111f1c8453f1afae34afb570a"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_ustawienia.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_ustawienia.py",
+    "bytes": 1337,
+    "sha256": "ddbaf16b1e7057fbcee3553e9002d17b189338d3439e3306b722a0aee6a5f7b3"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/test_dodatki.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/test_dodatki.py",
+    "bytes": 1205,
+    "sha256": "afbb03a35a402e56d24f14b23cf6ceee3a3b0722ef36f1b68e8c2ca36437471e"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/wewnatrz.sh": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/wewnatrz.sh",
+    "bytes": 1598,
+    "sha256": "c746e0cde2259c3fadcbe2a6346c4f41af940cd3b030419278d0bd2f67123c02"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_latki.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_latki.py",
+    "bytes": 7392,
+    "sha256": "5b0d06233684800de88d94cb71b44722e2d3e72afb94a59d67275c8e900f38ef"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_paczke.sh": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_paczke.sh",
+    "bytes": 1259,
+    "sha256": "89cd80c446023bff4b5f43ec58d2f82c2345d33587a912cb88cc5b59e78dc3f7"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/init.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/init.txt",
+    "bytes": 1156,
+    "sha256": "6df135a2857f8566ff29679c25c725eae3efcbd8efda15cbf25e706259e7b23c"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/nav.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/nav.txt",
+    "bytes": 1517,
+    "sha256": "c853e7ea0bb1799f13297fc19542e2e4f932299cfc62487f50f78c6ee067bd2e"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_backup.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_backup.py",
+    "bytes": 9593,
+    "sha256": "809d4c579070d1655560d7d6c24732f8c8a82eac14d286c562810694729376e0"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_guild.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_guild.py",
+    "bytes": 6631,
+    "sha256": "bf40e9f953a85b2c26e3ff9607da013b91fad827c95d8af71b0bb9d7d575b901"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_horse.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_horse.py",
+    "bytes": 19054,
+    "sha256": "26111e7617541fba4f8fd5c64b1d8336528611d3812f605fac6dbefaa81dac72"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_hub.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_hub.py",
+    "bytes": 10113,
+    "sha256": "4f750cba93daf486fe9bb958b0e65d0ebcedc3cb9171707707abcf8223fba7cf"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_missions.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_missions.py",
+    "bytes": 16789,
+    "sha256": "1c6d640c24a68e15e35de901c343e1068fa80e30803e1b7cb1f9eb176da6c015"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_plus9.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_plus9.py",
+    "bytes": 3974,
+    "sha256": "6bad1db929ca2ea2467a3d55a7f15fba0ae8de2d9890a92e8bae3719c1a126ba"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_poly.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_poly.py",
+    "bytes": 9829,
+    "sha256": "d1465e2b4b0fdab1ed7470a7acc1d14f1bf901c5307df6f6ce1fca521510af2f"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_rank.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_rank.py",
+    "bytes": 13467,
+    "sha256": "e3a7e3270f4dfbba938934b84ac4a3dcbc71f16dc2cde61f8a25eaefcc742c85"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_refine.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_refine.py",
+    "bytes": 8439,
+    "sha256": "54764cd844d1c662b9ddf25bb3cf8944a893bbdbae09804e1e222774ab24ab34"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_scan.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_scan.py",
+    "bytes": 3599,
+    "sha256": "183292bdd1b9a75a88ae13069f74f4e3d488d8aeeb2fa27272917a37376d343a"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_store.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_store.py",
+    "bytes": 8064,
+    "sha256": "1952433ec1e2b4467619d89a676a4979c10407df8a0b66e7297294294d8b0ef9"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_weekly.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_weekly.py",
+    "bytes": 8003,
+    "sha256": "ab98a2ec21806ea88e9eac79bcab84e202e418dd5a5bc819b742c37e3f20afaa"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_editor.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_editor.py",
+    "bytes": 27253,
+    "sha256": "c86e3d47727c47e9e5f62830bd1efaf116e2cd9706b6093d0791b8cdeee6c384"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_pair_installer.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_pair_installer.py",
+    "bytes": 2069,
+    "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_publication.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_publication.py",
+    "bytes": 8886,
+    "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki.py",
+    "bytes": 3534,
+    "sha256": "085604f55d40a9c5cf9196b93f8be6ea67e541f6dc619291c6fc09457427e153"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/PLIKI-KLIENTA.txt": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/PLIKI-KLIENTA.txt",
+    "bytes": 132,
+    "sha256": "c0cf35793c138da40038f6b34f103afa061acd028c6aa2f637bebf3b6204657f"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/hooks.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/hooks.json",
+    "bytes": 3890,
+    "sha256": "6edddae9fb192bfa33ca63c8438bdd2c3d34321e4626544a6fcfc587bebc78b7"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/nazwy.json": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/nazwy.json",
+    "bytes": 6116,
+    "sha256": "adcb90d2aa92ef8a72909539d051a8ade427123cb311206ee3d40791d88079b8"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/systems_client.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/systems_client.py",
+    "bytes": 22050,
+    "sha256": "62aa260d19055187ac0f74db14fcf920bdc15a6d7644d7e22ac401ce6eae891c"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/_systems_nav.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/_systems_nav.html",
+    "bytes": 4228,
+    "sha256": "66b247ed2a43b207b3617cb46005362323f4d77fec96e884ee6e1f485d1cd214"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_backup.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_backup.html",
+    "bytes": 4634,
+    "sha256": "b78a5f4e7b89c4428dc6edd8aec4d91892ed57444d2f2cb6dc4113eee58be519"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_guild.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_guild.html",
+    "bytes": 17732,
+    "sha256": "e4237f3d986b96631801fe928c2c23f4ed278afb03c696b389b0da7d95b1122e"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_horse.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_horse.html",
+    "bytes": 24689,
+    "sha256": "44158aa8c9f23b39bfe52b5e0beabc4d1097ab10d6ac1a9968ef7b3ee131b66f"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_hub.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_hub.html",
+    "bytes": 6885,
+    "sha256": "2e39dc7343018b900019476c701cca0ac39b9e6cabf9b3348126f4b0fb2fd32f"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_info.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_info.html",
+    "bytes": 9439,
+    "sha256": "31fd629e0c3cf09ba53f74c5249420089fd7b77f3f55cab2743f288c1442f3db"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_missions.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_missions.html",
+    "bytes": 31381,
+    "sha256": "3f5e2463b82771a8bfdb4f320becec8037575cc3a7a30dfbaacb9586108bf72a"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_plus9.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_plus9.html",
+    "bytes": 5614,
+    "sha256": "b0bc644b90056d6f9f309b9490162d9cc5a6f3e0b4bcc77161b794f3f4bd4432"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_poly.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_poly.html",
+    "bytes": 18931,
+    "sha256": "c5c4323f015a1b70c225388b14881930e68579dc44a77608db97a1c4abd8c6ea"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_rank.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_rank.html",
+    "bytes": 23830,
+    "sha256": "667f4bbf3f84ab97b85b77f4daacab21132b7a58e8234ce32ee156d3a46bdc18"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine.html",
+    "bytes": 5776,
+    "sha256": "4edd87a57d369e9ae6623cf50f7c9d67fced7df4dd6dbc9fb0f80986636c64d1"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine_edit.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine_edit.html",
+    "bytes": 14848,
+    "sha256": "de8345f9f9fbe52187c60d390fe7726394c8534a52bd0c9b5a382693615d1e9b"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_scan.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_scan.html",
+    "bytes": 4098,
+    "sha256": "b448315b5c3c3e89c78ad2aa74a3260dbbcb1f6ac91ff07503b38a254485c2ce"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_soon.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_soon.html",
+    "bytes": 2235,
+    "sha256": "1f338355826e059e3ce2d36a1c8456c87bf1f25fc313dd8ca0436b929c309cd1"
+  },
+  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_weekly.html": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_weekly.html",
+    "bytes": 17944,
+    "sha256": "dba0a3db76e7b87b7d30d23e16ec7bd064d5a001da3580b31b3aff2abc024828"
+  },
+  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/README.md": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/README.md",
+    "bytes": 2100,
+    "sha256": "40b652a03a3fb7369221ac028e0c23e551c19b13bba03cd7f139f678d6dd05c3"
+  },
+  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork.h": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork.h",
+    "bytes": 849,
+    "sha256": "dbe9dd8c194ad31be77754e5d20e4448882d08c5c0294cdd00fd76d393561381"
+  },
+  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork_client.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork_client.py",
+    "bytes": 1666,
+    "sha256": "4f4c5c15a0b4466a2ee4690c21c3c8d104efcbadfc2f14b98dc7268c1dc261c3"
+  },
+  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/modul.py": {
+    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/modul.py",
+    "bytes": 7920,
+    "sha256": "5e08375868c7cb0f9cc7b876bef0b89df42ab782f7260765851ce33a6aaad791"
   },
   "linux-port/docker/game/zodiak/data/dungeon/zodiac/days/1-monday.txt": {
     "source": "/opt/metin2/linux-port/docker/game/zodiak/data/dungeon/zodiac/days/1-monday.txt",
@@ -19906,8 +20311,8 @@
   },
   "linux-port/docker/mariadb/playerbot/playerbots_seed.sql": {
     "source": "/opt/metin2/linux-port/docker/mariadb/playerbot/playerbots_seed.sql",
-    "bytes": 516423,
-    "sha256": "cec06b694fa943274095575383ec2852df6cd3044be0cdbab28f7ae413443d3e"
+    "bytes": 898364,
+    "sha256": "b9f5938e53603d4737f039a4c33f95cf109d6ea8d2f9cc38bdaad70b944245f1"
   },
   "linux-port/docker/mariadb/playerbot/wiki_nowe.sql": {
     "source": "/opt/metin2/linux-port/docker/mariadb/playerbot/wiki_nowe.sql",
@@ -20036,8 +20441,8 @@
   },
   "linux-port/docker/seban-panel/app.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/app.py",
-    "bytes": 680429,
-    "sha256": "0f9f17405aeddba24339fca45dfd7562cad340fa9014fd2148f328766c128f74"
+    "bytes": 680434,
+    "sha256": "4d91f244546d13838c54be433f6cc805046bae939eb9166055844eb827148f29"
   },
   "linux-port/docker/seban-panel/collector.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/collector.py",
@@ -20046,8 +20451,8 @@
   },
   "linux-port/docker/seban-panel/dbeditor/__init__.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/__init__.py",
-    "bytes": 3750,
-    "sha256": "1f7e39c8bd1ed594d39c33b4322334672afc22aeedb7a40422ce0f606c368c12"
+    "bytes": 4085,
+    "sha256": "f193d458e206b0a5a1a68ff6205e0048cc650bf4868891715cb4a633d3f2b4b8"
   },
   "linux-port/docker/seban-panel/dbeditor/attrs.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/attrs.py",
@@ -20203,6 +20608,66 @@
     "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/spawns.py",
     "bytes": 34002,
     "sha256": "0bd399b6c6b9fb4eb4b1ccd042093d9faad3c98524780913d0c51557fa9818ee"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_backup.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_backup.py",
+    "bytes": 18277,
+    "sha256": "35f88a8554cdf93d25cb0f36efc0effee499180b40dc2b9cc18dcae7abadfa94"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_guild.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_guild.py",
+    "bytes": 6631,
+    "sha256": "bf40e9f953a85b2c26e3ff9607da013b91fad827c95d8af71b0bb9d7d575b901"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_horse.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_horse.py",
+    "bytes": 20193,
+    "sha256": "92f6706e5c9a5bc41f19e3f68fd5a4047de0415e38446509b904c47b0a800095"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_hub.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_hub.py",
+    "bytes": 11754,
+    "sha256": "e39d5326905da56ce21609dbb70ae9dccd06c179b4350174be09da93dddccb5b"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_missions.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_missions.py",
+    "bytes": 16789,
+    "sha256": "1c6d640c24a68e15e35de901c343e1068fa80e30803e1b7cb1f9eb176da6c015"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_plus9.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_plus9.py",
+    "bytes": 3974,
+    "sha256": "6bad1db929ca2ea2467a3d55a7f15fba0ae8de2d9890a92e8bae3719c1a126ba"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_poly.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_poly.py",
+    "bytes": 9829,
+    "sha256": "d1465e2b4b0fdab1ed7470a7acc1d14f1bf901c5307df6f6ce1fca521510af2f"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_rank.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_rank.py",
+    "bytes": 13467,
+    "sha256": "e3a7e3270f4dfbba938934b84ac4a3dcbc71f16dc2cde61f8a25eaefcc742c85"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_refine.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_refine.py",
+    "bytes": 8439,
+    "sha256": "54764cd844d1c662b9ddf25bb3cf8944a893bbdbae09804e1e222774ab24ab34"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_scan.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_scan.py",
+    "bytes": 3599,
+    "sha256": "183292bdd1b9a75a88ae13069f74f4e3d488d8aeeb2fa27272917a37376d343a"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_store.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_store.py",
+    "bytes": 8497,
+    "sha256": "db1b2867a15f36389a0f184f697856d447542fa83e9a0a597609d5963563efc2"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_weekly.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_weekly.py",
+    "bytes": 8003,
+    "sha256": "ab98a2ec21806ea88e9eac79bcab84e202e418dd5a5bc819b742c37e3f20afaa"
   },
   "linux-port/docker/seban-panel/dbeditor/tables_common.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/tables_common.py",
@@ -20519,6 +20984,11 @@
     "bytes": 14718,
     "sha256": "b232791a51b5dce5eb8d9f26c9481c3f711969257c1b861d162b8ba26d0b4d43"
   },
+  "linux-port/docker/seban-panel/m2clientpack/custom_marmur_czarny_ork_client.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/custom_marmur_czarny_ork_client.py",
+    "bytes": 1666,
+    "sha256": "4f4c5c15a0b4466a2ee4690c21c3c8d104efcbadfc2f14b98dc7268c1dc261c3"
+  },
   "linux-port/docker/seban-panel/m2clientpack/custom_material_assets/59001.sub": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/custom_material_assets/59001.sub",
     "bytes": 77,
@@ -20801,13 +21271,348 @@
   },
   "linux-port/docker/seban-panel/m2clientpack/dbsource.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/dbsource.py",
-    "bytes": 54522,
-    "sha256": "ee05d60cd82bcd1b1466cf7b763b948ee88cf22d01cc751f25abd4d69d03f8ff"
+    "bytes": 54865,
+    "sha256": "0a6a8bb8a53047c82518672b2e28c26550142da89e2e660417b6732144489bff"
   },
   "linux-port/docker/seban-panel/m2clientpack/eterpack.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/eterpack.py",
     "bytes": 6648,
     "sha256": "f5123fb4971c866b361cf7b7e06b0ffc88af33cd0269b74bd1595f8a560343a4"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/horse_editor.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/horse_editor.py",
+    "bytes": 28023,
+    "sha256": "5674fe068e7d4df9a418dcedd05b98785c76c7a66f47afde507d7f6dcaa95052"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/horse_pair_installer.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/horse_pair_installer.py",
+    "bytes": 2069,
+    "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/horse_publication.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/horse_publication.py",
+    "bytes": 8886,
+    "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki.py",
+    "bytes": 9036,
+    "sha256": "01b3b8bbf1f6f4cf2f993a12a80728513b0c840ae271ef31783d024444e347c4"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/hooks.json": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/hooks.json",
+    "bytes": 5612,
+    "sha256": "314be8138ae1ff83bba8bd6976c72e3bab12413c09d857ebf819766b58884ced"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/nazwy.json": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/nazwy.json",
+    "bytes": 11623,
+    "sha256": "1c241a82c2dfb2ef63d0499198d783496e15a7c8e3ed98c71285c98e0aa309b2"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom_window_theme.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom_window_theme.py",
+    "bytes": 1720,
+    "sha256": "15c6f91f1086f048011879844df7a81fbec4692f9994f05c48907fbe09a6c313"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customguildtooltip.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customguildtooltip.py",
+    "bytes": 3163,
+    "sha256": "b058ef8ab4dd49bcf875049ef6667e8562143d1ddc0eeaa5f3e3a9e96233f86c"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customrewardtooltip.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customrewardtooltip.py",
+    "bytes": 2730,
+    "sha256": "a6f119cb0722743d106505505e359fc47339fdfbe762d76e40c4be2164641009"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/gamefont.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/gamefont.py",
+    "bytes": 1080,
+    "sha256": "5290432b551570a7b09daae6226306af4b9c34acd9d664551fa388fba7f64587"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankbadges.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankbadges.py",
+    "bytes": 4759,
+    "sha256": "ce3b9426ea2a9e02a21c4302cc7ec49d4509cc0a6e328044f5849f38b40574c3"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankpoints.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankpoints.py",
+    "bytes": 11433,
+    "sha256": "46b7ccc729a64b422cf5d6ab4253b24641c1c2adf48fc52a3c155baca24d0073"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank01.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank01.tga",
+    "bytes": 5500,
+    "sha256": "d63c5dd5a664cfbb98d0abd906493419780e912d8b4f79765a9e83a0a09e3957"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank02.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank02.tga",
+    "bytes": 6644,
+    "sha256": "e635c84dfc99630f2a8847e109e7e6c9b6695ac4f4b6feeec9d8a9d425c5fcd1"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank03.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank03.tga",
+    "bytes": 6204,
+    "sha256": "fdc8fa3eb9e6305d0102aa7f31a4a9cec4c6b86092ad6144eb02d9bddf43a42e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank04.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank04.tga",
+    "bytes": 6820,
+    "sha256": "4f69ce2d5e31dba90bd76adb1086bfd1729e3741c6f3a049ebb573ebb81caec6"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank05.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank05.tga",
+    "bytes": 10164,
+    "sha256": "5bc8fffb2a50fa820f16abfb0c428803aee124dacdae1ac31118efb317260686"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank06.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank06.tga",
+    "bytes": 6644,
+    "sha256": "7b88f731cb43424a68157f5febcc823f93391fe1de13cc750e983ffacb06485a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank07.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank07.tga",
+    "bytes": 8316,
+    "sha256": "a73618196c34ba35f208d0ab9568a523b8ee4efad6e0158330924207b09ee56c"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank08.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank08.tga",
+    "bytes": 6732,
+    "sha256": "1db3a8fb7a232712137cd0310927ce5337d52801a2719d28d91074758b52905a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank09.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank09.tga",
+    "bytes": 8228,
+    "sha256": "60effe79a09b51814644ff7fe7b10dfa1ca43d6fd48bac2776d2188fe4960c5e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank10.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank10.tga",
+    "bytes": 7348,
+    "sha256": "c4d5c332ceec1c0836b4e096b20f58176722f0d7672e592594fd442cde8bf540"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank11.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank11.tga",
+    "bytes": 10076,
+    "sha256": "f6ddd372843b2c1cf56c69140badbbac434a8864c009671248aba56425e76c4d"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank12.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank12.tga",
+    "bytes": 6380,
+    "sha256": "5ef25d8cdc5afd915ff61d5d86e7d9aa260634172d2d4bd6e7d6380dc6da1eea"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiminigameutil.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiminigameutil.py",
+    "bytes": 11608,
+    "sha256": "502f8cc2a9d8c027a22003c7c2e58ae3be64d103d601b9672dadd040a24cd514"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uimissionpanel.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uimissionpanel.py",
+    "bytes": 30550,
+    "sha256": "b916d3ed0b81e7d8dcabbb253451063c5666afaa505aefa57446ff1de7b402a9"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiquestbonuspreview.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiquestbonuspreview.py",
+    "bytes": 7933,
+    "sha256": "8f0920770808bbda9a5fbea4dff7e12444f04f35bc0fe4fac2eff16fcab5515e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiqueststyle.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiqueststyle.py",
+    "bytes": 1070,
+    "sha256": "dad68953b3b91f9e01ab0be4caaf20bf3236581638c16069155f8fd4fea71142"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiweeklyrank.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiweeklyrank.py",
+    "bytes": 26256,
+    "sha256": "9c9305982b2dd857b47f8c0364d7a3f7d57288bc7e411795cdb1646a93ddeeb8"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/warpsafe.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/warpsafe.py",
+    "bytes": 1922,
+    "sha256": "9752634fcad7449d6b7abffba0c5f4d950bbf5fda724d6b9fbad298a905f540a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/drop_action.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/drop_action.tga",
+    "bytes": 43244,
+    "sha256": "f5445da992c05c758e26f0cfdc41e4029413b90c7405ea7a472747a8593484f4"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_frame.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_frame.tga",
+    "bytes": 2487164,
+    "sha256": "106128eee5970da63515bfc0c7913cebe3acdd44d41bb92ac9a8000c08f652b8"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_normal.tga",
+    "bytes": 36108,
+    "sha256": "ec5cec9f70c092dc725212344dd91359291270bf5c752dea212bfd210e6162cd"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_selected.tga",
+    "bytes": 36108,
+    "sha256": "fb32faead734625a92c9055a4be716d52a92030e64f055d2bd667d4de75d67e0"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_normal.tga",
+    "bytes": 36108,
+    "sha256": "9715a7224d3429d40a115646b182d4bc00015f665740bc059b0f2e3269b93b97"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_selected.tga",
+    "bytes": 36108,
+    "sha256": "bb430e39b69745ba782969ee663dbf27c1375a1adf488cc240db78bfe13ad7a0"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_normal.tga",
+    "bytes": 36108,
+    "sha256": "c47f782b801267fea133231cef2eaf7b62486075940708bb8e0d3383d55aa3ae"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_selected.tga",
+    "bytes": 36108,
+    "sha256": "786d7e8ad61b7ade745d1424f57020e46ea07bc7df66c206eef439a613118e42"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_normal.tga",
+    "bytes": 36108,
+    "sha256": "366081def807bb391aa4872974ff8383b6fb4aa064367624aed64af7d796eebd"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_selected.tga",
+    "bytes": 36108,
+    "sha256": "e0e1b01cca4ce9e57826eb99dca6a24f2f7c5be04a1ac1ac5683799f9f20c699"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_normal.tga",
+    "bytes": 36108,
+    "sha256": "784d68c4d67f4de2f44577617313cd88243fa2a464ce47274df9f9bbaa3f8846"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_selected.tga",
+    "bytes": 36108,
+    "sha256": "ca03bf9a056657d7e071502b188e0c4b936a41a611d4ac80d709bc6035111647"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_normal.tga",
+    "bytes": 36108,
+    "sha256": "184b8589ce1f297a96481db2650af54b014ddbafd57d0517d3b6f549b79e62c1"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_selected.tga",
+    "bytes": 36108,
+    "sha256": "a63568888e0baf3862f8fbbb1a7c0d54e31705022ff18b529b38e01dbf640f15"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_normal.tga",
+    "bytes": 36108,
+    "sha256": "9f1e4e1667a612f10b643b59217df1e76032dccf9fc5f53b7f9f39ac2ec4b44e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_selected.tga",
+    "bytes": 36108,
+    "sha256": "e0b9d89f9c8a4caa2d89170ea8d3cc2270d22a1a692530ab6fd643a907775b60"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_normal.tga",
+    "bytes": 36108,
+    "sha256": "207e752ce5228be39050a4013a5a6048c7545a9b3f8e145a86044d2a374b7b07"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_selected.tga",
+    "bytes": 36108,
+    "sha256": "5e95923d860b4139ceaa6f97c1e873b2d3ddff838d3f8c1b4e460e987c152ba2"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_normal.tga",
+    "bytes": 36108,
+    "sha256": "1fd692cf5cd685dc7874333b6b5ff0f6fb58b3a73177bb7f0a8ee0abb69b6b6e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_selected.tga",
+    "bytes": 36108,
+    "sha256": "b1fb7e4827fc67a782f7b37ebe5dbe3c7b74f5ea9c0cbfb0c23834c60243f973"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_normal.tga",
+    "bytes": 36108,
+    "sha256": "b119ebf0251a173364a724177981198e41d27985ca8ef4b8c96d8d0ee386a2cb"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_selected.tga",
+    "bytes": 36108,
+    "sha256": "c61471d737b92b10845593067e8526c22763dc08f63b449c0e63beae18d3a677"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_action.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_action.tga",
+    "bytes": 61484,
+    "sha256": "f7d05ee4d7b7174b84e614f32ab45dd33d04a8089c4b5995358ba8095b721111"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_frame.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_frame.tga",
+    "bytes": 2270444,
+    "sha256": "489a2b08f82082a3ea8a4fea07d69cf60111a991f39d4338aa55bd9f6aae2231"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_normal.tga",
+    "bytes": 50204,
+    "sha256": "ff3bb29157bb1d807571374b43541018eed5156f8968970c2edc9f434d67cd62"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_selected.tga",
+    "bytes": 50204,
+    "sha256": "30b8348f8e9710dc3e67ea6776e87c8203d06375e81e4b58356ee7da4b1729cd"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_normal.tga",
+    "bytes": 50204,
+    "sha256": "7d8d20ec6d953815103bff7ac970db955b074beec2b2c9522d9df5e1f386bb65"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_selected.tga",
+    "bytes": 50204,
+    "sha256": "a1b62663801c843c72602856dc798cb77831ab906708578c956b7b40eb69a1ef"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_normal.tga",
+    "bytes": 50204,
+    "sha256": "bcafb2e4441c673fd26c911ef13023d43814c2d98e9e9f292c9d7659a2f4ddc0"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_selected.tga",
+    "bytes": 50204,
+    "sha256": "9377293a612b6c2960833e8ffa9a20e26bf5ab267baecded5239a2dd4680cd45"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_normal.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_normal.tga",
+    "bytes": 50204,
+    "sha256": "fe15a2e508c868e9a005751a384c7a69d0a73b22ae4f24c67f0753bcae2b4a1b"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_selected.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_selected.tga",
+    "bytes": 50204,
+    "sha256": "2b2d7bc042f694e559620ebe8352220b065d2b63bfc0b7ef47b4e422ae8aacc1"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/next.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/next.tga",
+    "bytes": 5820,
+    "sha256": "3d8de9a69707e981e15b008c526d85927cf639e0bec6ed3fd9d1759617256274"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/previous.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/previous.tga",
+    "bytes": 5820,
+    "sha256": "9e5954969a9ede02baf9019c9572e28da342ffa495da409d939250899bbe6ed2"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/rank_action.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/rank_action.tga",
+    "bytes": 16844,
+    "sha256": "d3f79662e2df02055f6f0a2167e8628097ddcc7ddd590e11c5d703c7ea3499d9"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/warp_action.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/warp_action.tga",
+    "bytes": 43244,
+    "sha256": "bb6e82fb641ac237017c2c562635e5cd7b531efbe22a1ad53cc76a64b7029a89"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/mission_background.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/mission_background.tga",
+    "bytes": 1166444,
+    "sha256": "8aae894ff3e9dea6cf67d261182a619b8a6c8d020a1734a9e959f2928a1015ec"
   },
   "linux-port/docker/seban-panel/m2clientpack/lzo1x.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/lzo1x.py",
@@ -20833,6 +21638,11 @@
     "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/scroll_client_patch.py",
     "bytes": 690,
     "sha256": "e5c30d06ff1b86fc73079ecb1bb0907c228e3f3b6fb81b16652355359c32c3a2"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/systems_client.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/systems_client.py",
+    "bytes": 22050,
+    "sha256": "62aa260d19055187ac0f74db14fcf920bdc15a6d7644d7e22ac401ce6eae891c"
   },
   "linux-port/docker/seban-panel/patch_grant_quest.py": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/patch_grant_quest.py",
@@ -22836,8 +23646,8 @@
   },
   "linux-port/docker/seban-panel/templates/_nav.html": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/templates/_nav.html",
-    "bytes": 11316,
-    "sha256": "7ac3a11bb3c867a4c3d613a6cc43a8a7a01de0ca0bd9d336a9639c7c3fed8646"
+    "bytes": 11701,
+    "sha256": "54fcb89620f23a0bb7164068d4f4d3f2c54d0ede7bb1f1495e48ae8f509df38e"
   },
   "linux-port/docker/seban-panel/templates/account_detail.html": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/templates/account_detail.html",
@@ -22948,6 +23758,11 @@
     "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/_spawns_settings.html",
     "bytes": 1692,
     "sha256": "a87aad0667f67319f94a8385c1a2bdf7cb96150aa9858ca43679856407ba65c2"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/_systems_nav.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/_systems_nav.html",
+    "bytes": 4228,
+    "sha256": "66b247ed2a43b207b3617cb46005362323f4d77fec96e884ee6e1f485d1cd214"
   },
   "linux-port/docker/seban-panel/templates/dbeditor/_tables_head.html": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/_tables_head.html",
@@ -23203,6 +24018,76 @@
     "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/spawns_special.html",
     "bytes": 7853,
     "sha256": "af03aafb5fd4344994b8b3950d621bbef06861cd8592174b6f6d8e6d6f3aafad"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_backup.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_backup.html",
+    "bytes": 4634,
+    "sha256": "b78a5f4e7b89c4428dc6edd8aec4d91892ed57444d2f2cb6dc4113eee58be519"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_guild.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_guild.html",
+    "bytes": 17779,
+    "sha256": "431e3161c33c48b17af10e2ca4ed9086aadb1293878b831daac310959eb33f82"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_horse.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_horse.html",
+    "bytes": 24736,
+    "sha256": "f1bdeec9c782abbe379eeb78a4fa3f87f189cbbee01aab981aaed63b9884f660"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_hub.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_hub.html",
+    "bytes": 7254,
+    "sha256": "9207acf6fc0acdac45a2a1ba68ddc6c24f717fc54c4acb56648a81e36c125fa4"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_info.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_info.html",
+    "bytes": 12139,
+    "sha256": "5f459c7f82c5aaad40f337a616934f1e7b6b1a09990fc6e55e10dae548fccabb"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_missions.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_missions.html",
+    "bytes": 31428,
+    "sha256": "336382079b60e850c0c27eb16e8bbbc8f8c4b303d88cc0509971b8c6abd69f93"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_plus9.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_plus9.html",
+    "bytes": 5614,
+    "sha256": "b0bc644b90056d6f9f309b9490162d9cc5a6f3e0b4bcc77161b794f3f4bd4432"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_poly.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_poly.html",
+    "bytes": 18978,
+    "sha256": "ffaba28778729fcca0e0dc83246309ad52f39a9b3e106463b340c09a18f7180c"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_rank.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_rank.html",
+    "bytes": 23877,
+    "sha256": "05b5e153c11c117176a4dc3182e1c68a856bca8a09fbc82fa016fdc65fa9f082"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_refine.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_refine.html",
+    "bytes": 5776,
+    "sha256": "4edd87a57d369e9ae6623cf50f7c9d67fced7df4dd6dbc9fb0f80986636c64d1"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_refine_edit.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_refine_edit.html",
+    "bytes": 14848,
+    "sha256": "de8345f9f9fbe52187c60d390fe7726394c8534a52bd0c9b5a382693615d1e9b"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_scan.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_scan.html",
+    "bytes": 4098,
+    "sha256": "b448315b5c3c3e89c78ad2aa74a3260dbbcb1f6ac91ff07503b38a254485c2ce"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_soon.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_soon.html",
+    "bytes": 2235,
+    "sha256": "1f338355826e059e3ce2d36a1c8456c87bf1f25fc313dd8ca0436b929c309cd1"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_weekly.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_weekly.html",
+    "bytes": 17991,
+    "sha256": "448216d297a6c40c02e3bb4d5ec58020fcaee426a6e4707221169c7058c24375"
   },
   "linux-port/docker/seban-panel/templates/diagnostics.html": {
     "source": "/opt/metin2/linux-port/docker/seban-panel/templates/diagnostics.html",
@@ -24614,895 +25499,350 @@
     "bytes": 41322,
     "sha256": "6c10722222867b1d5f7c7c20c3a80ec37b58439d7d66ef66f0729fde7137a532"
   },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/README.md": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/README.md",
-    "bytes": 7577,
-    "sha256": "2ad1af2c0fe94af8ddd782bdc3e4f0073456e9f8c065c905d11619fcbfcd4527"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/REPORT.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/REPORT.txt",
-    "bytes": 1671,
-    "sha256": "4a822c293c6c1e3de787b01da3e959602e4b6f22b912689a3fafb2f9ed850b75"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/bundle.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/bundle.json",
-    "bytes": 3657,
-    "sha256": "a23937ff7fe5dbb630d63b680a0b2d5e769343ab911f31408aeed60158bc3d92"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/export-state.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/export-state.py",
-    "bytes": 4470,
-    "sha256": "f2d1dcadb17145755106023464701ebca602f551f2c75faab050654be06b3268"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/install.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/install.py",
-    "bytes": 7810,
-    "sha256": "12b09d859e521645d7be2535c00de57fbd7b201acfafa3e63348efd920e3f687"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/000.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/000.py",
-    "bytes": 18167,
-    "sha256": "6d038354404815eacacc334bcfa054e83b1b713cd50500cb8555272d6f447983"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/001.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/001.py",
-    "bytes": 16340,
-    "sha256": "eaada5ff3f7080ef31242ed362e68666bf6f7899415c2617fc4960ae81a2b5c9"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/002.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/002.py",
-    "bytes": 8886,
-    "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/003.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/003.py",
-    "bytes": 2069,
-    "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/004.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/004.html",
-    "bytes": 10057,
-    "sha256": "fe9a7f68b6dd5cbd084700b07ff233b3db931c80378741dbdd3d29a6da64c279"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/005.h": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/005.h",
-    "bytes": 3207,
-    "sha256": "6e189a54b74397377e1bd8d4f8b6fc14f171ebf85e5e2bbad7791ca14fa75659"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/006.h": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/006.h",
-    "bytes": 2139,
-    "sha256": "b7a6872259399446e10f67c028fb6c2b09e47ed1bfe0474345e987af41291b25"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/007.h": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/007.h",
-    "bytes": 3432,
-    "sha256": "cedc8d6e42ae09c1b7a30ecf500e4d08e29b635907d47e0c6660e76648546acb"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/009.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/009.json",
-    "bytes": 377,
-    "sha256": "86f52b91983ea993039a4492330d6784bd918b5c1b8e74966308dd7935cc064b"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/010.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/010.json",
-    "bytes": 319,
-    "sha256": "8dcd27c08839dec4efbef3260c008492767b7d282da303e3a65ae7087768a3de"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/011.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/011.json",
-    "bytes": 309,
-    "sha256": "1cbb963ef036fdfa1937de4e2300cd2c273cdf6fec238286356557cbbd6bb80c"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/012.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/012.json",
-    "bytes": 8846,
-    "sha256": "5069d65d6ee674a68d26093f405b50ee8e2dd435c979f538913d860ac9266870"
-  },
-  "linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/013.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/horse-editor-a23937ff7fe5/payload/013.json",
-    "bytes": 738,
-    "sha256": "643bf779e9315bfd228872d522cefaa586509fcfe3e3624b006ee09c02b8da53"
-  },
-  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/README.md": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/README.md",
-    "bytes": 2100,
-    "sha256": "40b652a03a3fb7369221ac028e0c23e551c19b13bba03cd7f139f678d6dd05c3"
-  },
-  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork.h": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork.h",
-    "bytes": 849,
-    "sha256": "dbe9dd8c194ad31be77754e5d20e4448882d08c5c0294cdd00fd76d393561381"
-  },
-  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork_client.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/custom_marmur_czarny_ork_client.py",
-    "bytes": 1666,
-    "sha256": "4f4c5c15a0b4466a2ee4690c21c3c8d104efcbadfc2f14b98dc7268c1dc261c3"
-  },
-  "linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/modul.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/marmur-czarny-ork/modul.py",
-    "bytes": 7920,
-    "sha256": "5e08375868c7cb0f9cc7b876bef0b89df42ab782f7260765851ce33a6aaad791"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/README.md": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/README.md",
-    "bytes": 5031,
-    "sha256": "1f88239442da0870e528b0489d4e714b89ffbfd2108d4ee4c58a282434451e49"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/init.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/init.txt",
-    "bytes": 1156,
-    "sha256": "6df135a2857f8566ff29679c25c725eae3efcbd8efda15cbf25e706259e7b23c"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/nav.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/nav.txt",
-    "bytes": 1517,
-    "sha256": "c853e7ea0bb1799f13297fc19542e2e4f932299cfc62487f50f78c6ee067bd2e"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_editor.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_editor.py",
-    "bytes": 27253,
-    "sha256": "c86e3d47727c47e9e5f62830bd1efaf116e2cd9706b6093d0791b8cdeee6c384"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_pair_installer.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_pair_installer.py",
-    "bytes": 2069,
-    "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_publication.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/horse_publication.py",
-    "bytes": 8886,
-    "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki.py",
-    "bytes": 3534,
-    "sha256": "085604f55d40a9c5cf9196b93f8be6ea67e541f6dc619291c6fc09457427e153"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/systems_client.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/systems_client.py",
-    "bytes": 22050,
-    "sha256": "62aa260d19055187ac0f74db14fcf920bdc15a6d7644d7e22ac401ce6eae891c"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/PLIKI-KLIENTA.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/PLIKI-KLIENTA.txt",
-    "bytes": 132,
-    "sha256": "c0cf35793c138da40038f6b34f103afa061acd028c6aa2f637bebf3b6204657f"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/hooks.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/hooks.json",
-    "bytes": 3890,
-    "sha256": "6edddae9fb192bfa33ca63c8438bdd2c3d34321e4626544a6fcfc587bebc78b7"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/nazwy.json": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/m2clientpack/kuznia_dodatki/nazwy.json",
-    "bytes": 6116,
-    "sha256": "adcb90d2aa92ef8a72909539d051a8ade427123cb311206ee3d40791d88079b8"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_backup.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_backup.py",
-    "bytes": 9593,
-    "sha256": "809d4c579070d1655560d7d6c24732f8c8a82eac14d286c562810694729376e0"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_guild.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_guild.py",
-    "bytes": 6631,
-    "sha256": "bf40e9f953a85b2c26e3ff9607da013b91fad827c95d8af71b0bb9d7d575b901"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_horse.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_horse.py",
-    "bytes": 19054,
-    "sha256": "26111e7617541fba4f8fd5c64b1d8336528611d3812f605fac6dbefaa81dac72"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_hub.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_hub.py",
-    "bytes": 10113,
-    "sha256": "4f750cba93daf486fe9bb958b0e65d0ebcedc3cb9171707707abcf8223fba7cf"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_missions.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_missions.py",
-    "bytes": 16789,
-    "sha256": "1c6d640c24a68e15e35de901c343e1068fa80e30803e1b7cb1f9eb176da6c015"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_plus9.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_plus9.py",
-    "bytes": 3974,
-    "sha256": "6bad1db929ca2ea2467a3d55a7f15fba0ae8de2d9890a92e8bae3719c1a126ba"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_poly.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_poly.py",
-    "bytes": 9829,
-    "sha256": "d1465e2b4b0fdab1ed7470a7acc1d14f1bf901c5307df6f6ce1fca521510af2f"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_rank.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_rank.py",
-    "bytes": 13467,
-    "sha256": "e3a7e3270f4dfbba938934b84ac4a3dcbc71f16dc2cde61f8a25eaefcc742c85"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_refine.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_refine.py",
-    "bytes": 8439,
-    "sha256": "54764cd844d1c662b9ddf25bb3cf8944a893bbdbae09804e1e222774ab24ab34"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_scan.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_scan.py",
-    "bytes": 3599,
-    "sha256": "183292bdd1b9a75a88ae13069f74f4e3d488d8aeeb2fa27272917a37376d343a"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_store.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_store.py",
-    "bytes": 8064,
-    "sha256": "1952433ec1e2b4467619d89a676a4979c10407df8a0b66e7297294294d8b0ef9"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_weekly.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/dbeditor/systems_weekly.py",
-    "bytes": 8003,
-    "sha256": "ab98a2ec21806ea88e9eac79bcab84e202e418dd5a5bc819b742c37e3f20afaa"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/_systems_nav.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/_systems_nav.html",
-    "bytes": 4228,
-    "sha256": "66b247ed2a43b207b3617cb46005362323f4d77fec96e884ee6e1f485d1cd214"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_backup.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_backup.html",
-    "bytes": 4634,
-    "sha256": "b78a5f4e7b89c4428dc6edd8aec4d91892ed57444d2f2cb6dc4113eee58be519"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_guild.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_guild.html",
-    "bytes": 17732,
-    "sha256": "e4237f3d986b96631801fe928c2c23f4ed278afb03c696b389b0da7d95b1122e"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_horse.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_horse.html",
-    "bytes": 24689,
-    "sha256": "44158aa8c9f23b39bfe52b5e0beabc4d1097ab10d6ac1a9968ef7b3ee131b66f"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_hub.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_hub.html",
-    "bytes": 6885,
-    "sha256": "2e39dc7343018b900019476c701cca0ac39b9e6cabf9b3348126f4b0fb2fd32f"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_info.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_info.html",
-    "bytes": 9439,
-    "sha256": "31fd629e0c3cf09ba53f74c5249420089fd7b77f3f55cab2743f288c1442f3db"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_missions.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_missions.html",
-    "bytes": 31381,
-    "sha256": "3f5e2463b82771a8bfdb4f320becec8037575cc3a7a30dfbaacb9586108bf72a"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_plus9.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_plus9.html",
-    "bytes": 5614,
-    "sha256": "b0bc644b90056d6f9f309b9490162d9cc5a6f3e0b4bcc77161b794f3f4bd4432"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_poly.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_poly.html",
-    "bytes": 18931,
-    "sha256": "c5c4323f015a1b70c225388b14881930e68579dc44a77608db97a1c4abd8c6ea"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_rank.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_rank.html",
-    "bytes": 23830,
-    "sha256": "667f4bbf3f84ab97b85b77f4daacab21132b7a58e8234ce32ee156d3a46bdc18"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine.html",
-    "bytes": 5776,
-    "sha256": "4edd87a57d369e9ae6623cf50f7c9d67fced7df4dd6dbc9fb0f80986636c64d1"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine_edit.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_refine_edit.html",
-    "bytes": 14848,
-    "sha256": "de8345f9f9fbe52187c60d390fe7726394c8534a52bd0c9b5a382693615d1e9b"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_scan.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_scan.html",
-    "bytes": 4098,
-    "sha256": "b448315b5c3c3e89c78ad2aa74a3260dbbcb1f6ac91ff07503b38a254485c2ce"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_soon.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_soon.html",
-    "bytes": 2235,
-    "sha256": "1f338355826e059e3ce2d36a1c8456c87bf1f25fc313dd8ca0436b929c309cd1"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_weekly.html": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/panel/pliki/templates/dbeditor/systems_weekly.html",
-    "bytes": 17944,
-    "sha256": "dba0a3db76e7b87b7d30d23e16ec7bd064d5a001da3580b31b3aff2abc024828"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/CZYTAJ.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/CZYTAJ.txt",
-    "bytes": 1634,
-    "sha256": "54d32947c0d528a32ea67ec9311425e97fb54f63459f50c08b6f9cbee1f3458b"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/czytaj_ranking.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/czytaj_ranking.py",
-    "bytes": 1181,
-    "sha256": "860e603179c509b993654b76ce65c1cfde85c26fa3af8ecc4de88290d3eef619"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.bat.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.bat.txt",
-    "bytes": 164,
-    "sha256": "76b10d86db6712624a77d6273393c61074a2fb7e1bd9337b134216739641e5ec"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.ps1": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.ps1",
-    "bytes": 2509,
-    "sha256": "0d0360385e1b9aa844eba229bd6582b70836982e75d10c0a341bcc92017e7832"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.sh": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj.sh",
-    "bytes": 1344,
-    "sha256": "8b72edfdd41d9b1a9b79f4c58e6a3c990fca57c91b7d16cc9ebf7ea95f90cd13"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj_panel.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/instaluj_panel.py",
-    "bytes": 2273,
-    "sha256": "e0ee3014bd47b60a6c5ef74cef7472b0e8efa15675fe927a8c90fa6f2590de64"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kompiluj_test.sh": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kompiluj_test.sh",
-    "bytes": 880,
-    "sha256": "f9f915d8807badd294c0ba8056e4e01564cea9e605fb346a9e6c571348e4034c"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kotwice.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/kotwice.py",
-    "bytes": 900,
-    "sha256": "479b7b918a7d86388bd7265aaa133fb4d69096ee26d86e3316386b3a4205447d"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/naloz_latki.sh": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/naloz_latki.sh",
-    "bytes": 1293,
-    "sha256": "c55731c41b9d179122e8be9799d9aa7f4c05f13a69437f1a7203fe79245edc35"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_klient.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_klient.py",
-    "bytes": 6041,
-    "sha256": "d9943437a725b938db8c7755a137daec12bacbe1c6980a351d2b7650fe0069de"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_panel.sh": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_panel.sh",
-    "bytes": 1658,
-    "sha256": "094e56f34f69f882b9815567cf426f6516885a4111f1c8453f1afae34afb570a"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_ustawienia.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/spakuj_ustawienia.py",
-    "bytes": 1337,
-    "sha256": "ddbaf16b1e7057fbcee3553e9002d17b189338d3439e3306b722a0aee6a5f7b3"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/test_dodatki.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/test_dodatki.py",
-    "bytes": 1205,
-    "sha256": "afbb03a35a402e56d24f14b23cf6ceee3a3b0722ef36f1b68e8c2ca36437471e"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/wewnatrz.sh": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/wewnatrz.sh",
-    "bytes": 1598,
-    "sha256": "c746e0cde2259c3fadcbe2a6346c4f41af940cd3b030419278d0bd2f67123c02"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_latki.py": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_latki.py",
-    "bytes": 7392,
-    "sha256": "5b0d06233684800de88d94cb71b44722e2d3e72afb94a59d67275c8e900f38ef"
-  },
-  "linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_paczke.sh": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/kuznia-mocy/instalator/zbuduj_paczke.sh",
-    "bytes": 1259,
-    "sha256": "89cd80c446023bff4b5f43ec58d2f82c2345d33587a912cb88cc5b59e78dc3f7"
-  },
-  "linux-port/docker/game/zachowane-zmiany/REJESTR/PROMPT-NOWY-CZAT.md": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/PROMPT-NOWY-CZAT.md",
-    "bytes": 3175,
-    "sha256": "8e42cb955f8ade0e4869b76dc1aef31cb35bce8c3d749792d402514c60d956d0"
-  },
-  "linux-port/docker/game/zachowane-zmiany/REJESTR/REJESTR-ZMIAN.md": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/REJESTR-ZMIAN.md",
-    "bytes": 8511,
-    "sha256": "d5f2485070d9861c692527894639d58660a574ac5cb3820789d2841ca9ba44ac"
-  },
-  "linux-port/docker/game/zachowane-zmiany/REJESTR/pliki-zmienione-wzgledem-autora.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/pliki-zmienione-wzgledem-autora.txt",
-    "bytes": 3066,
-    "sha256": "f250cf7bfb32783590d99aa1c0a2a3cffe172e8ddc5e6dde62c27514a10f3c43"
-  },
-  "linux-port/docker/game/zachowane-zmiany/REJESTR/porownanie-z-autorem-v2.32.0.txt": {
-    "source": "/opt/metin2/linux-port/docker/game/zachowane-zmiany/REJESTR/porownanie-z-autorem-v2.32.0.txt",
-    "bytes": 14912,
-    "sha256": "b9ad8bf3495b3340f3ea86534119db671b89129eb16b6dacf36fa3ed8c8481ca"
-  },
-  "linux-port/docker/game/bin/m2-systems": {
-    "source": "/opt/metin2/linux-port/docker/game/bin/m2-systems",
-    "bytes": 219,
-    "sha256": "d87c2523e3145111baf8519a2f91efafc6d7bd17fa544f3b23f3d75d8a856fb0"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/custom_marmur_czarny_ork_client.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/custom_marmur_czarny_ork_client.py",
-    "bytes": 1666,
-    "sha256": "4f4c5c15a0b4466a2ee4690c21c3c8d104efcbadfc2f14b98dc7268c1dc261c3"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/horse_editor.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/horse_editor.py",
-    "bytes": 27253,
-    "sha256": "c86e3d47727c47e9e5f62830bd1efaf116e2cd9706b6093d0791b8cdeee6c384"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/horse_pair_installer.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/horse_pair_installer.py",
-    "bytes": 2069,
-    "sha256": "02c7554333a6c1ff523b4a75f73c0595cf546c7e78cb819e92b661549c6397ce"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/horse_publication.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/horse_publication.py",
-    "bytes": 8886,
-    "sha256": "2c9e4c9e6631603d7b8d0bd5f431aaaeb444f7e6c65727bab86f6b94b891b8bc"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki.py",
-    "bytes": 3534,
-    "sha256": "085604f55d40a9c5cf9196b93f8be6ea67e541f6dc619291c6fc09457427e153"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/systems_client.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/systems_client.py",
-    "bytes": 22050,
-    "sha256": "62aa260d19055187ac0f74db14fcf920bdc15a6d7644d7e22ac401ce6eae891c"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/hooks.json": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/hooks.json",
-    "bytes": 3890,
-    "sha256": "6edddae9fb192bfa33ca63c8438bdd2c3d34321e4626544a6fcfc587bebc78b7"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/nazwy.json": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/nazwy.json",
-    "bytes": 6116,
-    "sha256": "adcb90d2aa92ef8a72909539d051a8ade427123cb311206ee3d40791d88079b8"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom_window_theme.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom_window_theme.py",
-    "bytes": 1720,
-    "sha256": "15c6f91f1086f048011879844df7a81fbec4692f9994f05c48907fbe09a6c313"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customguildtooltip.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customguildtooltip.py",
-    "bytes": 3163,
-    "sha256": "b058ef8ab4dd49bcf875049ef6667e8562143d1ddc0eeaa5f3e3a9e96233f86c"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customrewardtooltip.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/customrewardtooltip.py",
-    "bytes": 2730,
-    "sha256": "a6f119cb0722743d106505505e359fc47339fdfbe762d76e40c4be2164641009"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/gamefont.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/gamefont.py",
-    "bytes": 1080,
-    "sha256": "5290432b551570a7b09daae6226306af4b9c34acd9d664551fa388fba7f64587"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankbadges.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankbadges.py",
-    "bytes": 4759,
-    "sha256": "ce3b9426ea2a9e02a21c4302cc7ec49d4509cc0a6e328044f5849f38b40574c3"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankpoints.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/rankpoints.py",
-    "bytes": 11433,
-    "sha256": "46b7ccc729a64b422cf5d6ab4253b24641c1c2adf48fc52a3c155baca24d0073"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiminigameutil.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiminigameutil.py",
-    "bytes": 11608,
-    "sha256": "502f8cc2a9d8c027a22003c7c2e58ae3be64d103d601b9672dadd040a24cd514"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uimissionpanel.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uimissionpanel.py",
-    "bytes": 30550,
-    "sha256": "b916d3ed0b81e7d8dcabbb253451063c5666afaa505aefa57446ff1de7b402a9"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiquestbonuspreview.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiquestbonuspreview.py",
-    "bytes": 7933,
-    "sha256": "8f0920770808bbda9a5fbea4dff7e12444f04f35bc0fe4fac2eff16fcab5515e"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiqueststyle.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiqueststyle.py",
-    "bytes": 1070,
-    "sha256": "dad68953b3b91f9e01ab0be4caaf20bf3236581638c16069155f8fd4fea71142"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiweeklyrank.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uiweeklyrank.py",
-    "bytes": 26256,
-    "sha256": "9c9305982b2dd857b47f8c0364d7a3f7d57288bc7e411795cdb1646a93ddeeb8"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/warpsafe.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/warpsafe.py",
-    "bytes": 1922,
-    "sha256": "9752634fcad7449d6b7abffba0c5f4d950bbf5fda724d6b9fbad298a905f540a"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/mission_background.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/mission_background.tga",
-    "bytes": 1166444,
-    "sha256": "8aae894ff3e9dea6cf67d261182a619b8a6c8d020a1734a9e959f2928a1015ec"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/drop_action.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/drop_action.tga",
-    "bytes": 43244,
-    "sha256": "f5445da992c05c758e26f0cfdc41e4029413b90c7405ea7a472747a8593484f4"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_frame.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_frame.tga",
-    "bytes": 2487164,
-    "sha256": "106128eee5970da63515bfc0c7913cebe3acdd44d41bb92ac9a8000c08f652b8"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_normal.tga",
-    "bytes": 36108,
-    "sha256": "ec5cec9f70c092dc725212344dd91359291270bf5c752dea212bfd210e6162cd"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_0_selected.tga",
-    "bytes": 36108,
-    "sha256": "fb32faead734625a92c9055a4be716d52a92030e64f055d2bd667d4de75d67e0"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_normal.tga",
-    "bytes": 36108,
-    "sha256": "9715a7224d3429d40a115646b182d4bc00015f665740bc059b0f2e3269b93b97"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_1_selected.tga",
-    "bytes": 36108,
-    "sha256": "bb430e39b69745ba782969ee663dbf27c1375a1adf488cc240db78bfe13ad7a0"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_normal.tga",
-    "bytes": 36108,
-    "sha256": "c47f782b801267fea133231cef2eaf7b62486075940708bb8e0d3383d55aa3ae"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_2_selected.tga",
-    "bytes": 36108,
-    "sha256": "786d7e8ad61b7ade745d1424f57020e46ea07bc7df66c206eef439a613118e42"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_normal.tga",
-    "bytes": 36108,
-    "sha256": "366081def807bb391aa4872974ff8383b6fb4aa064367624aed64af7d796eebd"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_3_selected.tga",
-    "bytes": 36108,
-    "sha256": "e0e1b01cca4ce9e57826eb99dca6a24f2f7c5be04a1ac1ac5683799f9f20c699"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_normal.tga",
-    "bytes": 36108,
-    "sha256": "784d68c4d67f4de2f44577617313cd88243fa2a464ce47274df9f9bbaa3f8846"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_4_selected.tga",
-    "bytes": 36108,
-    "sha256": "ca03bf9a056657d7e071502b188e0c4b936a41a611d4ac80d709bc6035111647"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_normal.tga",
-    "bytes": 36108,
-    "sha256": "184b8589ce1f297a96481db2650af54b014ddbafd57d0517d3b6f549b79e62c1"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_5_selected.tga",
-    "bytes": 36108,
-    "sha256": "a63568888e0baf3862f8fbbb1a7c0d54e31705022ff18b529b38e01dbf640f15"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_normal.tga",
-    "bytes": 36108,
-    "sha256": "9f1e4e1667a612f10b643b59217df1e76032dccf9fc5f53b7f9f39ac2ec4b44e"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_6_selected.tga",
-    "bytes": 36108,
-    "sha256": "e0b9d89f9c8a4caa2d89170ea8d3cc2270d22a1a692530ab6fd643a907775b60"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_normal.tga",
-    "bytes": 36108,
-    "sha256": "207e752ce5228be39050a4013a5a6048c7545a9b3f8e145a86044d2a374b7b07"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_7_selected.tga",
-    "bytes": 36108,
-    "sha256": "5e95923d860b4139ceaa6f97c1e873b2d3ddff838d3f8c1b4e460e987c152ba2"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_normal.tga",
-    "bytes": 36108,
-    "sha256": "1fd692cf5cd685dc7874333b6b5ff0f6fb58b3a73177bb7f0a8ee0abb69b6b6e"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_8_selected.tga",
-    "bytes": 36108,
-    "sha256": "b1fb7e4827fc67a782f7b37ebe5dbe3c7b74f5ea9c0cbfb0c23834c60243f973"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_normal.tga",
-    "bytes": 36108,
-    "sha256": "b119ebf0251a173364a724177981198e41d27985ca8ef4b8c96d8d0ee386a2cb"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/dungeon_tab_9_selected.tga",
-    "bytes": 36108,
-    "sha256": "c61471d737b92b10845593067e8526c22763dc08f63b449c0e63beae18d3a677"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_action.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_action.tga",
-    "bytes": 61484,
-    "sha256": "f7d05ee4d7b7174b84e614f32ab45dd33d04a8089c4b5995358ba8095b721111"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_frame.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_frame.tga",
-    "bytes": 2270444,
-    "sha256": "489a2b08f82082a3ea8a4fea07d69cf60111a991f39d4338aa55bd9f6aae2231"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_normal.tga",
-    "bytes": 50204,
-    "sha256": "ff3bb29157bb1d807571374b43541018eed5156f8968970c2edc9f434d67cd62"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_0_selected.tga",
-    "bytes": 50204,
-    "sha256": "30b8348f8e9710dc3e67ea6776e87c8203d06375e81e4b58356ee7da4b1729cd"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_normal.tga",
-    "bytes": 50204,
-    "sha256": "7d8d20ec6d953815103bff7ac970db955b074beec2b2c9522d9df5e1f386bb65"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_1_selected.tga",
-    "bytes": 50204,
-    "sha256": "a1b62663801c843c72602856dc798cb77831ab906708578c956b7b40eb69a1ef"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_normal.tga",
-    "bytes": 50204,
-    "sha256": "bcafb2e4441c673fd26c911ef13023d43814c2d98e9e9f292c9d7659a2f4ddc0"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_2_selected.tga",
-    "bytes": 50204,
-    "sha256": "9377293a612b6c2960833e8ffa9a20e26bf5ab267baecded5239a2dd4680cd45"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_normal.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_normal.tga",
-    "bytes": 50204,
-    "sha256": "fe15a2e508c868e9a005751a384c7a69d0a73b22ae4f24c67f0753bcae2b4a1b"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_selected.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/mission_tab_3_selected.tga",
-    "bytes": 50204,
-    "sha256": "2b2d7bc042f694e559620ebe8352220b065d2b63bfc0b7ef47b4e422ae8aacc1"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/next.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/next.tga",
-    "bytes": 5820,
-    "sha256": "3d8de9a69707e981e15b008c526d85927cf639e0bec6ed3fd9d1759617256274"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/previous.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/previous.tga",
-    "bytes": 5820,
-    "sha256": "9e5954969a9ede02baf9019c9572e28da342ffa495da409d939250899bbe6ed2"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/rank_action.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/rank_action.tga",
-    "bytes": 16844,
-    "sha256": "d3f79662e2df02055f6f0a2167e8628097ddcc7ddd590e11c5d703c7ea3499d9"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/warp_action.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/custom_windows/final/warp_action.tga",
-    "bytes": 43244,
-    "sha256": "bb6e82fb641ac237017c2c562635e5cd7b531efbe22a1ad53cc76a64b7029a89"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank01.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank01.tga",
-    "bytes": 5500,
-    "sha256": "d63c5dd5a664cfbb98d0abd906493419780e912d8b4f79765a9e83a0a09e3957"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank02.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank02.tga",
-    "bytes": 6644,
-    "sha256": "e635c84dfc99630f2a8847e109e7e6c9b6695ac4f4b6feeec9d8a9d425c5fcd1"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank03.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank03.tga",
-    "bytes": 6204,
-    "sha256": "fdc8fa3eb9e6305d0102aa7f31a4a9cec4c6b86092ad6144eb02d9bddf43a42e"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank04.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank04.tga",
-    "bytes": 6820,
-    "sha256": "4f69ce2d5e31dba90bd76adb1086bfd1729e3741c6f3a049ebb573ebb81caec6"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank05.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank05.tga",
-    "bytes": 10164,
-    "sha256": "5bc8fffb2a50fa820f16abfb0c428803aee124dacdae1ac31118efb317260686"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank06.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank06.tga",
-    "bytes": 6644,
-    "sha256": "7b88f731cb43424a68157f5febcc823f93391fe1de13cc750e983ffacb06485a"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank07.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank07.tga",
-    "bytes": 8316,
-    "sha256": "a73618196c34ba35f208d0ab9568a523b8ee4efad6e0158330924207b09ee56c"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank08.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank08.tga",
-    "bytes": 6732,
-    "sha256": "1db3a8fb7a232712137cd0310927ce5337d52801a2719d28d91074758b52905a"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank09.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank09.tga",
-    "bytes": 8228,
-    "sha256": "60effe79a09b51814644ff7fe7b10dfa1ca43d6fd48bac2776d2188fe4960c5e"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank10.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank10.tga",
-    "bytes": 7348,
-    "sha256": "c4d5c332ceec1c0836b4e096b20f58176722f0d7672e592594fd442cde8bf540"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank11.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank11.tga",
-    "bytes": 10076,
-    "sha256": "f6ddd372843b2c1cf56c69140badbbac434a8864c009671248aba56425e76c4d"
-  },
-  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank12.tga": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ranktitles/rank12.tga",
-    "bytes": 6380,
-    "sha256": "5ef25d8cdc5afd915ff61d5d86e7d9aa260634172d2d4bd6e7d6380dc6da1eea"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/_systems_nav.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/_systems_nav.html",
-    "bytes": 4228,
-    "sha256": "66b247ed2a43b207b3617cb46005362323f4d77fec96e884ee6e1f485d1cd214"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_backup.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_backup.html",
-    "bytes": 4634,
-    "sha256": "b78a5f4e7b89c4428dc6edd8aec4d91892ed57444d2f2cb6dc4113eee58be519"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_guild.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_guild.html",
-    "bytes": 17732,
-    "sha256": "e4237f3d986b96631801fe928c2c23f4ed278afb03c696b389b0da7d95b1122e"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_horse.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_horse.html",
-    "bytes": 24689,
-    "sha256": "44158aa8c9f23b39bfe52b5e0beabc4d1097ab10d6ac1a9968ef7b3ee131b66f"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_hub.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_hub.html",
-    "bytes": 6885,
-    "sha256": "2e39dc7343018b900019476c701cca0ac39b9e6cabf9b3348126f4b0fb2fd32f"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_info.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_info.html",
-    "bytes": 9439,
-    "sha256": "31fd629e0c3cf09ba53f74c5249420089fd7b77f3f55cab2743f288c1442f3db"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_missions.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_missions.html",
-    "bytes": 31381,
-    "sha256": "3f5e2463b82771a8bfdb4f320becec8037575cc3a7a30dfbaacb9586108bf72a"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_plus9.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_plus9.html",
-    "bytes": 5614,
-    "sha256": "b0bc644b90056d6f9f309b9490162d9cc5a6f3e0b4bcc77161b794f3f4bd4432"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_poly.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_poly.html",
-    "bytes": 18931,
-    "sha256": "c5c4323f015a1b70c225388b14881930e68579dc44a77608db97a1c4abd8c6ea"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_rank.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_rank.html",
-    "bytes": 23830,
-    "sha256": "667f4bbf3f84ab97b85b77f4daacab21132b7a58e8234ce32ee156d3a46bdc18"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_refine.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_refine.html",
-    "bytes": 5776,
-    "sha256": "4edd87a57d369e9ae6623cf50f7c9d67fced7df4dd6dbc9fb0f80986636c64d1"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_refine_edit.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_refine_edit.html",
-    "bytes": 14848,
-    "sha256": "de8345f9f9fbe52187c60d390fe7726394c8534a52bd0c9b5a382693615d1e9b"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_scan.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_scan.html",
-    "bytes": 4098,
-    "sha256": "b448315b5c3c3e89c78ad2aa74a3260dbbcb1f6ac91ff07503b38a254485c2ce"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_soon.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_soon.html",
-    "bytes": 2235,
-    "sha256": "1f338355826e059e3ce2d36a1c8456c87bf1f25fc313dd8ca0436b929c309cd1"
-  },
-  "linux-port/docker/seban-panel/templates/dbeditor/systems_weekly.html": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_weekly.html",
-    "bytes": 17944,
-    "sha256": "dba0a3db76e7b87b7d30d23e16ec7bd064d5a001da3580b31b3aff2abc024828"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_backup.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_backup.py",
-    "bytes": 9593,
-    "sha256": "809d4c579070d1655560d7d6c24732f8c8a82eac14d286c562810694729376e0"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_guild.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_guild.py",
-    "bytes": 6631,
-    "sha256": "bf40e9f953a85b2c26e3ff9607da013b91fad827c95d8af71b0bb9d7d575b901"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_horse.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_horse.py",
-    "bytes": 19054,
-    "sha256": "26111e7617541fba4f8fd5c64b1d8336528611d3812f605fac6dbefaa81dac72"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_hub.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_hub.py",
-    "bytes": 10113,
-    "sha256": "4f750cba93daf486fe9bb958b0e65d0ebcedc3cb9171707707abcf8223fba7cf"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_missions.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_missions.py",
-    "bytes": 16789,
-    "sha256": "1c6d640c24a68e15e35de901c343e1068fa80e30803e1b7cb1f9eb176da6c015"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_plus9.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_plus9.py",
-    "bytes": 3974,
-    "sha256": "6bad1db929ca2ea2467a3d55a7f15fba0ae8de2d9890a92e8bae3719c1a126ba"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_poly.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_poly.py",
-    "bytes": 9829,
-    "sha256": "d1465e2b4b0fdab1ed7470a7acc1d14f1bf901c5307df6f6ce1fca521510af2f"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_rank.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_rank.py",
-    "bytes": 13467,
-    "sha256": "e3a7e3270f4dfbba938934b84ac4a3dcbc71f16dc2cde61f8a25eaefcc742c85"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_refine.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_refine.py",
-    "bytes": 8439,
-    "sha256": "54764cd844d1c662b9ddf25bb3cf8944a893bbdbae09804e1e222774ab24ab34"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_scan.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_scan.py",
-    "bytes": 3599,
-    "sha256": "183292bdd1b9a75a88ae13069f74f4e3d488d8aeeb2fa27272917a37376d343a"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_store.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_store.py",
-    "bytes": 8064,
-    "sha256": "1952433ec1e2b4467619d89a676a4979c10407df8a0b66e7297294294d8b0ef9"
-  },
-  "linux-port/docker/seban-panel/dbeditor/systems_weekly.py": {
-    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_weekly.py",
-    "bytes": 8003,
-    "sha256": "ab98a2ec21806ea88e9eac79bcab84e202e418dd5a5bc819b742c37e3f20afaa"
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_inne_client.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_inne_client.py",
+    "bytes": 2066,
+    "sha256": "4e316f52bd88113998b38d8a0634e4e3cedfab55b1be3863e59063916ea7cc4f"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_inne/50035.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_inne/50035.tga",
+    "bytes": 4140,
+    "sha256": "cc82e28852dbabe9edfee76ba0386aba1478ee84f236a245ec1e6b5acd6d0b80"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_inne/71102.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_inne/71102.tga",
+    "bytes": 4114,
+    "sha256": "82243b0b46ed4331ca64684bed6266d0d044a75a97e36b68dc61ddc6f4d37f06"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/okno/uimissionpanel.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/okno/uimissionpanel.py",
+    "bytes": 34353,
+    "sha256": "af1460217040b8d4d545f4d6e78d3452b377c3eda923958bb1d2e45ce251cfe3"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uimapcounters.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/uimapcounters.py",
+    "bytes": 3877,
+    "sha256": "6c923924c44d4736f3e80a8e626188be1971f2b15900c698501c96df472d2ca6"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_l_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_l_0.tga",
+    "bytes": 2514,
+    "sha256": "591341f9cf131c4dfd7343db8da4fdf3409b21609953dbd647146ecdd0d4872a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_l_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_l_1.tga",
+    "bytes": 2514,
+    "sha256": "e046adb5cc3d52185ace5c082566ef71902ab03d652ba4d0e744a4b5e427b973"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_l_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_l_2.tga",
+    "bytes": 2514,
+    "sha256": "591341f9cf131c4dfd7343db8da4fdf3409b21609953dbd647146ecdd0d4872a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_r_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_r_0.tga",
+    "bytes": 2514,
+    "sha256": "6fde6cd013919bcf27cb7041cb5b1e9e9aa09977f390a895448ab72f4b5df417"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_r_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_r_1.tga",
+    "bytes": 2514,
+    "sha256": "23877a3704891fa524f5f9f2c486ab5e6e2075fc661f70ca58cca2ad964f9ce0"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_r_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/arrow_r_2.tga",
+    "bytes": 2514,
+    "sha256": "6fde6cd013919bcf27cb7041cb5b1e9e9aa09977f390a895448ab72f4b5df417"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_bg.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_bg.tga",
+    "bytes": 3474,
+    "sha256": "8202ae70e575640b2a63852df663cd79b83d774b38f2462e32ff0172e3e56134"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_bg_l.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_bg_l.tga",
+    "bytes": 6098,
+    "sha256": "e74fc0c4f419297c516b56e4b181b36b748ade9561cbc78990d2f05bb35645db"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_gold.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_gold.tga",
+    "bytes": 3474,
+    "sha256": "395a20ffc74002590973f5158ba5f4e9b6ea262a565b8fbae476dbf67883e2df"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_gold_l.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_gold_l.tga",
+    "bytes": 6098,
+    "sha256": "11494b330c24f4220a7c2cd8da9674fcfb68b99ffd2c1e9d65fbf45e7241c010"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_green.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_green.tga",
+    "bytes": 3474,
+    "sha256": "cf7ebdfeccf82fa35fa588138dfde5e3e325c5130bdc20431f778bdd60b1bcd1"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_green_l.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bar_green_l.tga",
+    "bytes": 6098,
+    "sha256": "bbe00ce67da88b1a574d64c71d3d44c428a3d2a4da8202a3f873b9c53631726e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bg.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/bg.tga",
+    "bytes": 1032018,
+    "sha256": "87963754227e8619409b01d16407698975b2a3ba9dc2f3636bbf6a3376346453"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/big.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/big.tga",
+    "bytes": 7762,
+    "sha256": "78487799c9d36ac357943121d705384fc1e32d073b7339bc2fc026759b3dc946"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_ghost_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_ghost_0.tga",
+    "bytes": 11154,
+    "sha256": "c08a12f312928d330451dd503ae255ef89cf9ede3198e8cea2c62be80713f2c2"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_ghost_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_ghost_1.tga",
+    "bytes": 11154,
+    "sha256": "aee65337fa9150d3203e03809b1e5ecb82a60070ceb43ef260eddebde21ac49a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_ghost_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_ghost_2.tga",
+    "bytes": 11154,
+    "sha256": "1b41704e5e8209a5cfdfb461c3bad1ef774f36887b581a85fa675427e880219c"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_gold_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_gold_0.tga",
+    "bytes": 11154,
+    "sha256": "dab5765eeb01fd2310b8fb0b2c2deffc076bc8c68ce45f4a5a984850d9666437"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_gold_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_gold_1.tga",
+    "bytes": 11154,
+    "sha256": "9335a153e3192ab95e8b447bc4a314920936a1719a5c200e9a0063b434013b8e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_gold_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_gold_2.tga",
+    "bytes": 11154,
+    "sha256": "2b2772fe635443a5ae3e863e8bf0270502ff8c8363b0d840fdebb31c3c1c50e0"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_off_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_off_0.tga",
+    "bytes": 11154,
+    "sha256": "800ce7f0073f6423f6de9d6ff283c62bfd117ad0132875107d430c7213da34ad"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_off_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_off_1.tga",
+    "bytes": 11154,
+    "sha256": "800ce7f0073f6423f6de9d6ff283c62bfd117ad0132875107d430c7213da34ad"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_off_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/btn_off_2.tga",
+    "bytes": 11154,
+    "sha256": "800ce7f0073f6423f6de9d6ff283c62bfd117ad0132875107d430c7213da34ad"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card.tga",
+    "bytes": 21666,
+    "sha256": "bcdb5d706697446d33f835a5c67c8136dd5b0cc1b73d783666e857ce07d7601a"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_act.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_act.tga",
+    "bytes": 21666,
+    "sha256": "4f9090832227d2f7e6df69055a4aa23f1399a5d21c749d1c0e3de4ed06f00cb0"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_done.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_done.tga",
+    "bytes": 21666,
+    "sha256": "d5cfc67a42afeba08437f8b833d03aa952529e6c30589b0d7a81107833e3a8a3"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_sel.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_sel.tga",
+    "bytes": 24402,
+    "sha256": "1ca543a7ea82351f6924627bab300064d98d84024d9c465400d31ffeaba0f5bf"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w.tga",
+    "bytes": 46754,
+    "sha256": "fda7dc30ce64c330ac963b6bd949f760ebbdeca47fe8171df434f60d9abab8c7"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w_act.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w_act.tga",
+    "bytes": 46754,
+    "sha256": "a18bc66ae12b601572ea703d6fdec0a7330e6d0e11950a4abc60d24604d856bd"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w_done.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w_done.tga",
+    "bytes": 46754,
+    "sha256": "046b6bdff9a7f8d12d82569a20edd9edc8c07a082cf69411c841666e6dd37ba5"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w_sel.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/card_w_sel.tga",
+    "bytes": 51618,
+    "sha256": "8d4e1b0fc89db6dc9e51d34240eb832d0926c05da1fbfc09e2eddd82b888a0f7"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_biolog.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_biolog.tga",
+    "bytes": 4114,
+    "sha256": "d5c30045a1d2069a779c8d8293592bdbac8eb2d787554b7a9fa46285bff606b8"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_boss.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_boss.tga",
+    "bytes": 4114,
+    "sha256": "dd2d356f4270a2e1261b595166d9fbcb3f2fd8fb957c64815d17505bd47429d2"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_hunting.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_hunting.tga",
+    "bytes": 4114,
+    "sha256": "bac0072b02a4589c21efd5b2891416708a331b86b865bc8c5a4a5bbf82ca4fbd"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_metin.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/cat_metin.tga",
+    "bytes": 4114,
+    "sha256": "1ca3778dc7c92782239d628a07561589c6324015abcf9f4a38545ae6038ce3cc"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/chip.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/chip.tga",
+    "bytes": 10226,
+    "sha256": "104245d00b0599f68367ecf4c0574aa2d1723d40210a7282916bd43fcf075992"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/close_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/close_0.tga",
+    "bytes": 1618,
+    "sha256": "5b95bc5d03521b6a435306ae8ed7ac19594d3ec5687f2fd1aed5fc21fe968a9b"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/close_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/close_1.tga",
+    "bytes": 1618,
+    "sha256": "cea9174a48f60c0105474c7ea079640b374161b15b529cae1d9655ea58fbb045"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/close_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/close_2.tga",
+    "bytes": 1618,
+    "sha256": "5b95bc5d03521b6a435306ae8ed7ac19594d3ec5687f2fd1aed5fc21fe968a9b"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/mini_bg.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/mini_bg.tga",
+    "bytes": 1490,
+    "sha256": "b5adb119a48d7fb4965f421984a3c15255249d050f52d6858b809cefe0cbb8d7"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/mini_gold.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/mini_gold.tga",
+    "bytes": 1490,
+    "sha256": "62bd3a258686c45bd398cf53820ed512e5352f2c7b987cd25fdc98fbcc873c1d"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/mini_green.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/mini_green.tga",
+    "bytes": 1490,
+    "sha256": "b8a59fac914ea50a28c862c091f2a58e5ef20f95c43dc3d70c410e704ad09048"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/row_on.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/row_on.tga",
+    "bytes": 25714,
+    "sha256": "1b07b3aa79f812d13f11e7a6bacad66d277d4e46c9c6d0b8300e2f3d1fd84761"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/scroll_thumb.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/scroll_thumb.tga",
+    "bytes": 818,
+    "sha256": "ba76833b3e8470077a789536722f6ace8b76e0bece4214580862213b967b565d"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/scroll_track.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/scroll_track.tga",
+    "bytes": 4882,
+    "sha256": "eed9d703120ad9796a4839b09505aa863cef192c90968a7ff1ac1ac2d9d4af5c"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/scroll_track_g.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/scroll_track_g.tga",
+    "bytes": 3666,
+    "sha256": "e2ab1ea0def9b3f8a7564e9641aa8ffc8d092035380ad4c1577706f90d4c781c"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/slot.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/slot.tga",
+    "bytes": 4114,
+    "sha256": "279b99c8c10aa28c188a184597b4c3d1cd32bd6dcd33981b4c3c98e1857e4510"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/stage.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/stage.tga",
+    "bytes": 341298,
+    "sha256": "b72a969610bdac57eeecef6b542feacfbaed680a0c4d8d76ff01f5efd0c2e23f"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tab_line.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tab_line.tga",
+    "bytes": 658,
+    "sha256": "358e6887955dd03d641efc68cc015edf412d5985cfe458abb67adbe3eb2bd87b"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tag_act.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tag_act.tga",
+    "bytes": 3714,
+    "sha256": "020edefb2e5d67e8e664966d6973c93731541c2e16cb57ce5ae956fca016c949"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tag_done.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tag_done.tga",
+    "bytes": 3714,
+    "sha256": "b29917d2755d9296c1eb3a2d17a9d60d468ed3a729c679f3a285d2356e59d588"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tag_lock.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/tag_lock.tga",
+    "bytes": 3714,
+    "sha256": "958b443ad32d08927fb4340a62cda9124eaf3ed0ec3ed2862522c553fb9e709e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/taskbar_0.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/taskbar_0.tga",
+    "bytes": 4114,
+    "sha256": "cdc4ddccabc4af5c72f01ce2298d8fb5d55daa69edf1fa29207a61257224cd28"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/taskbar_1.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/taskbar_1.tga",
+    "bytes": 4114,
+    "sha256": "0ed214c607d071c62bd4f179408a43145c2d45f3ac9cca5396514b354978712e"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/taskbar_2.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/ymir work/ui/game/kuznia_okno/taskbar_2.tga",
+    "bytes": 4114,
+    "sha256": "1805465f108d432d7d0441a04bc7e2d48a4595838883de6b3516720f6eb7070d"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom/map_counters/boss.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom/map_counters/boss.tga",
+    "bytes": 1068,
+    "sha256": "5ac20cdf231b699ffe9f5cc96c45cb832a0ed23b74dc949dc4595306c8f59f75"
+  },
+  "linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom/map_counters/metin.tga": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/m2clientpack/kuznia_dodatki/pliki/custom/map_counters/metin.tga",
+    "bytes": 1068,
+    "sha256": "2e262d456c9e9981d9c10ce579254c98c7f47c75a46e729a85c35871a33117f7"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_inne.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_inne.html",
+    "bytes": 10317,
+    "sha256": "4cac8519fe5ee724441aadcbf59ea918533dcf960b987c0b8119d91aad94ee9a"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_kolekcje.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_kolekcje.html",
+    "bytes": 22421,
+    "sha256": "208c61253b23fb2a1478c2620501c2c10e93e21148618dc43b40e209e1518def"
+  },
+  "linux-port/docker/seban-panel/templates/dbeditor/systems_statystyki.html": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/templates/dbeditor/systems_statystyki.html",
+    "bytes": 5536,
+    "sha256": "2fdefde3d5added36dc0d2b634bb9d32d09fc54749adf7084c4ce00203d1c671"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_inne.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_inne.py",
+    "bytes": 21441,
+    "sha256": "d370d9b1c5d194b104135e21d6270deed1a2c1d0e2246a945139e6cbfe73b1c9"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_kolekcje.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_kolekcje.py",
+    "bytes": 17232,
+    "sha256": "10020c8a1689b7534d5be0e27f8123af1641c4e8e3cd8dd25f221c183083c965"
+  },
+  "linux-port/docker/seban-panel/dbeditor/systems_statystyki.py": {
+    "source": "/opt/metin2/linux-port/docker/seban-panel/dbeditor/systems_statystyki.py",
+    "bytes": 6326,
+    "sha256": "f0be1eefa97e4c03f4ebbf4c9663be1b043792a39278b382e871c57ca5b85aca"
   },
   "customizations/panel-spool/drops/common_drop_item.base.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/drops/common_drop_item.base.txt",
-    "bytes": 45067,
-    "sha256": "a3690f2dd6967b4812dc567fffcb07d06a71b7f82410e198be433dbc21f93cbf"
+    "bytes": 45073,
+    "sha256": "9ab10004189ba4b5df332e9d5a6d5d6f804e84e228d0ee0bbb315b7daf0f0812"
   },
   "customizations/panel-spool/drops/common_drop_item.custom.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/drops/common_drop_item.custom.txt",
@@ -26181,8 +26521,8 @@
   },
   "customizations/panel-spool/cube/cube.base.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/cube/cube.base.txt",
-    "bytes": 19301,
-    "sha256": "73348b1c252926830275795a82023e066daf31471608189eaf6f5fbe41f3b50d"
+    "bytes": 19444,
+    "sha256": "6d6191d65c85c1ab99aae912ebcb9df1be578aaf58b51a5fea9b5a424f32838b"
   },
   "customizations/panel-spool/cube/cube.custom.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/cube/cube.custom.txt",
@@ -28252,47 +28592,62 @@
   "customizations/panel-spool/systems/gildia/status/13000.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13000.json",
     "bytes": 318,
-    "sha256": "fc0cf120494ebb610ea86d8c7ae3ae06725d14e974debfec1b5a9a347ff7b0ff"
+    "sha256": "65233d8a38f4746475a322110641fa305863bb453ce3093eef5e06ea31fd91f1"
   },
   "customizations/panel-spool/systems/gildia/status/13001.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13001.json",
-    "bytes": 322,
-    "sha256": "01e81478ee0226437b22d56a282fc6a9fdf2a74b678eaff125046c03c3240282"
+    "bytes": 318,
+    "sha256": "8c0d936b2d1e724f9c76d9debebe66a6173cdacdb99ee433c99814b7b5024a56"
   },
   "customizations/panel-spool/systems/gildia/status/13002.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13002.json",
     "bytes": 318,
-    "sha256": "8c49f41439612eb7255f1325f8f31c7843cf1790c58a4fdf6fe094479944cb2d"
+    "sha256": "764e0e3d5809dd892c3f0355131544906320f2fdf73762a4cd33845c8a366749"
   },
   "customizations/panel-spool/systems/gildia/status/13010.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13010.json",
     "bytes": 318,
-    "sha256": "e1410a742a45239f96f34761996bf0284a5fe606afbf895c46094675a1142eb8"
+    "sha256": "c78cf04d7506a000492bdd0e5db4a52b4c13e411db7621f2ba700cf02449df20"
   },
   "customizations/panel-spool/systems/gildia/status/13011.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13011.json",
-    "bytes": 322,
-    "sha256": "dcbd527f386f12dafa6b979738a78dcb75d284e50c0b119cc6bd9e7febbb7a2a"
+    "bytes": 318,
+    "sha256": "776dec0ffd245234fa7d66b7a645c44df36a4d314b8c1f8414c6cea2ef18dae1"
   },
   "customizations/panel-spool/systems/gildia/status/13012.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13012.json",
     "bytes": 318,
-    "sha256": "12cbe80b9bd7106fe8001a0058a22952a7038efab2f653b4f5d14854d02d8c4b"
+    "sha256": "d7fb3e34d5b66b4e6bd83711e62346aac0399b4462ef18de809e448b264f33a6"
   },
   "customizations/panel-spool/systems/gildia/status/13020.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13020.json",
     "bytes": 318,
-    "sha256": "036cf05b03a796e46fbada48d13bfeccff19b73c74f1d4ca1db55e6394b738ac"
+    "sha256": "8a0a04f610e36bd70a92d60b7d3d74292fa1be5cafffde69eecf9311da178734"
   },
   "customizations/panel-spool/systems/gildia/status/13021.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13021.json",
-    "bytes": 322,
-    "sha256": "f14294aaa743cb30f41ecd4339f257021f9d94592b781b72534747f67386c686"
+    "bytes": 318,
+    "sha256": "e949a5a2f27fe8a92ebeb8b6e4484711e3224d7418f68b815791126597e0abee"
   },
   "customizations/panel-spool/systems/gildia/status/13022.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13022.json",
     "bytes": 318,
-    "sha256": "8c5fed5c53de0432f0347a496d146bf4387acd9750f78fc8aca6738d2503d81f"
+    "sha256": "2891888fade8cc0480539ea7f65350642717250055cae09b38ecdaf9073e64fe"
+  },
+  "customizations/panel-spool/systems/gildia/status/13030.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13030.json",
+    "bytes": 318,
+    "sha256": "559f04d405f987aa7666de9ac3a9d0dbd2d1e3edc34408c1ac02fc40fe67a385"
+  },
+  "customizations/panel-spool/systems/gildia/status/13031.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13031.json",
+    "bytes": 318,
+    "sha256": "7904467b8acc4812cf86a62c6e6dc438bb904aa594666ef81584a66571df0f4d"
+  },
+  "customizations/panel-spool/systems/gildia/status/13032.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/gildia/status/13032.json",
+    "bytes": 318,
+    "sha256": "25057a5d255fab8f8acdb226cb7583d30821b020fe546911ca013b18668747d3"
   },
   "customizations/panel-spool/systems/rangi/draft.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/draft.json",
@@ -28327,47 +28682,62 @@
   "customizations/panel-spool/systems/rangi/status/13000.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13000.json",
     "bytes": 317,
-    "sha256": "58c2e75aa14e4467d9b0c553ebcfae98390c0afb5d390872af1911fd544011ae"
+    "sha256": "61bbe2aa1ff28fa7ee4423d35d0089379951ec47ace81cc7961e0c5926e2c614"
   },
   "customizations/panel-spool/systems/rangi/status/13001.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13001.json",
-    "bytes": 321,
-    "sha256": "3217b8c99ae137942f88344fc205c428aa7034ed9af30f4372459f2a53b8d842"
+    "bytes": 317,
+    "sha256": "e047782d1001d80af50e072b669afddc874e339882b84ac8795e690daa2d8aba"
   },
   "customizations/panel-spool/systems/rangi/status/13002.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13002.json",
     "bytes": 317,
-    "sha256": "f0b10bbafc78fcfa8f2413bea49749b69edf77d2ecabd66954f1a743cdbee992"
+    "sha256": "ebca020820f6876963c709ebe607bcf3d9e3915cce606d23616f2c82b9a39111"
   },
   "customizations/panel-spool/systems/rangi/status/13010.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13010.json",
     "bytes": 317,
-    "sha256": "1e8cc01a493eb0b300ca5b9d74fe6b4b65ab5b96720d78bf8cb084a9ea240d90"
+    "sha256": "34362e4f5b234c32fd4645bcefe3f3a68373e02a2955c3bbd11836c07c782556"
   },
   "customizations/panel-spool/systems/rangi/status/13011.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13011.json",
-    "bytes": 321,
-    "sha256": "40ae173760d3679df1c058445082952eab8e7b8cb12381460e519ba0db883572"
+    "bytes": 317,
+    "sha256": "5897a13a02791fe06f219dd847d87b0fb7f6ef179ac9cd322c01f3495baacf5f"
   },
   "customizations/panel-spool/systems/rangi/status/13012.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13012.json",
     "bytes": 317,
-    "sha256": "28dc3f67b48d27bb2bfc3ec2170856add416f07e250dfe143710319a379e3ae3"
+    "sha256": "8f73ee19daad5767a193f4d67dc36861ae62f00422750e5055874e0f06953297"
   },
   "customizations/panel-spool/systems/rangi/status/13020.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13020.json",
     "bytes": 317,
-    "sha256": "6c1da275d252de09fbc74fd319ee470433a0c96884e73dfa8a69b9d16a09ac7a"
+    "sha256": "758afd6e27d06e7c30c3c6df6ccfd9e204688107cd072c5f8cb682dec0965683"
   },
   "customizations/panel-spool/systems/rangi/status/13021.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13021.json",
-    "bytes": 321,
-    "sha256": "d987915494cc90a361ced9755c81a2a6846b7c19357ab54cc948d9d93a0451c0"
+    "bytes": 317,
+    "sha256": "bb8f03cfc593231bf4c011f66afa1960461678a01f6a4b72ac04d551d6d08353"
   },
   "customizations/panel-spool/systems/rangi/status/13022.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13022.json",
     "bytes": 317,
-    "sha256": "91a63859a92deef1f0673f0086d623013c6d4f371fd7530f635fc2aa7b9345df"
+    "sha256": "2c44a155b042c0144168e70dc479af943d565bede617af6a347ccd3e912c2358"
+  },
+  "customizations/panel-spool/systems/rangi/status/13030.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13030.json",
+    "bytes": 317,
+    "sha256": "7755e3228faebc2090792d1063327fc5f89d3cc9487c206a5f6f19e1b88a7383"
+  },
+  "customizations/panel-spool/systems/rangi/status/13031.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13031.json",
+    "bytes": 317,
+    "sha256": "105809cb7b113efb58d964e760844a2819ffd661ceb0e8f13b5f1170da585f8a"
+  },
+  "customizations/panel-spool/systems/rangi/status/13032.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/13032.json",
+    "bytes": 317,
+    "sha256": "363e7f99ff47f481e99b35de5b01f3a3f074559d12052de58e30750497afef64"
   },
   "customizations/panel-spool/systems/rangi/status/defaults.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/rangi/status/defaults.txt",
@@ -28402,47 +28772,62 @@
   "customizations/panel-spool/systems/ranking/status/13000.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13000.json",
     "bytes": 319,
-    "sha256": "b72e60549771a9e9a9a3a760d180978396f512ce5f1b952bf93c0643baeb962b"
+    "sha256": "ad2514a34746ffb8349992d50a86609dad6ccf79592eddcd0ff50a91c1ab60d1"
   },
   "customizations/panel-spool/systems/ranking/status/13001.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13001.json",
-    "bytes": 323,
-    "sha256": "14b08ce2351c7cb4b8607bcccb5076d072faff9ff49308c4e26380668e5500d0"
+    "bytes": 319,
+    "sha256": "0ee8a07850e74434b214eeb4f425c7818b4fadae81cedf46ded47bef04664076"
   },
   "customizations/panel-spool/systems/ranking/status/13002.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13002.json",
     "bytes": 319,
-    "sha256": "35ebff9400920938e3d1b795ba6f58269fd313e781343d72d7ca810c50f2e948"
+    "sha256": "6352f11fc325610f0204eda1e42b026edbc1358f47f146d6427e92835c470851"
   },
   "customizations/panel-spool/systems/ranking/status/13010.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13010.json",
     "bytes": 319,
-    "sha256": "145b54aafd1cf6797d284aec185201eccdd8a76bf68d6f2b015bd0b413852d49"
+    "sha256": "9ab32e7a16ba9ea92eeb5f733141b56f772caf2e869ae9d6fdb00381d5d7f607"
   },
   "customizations/panel-spool/systems/ranking/status/13011.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13011.json",
-    "bytes": 323,
-    "sha256": "558a707dc0412bb5b83d76969531608e7147709606f3c78c366b8b92697c1555"
+    "bytes": 319,
+    "sha256": "72adbab50266c697c3afc9cc9496162eb3c67077689861f61f406e39549ed8c4"
   },
   "customizations/panel-spool/systems/ranking/status/13012.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13012.json",
     "bytes": 319,
-    "sha256": "21b077c5eb64fcd2a144af3312920066a7bff716b48ddbc76fe104030e887418"
+    "sha256": "b4aced599fa8a4102feb926688953f65c8106bfd5067e3cd8d0d4d35d69ce274"
   },
   "customizations/panel-spool/systems/ranking/status/13020.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13020.json",
     "bytes": 319,
-    "sha256": "59fbe39c4ab6deda1076c2548830018b5c32ce0efa7d034550215bcc40b121ee"
+    "sha256": "4d91db575185f9ff96a67f7650725323ed2b176b094138e73a60aeba462fc2c4"
   },
   "customizations/panel-spool/systems/ranking/status/13021.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13021.json",
-    "bytes": 323,
-    "sha256": "9ffdfab03af95afef94ccd4fa31b29e6d1afdbd82c358b3d123f7e3a3e4a9472"
+    "bytes": 319,
+    "sha256": "3abbeec3dc0a427a21b494de84524c91aa1488d4a3c733bc901ef77151f0a926"
   },
   "customizations/panel-spool/systems/ranking/status/13022.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13022.json",
     "bytes": 319,
-    "sha256": "4d29358866356100421d6511da47e4d28a7f261a8aef4af15f71a7d4ba652c57"
+    "sha256": "5c58abaaf17ee748f7e44d5026abed0f65ef9c2478207d1e611fb87a6b133e19"
+  },
+  "customizations/panel-spool/systems/ranking/status/13030.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13030.json",
+    "bytes": 319,
+    "sha256": "6347e2515421b896aad086aac8ea5284277e5b0abce0aa01f826a2f1eb848db5"
+  },
+  "customizations/panel-spool/systems/ranking/status/13031.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13031.json",
+    "bytes": 319,
+    "sha256": "5f1b42994a66a84f8d58ebcbba2a4fdc75c3a295decd6cb746fe6a369ac10ea9"
+  },
+  "customizations/panel-spool/systems/ranking/status/13032.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/ranking/status/13032.json",
+    "bytes": 319,
+    "sha256": "2c86034745571acd92e2caa8c297fde6efaf7eff9b0eacd085f2aa0456a9d8ce"
   },
   "customizations/panel-spool/systems/horse/draft.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/draft.json",
@@ -28482,47 +28867,62 @@
   "customizations/panel-spool/systems/horse/status/13000.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13000.json",
     "bytes": 318,
-    "sha256": "30d1f21a5786d8edbda7c6a14db25bc70ea550eb99ac671efea26adb6b21c87d"
+    "sha256": "337d49422310c51bd3b1d78525f31156f1d51cb1c66c9c957d1a8e9b3d5b683f"
   },
   "customizations/panel-spool/systems/horse/status/13001.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13001.json",
-    "bytes": 322,
-    "sha256": "90c27ea5cd894049081349b3c3f3cc069ec287e8d8a7219d09f66e280ee03ae3"
+    "bytes": 318,
+    "sha256": "4c8d15e9a48e8a09d3b4a6ec82fa8a08ab32f95209276b4e237901119398e010"
   },
   "customizations/panel-spool/systems/horse/status/13002.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13002.json",
     "bytes": 318,
-    "sha256": "e22954ca090599fd3ccd42263796041a955cd9a123f4a983b04c8e7864959cba"
+    "sha256": "ca35bd3a3714ba8e96aed0f5f9466458b5e039aaf413d2235d713bfb02965aca"
   },
   "customizations/panel-spool/systems/horse/status/13010.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13010.json",
     "bytes": 318,
-    "sha256": "83075555722f0e1e7e13d829a6109c530e9ffb8e8d0c8cd4ead77ce729041cbf"
+    "sha256": "3d7df5b6f19bdc7524e771fc18980be0141b91edf4781b6c1c4de69294ce2800"
   },
   "customizations/panel-spool/systems/horse/status/13011.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13011.json",
-    "bytes": 322,
-    "sha256": "cc1ba0b2651e15c8d4a8b8bac08ebafccde09ece97ba5553d79abf61227d323b"
+    "bytes": 318,
+    "sha256": "11b4324c5c49570e7186546fdd2da0bb277c6fc8364e761a8fcfae675dd069a3"
   },
   "customizations/panel-spool/systems/horse/status/13012.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13012.json",
     "bytes": 318,
-    "sha256": "07b1e39df19696734bd642024f4591c0a6e2f5f1045a114d3fb9ff4f33ce62fd"
+    "sha256": "62669d48c95f07ea54091d4df4f66ee381e7edd73787c3398a3896befc1361f0"
   },
   "customizations/panel-spool/systems/horse/status/13020.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13020.json",
     "bytes": 318,
-    "sha256": "c94edf9ad558b2f457e57a4532b1f27497c89de5577b4d3c066c823863e243b6"
+    "sha256": "90443d7671926f33c0d9966e4586921bc0942759ad385a789fba609e3df8a223"
   },
   "customizations/panel-spool/systems/horse/status/13021.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13021.json",
-    "bytes": 322,
-    "sha256": "fe59c8d1bd2231e7de1724a166dce95ff6de02bee4ea0aecbdbe57a920da4786"
+    "bytes": 318,
+    "sha256": "f44d26694933fb273e7a3f41d2bac738b9c9f4e430b39cbe743fb9b5d10092a4"
   },
   "customizations/panel-spool/systems/horse/status/13022.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13022.json",
     "bytes": 318,
-    "sha256": "a1a68f1170aa3a5d4d72aba1d7f7f7bba32f0db567be26739c3b467e0ea0294d"
+    "sha256": "33c21601d39897dfdc122961c466ed0a9231c9cd27390f918cf8e5f3344bde17"
+  },
+  "customizations/panel-spool/systems/horse/status/13030.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13030.json",
+    "bytes": 318,
+    "sha256": "b95aa81bf76fb56125200297049828c068a7d32dc6fcb172be0ca2270fe5b808"
+  },
+  "customizations/panel-spool/systems/horse/status/13031.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13031.json",
+    "bytes": 318,
+    "sha256": "80e8f8793a299c175811ca69500309c98ec3fdca26f6a88d048df0d17dcb3af8"
+  },
+  "customizations/panel-spool/systems/horse/status/13032.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/status/13032.json",
+    "bytes": 318,
+    "sha256": "1d0e3d5d25f5aa17840c2bf3ccb7dc9b2854376c173caaa58ffa4c7d90682b6b"
   },
   "customizations/panel-spool/systems/horse/history/1792509687521385493.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/history/1792509687521385493.json",
@@ -28538,6 +28938,16 @@
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/horse/history/1792511492457922070.json",
     "bytes": 10644,
     "sha256": "56ad631a5ed19cd0beab3998d96d401983a3d4f6ad9ae0ff02ee7eabb2bd451e"
+  },
+  "customizations/panel-spool/systems/inne/flagi.txt": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/inne/flagi.txt",
+    "bytes": 59,
+    "sha256": "da500df2c1ea0afeb6d00120414eff597096596bec12aae4861f6c577913ed91"
+  },
+  "customizations/panel-spool/systems/inne/stan.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/inne/stan.json",
+    "bytes": 73,
+    "sha256": "bafc5950d1bd5186a826f7fb87c22a93439c7ff1b8a172df5ae6633753f8547b"
   },
   "customizations/panel-spool/systems/skan/ostatni.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/skan/ostatni.json",
@@ -28577,47 +28987,62 @@
   "customizations/panel-spool/systems/polimorfia/status/13000.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13000.json",
     "bytes": 317,
-    "sha256": "ad018b5faebcf0d8d9e216b8aad0e0be36b3586e569510aea17a93310b8a6bff"
+    "sha256": "4d1f0c6031cd8019e1f82db6e45fabb634ed838225be8bf51816282d1b872382"
   },
   "customizations/panel-spool/systems/polimorfia/status/13001.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13001.json",
-    "bytes": 321,
-    "sha256": "fbeaaca1aa60597f3dc72da012a70380849a028b5eb4f7487ddf1e4a24c5879e"
+    "bytes": 317,
+    "sha256": "90b36e89b96a8472fecf518adcfbbbb0767072a3151b20b6ee93bf45311f1377"
   },
   "customizations/panel-spool/systems/polimorfia/status/13002.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13002.json",
     "bytes": 317,
-    "sha256": "df983793c5a9e541f7078e98b1ee7d242805046bdc3600e795079733ccd39274"
+    "sha256": "83ca5ee974e35ca51d46fc3af0f9e2d78ab0c32f1714d2be5c0228161b719ad7"
   },
   "customizations/panel-spool/systems/polimorfia/status/13010.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13010.json",
     "bytes": 317,
-    "sha256": "779b132fe383fdc71800282c7eecb864b6ed206a9cb397f5a84f53bb9e76214b"
+    "sha256": "2f76101a770cecbc222918bdd37e2a83fa51293e74a7b1396ea831e9053346f6"
   },
   "customizations/panel-spool/systems/polimorfia/status/13011.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13011.json",
-    "bytes": 321,
-    "sha256": "39aaff69f480a9c3915e93e601ce3494512c57920d1f4ac441fab26252554c33"
+    "bytes": 317,
+    "sha256": "0337c86f585d29a50495f8a6465c297a5d9fc740f8c9ce4a469478df32cf2eca"
   },
   "customizations/panel-spool/systems/polimorfia/status/13012.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13012.json",
     "bytes": 317,
-    "sha256": "cfd700d0b1598aebf1f25720a8ce2e824659d8a4ad013ba17b1976811208e015"
+    "sha256": "ae26757ecc78de6c379e1d92c49b9b500a254238001eb446255bd2097dc5daa5"
   },
   "customizations/panel-spool/systems/polimorfia/status/13020.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13020.json",
     "bytes": 317,
-    "sha256": "9faea9e984118c40ae1b8a2a83b0946112c641336ccdea90918ac7991c26d04b"
+    "sha256": "09957938248860fed12efccb276cbcc0561a1913381384e792b41ccc5f73643d"
   },
   "customizations/panel-spool/systems/polimorfia/status/13021.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13021.json",
-    "bytes": 321,
-    "sha256": "d1d90a47ee74d394ae85a4291f971af4dfc2ca58248877f95d651430d69c3b6d"
+    "bytes": 317,
+    "sha256": "3a7765d378e0e2facdcb1818311ecca50d05af8afb52337faa1101ecb421e170"
   },
   "customizations/panel-spool/systems/polimorfia/status/13022.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13022.json",
     "bytes": 317,
-    "sha256": "b51eaff0bcc372e1ae156697204ad98622b9c67e4a478ee75dea6c4d5a38cd8f"
+    "sha256": "2a77c05d48089f8b27719627b81005a105cec724691347ea71d1228e05b1834a"
+  },
+  "customizations/panel-spool/systems/polimorfia/status/13030.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13030.json",
+    "bytes": 317,
+    "sha256": "d2cd55d72e3e84d456fbe8ee66bc906c350f2a7a0444628d97d58951f1658fb2"
+  },
+  "customizations/panel-spool/systems/polimorfia/status/13031.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13031.json",
+    "bytes": 317,
+    "sha256": "92d1aa8da6438205cca61e212307dfb57450ca909bdd6b7025d7de68bb14c861"
+  },
+  "customizations/panel-spool/systems/polimorfia/status/13032.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/status/13032.json",
+    "bytes": 317,
+    "sha256": "ccad7063fb278674c7d916631e4bef7055a2359c77aab6a37d7892e3773cba3d"
   },
   "customizations/panel-spool/systems/polimorfia/history/1792515816235743410.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/polimorfia/history/1792515816235743410.json",
@@ -28667,47 +29092,62 @@
   "customizations/panel-spool/systems/misje/status/13000.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13000.json",
     "bytes": 321,
-    "sha256": "14119cff1882f840af5a587ae3a4c2d1a9f5820dc805dd51a6efbffbd0cefdc2"
+    "sha256": "087e140290d9a7cc08036098699cd6e8ff7a129bd2a64bcd956c401dea9d51ee"
   },
   "customizations/panel-spool/systems/misje/status/13001.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13001.json",
-    "bytes": 325,
-    "sha256": "a55667fe4b81317df955a0f128bb39a88eaba70f708357a0d3a5d3c395ad6185"
+    "bytes": 321,
+    "sha256": "1b45f942fb90a3f94c1b8915473f5e45008366f8c98950082aefbd3bcfc04ac7"
   },
   "customizations/panel-spool/systems/misje/status/13002.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13002.json",
     "bytes": 321,
-    "sha256": "30612627cb6970a3940dd8fc0c6219f5a4727a302d9a6744ea342d22e4a337e9"
+    "sha256": "62698fd42d51ca7187fe24c1dc3d0627fd93c7cb581696048a82a74c8cca2563"
   },
   "customizations/panel-spool/systems/misje/status/13010.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13010.json",
     "bytes": 321,
-    "sha256": "ad33c8e4ebb9c8723e396ea08d4533df2091283469ab4d3987d52def58642c8f"
+    "sha256": "1b7e102383c5693918f853ccd1c18d49dd0b0341729ad10732c5e96eaf9d783b"
   },
   "customizations/panel-spool/systems/misje/status/13011.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13011.json",
-    "bytes": 325,
-    "sha256": "4aac895f524010fbc849fd9aae274eb679da494dabb1c8cec9049df45d389d47"
+    "bytes": 321,
+    "sha256": "734a195387f01c852a3ee83afaf82fb8a711ff89180a70a5b83ee557cfd69f58"
   },
   "customizations/panel-spool/systems/misje/status/13012.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13012.json",
     "bytes": 321,
-    "sha256": "98269244352c822b429cd227a32851fbbd13c857e6413a20e74aae46b3e245e9"
+    "sha256": "67726d5b1bb07fba6d81cc7e22934c9e51a51740f2d6a139efbb9460f316a91e"
   },
   "customizations/panel-spool/systems/misje/status/13020.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13020.json",
     "bytes": 321,
-    "sha256": "b24bf50178654d0bb2e499f2e6238d5d285625ba279ccf2977117ed63ac942da"
+    "sha256": "291344c283fdb384afcc00554bff4d4a834e6ad5f7032c710162f7bf16e760f8"
   },
   "customizations/panel-spool/systems/misje/status/13021.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13021.json",
-    "bytes": 325,
-    "sha256": "ea390e07e3c669c20cf6faaaf8540de1af3c5bd6e28be711604d775a57a80112"
+    "bytes": 321,
+    "sha256": "5a7bc452b1bbbbf33f5415c308e30ee9c254e96934c17beaa513ea3a1a52381d"
   },
   "customizations/panel-spool/systems/misje/status/13022.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13022.json",
     "bytes": 321,
-    "sha256": "3bb6f11674c4c0575d5a6696f66d98d94650e9a37b261d7e3ee93392a6ab96a5"
+    "sha256": "1790b03e3e03b04a30252b005347af543499254f58dc745d8f1b0b496d887965"
+  },
+  "customizations/panel-spool/systems/misje/status/13030.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13030.json",
+    "bytes": 321,
+    "sha256": "348a32e2512c69e79c87972f7862a4492758d2edb13570d9a4b13e86a07690b0"
+  },
+  "customizations/panel-spool/systems/misje/status/13031.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13031.json",
+    "bytes": 321,
+    "sha256": "1817f8b55f06d18933e7f0d720482e5f0775d8e8edbb77ed3959e42320c6e2c3"
+  },
+  "customizations/panel-spool/systems/misje/status/13032.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/13032.json",
+    "bytes": 321,
+    "sha256": "4030fed366dc7448028a0a10a8faaccff0e2dc4c28f43ff7af6433529c364d3e"
   },
   "customizations/panel-spool/systems/misje/status/defaults.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/systems/misje/status/defaults.txt",
@@ -28761,13 +29201,13 @@
   },
   "customizations/panel-spool/dbeditor/clientdata-build.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/dbeditor/clientdata-build.json",
-    "bytes": 3391,
-    "sha256": "babe33be7d9399a0826870dfe210f3ca0239a8bee5e3f48e7fee534565f6909d"
+    "bytes": 3523,
+    "sha256": "a0fb0cf12478ae2ea42fb7af639f6e8b68944e09782c732e2c80676970c5e9f1"
   },
   "customizations/panel-spool/dbeditor/clientdata-download.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/dbeditor/clientdata-download.json",
     "bytes": 104,
-    "sha256": "33ae744c09d4c101cbbd22cc77e4ce8e20700e047771811e4615bc1935aed997"
+    "sha256": "85498aa02c397536cdf41e0e35693e591edb83e13a4ff385b89e6125dea9d0cf"
   },
   "customizations/panel-spool/dbeditor/last-apply.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/dbeditor/last-apply.json",
@@ -28784,10 +29224,10 @@
     "bytes": 378,
     "sha256": "314a20776be5b475ac4787eeec5801407e87586e9eff1159d4f61f62536622da"
   },
-  "customizations/panel-spool/dbeditor/autodbdata/2.0.61-5200e844a9fc/meta.json": {
-    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/dbeditor/autodbdata/2.0.61-5200e844a9fc/meta.json",
+  "customizations/panel-spool/dbeditor/autodbdata/2.0.61-d92136e2a21f/meta.json": {
+    "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/dbeditor/autodbdata/2.0.61-d92136e2a21f/meta.json",
     "bytes": 378,
-    "sha256": "25090ab76cc9410c21098f97a4290f7de64f7dab7f7d08b8ba83ae5ad2e5a6db"
+    "sha256": "51c693ca8bf16da78e887e523163b6a712510b9a240487501fcfacd3c5809ba5"
   },
   "customizations/panel-spool/custom-ui-work/cube.before-ui-restart.txt": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/custom-ui-work/cube.before-ui-restart.txt",
@@ -28797,7 +29237,7 @@
   "customizations/panel-spool/custom-ui-work/installation-manifest.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/custom-ui-work/installation-manifest.json",
     "bytes": 1450,
-    "sha256": "0efb80a9cc7144cdce2e47eaf08800a956869752b4877371112e1f9cfb175e90"
+    "sha256": "3f1ae4071e713f20754144d9107acc6236a3b93b7eec9284a179b4700892230b"
   },
   "customizations/panel-spool/custom-ui-work/lokalizacja-okien.json": {
     "source": "/var/lib/docker/volumes/metin2_rates-spool/_data/custom-ui-work/lokalizacja-okien.json",
@@ -29956,8 +30396,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/char_affect.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/char_affect.cpp",
-    "bytes": 24630,
-    "sha256": "5b8fd4976184371d6e61e331e338e0a326ebac5b96f2b0ad47026bb53ef6f8c5"
+    "bytes": 24695,
+    "sha256": "44470d6cedbf50ed4c17eec22922c76357cae762ee56a43f22109f53b646b46b"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/char_ai.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/char_ai.cpp",
@@ -29991,13 +30431,13 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/char_item.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/char_item.cpp",
-    "bytes": 258542,
-    "sha256": "6381e9f8a5388370e5e98519c589116772ba75b4b211fb3518380f67136d5457"
+    "bytes": 259210,
+    "sha256": "7c51a113f156076fd4a20a32b70255f6a3fdb5ce7bbfba9b735d070e137bc21f"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/char_manager.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/char_manager.cpp",
-    "bytes": 29189,
-    "sha256": "794bdce9d8b8c6455e52e795f95f13990c24e0bc6c43c1efbec7394b79f2b927"
+    "bytes": 28273,
+    "sha256": "1aa8dd3da5d36aaca0f96cc416e40b7036f2a43a23c795d492e34cc7cc352eb1"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/char_manager.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/char_manager.h",
@@ -30036,8 +30476,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/char_state.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/char_state.cpp",
-    "bytes": 28384,
-    "sha256": "b0c643d7ac814dc710d40ae566efaf0e51977deb3583a09e6b425ec9def2ae2e"
+    "bytes": 28773,
+    "sha256": "900107a89007cf40d59917813e204afd9cc9f0ad7bcbe6825586de4f46f387c5"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/chest50122_policy.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/chest50122_policy.h",
@@ -30056,8 +30496,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/cmd.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/cmd.cpp",
-    "bytes": 42050,
-    "sha256": "9c085c3ae9f5f426dfc826db71a71e165eeff6039f72f3276bffae7082eb4038"
+    "bytes": 42318,
+    "sha256": "b1c27d324ea0eb68a64ff57e0b5ec29aec096b051f73bf40562644ce2b89310b"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/cmd.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/cmd.h",
@@ -30086,8 +30526,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/collector_refine.inc": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/collector_refine.inc",
-    "bytes": 5718,
-    "sha256": "cbbd691a29e4e5f6fee54780fec1db0313c1eefca38fe33a64c1831f7bd647b7"
+    "bytes": 6397,
+    "sha256": "4a83c6877122deab801747335b9ef7308eb2b6f8aaa183189f48ad2ff5589724"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/combat_bonus_diag.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/combat_bonus_diag.h",
@@ -30296,18 +30736,18 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/entity.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/entity.cpp",
-    "bytes": 2335,
-    "sha256": "ff929158b599ef76c669f9b30dbd8f69fdb116f34745ea6c32f2ef99355eb50f"
+    "bytes": 2341,
+    "sha256": "1424842f51497be6e6146e194f6631afcdb55ff614657acc9f8dc330d5b0a9a5"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/entity.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/entity.h",
-    "bytes": 3353,
-    "sha256": "d3eb1f954d21a54e21c0f7f8d241a92bd03506c3eed5b22cabfbea7300432991"
+    "bytes": 3679,
+    "sha256": "9b93fb76f86e4100fb0dd8778f149c2f0226de1f16970e060a1e81efea4e06c6"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/entity_view.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/entity_view.cpp",
-    "bytes": 6811,
-    "sha256": "8ae03568a79510a260fb555f7fd5b73cc4059b19bb11ae5b086fba886e3a14c5"
+    "bytes": 8730,
+    "sha256": "3ac06457d8d31056c69e43eba6d4024cd05618e6c0e6472a8a8de0ddbcf62d5e"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/event.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/event.cpp",
@@ -30446,8 +30886,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/ikarus_shop.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/ikarus_shop.cpp",
-    "bytes": 15952,
-    "sha256": "c0091a32c8d0632b6166075dcf4b5521d295eef809b32370d1b72f7bd3c26f9c"
+    "bytes": 16294,
+    "sha256": "4d7c41cd156aabf9559ee4d90e2025fd5ea0145da970cdff13ae297d777c2e60"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/ikarus_shop.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/ikarus_shop.h",
@@ -30486,8 +30926,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/input_db.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/input_db.cpp",
-    "bytes": 95300,
-    "sha256": "df2a082930d32ade6836c221e0cd88fbfa2bf1ab7f6a640867437226c0d4645b"
+    "bytes": 91831,
+    "sha256": "fdb514dba39feb572eeec8537701efeec0a0828efa7ce79f5b84c475e23d76c7"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/input_login.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/input_login.cpp",
@@ -30568,6 +31008,16 @@
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/itemshop_manager.h",
     "bytes": 2740,
     "sha256": "ca9e00d3b3bea9cd484922063e16100d59fa87a57819302ed50be86488e6ae00"
+  },
+  "customizations/server-source-snapshot/docker/game/src/server/game/src/kuznia_inne.h": {
+    "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/kuznia_inne.h",
+    "bytes": 8490,
+    "sha256": "618d45ef905fa92d48f76330413f0f21eb196e12e40e5321e56bcc5b8ed9af0b"
+  },
+  "customizations/server-source-snapshot/docker/game/src/server/game/src/kuznia_kolekcje.h": {
+    "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/kuznia_kolekcje.h",
+    "bytes": 9556,
+    "sha256": "903877b94109f7d7fa53573c75ca382d36cb14ca7fac3ec157aec2f8f9b653fb"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/legacy-boss-data-v15.inc": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/legacy-boss-data-v15.inc",
@@ -30731,8 +31181,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/mission_panel_impl.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/mission_panel_impl.h",
-    "bytes": 20713,
-    "sha256": "208d8406451fac19aaaab3be6a42d366435b7cb2d28c48fea1dfc4ae671eb205"
+    "bytes": 21602,
+    "sha256": "02f8a1bcd3058211af165212616ef6d2f3fc319854261828cca65e914a36b608"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/mob_manager.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/mob_manager.cpp",
@@ -30981,8 +31431,8 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/playerbot_collector.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/playerbot_collector.h",
-    "bytes": 4281,
-    "sha256": "45fbdc76d3a2e618254adf6abea76c9365c967b5e734497861941d0cf02870b7"
+    "bytes": 4407,
+    "sha256": "40f2f5ee61354af8b315c964aecbe154a40deba04a46b69815ecc8fe7589fec3"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/playerbot_combat.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/playerbot_combat.h",
@@ -32206,13 +32656,13 @@
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/sectree.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/sectree.cpp",
-    "bytes": 5896,
-    "sha256": "44b36cdfd44a5085cad33fc751c09489e5728b2dc347a59005822a16a7598a03"
+    "bytes": 5691,
+    "sha256": "16a364ec8126d957753f55480078cfd0224926dfcf2c4f9160c511b2fee699cc"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/sectree.h": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/sectree.h",
-    "bytes": 5137,
-    "sha256": "f0620fc7dbff630367c43bbae7651cc0314782c85b897df19a297aded54f1aea"
+    "bytes": 5360,
+    "sha256": "69b704e98de97c860e4bf1e38dfea61e868a5ab5120b68fc78709d5517a40826"
   },
   "customizations/server-source-snapshot/docker/game/src/server/game/src/sectree_manager.cpp": {
     "source": "/opt/metin2/linux-port/docker/game/src/server/game/src/sectree_manager.cpp",
@@ -38607,7 +39057,7 @@
   "customizations/client-packs/original-indexes/dbdata.index": {
     "source": "opublikowana paczka klienta",
     "bytes": 1380,
-    "sha256": "28ec49626303b2c861d16087373f03826d3d9dd31b9287c00bbf6d5a1c3954c8"
+    "sha256": "60de01cd62f660cb3e322f6d87007be3f7320b14b22ee8415f3d0508a81831dd"
   },
   "customizations/client-packs/dbdata/ymir work/npc/dane_remy_npc/a0002_1a.tga": {
     "source": "opublikowana paczka klienta",
@@ -38661,8 +39111,8 @@
   },
   "customizations/client-packs/dbdata/gamedata/item_proto": {
     "source": "opublikowana paczka klienta",
-    "bytes": 267036,
-    "sha256": "6ed4fb39b44376ec02b02cbb0a6303ee067d13e076f1bf5c6b21858924602adf"
+    "bytes": 267076,
+    "sha256": "27c8b45a3f09d59d0c5083ccd9a1ec346a6946e326957b42494a64ebac1fe625"
   },
   "customizations/client-packs/dbdata/gamedata/mob_proto": {
     "source": "opublikowana paczka klienta",
@@ -38787,17 +39237,17 @@
   "customizations/client-packs/METADANE-WPISOW.json": {
     "source": "opublikowana paczka klienta",
     "bytes": 308265,
-    "sha256": "04ba9b71efd0835331ed4b8baaf33cc83009bc1551d43fb1bc8e18be3f0fb6c6"
+    "sha256": "62ae8b77f5b9ebb37c77367d201a89861aeb3b43965e6554cebc82d96a481d6c"
   },
   "customizations/client-packs/dbdata_stamp.txt": {
     "source": "opublikowana paczka klienta",
     "bytes": 276,
-    "sha256": "a502de5f7cab7dcf2300b06f5b84b131e29f89e41e3a28647c0677d6a986aa41"
+    "sha256": "9bbb14275c8466e9314e0f8ca295ebb42d94a9520b092b1effbc2c1d7ed69a8e"
   },
   "customizations/database/world/item_proto.json": {
     "source": "world.item_proto",
-    "bytes": 30642189,
-    "sha256": "a3bea114039d10205b172ad3e8267d5ea0c4c47d2558e14e6cb4dfee8b70be62"
+    "bytes": 30643193,
+    "sha256": "d53d3f147ef44990016c66c4bc19bb8228dc73abd15b4410fa6f7cfc4086f939"
   },
   "customizations/database/world/mob_proto.json": {
     "source": "world.mob_proto",
